@@ -1,0 +1,56 @@
+name: school_life
+description: An app to manage your school life.
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  sqflite: any
+  path: any
+  intl: any
+  dynamic_theme: ^1.0.1
+  flutter_form_builder: ^3.5.5
+  shared_preferences: ^0.5.3+5
+  ntp: ^1.0.4
+  flutter_colorpicker: any
+  device_info: ^0.4.0+3
+  flutter_statusbarcolor: ^0.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  fonts:
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato/Lato-Regular.ttf
+          weight: 400
+    - family: Muli
+      fonts:
+        - asset: assets/fonts/Muli/Muli-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Muli/Muli-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Muli/Muli-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Muli/Muli-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Muli/Muli-Black.ttf
+          weight: 900
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans/OpenSans-SemiBold.ttf
+          weight: 600
+    - family: SourceSansPro
+      fonts:
+        - asset: assets/fonts/SourceSansPro/SourceSansPro-Light.ttf
+          weight: 300
+        - asset: assets/fonts/SourceSansPro/SourceSansPro-Regular.ttf
+          weight: 400
