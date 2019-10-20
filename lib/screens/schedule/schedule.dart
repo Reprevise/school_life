@@ -11,36 +11,39 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
-    Color primaryColor = Theme.of(context).primaryColor;
-    TextStyle textStyle = Theme.of(context).textTheme.display1;
     Widget buildHeaderChild(String dayOfTheWeek) {
       return Container(
-        color: primaryColor,
+        color: Theme.of(context).primaryColor,
         width: 100,
         height: 50,
-        child: Center(child: Text(dayOfTheWeek + ".", style: textStyle)),
+        child: Center(
+            child: Text(dayOfTheWeek + ".",
+                style: Theme.of(context).textTheme.display1)),
       );
     }
 
     TableRow tableHeader = TableRow(children: [
-      buildHeaderChild("Sun"),
+      // buildHeaderChild("Sun"),
       buildHeaderChild("Mon"),
       buildHeaderChild("Tue"),
       buildHeaderChild("Wed"),
       buildHeaderChild("Thu"),
       buildHeaderChild("Fri"),
-      buildHeaderChild("Sat"),
+      // buildHeaderChild("Sat"),
     ]);
 
     return Scaffold(
       appBar: CustomAppBar(title: "Schedule"),
       drawer: CustomDrawer(),
-      body: Table(
-        border:
-            TableBorder.all(width: 3.0, color: Theme.of(context).accentColor),
-        children: [
-          tableHeader,
-        ],
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Table(
+          border:
+              TableBorder.all(width: 3.0, color: Theme.of(context).accentColor),
+          children: [
+            tableHeader,
+          ],
+        ),
       ),
     );
   }

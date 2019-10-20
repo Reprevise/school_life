@@ -12,6 +12,7 @@ dependencies:
   sqflite: any
   path: any
   intl: any
+  auto_size_text: ^2.1.0
   dynamic_theme: ^1.0.1
   flutter_form_builder: ^3.5.5
   shared_preferences: ^0.5.3+5

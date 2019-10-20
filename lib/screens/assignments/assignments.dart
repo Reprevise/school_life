@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
@@ -147,30 +148,43 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
                       .toList(),
                 );
               } else {
-                return Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.assignment,
-                      color: Colors.grey[400],
-                      size: 128.0,
-                    ),
-                    Text(
-                      "You don't have any assignments due!",
-                      style: Theme.of(context).textTheme.display2,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Woo-hoo!",
-                      style: Theme.of(context)
-                          .textTheme
-                          .display2
-                          .copyWith(fontSize: 18),
-                      textAlign: TextAlign.center,
-                    )
-                  ],
+                return SafeArea(
+                  child: Column(
+                    children: <Widget>[
+                      Icon(
+                        Icons.assignment,
+                        color: Colors.grey[400],
+                        size: 128.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AutoSizeText(
+                          "You don't have any assignments due!",
+                          maxLines: 1,
+                          wrapWords: false,
+                          minFontSize: 15,
+                          maxFontSize: 21,
+                          style: Theme.of(context).textTheme.display2,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      AutoSizeText(
+                        "Woo-hoo!",
+                        maxLines: 1,
+                        wrapWords: false,
+                        minFontSize: 12,
+                        maxFontSize: 18,
+                        style: Theme.of(context)
+                            .textTheme
+                            .display2
+                            .copyWith(fontSize: 18),
+                        textAlign: TextAlign.center,
+                      )
+                    ],
+                  ),
                 );
               }
           }
@@ -212,7 +226,10 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
             Navigator.pushNamed(context, '/assignments/add-assignment');
           });
         },
-        label: Text("Add Assignment"),
+        label: Text(
+          "Add Assignment",
+          style: TextStyle(fontFamily: "OpenSans"),
+        ),
         icon: Icon(Icons.add),
       ),
       body: ListView(

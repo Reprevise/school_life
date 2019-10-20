@@ -25,19 +25,14 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     getCurrentTheme();
+    canDeviceChangeTheme();
   }
 
   canDeviceChangeTheme() {
-    ThemeService().checkDeviceCompatableToChangeTheme().then((bool) {
-      if (bool) {
-        setState(() {
-          canChangeTheme = true;
-        });
-      } else {
-        setState(() {
-          canChangeTheme = false;
-        });
-      }
+    ThemeService().checkDeviceCompatableToChangeTheme().then((value) {
+      setState(() {
+        canChangeTheme = value;
+      });
     });
   }
 
@@ -83,8 +78,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  //TODO build out theme switcher
-
   Widget themeToggle() {
     return Visibility(
       visible: canChangeTheme, //! TURN ON WHEN NOT IN DEV
@@ -102,7 +95,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildThemeDialog() {
     return SimpleDialog(
-      elevation: 3,
+      elevation: 1,
       title: Text("Change theme"),
       children: <Widget>[
         buildSelectLightTheme(),
@@ -117,7 +110,7 @@ class _SettingsPageState extends State<SettingsPage> {
       value: ThemeKeys.LIGHT,
       activeColor: Colors.black,
       groupValue: currentTheme,
-      onChanged: (ThemeKeys value) {
+      onChanged: (_) {
         _changeTheme(ThemeKeys.LIGHT);
         Navigator.pop(context);
       },
@@ -130,7 +123,7 @@ class _SettingsPageState extends State<SettingsPage> {
       value: ThemeKeys.DARK,
       activeColor: Colors.black,
       groupValue: currentTheme,
-      onChanged: (ThemeKeys value) {
+      onChanged: (_) {
         _changeTheme(ThemeKeys.DARK);
         Navigator.pop(context);
       },

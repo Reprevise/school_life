@@ -12,6 +12,8 @@ import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 
+Color currentColor = Colors.yellow;
+
 class AddSubjectPage extends StatefulWidget {
   @override
   _AddSubjectPageState createState() => _AddSubjectPageState();
@@ -99,8 +101,6 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
   }
 }
 
-Color currentColor = Colors.amber;
-
 class AddSubjectForm extends StatefulWidget {
   final TextEditingController subjectCont;
   final TextEditingController roomTextCont;
@@ -127,22 +127,26 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
   final FocusNode buildingFocus = FocusNode();
   final FocusNode teacherFocus = FocusNode();
   List<String> subjectNames = [];
+  List<String> subjectColors = [];
 
   @override
   void initState() {
     super.initState();
-    _getSubjectNames();
+    _getSubjectNamesAndColors();
   }
 
-  void _getSubjectNames() {
+  void _getSubjectNamesAndColors() {
     RepositoryServiceSubject.getAllSubjects().then((subjects) {
       if (subjects.isEmpty) return;
-      List<String> temp = [];
+      List<String> nameTemp = [];
+      List<String> colorTemp = [];
       subjects.forEach((subject) {
-        temp.add(subject.name.toLowerCase());
+        nameTemp.add(subject.name.toLowerCase());
+        colorTemp.add(subject.color);
       });
       setState(() {
-        subjectNames = temp;
+        subjectNames = nameTemp;
+        subjectColors = colorTemp;
       });
     });
   }
@@ -186,6 +190,31 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
     FocusScope.of(context).requestFocus(next);
   }
 
+  _sameColorDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Same color exists already!"),
+          content: Text("You have already picked that color for another subject! Please change it."),
+          actions: <Widget>[
+            MaterialButton(
+              child: Text(
+                "Ok",
+                style: TextStyle(
+                  color: Theme.of(context).dialogTheme.contentTextStyle.color,
+                ),
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Widget subjectNameFormField = CustomFormField(
@@ -199,7 +228,10 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
       onFieldSubmitted: (_) =>
           changeFieldFocus(context, subjectFocus, roomTextFocus),
       validators: [
-        FormBuilderValidators.required(errorText: "Please enter the subject name"),
+        FormBuilderValidators.required(
+            errorText: "Please enter the subject name"),
+        FormBuilderValidators.maxLength(22,
+            errorText: "The subject can't be longer than 22 characters"),
         (value) {
           if (subjectNames.contains(value.trim().toLowerCase()))
             return 'That subject name is taken';
@@ -216,6 +248,8 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
       hintText: "Room",
       validators: [
         FormBuilderValidators.required(errorText: "Please enter the room I.D."),
+        FormBuilderValidators.maxLength(15,
+            errorText: "The room I.D. can't be longer than 15 characters"),
       ],
       prefixIcon: Icons.location_on,
       onFieldSubmitted: (_) =>
@@ -228,6 +262,10 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
       controller: widget.buildingCont,
       hintText: "Building",
       prefixIcon: Icons.business,
+      validators: [
+        FormBuilderValidators.maxLength(20,
+            errorText: "The building field can't be longer than 25 characters"),
+      ],
       onFieldSubmitted: (_) =>
           changeFieldFocus(context, buildingFocus, teacherFocus),
     );
@@ -240,7 +278,10 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
       hintText: "Teacher",
       prefixIcon: Icons.person,
       validators: [
-        FormBuilderValidators.required(errorText: "Please enter the teacher's name"),
+        FormBuilderValidators.required(
+            errorText: "Please enter the teacher's name"),
+        FormBuilderValidators.maxLength(30,
+            errorText: "The teacher's name can't be longer than 30 characters"),
       ],
       onFieldSubmitted: (_) => teacherFocus.unfocus(),
     );
@@ -256,11 +297,12 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
               content: SingleChildScrollView(
                 child: BlockPicker(
                   pickerColor: currentColor,
-                  onColorChanged: (color) {
+                  onColorChanged: (Color color) {
                     Navigator.pop(context);
-                    setState(() {
-                      currentColor = color;
-                    });
+                    if (subjectColors.contains(color.toString()))
+                      setState(() {
+                        currentColor = color;
+                      });
                   },
                 ),
               ),

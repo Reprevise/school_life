@@ -94,44 +94,34 @@ class _SubjectsPageState extends State<SubjectsPage> {
   }
 
   Card buildItem(Subject subject) {
-    Widget subName = Padding(
-      padding: const EdgeInsets.only(left: 16.0),
+    Widget subName = Expanded(
+        child: Padding(
+      padding: const EdgeInsets.only(left: 8.0),
       child: Text(
         subject.name,
+        overflow: TextOverflow.clip,
+        maxLines: 1,
         style: TextStyle(
           fontSize: 24.0,
+          fontFamily: "Muli",
+          fontWeight: FontWeight.bold,
           color: useWhiteForeground(processColor(subject.color))
               ? Color(0xffffffff)
               : Color(0xff000000),
         ),
       ),
-    );
-    Widget subLocInfo = Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Visibility(
-            // visible: subject.room.trim().isNotEmpty,
-            child: buildRoomInfo(subject),
-          ),
-          Visibility(
-            // visible: subject.building.trim().isNotEmpty,
-            child: buildBuildingInfo(subject),
-          )
-        ],
-      ),
-    );
-    Widget subTeachInfo = Padding(
-      padding: const EdgeInsets.only(right: 16.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Visibility(
-            child: buildTeachInfo(subject),
-          )
-        ],
-      ),
+    ));
+    Widget subLocInfo = Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: <Widget>[
+        buildRoomInfo(subject),
+        Visibility(
+          visible: subject.building.trim().isNotEmpty,
+          child: buildBuildingInfo(subject),
+        ),
+        buildTeachInfo(subject)
+      ],
     );
     return Card(
       color: processColor(subject.color),
@@ -147,22 +137,16 @@ class _SubjectsPageState extends State<SubjectsPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[subName],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8),
+                padding: const EdgeInsets.only(left: 16.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[subLocInfo],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, bottom: 8),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: <Widget>[subTeachInfo],
                 ),
               ),
             ],
@@ -183,7 +167,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
         children: <TextSpan>[
           TextSpan(
             text: "Room: ",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Muli"),
           ),
           TextSpan(text: subject.room)
         ],
@@ -202,7 +186,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
         children: <TextSpan>[
           TextSpan(
             text: "Building: ",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Muli"),
           ),
           TextSpan(text: subject.building)
         ],
@@ -212,7 +196,6 @@ class _SubjectsPageState extends State<SubjectsPage> {
 
   Widget buildTeachInfo(Subject subject) {
     return RichText(
-      textAlign: TextAlign.right,
       text: TextSpan(
         style: TextStyle(
           color: useWhiteForeground(processColor(subject.color))
@@ -292,16 +275,18 @@ class _SubjectsPageState extends State<SubjectsPage> {
         onPressed: () {
           _navigateToAddSubject(context);
         },
-        label: Text("Add Subject"),
+        label: Text(
+          "Add Subject",
+          style: TextStyle(fontFamily: "OpenSans"),
+        ),
         icon: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: ListView(
-        primary: false,
+      body: SingleChildScrollView(
         padding: EdgeInsets.only(top: 20, bottom: 70),
-        children: <Widget>[
-          buildSubjectFuture(),
-        ],
+        child: Center(
+          child: buildSubjectFuture(),
+        ),
       ),
     );
   }
