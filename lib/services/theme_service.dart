@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ThemeService {
   final AndroidDetails details = AndroidDetails();
 
-  Future<bool> _checkForNightMode() async {
+  Future<bool> hasNightOrDarkMode() async {
     Map<String, dynamic> critDetails = await details.getCritDeviceData();
     String brand = critDetails['brand'];
     int version = critDetails['version.sdkInt'];
@@ -18,39 +18,26 @@ class ThemeService {
     return false;
   }
 
-  Future<bool> _checkDeviceEqualOrAboveVersionSeven() async {
+  Future<bool> hasAndroidSevenPlusAndNotNightMode() async {
+    final bool _hasNightOrDarkMode = await hasNightOrDarkMode();
     Map<String, dynamic> critDetails = await details.getCritDeviceData();
     int version = critDetails['version.sdkInt'];
-    if (version >= 24) return true;
+    // if has or above android 7 but doesn't have night mode
+    if (version >= 24 && !_hasNightOrDarkMode) return true;
     return false;
   }
 
-  Future<bool> checkDeviceCompatableToChangeTheme() async {
-    bool hasNightMode = await _checkForNightMode();
-    bool isAboveOrEqualAndroidSeven =
-        await _checkDeviceEqualOrAboveVersionSeven();
-    // has to be above v. 7 but not have night/dark mode
-    if (!hasNightMode && isAboveOrEqualAndroidSeven) {
-      return true;
-    }
-    return false;
-  }
-
-  void changeBrightness(Brightness brightness, BuildContext context) async {
-    Brightness currentThemeBrightness = DynamicTheme.of(context).brightness;
-    if (currentThemeBrightness == brightness) return;
-    bool canChangeSystemBrightness = await checkDeviceCompatableToChangeTheme();
+  void changeToSysBrightness(BuildContext context) async {
+    bool canChangeSystemBrightness = await hasNightOrDarkMode();
     Brightness platformBrightness = MediaQuery.of(context).platformBrightness;
     if (canChangeSystemBrightness) {
       DynamicTheme.of(context).setBrightness(platformBrightness);
       return;
     }
-    // if user can't change sys brightness, change to desired brightness
-    DynamicTheme.of(context).setBrightness(brightness);
   }
 
   Future<ThemeKeys> getCurrentTheme() async {
-    final bool canChangeTheme = await checkDeviceCompatableToChangeTheme();
+    final bool canChangeTheme = await hasNightOrDarkMode();
     if (canChangeTheme) return null;
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final storedTheme = prefs.getString("theme");

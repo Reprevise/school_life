@@ -6,7 +6,6 @@ import 'package:school_life/theme/themes.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'children/assignments-set.dart';
 import 'children/subjects-set.dart';
@@ -21,7 +20,7 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool canChangeTheme = false;
+  bool canManuallyChangeThemeInAppSettings = false;
   ThemeKeys currentTheme = ThemeKeys.LIGHT;
 
   @override
@@ -32,10 +31,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _canDeviceChangeTheme() async {
-    final _canChangeTheme =
-        await ThemeService().checkDeviceCompatableToChangeTheme();
+    final _canManuallyChangeThemeInSysSettings =
+        await ThemeService().hasAndroidSevenPlusAndNotNightMode();
     setState(() {
-      canChangeTheme = _canChangeTheme;
+      canManuallyChangeThemeInAppSettings = !_canManuallyChangeThemeInSysSettings;
     });
   }
 
@@ -75,15 +74,8 @@ class _SettingsPageState extends State<SettingsPage> {
         primary: false,
         padding: EdgeInsets.zero,
         children: <Widget>[
-          Visibility(
-            visible: canChangeTheme,
-            child: Row(
-              children: <Widget>[
-                buildSettingHeader("Theme"),
-                buildThemeToggle(),
-              ],
-            ),
-          ),
+          buildSettingHeader("Theme"),
+          buildThemeToggle(),
           buildSettingHeader("Assignments"),
           buildGoToAssignmentsSettings(),
           buildSettingHeader("Subjects"),
