@@ -36,28 +36,25 @@ class CustomFormField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: FormBuilderTextField(
-        attribute: attribute,
-        focusNode: focusNode,
-        autofocus: autofocus,
-        controller: controller,
-        keyboardType: keyboardType,
-        textInputAction: textInputAction,
-        initialValue: initialValue,
-        textCapitalization: textCapitalization,
-        onFieldSubmitted: onFieldSubmitted,
-        decoration: InputDecoration(
-          hintText: hintText,
-          prefixIcon:
-              Icon(prefixIcon, color: Theme.of(context).primaryIconTheme.color),
-          suffixIcon: suffix,
-          focusedErrorBorder:
-              OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
-        ),
-        validators: validators == null ? [] : validators,
+    return FormBuilderTextField(
+      attribute: attribute,
+      focusNode: focusNode,
+      autofocus: autofocus,
+      controller: controller,
+      keyboardType: keyboardType,
+      textInputAction: textInputAction,
+      initialValue: initialValue,
+      textCapitalization: textCapitalization,
+      onFieldSubmitted: onFieldSubmitted,
+      decoration: InputDecoration(
+        hintText: hintText,
+        prefixIcon:
+            Icon(prefixIcon, color: Theme.of(context).primaryIconTheme.color),
+        suffixIcon: suffix,
+        focusedErrorBorder:
+            OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
       ),
+      validators: validators == null ? [] : validators,
     );
   }
 }

@@ -8,6 +8,9 @@ import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'children/assignments-set.dart';
+import 'children/subjects-set.dart';
+
 enum ThemeKeys { LIGHT, DARK }
 
 class SettingsPage extends StatefulWidget {
@@ -24,41 +27,40 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   void initState() {
     super.initState();
-    getCurrentTheme();
-    canDeviceChangeTheme();
+    _canDeviceChangeTheme();
+    _getCurrentTheme();
   }
 
-  canDeviceChangeTheme() {
-    ThemeService().checkDeviceCompatableToChangeTheme().then((value) {
-      setState(() {
-        canChangeTheme = value;
-      });
+  Future<void> _canDeviceChangeTheme() async {
+    final _canChangeTheme =
+        await ThemeService().checkDeviceCompatableToChangeTheme();
+    setState(() {
+      canChangeTheme = _canChangeTheme;
     });
   }
 
-  Future<void> getCurrentTheme() async {
+  Future<void> _getCurrentTheme() async {
     final ThemeKeys storedTheme = await ThemeService().getCurrentTheme();
+    // _changeTheme(storedTheme);
     setState(() {
       currentTheme = storedTheme;
     });
   }
 
-  void saveCurrentTheme(ThemeKeys newTheme) async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String _theme = newTheme == ThemeKeys.LIGHT ? "LIGHT" : "DARK";
-    prefs.setString("theme", _theme);
-    setState(() {
-      currentTheme = newTheme;
+  void _saveTheme(ThemeKeys newTheme) {
+    ThemeService().saveTheme(newTheme).then((_) {
+      setState(() {
+        currentTheme = newTheme;
+      });
     });
   }
 
   void _changeTheme(ThemeKeys newTheme) {
+    _saveTheme(newTheme);
     if (newTheme == ThemeKeys.LIGHT) {
-      saveCurrentTheme(ThemeKeys.LIGHT);
       Themes().setLightSystemColors();
       DynamicTheme.of(context).setBrightness(Brightness.light);
     } else {
-      saveCurrentTheme(ThemeKeys.DARK);
       Themes().setDarkSystemColors();
       DynamicTheme.of(context).setBrightness(Brightness.dark);
     }
@@ -71,25 +73,52 @@ class _SettingsPageState extends State<SettingsPage> {
       drawer: CustomDrawer(),
       body: ListView(
         primary: false,
+        padding: EdgeInsets.zero,
         children: <Widget>[
-          themeToggle(),
+          Visibility(
+            visible: canChangeTheme,
+            child: Row(
+              children: <Widget>[
+                buildSettingHeader("Theme"),
+                buildThemeToggle(),
+              ],
+            ),
+          ),
+          buildSettingHeader("Assignments"),
+          buildGoToAssignmentsSettings(),
+          buildSettingHeader("Subjects"),
+          buildGoToSubjectsSettings(),
         ],
       ),
     );
   }
 
-  Widget themeToggle() {
-    return Visibility(
-      visible: canChangeTheme, //! TURN ON WHEN NOT IN DEV
-      // visible: true,
-      child: ListTile(
-        title: Text("Change theme"),
-        subtitle: Text("Change the app theme"),
-        onTap: () {
-          showDialog(
-              builder: (context) => buildThemeDialog(), context: context);
-        },
-      ),
+  Widget buildSettingHeader(String title) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: EdgeInsets.only(left: 8.0, top: 8.0),
+          child: Text(
+            title,
+            style: TextStyle(
+                fontWeight: FontWeight.w600,
+                color: Theme.of(context).accentColor),
+          ),
+        ),
+        Divider(),
+      ],
+    );
+  }
+
+  Widget buildThemeToggle() {
+    return ListTile(
+      leading: Icon(Icons.color_lens, size: 32),
+      title: Text("Change theme"),
+      subtitle: Text("Change the app theme"),
+      onTap: () {
+        showDialog(builder: (context) => buildThemeDialog(), context: context);
+      },
     );
   }
 
@@ -110,8 +139,8 @@ class _SettingsPageState extends State<SettingsPage> {
       value: ThemeKeys.LIGHT,
       activeColor: Colors.black,
       groupValue: currentTheme,
-      onChanged: (_) {
-        _changeTheme(ThemeKeys.LIGHT);
+      onChanged: (value) {
+        _changeTheme(value);
         Navigator.pop(context);
       },
     );
@@ -123,10 +152,30 @@ class _SettingsPageState extends State<SettingsPage> {
       value: ThemeKeys.DARK,
       activeColor: Colors.black,
       groupValue: currentTheme,
-      onChanged: (_) {
-        _changeTheme(ThemeKeys.DARK);
+      onChanged: (value) {
+        _changeTheme(value);
         Navigator.pop(context);
       },
+    );
+  }
+
+  Widget buildGoToAssignmentsSettings() {
+    return ListTile(
+      leading: Icon(Icons.assignment, size: 32),
+      title: Text("Assignments Settings"),
+      subtitle: Text("Open assignments settings"),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => AssignmentsSettingsPage())),
+    );
+  }
+
+  Widget buildGoToSubjectsSettings() {
+    return ListTile(
+      leading: Icon(Icons.school, size: 32),
+      title: Text("Subjects Settings"),
+      subtitle: Text("Open subjects settings"),
+      onTap: () => Navigator.push(context,
+          MaterialPageRoute(builder: (context) => SubjectsSettingsPage())),
     );
   }
 }

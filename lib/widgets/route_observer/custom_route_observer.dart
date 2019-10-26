@@ -8,7 +8,6 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   @override
   void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
     super.didPop(route, previousRoute);
-    if (route.settings.name == "/subjects/add-subject" || route.settings.name == "/assignments/add-assignment") return;
     if (previousRoute is PageRoute && route is PageRoute) {
       drawer.selectedIndex =
           App().routes.keys.toList().indexOf(previousRoute.settings.name);

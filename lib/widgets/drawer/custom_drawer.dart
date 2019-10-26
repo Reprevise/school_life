@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/app.dart';
-import 'package:school_life/util/color_util.dart';
 import 'package:school_life/util/models/drawer_item.dart';
 
 import 'widgets/custom_list_tile.dart';
@@ -80,7 +79,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 return Container(
                   decoration: BoxDecoration(
                     color: _selectedIndex == index
-                        ? ColorUtils.hexToColor("#e8f0fe")
+                        ? Color(0xffe8f0fe)
                         : Colors.transparent,
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(50),
@@ -90,11 +89,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   child: CustomListTile(
                     text: currentItem.title,
                     textColor: _selectedIndex == index && _selectedIndex != 6
-                        ? ColorUtils.hexToColor("#1967d2")
+                        ? Color(0xff1967d2)
                         : currentItem.color,
                     icon: currentItem.icon,
                     iconColor: _selectedIndex == index && _selectedIndex != 6
-                        ? ColorUtils.hexToColor("#1967d2")
+                        ? Color(0xff1967d2)
                         : currentItem.color,
                     onTap: () {
                       if (_selectedIndex == index) {
@@ -102,8 +101,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         return;
                       }
                       _selectedIndex = index;
-                      Navigator.of(context)
-                          .popAndPushNamed(App().routes.keys.toList()[index]);
+                      Navigator.of(context).pushReplacementNamed(
+                          App().routes.keys.toList()[index]);
                     },
                   ),
                 );

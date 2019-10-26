@@ -54,7 +54,7 @@ class RepositoryServiceSubject {
       subject.room,
       subject.building,
       subject.teacher,
-      subject.color,
+      subject.colorValue,
       subject.isDeleted ? 1 : 0,
     ];
     await db.rawInsert(sql, params);
@@ -86,7 +86,7 @@ class RepositoryServiceSubject {
       subject.room,
       subject.building,
       subject.teacher,
-      subject.color,
+      subject.colorValue,
       subject.id,
     ];
 

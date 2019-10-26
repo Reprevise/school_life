@@ -15,11 +15,6 @@ import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 Color currentColor = Colors.yellow;
 
 class AddSubjectPage extends StatefulWidget {
-  @override
-  _AddSubjectPageState createState() => _AddSubjectPageState();
-}
-
-class _AddSubjectPageState extends State<AddSubjectPage> {
   final _subjectController = TextEditingController();
   final _roomTextController = TextEditingController();
   final _buildingTextController = TextEditingController();
@@ -27,12 +22,17 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
   final _addSubjectFormKey = GlobalKey<FormBuilderState>();
 
   @override
+  _AddSubjectPageState createState() => _AddSubjectPageState();
+}
+
+class _AddSubjectPageState extends State<AddSubjectPage> {
+  @override
   void dispose() {
     // dispose all of the text controllers
-    _subjectController.dispose();
-    _roomTextController.dispose();
-    _buildingTextController.dispose();
-    _teacherTextController.dispose();
+    widget._subjectController.dispose();
+    widget._roomTextController.dispose();
+    widget._buildingTextController.dispose();
+    widget._teacherTextController.dispose();
     super.dispose();
   }
 
@@ -40,15 +40,15 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
     // get the number of subjects, returns # of subjects + 1
     int nextID = await RepositoryServiceSubject.subjectsCount();
     // trimmed subject name
-    String subjectName = _subjectController.text.trim();
+    String subjectName = widget._subjectController.text.trim();
     // get room field text
-    String roomText = _roomTextController.text.trim();
+    String roomText = widget._roomTextController.text.trim();
     // get building field text
-    String building = _buildingTextController.text.trim();
+    String building = widget._buildingTextController.text.trim();
     // get teacher field text
-    String teacher = _teacherTextController.text.trim();
-    // get color and convert to string
-    String color = currentColor.toString();
+    String teacher = widget._teacherTextController.text.trim();
+    // get the color value and convert it to a string
+    int color = currentColor.value;
     //! ALWAYS FALSE
     bool isDeleted = false;
     // create new subject based on text from form
@@ -83,19 +83,17 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
-        onPressed: () async {
-          if (_addSubjectFormKey.currentState.saveAndValidate()) {
+        onPressed: () {
+          if (widget._addSubjectFormKey.currentState.saveAndValidate())
             addSubject();
-          }
-          return null;
         },
       ),
       body: AddSubjectForm(
-        subjectCont: _subjectController,
-        roomTextCont: _roomTextController,
-        buildingCont: _buildingTextController,
-        teacherCont: _teacherTextController,
-        globalKey: _addSubjectFormKey,
+        subjectCont: widget._subjectController,
+        roomTextCont: widget._roomTextController,
+        buildingCont: widget._buildingTextController,
+        teacherCont: widget._teacherTextController,
+        globalKey: widget._addSubjectFormKey,
       ),
     );
   }
@@ -107,6 +105,10 @@ class AddSubjectForm extends StatefulWidget {
   final TextEditingController buildingCont;
   final TextEditingController teacherCont;
   final GlobalKey<FormBuilderState> globalKey;
+  final FocusNode subjectFocus = FocusNode();
+  final FocusNode roomTextFocus = FocusNode();
+  final FocusNode buildingFocus = FocusNode();
+  final FocusNode teacherFocus = FocusNode();
 
   AddSubjectForm(
       {Key key,
@@ -122,42 +124,67 @@ class AddSubjectForm extends StatefulWidget {
 }
 
 class _AddSubjectFormState extends State<AddSubjectForm> {
-  final FocusNode subjectFocus = FocusNode();
-  final FocusNode roomTextFocus = FocusNode();
-  final FocusNode buildingFocus = FocusNode();
-  final FocusNode teacherFocus = FocusNode();
   List<String> subjectNames = [];
-  List<String> subjectColors = [];
+  List<Color> availableColors = [
+    Colors.red,
+    Colors.pink,
+    Colors.purple,
+    Colors.deepPurple,
+    Colors.indigo,
+    Colors.blue,
+    Colors.lightBlue,
+    Colors.cyan,
+    Colors.teal,
+    Colors.green,
+    Colors.lightGreen,
+    Colors.lime,
+    Colors.yellow,
+    Colors.amber,
+    Colors.orange,
+    Colors.deepOrange,
+    Colors.brown,
+    Colors.grey,
+    Colors.blueGrey,
+  ];
 
   @override
   void initState() {
     super.initState();
-    _getSubjectNamesAndColors();
+    _getSubjectNamesAndAvailableColors();
   }
 
-  void _getSubjectNamesAndColors() {
-    RepositoryServiceSubject.getAllSubjects().then((subjects) {
-      if (subjects.isEmpty) return;
-      List<String> nameTemp = [];
-      List<String> colorTemp = [];
-      subjects.forEach((subject) {
-        nameTemp.add(subject.name.toLowerCase());
-        colorTemp.add(subject.color);
-      });
-      setState(() {
-        subjectNames = nameTemp;
-        subjectColors = colorTemp;
-      });
+  Future<void> _getSubjectNamesAndAvailableColors() async {
+    final subjects = await RepositoryServiceSubject.getAllSubjects();
+    if (subjects.isEmpty) return;
+    List<String> nameTemp = [];
+    List<int> subjectColorValues = [];
+    List<Color> availableColorsTemp = availableColors;
+    subjects.forEach((subject) {
+      // no trim needed since it already was trimmed when entered into database
+      nameTemp.add(subject.name.toLowerCase());
+      subjectColorValues.add(subject.colorValue);
+    });
+    // loop through all the subject colors
+    subjectColorValues.forEach((currentColorValue) {
+      for (int i = 0; i < availableColorsTemp.length; i++) {
+        if (availableColorsTemp[i].value == currentColorValue)
+          availableColorsTemp.removeAt(i);
+      }
+    });
+    setState(() {
+      subjectNames = nameTemp;
+      availableColors = availableColorsTemp;
+      currentColor = availableColors.first;
     });
   }
 
   @override
   void dispose() {
     // dispose of all FocusNode's
-    subjectFocus.dispose();
-    roomTextFocus.dispose();
-    buildingFocus.dispose();
-    teacherFocus.dispose();
+    widget.subjectFocus.dispose();
+    widget.roomTextFocus.dispose();
+    widget.buildingFocus.dispose();
+    widget.teacherFocus.dispose();
     super.dispose();
   }
 
@@ -196,7 +223,8 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
       builder: (context) {
         return AlertDialog(
           title: Text("Same color exists already!"),
-          content: Text("You have already picked that color for another subject! Please change it."),
+          content: Text(
+              "You have already picked that color for another subject! Please change it."),
           actions: <Widget>[
             MaterialButton(
               child: Text(
@@ -219,14 +247,14 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
   Widget build(BuildContext context) {
     Widget subjectNameFormField = CustomFormField(
       attribute: 'subject-name',
-      focusNode: subjectFocus,
+      focusNode: widget.subjectFocus,
       autofocus: true,
       hintText: "Subject",
       prefixIcon: Icons.subject,
       initialValue: "",
       controller: widget.subjectCont,
       onFieldSubmitted: (_) =>
-          changeFieldFocus(context, subjectFocus, roomTextFocus),
+          changeFieldFocus(context, widget.subjectFocus, widget.roomTextFocus),
       validators: [
         FormBuilderValidators.required(
             errorText: "Please enter the subject name"),
@@ -242,7 +270,7 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
     Widget roomField = CustomFormField(
       attribute: 'room',
       initialValue: "",
-      focusNode: roomTextFocus,
+      focusNode: widget.roomTextFocus,
       controller: widget.roomTextCont,
       textCapitalization: TextCapitalization.none,
       hintText: "Room",
@@ -253,12 +281,12 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
       ],
       prefixIcon: Icons.location_on,
       onFieldSubmitted: (_) =>
-          changeFieldFocus(context, roomTextFocus, buildingFocus),
+          changeFieldFocus(context, widget.roomTextFocus, widget.buildingFocus),
     );
     Widget buildingFormField = CustomFormField(
       attribute: 'building',
       initialValue: "",
-      focusNode: buildingFocus,
+      focusNode: widget.buildingFocus,
       controller: widget.buildingCont,
       hintText: "Building",
       prefixIcon: Icons.business,
@@ -267,11 +295,11 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
             errorText: "The building field can't be longer than 25 characters"),
       ],
       onFieldSubmitted: (_) =>
-          changeFieldFocus(context, buildingFocus, teacherFocus),
+          changeFieldFocus(context, widget.buildingFocus, widget.teacherFocus),
     );
     Widget teacherFormField = CustomFormField(
       attribute: 'teacher',
-      focusNode: teacherFocus,
+      focusNode: widget.teacherFocus,
       initialValue: "",
       controller: widget.teacherCont,
       textInputAction: TextInputAction.done,
@@ -283,7 +311,7 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
         FormBuilderValidators.maxLength(30,
             errorText: "The teacher's name can't be longer than 30 characters"),
       ],
-      onFieldSubmitted: (_) => teacherFocus.unfocus(),
+      onFieldSubmitted: (_) => widget.teacherFocus.unfocus(),
     );
     Widget selectColorBtn = RaisedButton(
       elevation: 3.0,
@@ -296,13 +324,13 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
               title: Text("Select a color"),
               content: SingleChildScrollView(
                 child: BlockPicker(
+                  availableColors: availableColors,
                   pickerColor: currentColor,
                   onColorChanged: (Color color) {
                     Navigator.pop(context);
-                    if (subjectColors.contains(color.toString()))
-                      setState(() {
-                        currentColor = color;
-                      });
+                    setState(() {
+                      currentColor = color;
+                    });
                   },
                 ),
               ),
@@ -315,24 +343,28 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
           : Color(0xff000000),
       child: Text("Change color"),
     );
-    return FormBuilder(
-      key: widget.globalKey,
-      onWillPop: _requestPop,
-      child: SingleChildScrollView(
-        primary: false,
-        child: Column(
-          children: <Widget>[
-            SizedBox(height: 20),
-            subjectNameFormField,
-            SizedBox(height: 10),
-            roomField,
-            SizedBox(height: 10),
-            buildingFormField,
-            SizedBox(height: 10),
-            teacherFormField,
-            SizedBox(height: 10),
-            selectColorBtn,
-          ],
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(bottom: 10),
+      primary: false,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: FormBuilder(
+          key: widget.globalKey,
+          onWillPop: _requestPop,
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 20),
+              subjectNameFormField,
+              SizedBox(height: 10),
+              roomField,
+              SizedBox(height: 10),
+              buildingFormField,
+              SizedBox(height: 10),
+              teacherFormField,
+              SizedBox(height: 10),
+              selectColorBtn,
+            ],
+          ),
         ),
       ),
     );

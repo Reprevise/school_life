@@ -28,7 +28,7 @@ class _AddAssignmentPageState extends State<AddAssignmentPage> {
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () {
-            Navigator.pop(context);
+            DialogOnPop().showPopupDialog(context);
           },
         ),
       ),
@@ -148,6 +148,8 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
       focusNode: assignmentFocus,
       textCapitalization: TextCapitalization.words,
       controller: widget.assignNameCont,
+      textInputAction: TextInputAction.done,
+      onFieldSubmitted: (_) => assignmentFocus.unfocus(),
       hintText: "Assignment Name",
       prefixIcon: Icons.assignment,
       validators: [
@@ -155,91 +157,90 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
             errorText: "Please enter the assignment name")
       ],
     );
-    Widget dueDateSelector = Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0),
-      child: FormBuilderDateTimePicker(
-        attribute: 'due-date',
-        inputType: InputType.date,
-        format: format,
-        decoration: InputDecoration(
-          hintText: "Due date (${format.pattern})",
-          prefixIcon: Icon(
-            Icons.calendar_today,
-            color: Theme.of(context).primaryIconTheme.color,
-          ),
+    Widget dueDateSelector = FormBuilderDateTimePicker(
+      attribute: 'due-date',
+      inputType: InputType.date,
+      format: format,
+      textInputAction: TextInputAction.done,
+      decoration: InputDecoration(
+        hintText: "Due date (${format.pattern})",
+        prefixIcon: Icon(
+          Icons.calendar_today,
+          color: Theme.of(context).primaryIconTheme.color,
         ),
-        firstDate: _currentDate.subtract(Duration(days: 1)),
-        initialDate: _currentDate,
-        lastDate: _currentDate.add(Duration(days: 3650)),
-        controller: widget.dueDateFieldCont,
-        focusNode: dueDateFocus,
       ),
+      firstDate: _currentDate.subtract(Duration(days: 1)),
+      initialDate: _currentDate,
+      lastDate: _currentDate.add(Duration(days: 3650)),
+      controller: widget.dueDateFieldCont,
+      onFieldSubmitted: (_) => dueDateFocus.unfocus(),
+      focusNode: dueDateFocus,
     );
-    Widget subjectField = Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      child: FormBuilderDropdown(
-        attribute: 'subject',
-        hint: Text("Subject"),
-        validators: [
-          FormBuilderValidators.required(errorText: "You must select a subject")
-        ],
-        onChanged: (value) {
-          setState(() {
-            _selectedSubjectID = value;
-          });
-        },
-        items: _subjectsMap.map((subject) {
-          return DropdownMenuItem(
-            value: subject['value'],
-            child: Text(subject['display']),
-          );
-        }).toList(),
-      ),
+    Widget subjectField = FormBuilderDropdown(
+      attribute: 'subject',
+      hint: Text("Subject"),
+      validators: [
+        FormBuilderValidators.required(errorText: "You must select a subject")
+      ],
+      onChanged: (value) {
+        setState(() {
+          _selectedSubjectID = value;
+        });
+      },
+      items: _subjectsMap.map((subject) {
+        return DropdownMenuItem(
+          value: subject['value'],
+          child: Text(subject['display']),
+        );
+      }).toList(),
     );
     Widget detailsField = SizedBox(
       height: 100,
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 8),
-        child: TextField(
-          keyboardType: TextInputType.multiline,
-          focusNode: detailsFocus,
-          controller: widget.detailsFieldCont,
-          expands: true,
-          minLines: null,
-          maxLines: null,
-          onSubmitted: (_) => detailsFocus.unfocus(),
-          decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            hintText: "Details",
-            prefixIcon: Icon(Icons.subject,
-                color: Theme.of(context).primaryIconTheme.color),
-          ),
-          textAlignVertical: TextAlignVertical.top,
+      child: TextField(
+        keyboardType: TextInputType.multiline,
+        focusNode: detailsFocus,
+        controller: widget.detailsFieldCont,
+        expands: true,
+        minLines: null,
+        maxLines: null,
+        onSubmitted: (_) => detailsFocus.unfocus(),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: "Details",
+          prefixIcon: Icon(Icons.subject,
+              color: Theme.of(context).primaryIconTheme.color),
         ),
+        textAlignVertical: TextAlignVertical.top,
       ),
     );
-    return Column(
-      children: <Widget>[
-        FormBuilder(
-          onWillPop: _requestPop,
-          key: widget.globalKey,
-          child: SingleChildScrollView(
-            primary: false,
-            padding: EdgeInsets.only(bottom: 10.0),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: 20),
-                assignmentNameField,
-                SizedBox(height: 10),
-                dueDateSelector,
-                SizedBox(height: 10),
-                subjectField,
-              ],
+    return SingleChildScrollView(
+      padding: EdgeInsets.only(bottom: 10),
+      primary: false,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+        child: Column(
+          children: <Widget>[
+            FormBuilder(
+              onWillPop: _requestPop,
+              key: widget.globalKey,
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  assignmentNameField,
+                  SizedBox(height: 10),
+                  dueDateSelector,
+                  SizedBox(height: 10),
+                  subjectField,
+                ],
+              ),
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: detailsField,
+            ),
+          ],
         ),
-        detailsField,
-      ],
+      ),
     );
   }
 }

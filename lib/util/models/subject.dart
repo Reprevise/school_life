@@ -6,7 +6,7 @@ class Subject {
   String room;
   String building;
   String teacher;
-  String color;
+  int colorValue;
   bool isDeleted;
 
   Subject(
@@ -15,7 +15,7 @@ class Subject {
     this.room,
     this.building,
     this.teacher,
-    this.color,
+    this.colorValue,
     this.isDeleted,
   );
 
@@ -25,7 +25,7 @@ class Subject {
     room = json[SubjectDBCreator.ROOM];
     building = json[SubjectDBCreator.BUILDING];
     teacher = json[SubjectDBCreator.TEACHER];
-    color = json[SubjectDBCreator.COLOR];
+    colorValue = json[SubjectDBCreator.COLOR];
     isDeleted = json[SubjectDBCreator.IS_DELETED] == 1;
   }
 

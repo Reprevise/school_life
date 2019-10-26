@@ -20,8 +20,63 @@ class _SubjectsPageState extends State<SubjectsPage> {
   }
 
   @override
-  void didUpdateWidget(SubjectsPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: CustomAppBar(title: "Subjects"),
+      drawer: CustomDrawer(),
+      floatingActionButton: FloatingActionButton.extended(
+        elevation: 2.0,
+        onPressed: () {
+          _showTooManySubjectsDialog();
+          // future.then((subjectList) {
+          //   if (subjectList.length == 19) {
+          //     _showTooManySubjectsDialog();
+          //     return;
+          //   }
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => AddSubjectPage()),
+          //   );
+          // });
+        },
+        label: Text(
+          "Add Subject",
+          style: TextStyle(fontFamily: "OpenSans"),
+        ),
+        icon: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: SingleChildScrollView(
+        padding: EdgeInsets.only(top: 20, bottom: 70),
+        child: Center(
+          child: buildSubjectFuture(),
+        ),
+      ),
+    );
+  }
+
+  void _showTooManySubjectsDialog() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(
+            "Too many subjects",
+            style: Theme.of(context).textTheme.display2,
+          ),
+          content: Text(
+            "You have 19 subjects, that's a lot! \nUnfortunately, we don't support more than 19 subjects. :( \nHowever, we will in the future, stay tuned!",
+          ),
+          actions: <Widget>[
+            MaterialButton(
+              child: Text("Aw :("),
+              onPressed: () => Navigator.pop(context),
+            )
+          ],
+        );
+      },
+    );
   }
 
   void _handleDeleteSubject(BuildContext context, Subject subject) {
@@ -81,11 +136,11 @@ class _SubjectsPageState extends State<SubjectsPage> {
     });
   }
 
-  Color processColor(String color) {
-    String valueString = color.split('(0x')[1].split(')')[0];
-    int value = int.parse(valueString, radix: 16);
-    return Color(value);
-  }
+  // Color processColor(String color) {
+  //   String valueString = color.split('(0x')[1].split(')')[0];
+  //   int value = int.parse(valueString, radix: 16);
+  //   return Color(value);
+  // }
 
   refreshSubjects() {
     setState(() {
@@ -105,7 +160,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
           fontSize: 24.0,
           fontFamily: "Muli",
           fontWeight: FontWeight.bold,
-          color: useWhiteForeground(processColor(subject.color))
+          color: useWhiteForeground(Color(subject.colorValue))
               ? Color(0xffffffff)
               : Color(0xff000000),
         ),
@@ -124,7 +179,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
       ],
     );
     return Card(
-      color: processColor(subject.color),
+      color: Color(subject.colorValue),
       elevation: 3.0,
       child: InkWell(
         onTap: () {},
@@ -160,7 +215,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
     return RichText(
       text: TextSpan(
         style: TextStyle(
-          color: useWhiteForeground(processColor(subject.color))
+          color: useWhiteForeground(Color(subject.colorValue))
               ? Color(0xffffffff)
               : Color(0xff000000),
         ),
@@ -179,7 +234,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
     return RichText(
       text: TextSpan(
         style: TextStyle(
-          color: useWhiteForeground(processColor(subject.color))
+          color: useWhiteForeground(Color(subject.colorValue))
               ? Color(0xffffffff)
               : Color(0xff000000),
         ),
@@ -198,7 +253,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
     return RichText(
       text: TextSpan(
         style: TextStyle(
-          color: useWhiteForeground(processColor(subject.color))
+          color: useWhiteForeground(Color(subject.colorValue))
               ? Color(0xffffffff)
               : Color(0xff000000),
         ),
@@ -213,81 +268,51 @@ class _SubjectsPageState extends State<SubjectsPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    Widget buildSubjectFuture() {
-      return FutureBuilder<List<Subject>>(
-        future: future,
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(child: CircularProgressIndicator());
-            default:
-              if (snapshot.data.length > 0) {
-                return Column(
-                  children: snapshot.data
-                      .map(
-                        (subject) => buildItem(subject),
-                      )
-                      .toList(),
-                );
-              } else {
-                return Column(
-                  children: <Widget>[
-                    Icon(
-                      Icons.school,
-                      color: Colors.grey[400],
-                      size: 128.0,
-                    ),
-                    Text(
-                      "You don't have any subjects!",
-                      style: Theme.of(context).textTheme.display2,
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Click the button below to add some!",
-                      style: Theme.of(context)
-                          .textTheme
-                          .display2
-                          .copyWith(fontSize: 18),
-                      textAlign: TextAlign.center,
+  Widget buildSubjectFuture() {
+    return FutureBuilder<List<Subject>>(
+      future: future,
+      builder: (context, snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Center(child: CircularProgressIndicator());
+          default:
+            if (snapshot.data.length > 0) {
+              return Column(
+                children: snapshot.data
+                    .map(
+                      (subject) => buildItem(subject),
                     )
-                  ],
-                );
-              }
-          }
-        },
-      );
-    }
-
-    _navigateToAddSubject(BuildContext context) async {
-      Navigator.pushNamed(context, '/subjects/add-subject');
-    }
-
-    return Scaffold(
-      appBar: CustomAppBar(title: "Subjects"),
-      drawer: CustomDrawer(),
-      floatingActionButton: FloatingActionButton.extended(
-        elevation: 2.0,
-        onPressed: () {
-          _navigateToAddSubject(context);
-        },
-        label: Text(
-          "Add Subject",
-          style: TextStyle(fontFamily: "OpenSans"),
-        ),
-        icon: Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 20, bottom: 70),
-        child: Center(
-          child: buildSubjectFuture(),
-        ),
-      ),
+                    .toList(),
+              );
+            } else {
+              return Column(
+                children: <Widget>[
+                  Icon(
+                    Icons.school,
+                    color: Colors.grey[400],
+                    size: 128.0,
+                  ),
+                  Text(
+                    "You don't have any subjects!",
+                    style: Theme.of(context).textTheme.display2,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    "Click the button below to add some!",
+                    style: Theme.of(context)
+                        .textTheme
+                        .display2
+                        .copyWith(fontSize: 18),
+                    textAlign: TextAlign.center,
+                  )
+                ],
+              );
+            }
+        }
+      },
     );
   }
 }

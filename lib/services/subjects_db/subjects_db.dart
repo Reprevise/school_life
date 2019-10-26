@@ -19,11 +19,11 @@ class SubjectDBCreator {
     final subjectSql = '''CREATE TABLE $SUBJECTS_TABLE
     (
       $ID integer primary key,
-      $NAME text,
+      $NAME text not null,
       $ROOM text,
       $BUILDING text,
-      $TEACHER text,
-      $COLOR text,
+      $TEACHER text not null,
+      $COLOR integer not null,
       $IS_DELETED bit not null
     )''';
 
