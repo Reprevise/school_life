@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/services/theme_service.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
@@ -31,6 +32,7 @@ class _SchedulePageState extends State<SchedulePage> {
       buildHeaderChild("Fri"),
       // buildHeaderChild("Sat"),
     ]);
+    ThemeService().checkMatchingBrightness(context);
 
     return Scaffold(
       appBar: CustomAppBar(title: "Schedule"),

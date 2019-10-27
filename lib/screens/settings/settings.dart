@@ -31,15 +31,17 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _canDeviceChangeTheme() async {
-    final _canManuallyChangeThemeInSysSettings =
+    bool _canManuallyChangeThemeInSysSettings =
         await ThemeService().hasAndroidSevenPlusAndNotNightMode();
     setState(() {
-      canManuallyChangeThemeInAppSettings = !_canManuallyChangeThemeInSysSettings;
+      canManuallyChangeThemeInAppSettings =
+          _canManuallyChangeThemeInSysSettings;
     });
   }
 
   Future<void> _getCurrentTheme() async {
     final ThemeKeys storedTheme = await ThemeService().getCurrentTheme();
+    if (!canManuallyChangeThemeInAppSettings) return;
     // _changeTheme(storedTheme);
     setState(() {
       currentTheme = storedTheme;
@@ -57,30 +59,36 @@ class _SettingsPageState extends State<SettingsPage> {
   void _changeTheme(ThemeKeys newTheme) {
     _saveTheme(newTheme);
     if (newTheme == ThemeKeys.LIGHT) {
-      Themes().setLightSystemColors();
       DynamicTheme.of(context).setBrightness(Brightness.light);
     } else {
-      Themes().setDarkSystemColors();
       DynamicTheme.of(context).setBrightness(Brightness.dark);
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    ThemeService().checkMatchingBrightness(context);
     return Scaffold(
       appBar: CustomAppBar(title: "Settings"),
       drawer: CustomDrawer(),
-      body: ListView(
+      body: SingleChildScrollView(
         primary: false,
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          buildSettingHeader("Theme"),
-          buildThemeToggle(),
-          buildSettingHeader("Assignments"),
-          buildGoToAssignmentsSettings(),
-          buildSettingHeader("Subjects"),
-          buildGoToSubjectsSettings(),
-        ],
+        child: Column(
+          children: <Widget>[
+            Visibility(
+              visible: canManuallyChangeThemeInAppSettings,
+              child: buildSettingHeader("Theme"),
+            ),
+            Visibility(
+              visible: canManuallyChangeThemeInAppSettings,
+              child: buildThemeToggle(),
+            ),
+            buildSettingHeader("Assignments"),
+            buildGoToAssignmentsSettings(),
+            buildSettingHeader("Subjects"),
+            buildGoToSubjectsSettings(),
+          ],
+        ),
       ),
     );
   }
@@ -98,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: Theme.of(context).accentColor),
           ),
         ),
-        Divider(),
+        Divider()
       ],
     );
   }

@@ -49,7 +49,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   @override
   Widget build(BuildContext context) {
-    return Drawer(
+    return Drawer( 
       elevation: 0,
       child: Container(
         color: Theme.of(context).primaryColor,
@@ -88,11 +88,11 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   child: CustomListTile(
                     text: currentItem.title,
-                    textColor: _selectedIndex == index && _selectedIndex != 6
+                    textColor: _selectedIndex == index/*  && _selectedIndex != 6 */
                         ? Color(0xff1967d2)
                         : currentItem.color,
                     icon: currentItem.icon,
-                    iconColor: _selectedIndex == index && _selectedIndex != 6
+                    iconColor: _selectedIndex == index/*  && _selectedIndex != 6 */
                         ? Color(0xff1967d2)
                         : currentItem.color,
                     onTap: () {

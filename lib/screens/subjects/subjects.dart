@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
@@ -21,6 +22,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeService().checkMatchingBrightness(context);
     return Scaffold(
       appBar: CustomAppBar(title: "Subjects"),
       drawer: CustomDrawer(),

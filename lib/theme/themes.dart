@@ -9,7 +9,7 @@ class Themes {
   }
 
   static get darkTheme {
-    // setDarkSystemColors();
+    // Themes().setDarkSystemColors();
     return _darkTheme;
   }
 

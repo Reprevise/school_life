@@ -7,6 +7,7 @@ import 'package:flutter_colorpicker/utils.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:school_life/screens/forms/widgets/custom_form_field.dart';
 import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/services/theme_service.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/util/models/subject.dart';
@@ -343,6 +344,7 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
           : Color(0xff000000),
       child: Text("Change color"),
     );
+    ThemeService().checkMatchingBrightness(context);
     return SingleChildScrollView(
       padding: EdgeInsets.only(bottom: 10),
       primary: false,

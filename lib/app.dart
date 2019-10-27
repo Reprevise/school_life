@@ -27,6 +27,7 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    
     return DynamicTheme(
       defaultBrightness: Brightness.light,
       data: (brightness) {
@@ -43,7 +44,7 @@ class App extends StatelessWidget {
           initialRoute: '/',
           routes: routes,
           theme: theme,
-          darkTheme: Themes.darkTheme,
+          darkTheme: theme,
           navigatorObservers: [CustomRouteObserver()],
           debugShowCheckedModeBanner: false,
           title: 'School Life',

@@ -1,3 +1,4 @@
+import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/services/theme_service.dart';
 
@@ -12,7 +13,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   @override
   void initState() {
-    ThemeService().changeToSysBrightness(context);
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
@@ -27,15 +27,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      ThemeService().changeToSysBrightness(context);
+      ThemeService().checkMatchingBrightness(context);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    print("HI");
-    //! causes a constant loop, needs fix
-    ThemeService().changeToSysBrightness(context);
+    ThemeService().checkMatchingBrightness(context);
     return Scaffold(
       appBar: CustomAppBar(title: "Home"),
       drawer: CustomDrawer(),

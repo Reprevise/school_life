@@ -5,6 +5,7 @@ import 'package:ntp/ntp.dart';
 import 'package:school_life/screens/forms/widgets/custom_form_field.dart';
 import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 
 final formState = GlobalKey<_AddAssignmentFormState>();
@@ -213,6 +214,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
         textAlignVertical: TextAlignVertical.top,
       ),
     );
+    ThemeService().checkMatchingBrightness(context);
     return SingleChildScrollView(
       padding: EdgeInsets.only(bottom: 10),
       primary: false,

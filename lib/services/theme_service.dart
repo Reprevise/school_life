@@ -19,7 +19,7 @@ class ThemeService {
   }
 
   Future<bool> hasAndroidSevenPlusAndNotNightMode() async {
-    final bool _hasNightOrDarkMode = await hasNightOrDarkMode();
+    bool _hasNightOrDarkMode = await hasNightOrDarkMode();
     Map<String, dynamic> critDetails = await details.getCritDeviceData();
     int version = critDetails['version.sdkInt'];
     // if has or above android 7 but doesn't have night mode
@@ -27,13 +27,19 @@ class ThemeService {
     return false;
   }
 
-  void changeToSysBrightness(BuildContext context) async {
-    bool canChangeSystemBrightness = await hasNightOrDarkMode();
+  void changeToSysBrightness(
+      BuildContext context, Brightness brightness) async {
+    await Future.delayed(Duration(milliseconds: 200));
+    DynamicTheme.of(context).setBrightness(brightness);
+  }
+
+  void checkMatchingBrightness(BuildContext context) async {
     Brightness platformBrightness = MediaQuery.of(context).platformBrightness;
-    if (canChangeSystemBrightness) {
-      DynamicTheme.of(context).setBrightness(platformBrightness);
-      return;
-    }
+    Brightness themeBrightness = DynamicTheme.of(context).brightness;
+    if (platformBrightness == themeBrightness) return;
+    bool canChange = await ThemeService().hasNightOrDarkMode();
+    if (!canChange) return;
+    ThemeService().changeToSysBrightness(context, platformBrightness);
   }
 
   Future<ThemeKeys> getCurrentTheme() async {

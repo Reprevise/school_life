@@ -4,6 +4,7 @@ import 'package:school_life/screens/forms/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/settings/children/assignments-set.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/assignment.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
@@ -30,6 +31,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeService().checkMatchingBrightness(context);
     return Scaffold(
       appBar: CustomAppBar(
         title: "Assignments",
