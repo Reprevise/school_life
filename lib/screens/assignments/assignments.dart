@@ -9,6 +9,7 @@ import 'package:school_life/util/models/assignment.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
 
 class AssignmentsPage extends StatefulWidget {
   @override
@@ -21,13 +22,15 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   @override
   void initState() {
     refreshAssignments();
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
     super.initState();
   }
 
-  @override
-  void didUpdateWidget(AssignmentsPage oldWidget) {
-    super.didUpdateWidget(oldWidget);
-  }
+  // @override
+  // void didUpdateWidget(AssignmentsPage oldWidget) {
+  //   super.didUpdateWidget(oldWidget);
+  // }
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,7 @@ import 'package:school_life/services/theme_service.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
 
 import 'children/assignments-set.dart';
 import 'children/subjects-set.dart';
@@ -24,6 +25,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
     super.initState();
     _canDeviceChangeTheme();
     _getCurrentTheme();
@@ -76,16 +79,25 @@ class _SettingsPageState extends State<SettingsPage> {
           children: <Widget>[
             Visibility(
               visible: canManuallyChangeThemeInAppSettings,
-              child: buildSettingHeader("Theme"),
+              child: Column(
+                children: <Widget>[
+                  buildSettingHeader("Theme"),
+                  buildThemeToggle(),
+                ],
+              ),
             ),
-            Visibility(
-              visible: canManuallyChangeThemeInAppSettings,
-              child: buildThemeToggle(),
+            Column(
+              children: <Widget>[
+                buildSettingHeader("Assignments"),
+                buildGoToAssignmentsSettings(),
+              ],
             ),
-            buildSettingHeader("Assignments"),
-            buildGoToAssignmentsSettings(),
-            buildSettingHeader("Subjects"),
-            buildGoToSubjectsSettings(),
+            Column(
+              children: <Widget>[
+                buildSettingHeader("Subjects"),
+                buildGoToSubjectsSettings(),
+              ],
+            )
           ],
         ),
       ),
@@ -93,11 +105,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget buildSettingHeader(String title) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Row(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: 8.0, top: 8.0),
+          padding: EdgeInsets.only(left: 16.0, top: 8.0),
           child: Text(
             title,
             style: TextStyle(
@@ -105,7 +116,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 color: Theme.of(context).accentColor),
           ),
         ),
-        Divider()
       ],
     );
   }
@@ -115,9 +125,8 @@ class _SettingsPageState extends State<SettingsPage> {
       leading: Icon(Icons.color_lens, size: 32),
       title: Text("Change theme"),
       subtitle: Text("Change the app theme"),
-      onTap: () {
-        showDialog(builder: (context) => buildThemeDialog(), context: context);
-      },
+      onTap: () => showDialog(
+          builder: (context) => buildThemeDialog(), context: context),
     );
   }
 

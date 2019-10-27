@@ -5,6 +5,7 @@ import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
 
 class SubjectsPage extends StatefulWidget {
   @override
@@ -16,6 +17,8 @@ class _SubjectsPageState extends State<SubjectsPage> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
     refreshSubjects();
     super.initState();
   }

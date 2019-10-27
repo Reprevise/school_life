@@ -12,6 +12,7 @@ import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
 
 Color currentColor = Colors.yellow;
 
@@ -27,6 +28,13 @@ class AddSubjectPage extends StatefulWidget {
 }
 
 class _AddSubjectPageState extends State<AddSubjectPage> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
+    super.initState();
+  }
+
   @override
   void dispose() {
     // dispose all of the text controllers

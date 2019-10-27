@@ -7,6 +7,7 @@ import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
+import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
 
 final formState = GlobalKey<_AddAssignmentFormState>();
 
@@ -20,6 +21,13 @@ class _AddAssignmentPageState extends State<AddAssignmentPage> {
   final _dueDateTextCont = TextEditingController();
   final _detailsTextCont = TextEditingController();
   final _addAssignmentFormKey = GlobalKey<FormBuilderState>();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

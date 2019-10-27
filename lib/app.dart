@@ -44,7 +44,7 @@ class App extends StatelessWidget {
           initialRoute: '/',
           routes: routes,
           theme: theme,
-          darkTheme: theme,
+          darkTheme: Themes.darkTheme,
           navigatorObservers: [CustomRouteObserver()],
           debugShowCheckedModeBanner: false,
           title: 'School Life',

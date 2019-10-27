@@ -3,6 +3,7 @@ import 'package:school_life/services/theme_service.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -11,19 +12,14 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   @override
-  Widget build(BuildContext context) {
-    Widget buildHeaderChild(String dayOfTheWeek) {
-      return Container(
-        color: Theme.of(context).primaryColor,
-        width: 100,
-        height: 50,
-        child: Center(
-            child: Text(dayOfTheWeek + ".",
-                style: Theme.of(context).textTheme.display1)),
-      );
-    }
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
+  }
 
-    TableRow tableHeader = TableRow(children: [
+  TableRow buildTableHeader() {
+    return TableRow(children: [
       // buildHeaderChild("Sun"),
       buildHeaderChild("Mon"),
       buildHeaderChild("Tue"),
@@ -32,8 +28,22 @@ class _SchedulePageState extends State<SchedulePage> {
       buildHeaderChild("Fri"),
       // buildHeaderChild("Sat"),
     ]);
-    ThemeService().checkMatchingBrightness(context);
+  }
 
+  Widget buildHeaderChild(String dayOfTheWeek) {
+    return Container(
+      color: Theme.of(context).primaryColor,
+      width: 100,
+      height: 50,
+      child: Center(
+          child: Text(dayOfTheWeek + ".",
+              style: Theme.of(context).textTheme.display1)),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    ThemeService().checkMatchingBrightness(context);
     return Scaffold(
       appBar: CustomAppBar(title: "Schedule"),
       drawer: CustomDrawer(),
@@ -43,7 +53,7 @@ class _SchedulePageState extends State<SchedulePage> {
           border:
               TableBorder.all(width: 3.0, color: Theme.of(context).accentColor),
           children: [
-            tableHeader,
+            buildTableHeader(),
           ],
         ),
       ),
