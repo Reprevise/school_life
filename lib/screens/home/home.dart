@@ -13,13 +13,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler(resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
     super.initState();
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
   }
 
   @override
   Widget build(BuildContext context) {
     ThemeService().checkMatchingBrightness(context);
+    print("YOLO");
     return Scaffold(
       appBar: CustomAppBar(title: "Home"),
       drawer: CustomDrawer(),

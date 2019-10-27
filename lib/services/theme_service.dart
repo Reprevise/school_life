@@ -2,6 +2,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/screens/settings/settings.dart';
 import 'package:school_life/services/android_details.dart';
+import 'package:school_life/theme/themes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeService {
@@ -27,19 +28,26 @@ class ThemeService {
     return false;
   }
 
-  void changeToSysBrightness(
-      BuildContext context, Brightness brightness) async {
+  void changeBrightness(BuildContext context, Brightness newBrightness) async {
     await Future.delayed(Duration(milliseconds: 200));
-    DynamicTheme.of(context).setBrightness(brightness);
+    DynamicTheme.of(context).setBrightness(newBrightness);
   }
 
   void checkMatchingBrightness(BuildContext context) async {
+    if (context == null) return;
     Brightness platformBrightness = MediaQuery.of(context).platformBrightness;
     Brightness themeBrightness = DynamicTheme.of(context).brightness;
-    if (platformBrightness == themeBrightness) return;
-    bool canChange = await ThemeService().hasNightOrDarkMode();
-    if (!canChange) return;
-    ThemeService().changeToSysBrightness(context, platformBrightness);
+    if (await hasAndroidSevenPlusAndNotNightMode()) {
+      if (themeBrightness == Brightness.light)
+        Themes().setLightSystemColors();
+      else
+        Themes().setDarkSystemColors();
+    } else {
+      if (platformBrightness == Brightness.light)
+        Themes().setLightSystemColors();
+      else
+        Themes().setDarkSystemColors();
+    }
   }
 
   Future<ThemeKeys> getCurrentTheme() async {

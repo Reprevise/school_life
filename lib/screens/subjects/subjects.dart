@@ -17,10 +17,10 @@ class _SubjectsPageState extends State<SubjectsPage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
-        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
     refreshSubjects();
     super.initState();
+    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
+        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
   }
 
   @override

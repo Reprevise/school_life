@@ -2,6 +2,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/services/android_details.dart';
 import 'package:school_life/services/theme_service.dart';
+import 'package:school_life/theme/themes.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
@@ -60,11 +61,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _changeTheme(ThemeKeys newTheme) {
     _saveTheme(newTheme);
-    if (newTheme == ThemeKeys.LIGHT) {
-      DynamicTheme.of(context).setBrightness(Brightness.light);
-    } else {
-      DynamicTheme.of(context).setBrightness(Brightness.dark);
-    }
+    if (newTheme == ThemeKeys.LIGHT)
+      ThemeService().changeBrightness(context, Brightness.light);
+    else
+      ThemeService().changeBrightness(context, Brightness.dark);
   }
 
   @override
