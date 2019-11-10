@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/utils.dart';
+import 'package:school_life/screens/forms/add_subject/add_subject.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/subject.dart';
@@ -32,17 +33,16 @@ class _SubjectsPageState extends State<SubjectsPage> {
       floatingActionButton: FloatingActionButton.extended(
         elevation: 2.0,
         onPressed: () {
-          _showTooManySubjectsDialog();
-          // future.then((subjectList) {
-          //   if (subjectList.length == 19) {
-          //     _showTooManySubjectsDialog();
-          //     return;
-          //   }
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => AddSubjectPage()),
-          //   );
-          // });
+          future.then((subjectList) {
+            if (subjectList.length == 19) {
+              _showTooManySubjectsDialog();
+              return;
+            }
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddSubjectPage()),
+            );
+          });
         },
         label: Text(
           "Add Subject",

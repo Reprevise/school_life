@@ -34,7 +34,7 @@ class ThemeService {
   }
 
   void checkMatchingBrightness(BuildContext context) async {
-    if (context == null) return;
+    if (context == null || context.widget == null) return;
     Brightness platformBrightness = MediaQuery.of(context).platformBrightness;
     Brightness themeBrightness = DynamicTheme.of(context).brightness;
     if (await hasAndroidSevenPlusAndNotNightMode()) {

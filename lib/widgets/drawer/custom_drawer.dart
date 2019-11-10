@@ -63,6 +63,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     padding: EdgeInsets.only(left: 15, top: 10),
                     child: Text(
                       "School Life",
+                      textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 24.0, fontFamily: 'OpenSans'),
                     ),
                   ),

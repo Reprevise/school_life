@@ -3,17 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class Themes {
-  static get lightTheme {
-    // setLightSystemColors();
-    return _lightTheme;
-  }
 
-  static get darkTheme {
-    // Themes().setDarkSystemColors();
-    return _darkTheme;
-  }
-
-  static final ThemeData _lightTheme = ThemeData(
+  static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.white,
     // accentColor: Colors.white,
@@ -71,7 +62,7 @@ class Themes {
     ),
   );
 
-  static final ThemeData _darkTheme = ThemeData(
+  static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: Colors.grey[900],
     // accentColor: Colors.grey[900],

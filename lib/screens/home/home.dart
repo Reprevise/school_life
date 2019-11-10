@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     ThemeService().checkMatchingBrightness(context);
-    print("YOLO");
+    print("HI");
     return Scaffold(
       appBar: CustomAppBar(title: "Home"),
       drawer: CustomDrawer(),

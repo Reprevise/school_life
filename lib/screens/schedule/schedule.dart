@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/services/theme_service.dart';
-
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
 import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -11,33 +11,33 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
+  final _calendarFormats = {
+    CalendarFormat.week: 'week',
+  };
+  CalendarController _calendarController;
+
   @override
   void initState() {
-    super.initState();
     WidgetsBinding.instance.addObserver(LifecycleEventHandler(
         resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
+    super.initState();
+    _calendarController = CalendarController();
   }
 
-  TableRow buildTableHeader() {
-    return TableRow(children: [
-      // buildHeaderChild("Sun"),
-      buildHeaderChild("Mon"),
-      buildHeaderChild("Tue"),
-      buildHeaderChild("Wed"),
-      buildHeaderChild("Thu"),
-      buildHeaderChild("Fri"),
-      // buildHeaderChild("Sat"),
-    ]);
+  Widget _buildDays(BuildContext context, DateTime time, List<dynamic> list) {
+    // return Text(time.toString());
   }
 
-  Widget buildHeaderChild(String dayOfTheWeek) {
-    return Container(
-      color: Theme.of(context).primaryColor,
-      width: 100,
-      height: 50,
-      child: Center(
-          child: Text(dayOfTheWeek + ".",
-              style: Theme.of(context).textTheme.display1)),
+  TableCalendar _buildCalendar() {
+    return TableCalendar(
+      calendarController: _calendarController,
+      availableCalendarFormats: _calendarFormats,
+      initialCalendarFormat: CalendarFormat.week,
+      availableGestures: AvailableGestures.horizontalSwipe,
+      // builders: CalendarBuilders(
+      //   dayBuilder: _buildDays,
+      // ),
+      headerVisible: false,
     );
   }
 
@@ -45,114 +45,21 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     ThemeService().checkMatchingBrightness(context);
     return Scaffold(
-      appBar: CustomAppBar(title: "Schedule"),
-      drawer: CustomDrawer(),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: Table(
-          border:
-              TableBorder.all(width: 3.0, color: Theme.of(context).accentColor),
-          children: [
-            buildTableHeader(),
-          ],
-        ),
+      appBar: CustomAppBar(
+        title: "Schedule",
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.calendar_today),
+            onPressed: () {
+              setState(() {
+                _calendarController.setFocusedDay(DateTime.now());
+              });
+            },
+          ),
+        ],
       ),
+      drawer: CustomDrawer(),
+      body: _buildCalendar(),
     );
   }
 }
-
-/* class _SchedulePageState extends State<SchedulePage> {
-  CalendarController _calendarController;
-  CalendarFormat _selectedCalFormat;
-
-  @override
-  void initState() {
-    super.initState();
-    _calendarController = CalendarController();
-    _selectedCalFormat = CalendarFormat.week;
-  }
-
-  @override
-  void dispose() {
-    _calendarController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: new CustomAppBar(title: "Schedule", actions: <Widget>[
-        _buildCalFormatDropdown(),
-        _buildTodayIconButton()
-      ]),
-      drawer: CustomDrawer(),
-      body: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: <Widget>[
-          _buildTableCalendar(),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTableCalendar() {
-    return TableCalendar(
-      calendarStyle: CalendarStyle(),
-      headerStyle: HeaderStyle(
-        leftChevronIcon: Icon(Icons.chevron_left,
-            color: Theme.of(context).primaryIconTheme.color),
-        rightChevronIcon: Icon(Icons.chevron_right,
-            color: Theme.of(context).primaryIconTheme.color),
-        formatButtonVisible: false,
-      ),
-      calendarController: _calendarController,
-      initialCalendarFormat: CalendarFormat.week,
-      availableGestures: AvailableGestures.horizontalSwipe,
-      availableCalendarFormats: {
-        CalendarFormat.week: 'Week',
-        CalendarFormat.month: 'Month'
-      },
-    );
-  }
-
-  Widget _buildTodayIconButton() {
-    return IconButton(
-      icon: Icon(Icons.calendar_today),
-      onPressed: () async {
-        DateTime _currentTime = await NTP.now();
-        setState(() {
-          _calendarController.setSelectedDay(_currentTime);
-          _calendarController.setFocusedDay(_currentTime);
-        });
-      },
-    );
-  }
-
-  Widget _buildCalFormatDropdown() {
-    return DropdownButton(
-      value: _selectedCalFormat == CalendarFormat.month ? "Month" : "Week",
-      elevation: 2,
-      items: [
-        DropdownMenuItem(
-          child: Text("Week"),
-          value: "Week",
-        ),
-        DropdownMenuItem(
-          child: Text("Month"),
-          value: "Month",
-        ),
-      ],
-      onChanged: (value) {
-        setState(() {
-          if (value == "Month") {
-            _selectedCalFormat = CalendarFormat.month;
-            _calendarController.setCalendarFormat(CalendarFormat.month);
-          } else {
-            _selectedCalFormat = CalendarFormat.week;
-            _calendarController.setCalendarFormat(CalendarFormat.week);
-          }
-        });
-      },
-    );
-  }
-} */
