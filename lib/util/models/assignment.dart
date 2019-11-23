@@ -1,6 +1,5 @@
 import 'package:school_life/services/assignments_db/assignments_db.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
-import 'package:school_life/util/models/subject.dart';
 
 class Assignment {
   int id;

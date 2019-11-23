@@ -4,8 +4,6 @@ import 'package:school_life/screens/forms/add_subject/add_subject.dart';
 import 'package:school_life/screens/settings/children/subjects-set.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
 import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 class SubjectsPage extends StatefulWidget {
