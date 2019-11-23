@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:school_life/screens/forms/add_subject/add_subject.dart';
+import 'package:school_life/screens/settings/children/subjects-set.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
+import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 class SubjectsPage extends StatefulWidget {
   @override
@@ -20,27 +20,42 @@ class _SubjectsPageState extends State<SubjectsPage> {
   void initState() {
     refreshSubjects();
     super.initState();
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
-        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
   }
 
   @override
   Widget build(BuildContext context) {
-    ThemeService().checkMatchingBrightness(context);
-    return Scaffold(
-      appBar: CustomAppBar(title: "Subjects"),
-      drawer: CustomDrawer(),
-      floatingActionButton: FloatingActionButton.extended(
-        elevation: 2.0,
+    return CustomScaffold(
+      appBarTitle: "Subjects",
+      appBarActions: <Widget>[
+        PopupMenuButton(
+          onSelected: (_) => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SubjectsSettingsPage(),
+            ),
+          ),
+          itemBuilder: (BuildContext context) {
+            return [
+              PopupMenuItem(
+                child: Text("Settings"),
+                value: "Settings",
+              ),
+            ];
+          },
+        ),
+      ],
+      fab: FloatingActionButton.extended(
         onPressed: () {
           future.then((subjectList) {
-            if (subjectList.length == 19) {
+            if (subjectList.length >= 19) {
               _showTooManySubjectsDialog();
               return;
             }
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => AddSubjectPage()),
+              MaterialPageRoute(
+                builder: (context) => AddSubjectPage(),
+              ),
             );
           });
         },
@@ -50,8 +65,8 @@ class _SubjectsPageState extends State<SubjectsPage> {
         ),
         icon: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
+      fabLocation: FloatingActionButtonLocation.centerFloat,
+      scaffoldBody: SingleChildScrollView(
         padding: EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
           child: buildSubjectFuture(),
@@ -135,17 +150,9 @@ class _SubjectsPageState extends State<SubjectsPage> {
   }
 
   deleteSubject(Subject subject) async {
-    await RepositoryServiceSubject.deleteSubject(subject);
-    setState(() {
-      future = RepositoryServiceSubject.getAllSubjects();
-    });
+    await subject.delete();
+    refreshSubjects();
   }
-
-  // Color processColor(String color) {
-  //   String valueString = color.split('(0x')[1].split(')')[0];
-  //   int value = int.parse(valueString, radix: 16);
-  //   return Color(value);
-  // }
 
   refreshSubjects() {
     setState(() {

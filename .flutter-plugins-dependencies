@@ -1,0 +1,1 @@
+{"dependencyGraph":[{"name":"flutter_keyboard_visibility","dependencies":[]},{"name":"flutter_statusbarcolor","dependencies":[]},{"name":"shared_preferences","dependencies":[]},{"name":"sqflite","dependencies":[]}]}

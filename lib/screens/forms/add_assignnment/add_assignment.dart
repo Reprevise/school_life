@@ -1,56 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
-import 'package:ntp/ntp.dart';
 import 'package:school_life/screens/forms/widgets/custom_form_field.dart';
 import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/services/theme_service.dart';
+import 'package:school_life/util/models/assignment.dart';
+import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
+import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 final formState = GlobalKey<_AddAssignmentFormState>();
 
-class AddAssignmentPage extends StatefulWidget {
-  @override
-  _AddAssignmentPageState createState() => _AddAssignmentPageState();
-}
-
-class _AddAssignmentPageState extends State<AddAssignmentPage> {
+class AddAssignmentPage extends StatelessWidget {
   final _assignmentNameTextCont = TextEditingController();
   final _dueDateTextCont = TextEditingController();
   final _detailsTextCont = TextEditingController();
   final _addAssignmentFormKey = GlobalKey<FormBuilderState>();
 
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
-        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
-    super.initState();
+  void _addAssignment(BuildContext context) async {
+    // get the number of subjects, returns # of subjects + 1
+    int _nextID = await RepositoryServiceAssignment.assignmentsCount();
+    // trimmed assignment name
+    String _assignmentName = _assignmentNameTextCont.text.trim();
+    // trimmed due date
+    DateTime _dueDate = DateTime.parse(_dueDateTextCont.text.trim());
+    // trimmed details text
+    String _detailsText = _detailsTextCont.text.trim();
+    _detailsText ??= "";
+    //! ALWAYS FALSE
+    bool isDeleted = false;
+    // create new assignment based on text from form
+    Assignment newAssignment = Assignment(
+      _nextID,
+      _assignmentName,
+      _dueDate,
+      selectedSubjectID,
+      _detailsText,
+      isDeleted,
+    );
+    await RepositoryServiceAssignment.addAssignment(newAssignment);
+    Navigator.pushReplacementNamed(context, '/assignments');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: "Add Assignment",
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () {
-            DialogOnPop().showPopupDialog(context);
-          },
-        ),
+    print("rebuilding add assignment");
+    return CustomScaffold(
+      appBarTitle: "Add Assignment",
+      appBarLeading: IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () {
+          DialogOnPop().showPopupDialog(context);
+        },
       ),
-      floatingActionButton: FloatingActionButton(
+      fab: FloatingActionButton(
         child: Icon(Icons.check),
-        onPressed: () async {
+        onPressed: () {
           if (_addAssignmentFormKey.currentState.saveAndValidate()) {
-            // addAssignment();
+            print("adding assignment");
+            _addAssignment(context);
           }
           return null;
         },
       ),
-      body: AddAssignmentForm(
+      scaffoldBody: AddAssignmentForm(
         globalKey: _addAssignmentFormKey,
         assignNameCont: _assignmentNameTextCont,
         dueDateFieldCont: _dueDateTextCont,
@@ -78,41 +92,31 @@ class AddAssignmentForm extends StatefulWidget {
   _AddAssignmentFormState createState() => _AddAssignmentFormState();
 }
 
-class _AddAssignmentFormState extends State<AddAssignmentForm> {
-  DateTime _currentDate;
-  List<Map<String, dynamic>> _subjectsMap;
-  int _selectedSubjectID;
-  int get selectedSubjectID => _selectedSubjectID;
+int selectedSubjectID;
 
-  final FocusNode assignmentFocus = FocusNode();
-  final FocusNode dueDateFocus = FocusNode();
+class _AddAssignmentFormState extends State<AddAssignmentForm> {
+  final DateTime _currentDate = DateTime.now();
   final FocusNode subjectFocus = FocusNode();
   final FocusNode detailsFocus = FocusNode();
+  final FocusNode dueDateFocus = FocusNode();
+  final FocusNode assignmentFocus = FocusNode();
+
+  List<Map<String, dynamic>> _subjectsMap;
 
   @override
   void initState() {
     super.initState();
-    _setCurrentDate();
     _setSubjectsMap();
   }
 
-  void _setCurrentDate() async {
-    NTP.now().then((date) {
-      setState(() {
-        _currentDate = date;
-      });
-    });
-  }
-
-  void _setSubjectsMap() {
-    RepositoryServiceSubject.getAllSubjects().then((subjects) {
-      List<Map<String, dynamic>> temp = [];
-      for (int i = 0; i < subjects.length; i++) {
-        temp.add(subjects[i].toJson());
-      }
-      setState(() {
-        _subjectsMap = temp;
-      });
+  void _setSubjectsMap() async {
+    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
+    List<Map<String, dynamic>> temp = [];
+    for (int i = 0; i < subjects.length; i++) {
+      temp.add(subjects[i].toJson());
+    }
+    setState(() {
+      _subjectsMap = temp;
     });
   }
 
@@ -130,7 +134,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
     // if they're all empty, return true
     if (text1.isEmpty &&
         text2.isEmpty &&
-        _selectedSubjectID == null &&
+        selectedSubjectID == null &&
         text3.isEmpty) return true;
     // otherwise, return false
     return false;
@@ -193,7 +197,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
       ],
       onChanged: (value) {
         setState(() {
-          _selectedSubjectID = value;
+          selectedSubjectID = value;
         });
       },
       items: _subjectsMap.map((subject) {
@@ -222,7 +226,6 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
         textAlignVertical: TextAlignVertical.top,
       ),
     );
-    ThemeService().checkMatchingBrightness(context);
     return SingleChildScrollView(
       padding: EdgeInsets.only(bottom: 10),
       primary: false,

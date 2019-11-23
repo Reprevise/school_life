@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
+import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -18,14 +17,8 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
-        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
     super.initState();
     _calendarController = CalendarController();
-  }
-
-  Widget _buildDays(BuildContext context, DateTime time, List<dynamic> list) {
-    // return Text(time.toString());
   }
 
   TableCalendar _buildCalendar() {
@@ -43,23 +36,19 @@ class _SchedulePageState extends State<SchedulePage> {
 
   @override
   Widget build(BuildContext context) {
-    ThemeService().checkMatchingBrightness(context);
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: "Schedule",
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.calendar_today),
-            onPressed: () {
-              setState(() {
-                _calendarController.setFocusedDay(DateTime.now());
-              });
-            },
-          ),
-        ],
-      ),
-      drawer: CustomDrawer(),
-      body: _buildCalendar(),
+    return CustomScaffold(
+      appBarTitle: "Schedule",
+      appBarActions: <Widget>[
+        IconButton(
+          icon: Icon(Icons.calendar_today),
+          onPressed: () {
+            setState(() {
+              _calendarController.setFocusedDay(DateTime.now());
+            });
+          },
+        ),
+      ],
+      scaffoldBody: _buildCalendar(),
     );
   }
 }

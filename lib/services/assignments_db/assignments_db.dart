@@ -10,7 +10,7 @@ class AssignmentDBCreator {
   static const ID = '_id';
   static const NAME = 'name';
   static const DUE_DATE = 'dueDate';
-  static const SUBJECT = 'subject';
+  static const SUBJECT_ID = 'subjectID';
   static const DETAILS = 'details';
   static const IS_DELETED = 'isDeleted';
 
@@ -20,7 +20,7 @@ class AssignmentDBCreator {
       $ID integer primary key,
       $NAME text not null,
       $DUE_DATE text not null,
-      $SUBJECT text not null,
+      $SUBJECT_ID integer not null,
       $DETAILS text,
       $IS_DELETED bit not null
     )''';

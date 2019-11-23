@@ -13,7 +13,7 @@ import 'screens/subjects/subjects.dart';
 import 'screens/upgrade/upgrade.dart';
 
 class App extends StatelessWidget {
-  final routes = <String, WidgetBuilder>{
+  static final routes = <String, WidgetBuilder>{
     '/': (context) => HomePage(),
     '/assignments': (context) => AssignmentsPage(),
     '/schedule': (context) => SchedulePage(),
@@ -27,29 +27,27 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    
     return DynamicTheme(
       defaultBrightness: Brightness.light,
       data: (brightness) {
-        if (brightness == Brightness.dark) {
-          Themes().setDarkSystemColors();
-          return Themes.darkTheme;
-        } else {
-          Themes().setLightSystemColors();
+        if (brightness == Brightness.light) {
+          Themes.setLightSystemColors();
           return Themes.lightTheme;
+        } else {
+          Themes.setDarkSystemColors();
+          return Themes.darkTheme;
         }
       },
-      themedWidgetBuilder: (context, theme) {
+      themedWidgetBuilder: (context, currentTheme) {
         return MaterialApp(
           initialRoute: '/',
           routes: routes,
-          theme: theme,
-          darkTheme: Themes.darkTheme,
+          theme: currentTheme,
           navigatorObservers: [CustomRouteObserver()],
           debugShowCheckedModeBanner: false,
           title: 'School Life',
         );
-      },
+      }
     );
   }
 }

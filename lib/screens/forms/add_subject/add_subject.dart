@@ -7,12 +7,11 @@ import 'package:flutter_colorpicker/utils.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:school_life/screens/forms/widgets/custom_form_field.dart';
 import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
-import 'package:school_life/services/theme_service.dart';
 
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
+import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 Color currentColor = Colors.yellow;
 
@@ -28,12 +27,6 @@ class AddSubjectPage extends StatefulWidget {
 }
 
 class _AddSubjectPageState extends State<AddSubjectPage> {
-  @override
-  void initState() {
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
-        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -70,34 +63,26 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
       color,
       isDeleted,
     );
-    RepositoryServiceSubject.addSubject(newSubject).then((id) {
-      // if successfully adds subject, go back to subjects back
-      Navigator.pushReplacementNamed(context, '/subjects');
-    }).catchError((error) {
-      // if an error occured
-      print("an error occured"); // state an error occured before printing error
-      print(error); // print the error
-    });
+    await RepositoryServiceSubject.addSubject(newSubject);
+    Navigator.pushReplacementNamed(context, '/subjects');
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(
-        title: 'Add Subject',
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () => Navigator.pop(context),
-        ),
+    return CustomScaffold(
+      appBarTitle: "Add Subject",
+      appBarLeading: IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () => Navigator.pop(context),
       ),
-      floatingActionButton: FloatingActionButton(
+      fab: FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: () {
           if (widget._addSubjectFormKey.currentState.saveAndValidate())
             addSubject();
         },
       ),
-      body: AddSubjectForm(
+      scaffoldBody: AddSubjectForm(
         subjectCont: widget._subjectController,
         roomTextCont: widget._roomTextController,
         buildingCont: widget._buildingTextController,
@@ -226,32 +211,6 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
     FocusScope.of(context).requestFocus(next);
   }
 
-  _sameColorDialog() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("Same color exists already!"),
-          content: Text(
-              "You have already picked that color for another subject! Please change it."),
-          actions: <Widget>[
-            MaterialButton(
-              child: Text(
-                "Ok",
-                style: TextStyle(
-                  color: Theme.of(context).dialogTheme.contentTextStyle.color,
-                ),
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     Widget subjectNameFormField = CustomFormField(
@@ -352,7 +311,6 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
           : Color(0xff000000),
       child: Text("Change color"),
     );
-    ThemeService().checkMatchingBrightness(context);
     return SingleChildScrollView(
       padding: EdgeInsets.only(bottom: 10),
       primary: false,

@@ -32,16 +32,16 @@ class RepositoryServiceAssignment {
       ${AssignmentDBCreator.ID},
       ${AssignmentDBCreator.NAME},
       ${AssignmentDBCreator.DUE_DATE},
-      ${AssignmentDBCreator.SUBJECT},
+      ${AssignmentDBCreator.SUBJECT_ID},
       ${AssignmentDBCreator.DETAILS},
       ${AssignmentDBCreator.IS_DELETED}
     )
-    VALUES (?,?,?,?,?,?,?)''';
+    VALUES (?,?,?,?,?,?)''';
     List<dynamic> params = [
       assignment.id,
       assignment.name,
-      assignment.dueDate,
-      assignment.subject,
+      assignment.dueDate.toString(),
+      assignment.subjectID,
       assignment.details,
       assignment.isDeleted ? 1 : 0,
     ];
@@ -63,7 +63,7 @@ class RepositoryServiceAssignment {
     final sql = '''UPDATE ${AssignmentDBCreator.ASSIGNMENTS_TABLE}
     SET ${AssignmentDBCreator.NAME} = ?
     SET ${AssignmentDBCreator.DUE_DATE} = ?
-    SET ${AssignmentDBCreator.SUBJECT} = ?
+    SET ${AssignmentDBCreator.SUBJECT_ID} = ?
     SET ${AssignmentDBCreator.DETAILS} = ?
     WHERE ${AssignmentDBCreator.ID} == ?
     ''';
@@ -71,7 +71,7 @@ class RepositoryServiceAssignment {
     List<dynamic> params = [
       assignment.name,
       assignment.dueDate,
-      assignment.subject,
+      assignment.subjectID,
       assignment.details,
       assignment.id,
     ];

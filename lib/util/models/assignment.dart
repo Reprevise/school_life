@@ -1,11 +1,12 @@
 import 'package:school_life/services/assignments_db/assignments_db.dart';
+import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/util/models/subject.dart';
 
 class Assignment {
   int id;
   String name;
   DateTime dueDate;
-  Subject subject;
+  int subjectID;
   String details;
   bool isDeleted;
 
@@ -13,7 +14,7 @@ class Assignment {
     this.id,
     this.name,
     this.dueDate,
-    this.subject,
+    this.subjectID,
     this.details,
     this.isDeleted,
   );
@@ -21,9 +22,13 @@ class Assignment {
   Assignment.fromJson(Map<String, dynamic> json) {
     id = json[AssignmentDBCreator.ID];
     name = json[AssignmentDBCreator.NAME];
-    dueDate = json[AssignmentDBCreator.DUE_DATE];
-    subject = json[AssignmentDBCreator.SUBJECT];
+    dueDate = DateTime.parse(json[AssignmentDBCreator.DUE_DATE]);
+    subjectID = json[AssignmentDBCreator.SUBJECT_ID];
     details = json[AssignmentDBCreator.DETAILS];
     isDeleted = json[AssignmentDBCreator.IS_DELETED] == 1;
+  }
+
+  Future<void> delete() async {
+    await RepositoryServiceAssignment.deleteAssignment(this);
   }
 }

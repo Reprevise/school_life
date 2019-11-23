@@ -1,3 +1,4 @@
+import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/services/subjects_db/subjects_db.dart';
 
 class Subject {
@@ -31,5 +32,9 @@ class Subject {
 
   Map<String, dynamic> toJson() {
     return {'display': name, 'value': id};
+  }
+
+  Future<void> delete() async {
+    await RepositoryServiceSubject.deleteSubject(this);
   }
 }

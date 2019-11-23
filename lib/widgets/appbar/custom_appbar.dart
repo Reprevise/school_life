@@ -16,12 +16,14 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       centerTitle: true,
+      backgroundColor: Theme.of(context).primaryColor,
       actions: actions == null ? [] : actions,
       title: Text(
         title,
         style: TextStyle(
           fontFamily: 'OpenSans',
           fontWeight: FontWeight.w600,
+          color: Theme.of(context).textTheme.body1.color
         ),
       ),
       leading: leading,

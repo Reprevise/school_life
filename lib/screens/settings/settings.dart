@@ -1,103 +1,62 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/services/android_details.dart';
 import 'package:school_life/services/theme_service.dart';
-import 'package:school_life/theme/themes.dart';
-
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:school_life/widgets/lifecycle_event_handler/lifecycle_events.dart';
+import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 import 'children/assignments-set.dart';
 import 'children/subjects-set.dart';
 
-enum ThemeKeys { LIGHT, DARK }
-
 class SettingsPage extends StatefulWidget {
-  final AndroidDetails details = AndroidDetails();
-
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool canManuallyChangeThemeInAppSettings = false;
-  ThemeKeys currentTheme = ThemeKeys.LIGHT;
+  Brightness _currentBrightness;
+  ThemeService _themeService;
 
   @override
   void initState() {
-    WidgetsBinding.instance.addObserver(LifecycleEventHandler(
-        resumeCallBack: () => ThemeService().checkMatchingBrightness(context)));
     super.initState();
-    _canDeviceChangeTheme();
-    _getCurrentTheme();
+    _themeService = ThemeService();
+    _currentBrightness = DynamicTheme.of(context).brightness;
   }
 
-  Future<void> _canDeviceChangeTheme() async {
-    bool _canManuallyChangeThemeInSysSettings =
-        await ThemeService().hasAndroidSevenPlusAndNotNightMode();
+  void _changeTheme(Brightness newBrightness, BuildContext context) {
+    if (newBrightness == DynamicTheme.of(context).brightness) return;
+    _themeService.saveCurrentBrightnessToDisk(newBrightness);
+    DynamicTheme.of(context).setBrightness(newBrightness);
     setState(() {
-      canManuallyChangeThemeInAppSettings =
-          _canManuallyChangeThemeInSysSettings;
+      _currentBrightness = newBrightness;
     });
-  }
-
-  Future<void> _getCurrentTheme() async {
-    final ThemeKeys storedTheme = await ThemeService().getCurrentTheme();
-    if (!canManuallyChangeThemeInAppSettings) return;
-    // _changeTheme(storedTheme);
-    setState(() {
-      currentTheme = storedTheme;
-    });
-  }
-
-  void _saveTheme(ThemeKeys newTheme) {
-    ThemeService().saveTheme(newTheme).then((_) {
-      setState(() {
-        currentTheme = newTheme;
-      });
-    });
-  }
-
-  void _changeTheme(ThemeKeys newTheme) {
-    _saveTheme(newTheme);
-    if (newTheme == ThemeKeys.LIGHT)
-      ThemeService().changeBrightness(context, Brightness.light);
-    else
-      ThemeService().changeBrightness(context, Brightness.dark);
   }
 
   @override
   Widget build(BuildContext context) {
-    ThemeService().checkMatchingBrightness(context);
-    return Scaffold(
-      appBar: CustomAppBar(title: "Settings"),
-      drawer: CustomDrawer(),
-      body: SingleChildScrollView(
+    return CustomScaffold(
+      appBarTitle: "Settings",
+      scaffoldBody: SingleChildScrollView(
         primary: false,
         child: Column(
           children: <Widget>[
-            Visibility(
-              visible: canManuallyChangeThemeInAppSettings,
-              child: Column(
-                children: <Widget>[
-                  buildSettingHeader("Theme"),
-                  buildThemeToggle(),
-                ],
-              ),
+            Column(
+              children: <Widget>[
+                buildSettingHeader("Theme"),
+                buildThemeToggle(),
+              ],
             ),
             Column(
               children: <Widget>[
                 buildSettingHeader("Assignments"),
-                buildGoToAssignmentsSettings(),
+                buildGoToAssignmentsSettings(context),
               ],
             ),
             Column(
               children: <Widget>[
                 buildSettingHeader("Subjects"),
-                buildGoToSubjectsSettings(),
+                buildGoToSubjectsSettings(context),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -112,8 +71,9 @@ class _SettingsPageState extends State<SettingsPage> {
           child: Text(
             title,
             style: TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Theme.of(context).accentColor),
+              fontWeight: FontWeight.w600,
+              color: Theme.of(context).accentColor,
+            ),
           ),
         ),
       ],
@@ -126,64 +86,74 @@ class _SettingsPageState extends State<SettingsPage> {
       title: Text("Change theme"),
       subtitle: Text("Change the app theme"),
       onTap: () => showDialog(
-          builder: (context) => buildThemeDialog(), context: context),
+        builder: (context) => buildThemeDialog(context),
+        context: context,
+      ),
     );
   }
 
-  Widget buildThemeDialog() {
+  Widget buildThemeDialog(BuildContext context) {
     return SimpleDialog(
       elevation: 1,
       title: Text("Change theme"),
       children: <Widget>[
-        buildSelectLightTheme(),
-        buildSelectDarkTheme(),
+        buildSelectLightTheme(context),
+        buildSelectDarkTheme(context),
       ],
     );
   }
 
-  Widget buildSelectLightTheme() {
-    return RadioListTile<ThemeKeys>(
+  Widget buildSelectLightTheme(BuildContext context) {
+    return RadioListTile<Brightness>(
       title: Text("Light Theme"),
-      value: ThemeKeys.LIGHT,
+      value: Brightness.light,
       activeColor: Colors.black,
-      groupValue: currentTheme,
+      groupValue: _currentBrightness,
       onChanged: (value) {
-        _changeTheme(value);
+        _changeTheme(value, context);
         Navigator.pop(context);
       },
     );
   }
 
-  Widget buildSelectDarkTheme() {
-    return RadioListTile<ThemeKeys>(
+  Widget buildSelectDarkTheme(BuildContext context) {
+    return RadioListTile<Brightness>(
       title: Text("Dark Theme"),
-      value: ThemeKeys.DARK,
+      value: Brightness.dark,
       activeColor: Colors.black,
-      groupValue: currentTheme,
+      groupValue: _currentBrightness,
       onChanged: (value) {
-        _changeTheme(value);
+        _changeTheme(value, context);
         Navigator.pop(context);
       },
     );
   }
 
-  Widget buildGoToAssignmentsSettings() {
+  Widget buildGoToAssignmentsSettings(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.assignment, size: 32),
       title: Text("Assignments Settings"),
       subtitle: Text("Open assignments settings"),
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => AssignmentsSettingsPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AssignmentsSettingsPage(),
+        ),
+      ),
     );
   }
 
-  Widget buildGoToSubjectsSettings() {
+  Widget buildGoToSubjectsSettings(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.school, size: 32),
       title: Text("Subjects Settings"),
       subtitle: Text("Open subjects settings"),
-      onTap: () => Navigator.push(context,
-          MaterialPageRoute(builder: (context) => SubjectsSettingsPage())),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SubjectsSettingsPage(),
+        ),
+      ),
     );
   }
 }

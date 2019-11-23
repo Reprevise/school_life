@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 
 class Themes {
-
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.white,
@@ -38,6 +37,7 @@ class Themes {
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Colors.grey[800],
       foregroundColor: Colors.white,
+      elevation: 2.0,
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.black,
@@ -96,6 +96,7 @@ class Themes {
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: Colors.white,
       foregroundColor: Colors.black,
+      elevation: 2.0,
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.white,
@@ -120,14 +121,27 @@ class Themes {
     ),
   );
 
-  void setLightSystemColors() {
+  static void updateColorsFromBrightness(Brightness _brightness) {
+    if (_brightness == Brightness.light)
+      Themes.setLightSystemColors();
+    else
+      Themes.setDarkSystemColors();
+  }
+
+  static void updateColorsFromThemeMode(ThemeMode themeMode) {
+    if (themeMode == ThemeMode.light)
+      Themes.setLightSystemColors();
+    else if (themeMode == ThemeMode.dark) Themes.setDarkSystemColors();
+  }
+
+  static void setLightSystemColors() {
     FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
   }
 
-  void setDarkSystemColors() {
+  static void setDarkSystemColors() {
     FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
