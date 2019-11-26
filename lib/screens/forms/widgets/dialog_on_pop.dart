@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class DialogOnPop {
-  void showPopupDialog(BuildContext context) {
+  static void showPopupDialog(BuildContext context) {
     final btnColor = Theme.of(context).buttonColor;
     showDialog(
       context: context,

@@ -12,6 +12,7 @@ dependencies:
   sqflite: any
   path: any
   intl: any
+  outline_material_icons: any
   dynamic_theme: ^1.0.0
   shared_preferences: ^0.5.4+1
   flutter_statusbarcolor: ^0.2.2

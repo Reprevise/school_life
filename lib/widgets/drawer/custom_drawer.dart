@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:school_life/app.dart';
 import 'package:school_life/util/models/drawer_item.dart';
-
-import 'widgets/custom_list_tile.dart';
+import 'package:school_life/widgets/drawer/widgets/custom_list_tile.dart';
 
 int _selectedIndex = 0;
 
@@ -20,31 +20,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
   final List<DrawerItem> _drawerItems = [
     DrawerItem(
       title: "Home",
-      icon: Icons.home,
+      icon: OMIcons.home,
     ),
     DrawerItem(
       title: "Assignments",
-      icon: Icons.assignment,
+      icon: OMIcons.assignment,
     ),
     DrawerItem(
       title: "Schedule",
-      icon: Icons.schedule,
+      icon: OMIcons.schedule,
     ),
     DrawerItem(
       title: "Subjects",
-      icon: Icons.subject,
+      icon: OMIcons.subject,
     ),
     DrawerItem(
       title: "Settings",
-      icon: Icons.settings,
+      icon: OMIcons.settings,
     ),
     DrawerItem(
       title: "Help and Feedback",
-      icon: Icons.help,
+      icon: OMIcons.help,
     ),
     DrawerItem(
       title: "Upgrade",
-      icon: Icons.star,
+      icon: OMIcons.star,
       color: Colors.orange,
     ),
   ];
@@ -59,8 +59,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
     ),
   );
 
+  _onSelectItem(int index) {
+    if (_selectedIndex == index) {
+      Navigator.of(context).pop();
+      return;
+    }
+    _selectedIndex = index;
+    Navigator.of(context).pushReplacementNamed(
+      widget.appRoutes[index],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Widget> drawerOptions = [];
+    for (int i = 0; i < _drawerItems.length; i++) {
+      var d = _drawerItems[i];
+      drawerOptions.add(CustomListTile(
+        icon: d.icon,
+        topContainerColor: _selectedIndex == i ? Color(0xffe8f0fe) : Colors.transparent,
+        iconColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
+        onTap: () => _onSelectItem(i),
+        text: d.title,
+        textColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
+      ));
+    }
+
     return Drawer(
       elevation: 0,
       child: Container(
@@ -68,37 +92,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
         child: Column(
           children: <Widget>[
             drawerHeader,
-            SingleChildScrollView(
-              padding: const EdgeInsets.only(top: 5, right: 10),
-              child: Column(
-                mainAxisSize: MainAxisSize.max,
-                children: _drawerItems.map((drawerItem) {
-                  int index = _drawerItems.indexOf(drawerItem);
-                  return CustomListTile(
-                    topContainerColor: _selectedIndex == index
-                        ? Color(0xffe8f0fe)
-                        : Colors.transparent,
-                    text: drawerItem.title,
-                    textColor: _selectedIndex == index
-                        ? Color(0xff1967d2)
-                        : drawerItem.color,
-                    icon: drawerItem.icon,
-                    iconColor: _selectedIndex == index
-                        ? Color(0xff1967d2)
-                        : drawerItem.color,
-                    onTap: () {
-                      if (_selectedIndex == index) {
-                        Navigator.of(context).pop();
-                        return;
-                      }
-                      _selectedIndex = index;
-                      Navigator.of(context)
-                          .pushReplacementNamed(widget.appRoutes[index]);
-                    },
-                  );
-                }).toList(growable: false),
-              ),
-            ),
+            ListView(
+                padding: EdgeInsets.only(top: 15, right: 10),
+                shrinkWrap: true,
+                children: drawerOptions),
           ],
         ),
       ),

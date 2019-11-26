@@ -112,10 +112,11 @@ class _SubjectsPageState extends State<SubjectsPage> {
               children: <TextSpan>[
                 TextSpan(text: "Do you want to delete "),
                 TextSpan(
-                    text: "${subject.name}?",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ))
+                  text: "${subject.name}?",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ),
@@ -202,6 +203,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[subName],
                 ),
@@ -279,6 +281,8 @@ class _SubjectsPageState extends State<SubjectsPage> {
   }
 
   Widget buildSubjectFuture() {
+    final fontSize = MediaQuery.of(context).size.width / 20;
+
     return FutureBuilder<List<Subject>>(
       future: future,
       builder: (context, snapshot) {
@@ -304,7 +308,10 @@ class _SubjectsPageState extends State<SubjectsPage> {
                   ),
                   Text(
                     "You don't have any subjects!",
-                    style: Theme.of(context).textTheme.display2,
+                    style: Theme.of(context)
+                        .textTheme
+                        .display2
+                        .copyWith(fontSize: fontSize),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(
@@ -315,7 +322,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
                     style: Theme.of(context)
                         .textTheme
                         .display2
-                        .copyWith(fontSize: 18),
+                        .copyWith(fontSize: fontSize / 1.2),
                     textAlign: TextAlign.center,
                   )
                 ],

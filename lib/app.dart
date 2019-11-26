@@ -40,6 +40,7 @@ class App extends StatelessWidget {
       },
       themedWidgetBuilder: (context, currentTheme) {
         return MaterialApp(
+          checkerboardOffscreenLayers: true,
           initialRoute: '/',
           routes: routes,
           theme: currentTheme,

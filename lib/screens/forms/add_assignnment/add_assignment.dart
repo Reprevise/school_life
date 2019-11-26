@@ -15,7 +15,7 @@ class AddAssignmentPage extends StatelessWidget {
   final _assignmentNameTextCont = TextEditingController();
   final _dueDateTextCont = TextEditingController();
   final _detailsTextCont = TextEditingController();
-  final _addAssignmentFormKey = GlobalKey<FormBuilderState>();
+  static final addAssignmentFormKey = GlobalKey<FormBuilderState>();
 
   void _addAssignment(BuildContext context) async {
     // get the number of subjects, returns # of subjects + 1
@@ -50,13 +50,13 @@ class AddAssignmentPage extends StatelessWidget {
       appBarLeading: IconButton(
         icon: Icon(Icons.close),
         onPressed: () {
-          DialogOnPop().showPopupDialog(context);
+          DialogOnPop.showPopupDialog(context);
         },
       ),
       fab: FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: () {
-          if (_addAssignmentFormKey.currentState.saveAndValidate()) {
+          if (addAssignmentFormKey.currentState.saveAndValidate()) {
             print("adding assignment");
             _addAssignment(context);
           }
@@ -64,7 +64,7 @@ class AddAssignmentPage extends StatelessWidget {
         },
       ),
       scaffoldBody: AddAssignmentForm(
-        globalKey: _addAssignmentFormKey,
+        globalKey: addAssignmentFormKey,
         assignNameCont: _assignmentNameTextCont,
         dueDateFieldCont: _dueDateTextCont,
         detailsFieldCont: _detailsTextCont,
@@ -143,15 +143,15 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
     // if the text fields are empty, user can exit
     if (_fieldsAreEmpty()) return Future.value(true);
     // otherwise, show a popup dialog
-    DialogOnPop().showPopupDialog(context);
+    DialogOnPop.showPopupDialog(context);
     // default, return false
     return Future.value(false);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_currentDate == null) return Center(child: CircularProgressIndicator());
-    if (_subjectsMap == null) return Center(child: CircularProgressIndicator());
+    if (_currentDate == null || _subjectsMap == null)
+      return Center(child: CircularProgressIndicator());
     final format = DateFormat("yyyy-MM-dd");
 
     Widget assignmentNameField = CustomFormField(
@@ -226,7 +226,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
       ),
     );
     return SingleChildScrollView(
-      padding: EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 10),
       primary: false,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -246,10 +246,8 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: detailsField,
-            ),
+            SizedBox(height: 10),
+            detailsField,
           ],
         ),
       ),

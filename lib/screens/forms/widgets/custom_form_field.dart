@@ -17,22 +17,22 @@ class CustomFormField extends StatelessWidget {
   final bool autofocus;
   final List<String Function(dynamic)> validators;
 
-  CustomFormField(
-      {Key key,
-      @required this.controller,
-      @required this.prefixIcon,
-      @required this.hintText,
-      @required this.attribute,
-      this.autofocus = false,
-      this.keyboardType = TextInputType.text,
-      this.textInputAction = TextInputAction.next,
-      this.initialValue = "",
-      this.suffix,
-      this.textCapitalization = TextCapitalization.words,
-      this.focusNode,
-      this.validators,
-      this.onFieldSubmitted})
-      : super(key: key);
+  CustomFormField({
+    Key key,
+    @required this.controller,
+    @required this.prefixIcon,
+    @required this.hintText,
+    @required this.attribute,
+    this.autofocus = false,
+    this.keyboardType = TextInputType.text,
+    this.textInputAction = TextInputAction.next,
+    this.initialValue = "",
+    this.suffix,
+    this.textCapitalization = TextCapitalization.words,
+    this.focusNode,
+    this.validators = const [],
+    this.onFieldSubmitted,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +54,7 @@ class CustomFormField extends StatelessWidget {
         focusedErrorBorder:
             OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
       ),
-      validators: validators == null ? [] : validators,
+      validators: validators,
     );
   }
 }

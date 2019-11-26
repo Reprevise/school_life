@@ -24,46 +24,39 @@ class CustomListTile extends StatefulWidget {
 class _CustomListTileState extends State<CustomListTile> {
   @override
   Widget build(BuildContext context) {
-
-    final Radius roundBorderRadius = const Radius.circular(50);
-
-    return Container(
-      decoration: BoxDecoration(
-        color: widget.topContainerColor,
-        borderRadius: BorderRadius.only(
-          topRight: roundBorderRadius,
-          bottomRight: roundBorderRadius,
+    final Radius circularRadius = Radius.circular(50);
+    final BorderRadius roundBorderRadius = BorderRadius.only(
+      topRight: circularRadius,
+      bottomRight: circularRadius,
+    );
+    return InkWell(
+      borderRadius: roundBorderRadius,
+      onTap: widget.onTap,
+      child: Container(
+        height: 55,
+        decoration: BoxDecoration(
+          color: widget.topContainerColor,
+          borderRadius: roundBorderRadius,
         ),
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.only(
-          topRight: roundBorderRadius,
-          bottomRight: roundBorderRadius,
-        ),
-        onTap: widget.onTap,
-        child: Container(
-          height: 55,
-
-          child: Padding(
-            padding: EdgeInsets.only(left: 15),
-            child: Row(
-              children: <Widget>[
-                Icon(
-                  widget.icon,
-                  color: widget.iconColor,
+        child: Padding(
+          padding: EdgeInsets.only(left: 15),
+          child: Row(
+            children: <Widget>[
+              Icon(
+                widget.icon,
+                color: widget.iconColor,
+              ),
+              Padding(
+                padding: EdgeInsets.all(15.0),
+                child: Text(
+                  widget.text,
+                  style: Theme.of(context)
+                      .textTheme
+                      .display1
+                      .copyWith(color: widget.textColor),
                 ),
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Text(
-                    widget.text,
-                    style: Theme.of(context)
-                        .textTheme
-                        .display1
-                        .copyWith(color: widget.textColor),
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
