@@ -1,71 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
 
-class AllAssignments extends StatefulWidget {
-  @override
-  _AllAssignmentsState createState() => _AllAssignmentsState();
-}
+class AllAssignments extends StatelessWidget {
+  final Future<List<Assignment>> future;
+  final Map<int, Subject> assignmentSubjectsByID;
+  final Function deleteAssignment;
 
-class _AllAssignmentsState extends State<AllAssignments> {
-  Future<List<Assignment>> future;
-  Map<int, Subject> assignmentSubjectsByID;
-
-  @override
-  void initState() {
-    super.initState();
-    future = RepositoryServiceAssignment.getAllAssignments();
-    _getAssignmentSubjects();
-  }
-
-  void _getAssignmentSubjects() async {
-    List<int> assignmentSubjectIDs = await _getSubjectsList();
-    Map<int, Subject> assignmentSubjectsMap =
-        await _getSubjectsMap(assignmentSubjectIDs);
-    setState(() {
-      assignmentSubjectsByID = assignmentSubjectsMap;
-    });
-  }
-
-  Future<List<int>> _getSubjectsList() async {
-    // get list of assignments
-    final List<Assignment> assignments = await future;
-    // create temporary list that holds the ids of all assignments
-    final List<int> assignmentSubjectIDs = [];
-    // loop through all the assignments to put all ids in above list
-    for (Assignment assignment in assignments) {
-      assignmentSubjectIDs.add(assignment.subjectID);
-    }
-    return assignmentSubjectIDs;
-  }
-
-  Future<Map<int, Subject>> _getSubjectsMap(
-      List<int> assignmentSubjectIDs) async {
-    // create temp map
-    Map<int, Subject> subjectsByID = {};
-    // loop through given subject ids
-    // assignmentSubjectIDs.forEach((subjectID) async {
-    for (int subjectID in assignmentSubjectIDs) {
-      // get subject from current id
-      final _subject = await RepositoryServiceSubject.getSubject(subjectID);
-      // assign subject id to its subject
-      subjectsByID[subjectID] = _subject;
-    }
-    return subjectsByID;
-  }
-
-  void refreshAssignments() {
-    setState(() {
-      future = RepositoryServiceAssignment.getAllAssignments();
-    });
-  }
-
-  void deleteAssignment(Assignment assignment) async {
-    await assignment.delete();
-    refreshAssignments();
-  }
+  AllAssignments(
+    this.future,
+    this.assignmentSubjectsByID,
+    this.deleteAssignment,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +37,8 @@ class _AllAssignmentsState extends State<AllAssignments> {
                     return AssignmentItem(
                       assignment: assignment,
                       assignmentSubject: currentSubject,
-                      onLongPress: () => deleteAssignmentPopup(assignment),
+                      onLongPress: () =>
+                          deleteAssignmentPopup(context, assignment),
                     );
                   },
                 ).toList(),
@@ -104,16 +51,13 @@ class _AllAssignmentsState extends State<AllAssignments> {
                     color: Colors.grey[400],
                     size: 128.0,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      "You don't have any assignments due!",
-                      style: Theme.of(context)
-                          .textTheme
-                          .display2
-                          .copyWith(fontSize: fontSize),
-                      textAlign: TextAlign.center,
-                    ),
+                  Text(
+                    "You don't have any assignments due!",
+                    style: Theme.of(context)
+                        .textTheme
+                        .display2
+                        .copyWith(fontSize: fontSize),
+                    textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 10),
                   Text(
@@ -132,7 +76,7 @@ class _AllAssignmentsState extends State<AllAssignments> {
     );
   }
 
-  void deleteAssignmentPopup(Assignment assignment) {
+  void deleteAssignmentPopup(BuildContext context, Assignment assignment) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -195,8 +139,9 @@ class AssignmentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color textColor = Theme.of(context).textTheme.button.color;
     return Card(
-      color: Theme.of(context).accentColor,
+      color: Color(assignmentSubject.colorValue),
       elevation: 3.0,
       child: InkWell(
         onTap: () {},
@@ -211,23 +156,33 @@ class AssignmentItem extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[Text(assignment.name)],
+                  children: <Widget>[
+                    Text(
+                      assignment.name,
+                      style: TextStyle(color: textColor),
+                    )
+                  ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, top: 8),
                 child: Row(
                   children: <Widget>[
-                    Text(assignmentSubject.name),
+                    Text(
+                      "Subject: ${assignmentSubject.name}",
+                      style: TextStyle(color: textColor),
+                    ),
                   ],
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0, bottom: 8),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: <Widget>[
-                    Text(assignment.dueDate.toString()),
+                    Text(
+                      "Due: ${assignment.dueDate}",
+                      style: TextStyle(color: textColor),
+                    ),
                   ],
                 ),
               ),

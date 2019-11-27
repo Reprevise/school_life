@@ -11,11 +11,25 @@ import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 final formState = GlobalKey<_AddAssignmentFormState>();
 
-class AddAssignmentPage extends StatelessWidget {
+class AddAssignmentPage extends StatefulWidget {
+  static final addAssignmentFormKey = GlobalKey<FormBuilderState>();
+
+  @override
+  _AddAssignmentPageState createState() => _AddAssignmentPageState();
+}
+
+class _AddAssignmentPageState extends State<AddAssignmentPage> {
   final _assignmentNameTextCont = TextEditingController();
   final _dueDateTextCont = TextEditingController();
   final _detailsTextCont = TextEditingController();
-  static final addAssignmentFormKey = GlobalKey<FormBuilderState>();
+
+  @override
+  void dispose() {
+    _assignmentNameTextCont.dispose();
+    _dueDateTextCont.dispose();
+    _detailsTextCont.dispose();
+    super.dispose();
+  }
 
   void _addAssignment(BuildContext context) async {
     // get the number of subjects, returns # of subjects + 1
@@ -42,32 +56,53 @@ class AddAssignmentPage extends StatelessWidget {
     Navigator.pushReplacementNamed(context, '/assignments');
   }
 
+  bool _fieldsAreEmpty() {
+    // get all controllers' text and trim them
+    String text1 = _assignmentNameTextCont.text.trim();
+    String text2 = _dueDateTextCont.text.trim();
+    String text3 = _detailsTextCont.text.trim();
+    // if they're all empty, return true
+    if (text1.isEmpty &&
+        text2.isEmpty &&
+        selectedSubjectID == null &&
+        text3.isEmpty) return true;
+    // otherwise, return false
+    return false;
+  }
+
+  Future<bool> _requestPop(BuildContext context) {
+    // if the text fields are empty, user can exit
+    if (_fieldsAreEmpty()) return Future.value(true);
+    // otherwise, show a popup dialog
+    DialogOnPop.showPopupDialog(context);
+    // default, return false
+    return Future.value(false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    print("rebuilding add assignment");
-    return CustomScaffold(
-      appBarTitle: "Add Assignment",
-      appBarLeading: IconButton(
-        icon: Icon(Icons.close),
-        onPressed: () {
-          DialogOnPop.showPopupDialog(context);
-        },
-      ),
-      fab: FloatingActionButton(
-        child: Icon(Icons.check),
-        onPressed: () {
-          if (addAssignmentFormKey.currentState.saveAndValidate()) {
-            print("adding assignment");
-            _addAssignment(context);
-          }
-          return null;
-        },
-      ),
-      scaffoldBody: AddAssignmentForm(
-        globalKey: addAssignmentFormKey,
-        assignNameCont: _assignmentNameTextCont,
-        dueDateFieldCont: _dueDateTextCont,
-        detailsFieldCont: _detailsTextCont,
+    return WillPopScope(
+      onWillPop: () => _requestPop(context),
+      child: CustomScaffold(
+        appBarTitle: "Add Assignment",
+        appBarLeading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => Navigator.maybePop(context),
+        ),
+        fab: FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: () {
+            if (AddAssignmentPage.addAssignmentFormKey.currentState
+                .saveAndValidate()) _addAssignment(context);
+            return null;
+          },
+        ),
+        scaffoldBody: AddAssignmentForm(
+          globalKey: AddAssignmentPage.addAssignmentFormKey,
+          assignNameCont: _assignmentNameTextCont,
+          dueDateFieldCont: _dueDateTextCont,
+          detailsFieldCont: _detailsTextCont,
+        ),
       ),
     );
   }
@@ -123,29 +158,6 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
       BuildContext context, FocusNode current, FocusNode next) {
     current.unfocus();
     FocusScope.of(context).requestFocus(next);
-  }
-
-  bool _fieldsAreEmpty() {
-    // get all controllers' text and trim them
-    String text1 = widget.assignNameCont.text.trim();
-    String text2 = widget.dueDateFieldCont.text.trim();
-    String text3 = widget.detailsFieldCont.text.trim();
-    // if they're all empty, return true
-    if (text1.isEmpty &&
-        text2.isEmpty &&
-        selectedSubjectID == null &&
-        text3.isEmpty) return true;
-    // otherwise, return false
-    return false;
-  }
-
-  Future<bool> _requestPop() {
-    // if the text fields are empty, user can exit
-    if (_fieldsAreEmpty()) return Future.value(true);
-    // otherwise, show a popup dialog
-    DialogOnPop.showPopupDialog(context);
-    // default, return false
-    return Future.value(false);
   }
 
   @override
@@ -233,7 +245,6 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
         child: Column(
           children: <Widget>[
             FormBuilder(
-              onWillPop: _requestPop,
               key: widget.globalKey,
               child: Column(
                 children: <Widget>[

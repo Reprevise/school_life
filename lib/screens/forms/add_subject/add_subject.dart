@@ -63,26 +63,51 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
     Navigator.pushReplacementNamed(context, '/subjects');
   }
 
+  bool _fieldsAreEmpty() {
+    // get all controllers' text and trim them
+    String text1 = _subjectController.text.trim();
+    String text2 = _roomTextController.text.trim();
+    String text3 = _buildingTextController.text.trim();
+    String text4 = _teacherTextController.text.trim();
+    // if they're all empty, return true
+    if (text1.isEmpty && text2.isEmpty && text3.isEmpty && text4.isEmpty)
+      return true;
+    // otherwise, return false
+    return false;
+  }
+
+  Future<bool> _requestPop() {
+    // if the text fields are empty, user can exit
+    if (_fieldsAreEmpty()) return Future.value(true);
+    // otherwise, show a popup dialog
+    DialogOnPop.showPopupDialog(context);
+    // default, return false
+    return Future.value(false);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBarTitle: "Add Subject",
-      appBarLeading: IconButton(
-        icon: Icon(Icons.close),
-        onPressed: () => Navigator.pop(context),
-      ),
-      fab: FloatingActionButton(
-        child: Icon(Icons.check),
-        onPressed: () {
-          if (addSubjectFormKey.currentState.saveAndValidate()) addSubject();
-        },
-      ),
-      scaffoldBody: AddSubjectForm(
-        subjectCont: _subjectController,
-        roomTextCont: _roomTextController,
-        buildingCont: _buildingTextController,
-        teacherCont: _teacherTextController,
-        globalKey: addSubjectFormKey,
+    return WillPopScope(
+      onWillPop: () => _requestPop(),
+      child: CustomScaffold(
+        appBarTitle: "Add Subject",
+        appBarLeading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => Navigator.maybePop(context),
+        ),
+        fab: FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: () {
+            if (addSubjectFormKey.currentState.saveAndValidate()) addSubject();
+          },
+        ),
+        scaffoldBody: AddSubjectForm(
+          subjectCont: _subjectController,
+          roomTextCont: _roomTextController,
+          buildingCont: _buildingTextController,
+          teacherCont: _teacherTextController,
+          globalKey: addSubjectFormKey,
+        ),
       ),
     );
   }
@@ -180,28 +205,6 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
     buildingFocus.dispose();
     teacherFocus.dispose();
     super.dispose();
-  }
-
-  bool _fieldsAreEmpty() {
-    // get all controllers' text and trim them
-    String text1 = widget.subjectCont.text.trim();
-    String text2 = widget.roomTextCont.text.trim();
-    String text3 = widget.buildingCont.text.trim();
-    String text4 = widget.teacherCont.text.trim();
-    // if they're all empty, return true
-    if (text1.isEmpty && text2.isEmpty && text3.isEmpty && text4.isEmpty)
-      return true;
-    // otherwise, return false
-    return false;
-  }
-
-  Future<bool> _requestPop() {
-    // if the text fields are empty, user can exit
-    if (_fieldsAreEmpty()) return Future.value(true);
-    // otherwise, show a popup dialog
-    DialogOnPop.showPopupDialog(context);
-    // default, return false
-    return Future.value(false);
   }
 
   changeFieldFocus(BuildContext context, FocusNode current, FocusNode next) {
@@ -318,7 +321,6 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
         padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: FormBuilder(
           key: widget.globalKey,
-          onWillPop: _requestPop,
           child: Column(
             children: <Widget>[
               SizedBox(height: 20),
