@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:intl/intl.dart';
-import 'package:school_life/screens/forms/widgets/custom_form_field.dart';
-import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/ui/forms/widgets/custom_form_field.dart';
+import 'package:school_life/ui/forms/widgets/dialog_on_pop.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/util/models/assignment.dart';

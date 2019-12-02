@@ -8,7 +8,6 @@ int _selectedIndex = 0;
 
 class CustomDrawer extends StatefulWidget {
   get selectedIndex => _selectedIndex;
-
   set selectedIndex(int newIndex) => _selectedIndex = newIndex;
   final List<String> appRoutes = App.routes.keys.toList();
 
@@ -48,18 +47,30 @@ class _CustomDrawerState extends State<CustomDrawer> {
       color: Colors.orange,
     ),
   ];
+  List<Widget> drawerOptions = [];
 
-  final Widget drawerHeader = SafeArea(
-    top: true,
-    child: Container(
-      child: const Text(
-        "School Life",
-        style: const TextStyle(fontSize: 24.0, fontFamily: 'OpenSans'),
-      ),
-    ),
-  );
+  @override
+  void initState() {
+    super.initState();
+    _populateDrawerOptions();
+  }
 
-  _onSelectItem(int index) {
+  void _populateDrawerOptions() {
+    for (var d in _drawerItems) {
+      var i = _drawerItems.indexOf(d);
+      drawerOptions.add(CustomListTile(
+        icon: d.icon,
+        topContainerColor:
+            _selectedIndex == i ? Color(0xffe8f0fe) : Colors.transparent,
+        iconColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
+        onTap: () => _onSelectItem(i),
+        text: d.title,
+        textColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
+      ));
+    }
+  }
+
+  void _onSelectItem(int index) {
     if (_selectedIndex == index) {
       Navigator.of(context).pop();
       return;
@@ -70,32 +81,31 @@ class _CustomDrawerState extends State<CustomDrawer> {
     );
   }
 
+  final Widget drawerHeader = SafeArea(
+    top: true,
+    child: Container(
+      child: Text(
+        "School Life",
+        style: TextStyle(fontSize: 24.0, fontFamily: 'OpenSans'),
+      ),
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
-    List<Widget> drawerOptions = [];
-    for (int i = 0; i < _drawerItems.length; i++) {
-      var d = _drawerItems[i];
-      drawerOptions.add(CustomListTile(
-        icon: d.icon,
-        topContainerColor: _selectedIndex == i ? Color(0xffe8f0fe) : Colors.transparent,
-        iconColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
-        onTap: () => _onSelectItem(i),
-        text: d.title,
-        textColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
-      ));
-    }
-
+    final Color drawerColor = Theme.of(context).primaryColor;
     return Drawer(
-      elevation: 0,
       child: Container(
-        color: Theme.of(context).primaryColor,
+        color: drawerColor,
         child: Column(
+          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             drawerHeader,
             ListView(
-                padding: EdgeInsets.only(top: 15, right: 10),
-                shrinkWrap: true,
-                children: drawerOptions),
+              padding: const EdgeInsets.only(top: 15, right: 10),
+              shrinkWrap: true,
+              children: drawerOptions,
+            ),
           ],
         ),
       ),

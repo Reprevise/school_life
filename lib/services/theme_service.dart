@@ -1,31 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/theme/themes.dart';
 import 'package:school_life/util/models/user_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeService {
   static final ThemeService _themeService = ThemeService._internal();
+  Brightness _brightness;
 
   factory ThemeService() => _themeService;
 
-  ThemeService._internal();
+  ThemeService._internal() {
+    getSavedBrightness();
+  }
 
   Future<void> saveCurrentBrightnessToDisk(Brightness brightness) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString(UserSettings.THEME, getBrightnessName(brightness));
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(UserSettings.THEME, _getBrightnessName(brightness));
+    _brightness = brightness;
   }
 
-  Future<Brightness> getSavedBrightness() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String _savedBrightnessString = prefs.getString(UserSettings.THEME);
+  Future<void> getSavedBrightness() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String _savedBrightnessString = prefs.getString(UserSettings.THEME);
     if (_savedBrightnessString == null) {
       await saveCurrentBrightnessToDisk(Brightness.light);
-      return Future.value(Brightness.light);
+    } else {
+      _brightness = _getBrightnessFromString(_savedBrightnessString);
     }
-    final Brightness _savedBrightness = getBrightnessFromString(_savedBrightnessString);
-    return Future.value(_savedBrightness);
   }
 
-  static Brightness getBrightnessFromString(String themeModeName) {
+  void updateColors() async {
+    _brightness ?? await getSavedBrightness();
+    Themes.updateColorsFromBrightness(_brightness);
+  }
+
+  static Brightness _getBrightnessFromString(String themeModeName) {
     switch (themeModeName.toLowerCase()) {
       case "light":
         return Brightness.light;
@@ -36,7 +45,7 @@ class ThemeService {
     }
   }
 
-  static String getBrightnessName(Brightness brightness) {
+  static String _getBrightnessName(Brightness brightness) {
     switch (brightness) {
       case Brightness.light:
         return "light";

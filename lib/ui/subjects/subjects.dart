@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/screens/forms/add_subject/add_subject.dart';
-import 'package:school_life/screens/settings/children/subjects-set.dart';
-import 'package:school_life/screens/subjects/widgets/all_subjects/all_subjects.dart';
+import 'package:school_life/ui/forms/add_subject/add_subject.dart';
+import 'package:school_life/ui/settings/children/subjects-set.dart';
+import 'package:school_life/ui/subjects/widgets/all_subjects/all_subjects.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
 import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 class SubjectsPage extends StatefulWidget {
@@ -29,7 +31,10 @@ class _SubjectsPageState extends State<SubjectsPage> {
           onSelected: (_) => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => SubjectsSettingsPage(),
+              builder: (context) => LifecycleEventsHandler(
+                resumeCallback: () => ThemeService().updateColors(),
+                child: SubjectsSettingsPage(),
+              ),
             ),
           ),
           itemBuilder: (BuildContext context) {
@@ -52,7 +57,10 @@ class _SubjectsPageState extends State<SubjectsPage> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddSubjectPage(),
+                builder: (context) => LifecycleEventsHandler(
+                  resumeCallback: () => ThemeService().updateColors(),
+                  child: AddSubjectPage(),
+                ),
               ),
             );
           });

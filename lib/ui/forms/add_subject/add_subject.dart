@@ -1,12 +1,12 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:school_life/screens/forms/widgets/custom_form_field.dart';
-import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/blocs/add_subject/add_subject_form_bloc.dart';
+import 'package:school_life/ui/forms/widgets/custom_form_field.dart';
 
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
@@ -63,51 +63,26 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
     Navigator.pushReplacementNamed(context, '/subjects');
   }
 
-  bool _fieldsAreEmpty() {
-    // get all controllers' text and trim them
-    String text1 = _subjectController.text.trim();
-    String text2 = _roomTextController.text.trim();
-    String text3 = _buildingTextController.text.trim();
-    String text4 = _teacherTextController.text.trim();
-    // if they're all empty, return true
-    if (text1.isEmpty && text2.isEmpty && text3.isEmpty && text4.isEmpty)
-      return true;
-    // otherwise, return false
-    return false;
-  }
-
-  Future<bool> _requestPop() {
-    // if the text fields are empty, user can exit
-    if (_fieldsAreEmpty()) return Future.value(true);
-    // otherwise, show a popup dialog
-    DialogOnPop.showPopupDialog(context);
-    // default, return false
-    return Future.value(false);
-  }
-
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () => _requestPop(),
-      child: CustomScaffold(
-        appBarTitle: "Add Subject",
-        appBarLeading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: () => Navigator.maybePop(context),
-        ),
-        fab: FloatingActionButton(
-          child: Icon(Icons.check),
-          onPressed: () {
-            if (addSubjectFormKey.currentState.saveAndValidate()) addSubject();
-          },
-        ),
-        scaffoldBody: AddSubjectForm(
-          subjectCont: _subjectController,
-          roomTextCont: _roomTextController,
-          buildingCont: _buildingTextController,
-          teacherCont: _teacherTextController,
-          globalKey: addSubjectFormKey,
-        ),
+    return CustomScaffold(
+      appBarTitle: "Add Subject",
+      appBarLeading: IconButton(
+        icon: Icon(Icons.close),
+        onPressed: () => Navigator.maybePop(context),
+      ),
+      fab: FloatingActionButton(
+        child: Icon(Icons.check),
+        onPressed: () {
+          if (addSubjectFormKey.currentState.saveAndValidate()) addSubject();
+        },
+      ),
+      scaffoldBody: AddSubjectForm(
+        subjectCont: _subjectController,
+        roomTextCont: _roomTextController,
+        buildingCont: _buildingTextController,
+        teacherCont: _teacherTextController,
+        globalKey: addSubjectFormKey,
       ),
     );
   }
@@ -313,6 +288,63 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
           ? Color(0xffffffff)
           : Color(0xff000000),
       child: Text("Change color"),
+    );
+    return BlocProvider<AddSubjectFormBloc>(
+      builder: (context) => AddSubjectFormBloc(),
+      child: Builder(
+        builder: (context) {
+          final formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
+
+          return WillPopScope(
+            onWillPop: () => formBloc.canPop(context),
+            child: FormBlocListener<AddSubjectFormBloc, String, String>(
+              child: ListView(
+                padding: EdgeInsets.only(bottom: 10),
+                children: <Widget>[
+                  TextFieldBlocBuilder(
+                    autofocus: true,
+                    textFieldBloc: formBloc.nameField,
+                  ),
+                  BlocBuilder(
+                    bloc: formBloc.colorField,
+                    builder: (context, _) {
+                      return RaisedButton(
+                        elevation: 3.0,
+                        color: currentColor,
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text("Select a color"),
+                                content: SingleChildScrollView(
+                                  child: BlockPicker(
+                                    availableColors: availableColors,
+                                    pickerColor: currentColor,
+                                    onColorChanged: (Color color) {
+                                      Navigator.pop(context);
+                                      formBloc.colorField.updateValue(color);
+                                      //? should we update the state? probably not
+                                      //? we can manage the colors in another class
+                                      setState(() {
+                                        currentColor = color;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        },
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
     );
     return SingleChildScrollView(
       padding: EdgeInsets.only(bottom: 10),

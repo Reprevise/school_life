@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomListTile extends StatefulWidget {
+class CustomListTile extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final Color textColor;
@@ -10,50 +10,46 @@ class CustomListTile extends StatefulWidget {
 
   const CustomListTile({
     @required this.icon,
-    this.iconColor = Colors.black,
     @required this.text,
     @required this.onTap,
     @required this.topContainerColor,
+    this.iconColor = Colors.black,
     this.textColor = Colors.black,
   });
 
   @override
-  _CustomListTileState createState() => _CustomListTileState();
-}
-
-class _CustomListTileState extends State<CustomListTile> {
-  @override
   Widget build(BuildContext context) {
-    final Radius circularRadius = Radius.circular(50);
-    final BorderRadius roundBorderRadius = BorderRadius.only(
+    print("custom list tile rebuilding");
+    const Radius circularRadius = const Radius.circular(50);
+    const BorderRadius roundBorderRadius = const BorderRadius.only(
       topRight: circularRadius,
       bottomRight: circularRadius,
     );
     return InkWell(
       borderRadius: roundBorderRadius,
-      onTap: widget.onTap,
+      onTap: onTap,
       child: Container(
         height: 55,
         decoration: BoxDecoration(
-          color: widget.topContainerColor,
+          color: topContainerColor,
           borderRadius: roundBorderRadius,
         ),
         child: Padding(
-          padding: EdgeInsets.only(left: 15),
+          padding: const EdgeInsets.only(left: 15),
           child: Row(
             children: <Widget>[
               Icon(
-                widget.icon,
-                color: widget.iconColor,
+                icon,
+                color: iconColor,
               ),
               Padding(
-                padding: EdgeInsets.all(15.0),
+                padding: const EdgeInsets.all(15.0),
                 child: Text(
-                  widget.text,
+                  text,
                   style: Theme.of(context)
                       .textTheme
                       .display1
-                      .copyWith(color: widget.textColor),
+                      .copyWith(color: textColor),
                 ),
               ),
             ],

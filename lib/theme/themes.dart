@@ -46,7 +46,7 @@ class Themes {
     applyElevationOverlayColor: false,
     textTheme: TextTheme(
       body1: TextStyle(color: Colors.black),
-      button: TextStyle(color: Colors.white),
+      button: TextStyle(color: Colors.black),
       display1: TextStyle(
         fontSize: 15.0,
         fontFamily: "Muli",
@@ -121,30 +121,25 @@ class Themes {
     ),
   );
 
-  static void updateColorsFromBrightness(Brightness _brightness) {
-    if (_brightness == Brightness.light)
-      Themes.setLightSystemColors();
-    else
-      Themes.setDarkSystemColors();
-  }
-
-  static void updateColorsFromThemeMode(ThemeMode themeMode) {
-    if (themeMode == ThemeMode.light)
-      Themes.setLightSystemColors();
-    else if (themeMode == ThemeMode.dark) Themes.setDarkSystemColors();
+  static void updateColorsFromBrightness(Brightness brightness) {
+    if (brightness == Brightness.dark) {
+      setDarkSystemColors();
+      return;
+    }
+    setLightSystemColors();
   }
 
   static void setLightSystemColors() {
     FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
+//    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
   }
 
   static void setDarkSystemColors() {
     FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
     FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+//    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
   }
 }

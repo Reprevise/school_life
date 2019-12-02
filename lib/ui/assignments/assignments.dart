@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/screens/assignments/widgets/all_assignments/all_assignments.dart';
-import 'package:school_life/screens/forms/add_assignnment/add_assignment.dart';
-import 'package:school_life/screens/settings/children/assignments-set.dart';
+import 'package:school_life/ui/assignments/widgets/all_assignments/all_assignments.dart';
+import 'package:school_life/ui/forms/add_assignnment/add_assignment.dart';
+import 'package:school_life/ui/settings/children/assignments-set.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
 import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 class AssignmentsPage extends StatefulWidget {
@@ -79,7 +81,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
           onSelected: (_) => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AssignmentsSettingsPage(),
+              builder: (context) => LifecycleEventsHandler(resumeCallback: () => ThemeService().updateColors(), child: AssignmentsSettingsPage()),
             ),
           ),
           itemBuilder: (BuildContext context) {

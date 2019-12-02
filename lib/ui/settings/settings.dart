@@ -1,6 +1,7 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/services/theme_service.dart';
+import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
 import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 import 'children/assignments-set.dart';
@@ -24,11 +25,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _changeTheme(Brightness newBrightness, BuildContext context) {
     if (newBrightness == DynamicTheme.of(context).brightness) return;
-    _themeService.saveCurrentBrightnessToDisk(newBrightness);
-    DynamicTheme.of(context).setBrightness(newBrightness);
     setState(() {
       _currentBrightness = newBrightness;
     });
+    _themeService.saveCurrentBrightnessToDisk(newBrightness);
+    DynamicTheme.of(context).setBrightness(newBrightness);
   }
 
   @override
@@ -39,24 +40,12 @@ class _SettingsPageState extends State<SettingsPage> {
         primary: false,
         child: Column(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                buildSettingHeader("Theme"),
-                buildThemeToggle(),
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                buildSettingHeader("Assignments"),
-                buildGoToAssignmentsSettings(context),
-              ],
-            ),
-            Column(
-              children: <Widget>[
-                buildSettingHeader("Subjects"),
-                buildGoToSubjectsSettings(context),
-              ],
-            ),
+            buildSettingHeader("Theme"),
+            buildThemeToggle(),
+            buildSettingHeader("Assignments"),
+            buildGoToAssignmentsSettings(context),
+            buildSettingHeader("Subjects"),
+            buildGoToSubjectsSettings(context),
           ],
         ),
       ),
@@ -67,7 +56,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Row(
       children: <Widget>[
         Padding(
-          padding: EdgeInsets.only(left: 16.0, top: 8.0),
+          padding: const EdgeInsets.only(left: 16.0, top: 8.0),
           child: Text(
             title,
             style: TextStyle(
@@ -137,7 +126,7 @@ class _SettingsPageState extends State<SettingsPage> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => AssignmentsSettingsPage(),
+          builder: (context) => LifecycleEventsHandler(resumeCallback: () => ThemeService().updateColors(), child: AssignmentsSettingsPage()),
         ),
       ),
     );
@@ -151,7 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SubjectsSettingsPage(),
+          builder: (context) => LifecycleEventsHandler(resumeCallback: () => ThemeService().updateColors(), child: SubjectsSettingsPage()),
         ),
       ),
     );
