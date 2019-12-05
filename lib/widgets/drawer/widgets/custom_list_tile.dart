@@ -13,13 +13,12 @@ class CustomListTile extends StatelessWidget {
     @required this.text,
     @required this.onTap,
     @required this.topContainerColor,
-    this.iconColor = Colors.white,
-    this.textColor = Colors.white,
+    @required this.iconColor,
+    @required this.textColor,
   });
 
   @override
   Widget build(BuildContext context) {
-    print("custom list tile rebuilding");
     const Radius circularRadius = const Radius.circular(50);
     const BorderRadius roundBorderRadius = const BorderRadius.only(
       topRight: circularRadius,
@@ -29,7 +28,6 @@ class CustomListTile extends StatelessWidget {
       borderRadius: roundBorderRadius,
       onTap: onTap,
       child: Container(
-        height: 55,
         decoration: BoxDecoration(
           color: topContainerColor,
           borderRadius: roundBorderRadius,
@@ -37,11 +35,9 @@ class CustomListTile extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(left: 15),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Icon(
-                icon,
-                color: iconColor,
-              ),
+              Icon(icon, color: iconColor),
               Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Text(

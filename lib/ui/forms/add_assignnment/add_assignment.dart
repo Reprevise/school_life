@@ -6,18 +6,24 @@ import 'package:intl/intl.dart';
 import 'package:school_life/blocs/add_assignment/add_assignment_bloc.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
+import 'package:school_life/widgets/appbar/custom_appbar.dart';
+import 'package:school_life/widgets/drawer/custom_drawer.dart';
 
 class AddAssignmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBarTitle: "Add Assignment",
-      appBarLeading: IconButton(
-        icon: Icon(Icons.close),
-        onPressed: () => Navigator.maybePop(context),
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: "Add Assignment",
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () => Navigator.maybePop(context),
+          ),
+        ],
       ),
-      scaffoldBody: AddAssignmentForm(),
+      drawer: CustomDrawer(),
+      body: AddAssignmentForm(),
     );
   }
 }

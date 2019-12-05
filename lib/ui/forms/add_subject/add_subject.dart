@@ -5,18 +5,22 @@ import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:school_life/blocs/add_subject/add_subject_bloc.dart';
-import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
+import 'package:school_life/widgets/appbar/custom_appbar.dart';
+import 'package:school_life/widgets/drawer/custom_drawer.dart';
 
 class AddSubjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBarTitle: "Add Subject",
-      appBarLeading: IconButton(
-        icon: Icon(Icons.close),
-        onPressed: () => Navigator.maybePop(context),
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: "Add Subject",
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => Navigator.maybePop(context),
+        ),
       ),
-      scaffoldBody: AddSubjectForm(),
+      drawer: CustomDrawer(),
+      body: AddSubjectForm(),
     );
   }
 }

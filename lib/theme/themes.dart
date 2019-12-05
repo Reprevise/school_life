@@ -141,7 +141,7 @@ class Themes {
         fontSize: 21.0,
         fontFamily: "Muli",
         fontWeight: FontWeight.w700,
-        color: Colors.black,
+        color: Colors.white,
       ),
       display3: TextStyle(
         fontSize: 24.0,

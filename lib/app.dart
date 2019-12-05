@@ -49,25 +49,17 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-    return DynamicTheme(
-        defaultBrightness: Brightness.light,
-        data: (brightness) {
-          ThemeService.updateColorsFromBrightness(brightness);
-          if (brightness == Brightness.light) {
-            return Themes.lightTheme;
-          }
-          return Themes.darkTheme;
-        },
-        themedWidgetBuilder: (context, currentTheme) {
-          return MaterialApp(
-            initialRoute: '/',
-            routes: routes,
-            theme: currentTheme,
-            navigatorObservers: [CustomRouteObserver()],
-            debugShowCheckedModeBanner: false,
-            title: 'School Life',
-          );
-        });
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+    );
+
+    return MaterialApp(
+      initialRoute: '/',
+      routes: routes,
+      theme: Themes.lightTheme,
+      darkTheme: Themes.darkTheme,
+      navigatorObservers: [CustomRouteObserver()],
+      debugShowCheckedModeBanner: false,
+      title: 'School Life',
+    );
   }
 }

@@ -1,11 +1,11 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/services/theme_service.dart';
+import 'package:school_life/ui/settings/children/assignments-set.dart';
+import 'package:school_life/ui/settings/children/subjects-set.dart';
+import 'package:school_life/widgets/appbar/custom_appbar.dart';
+import 'package:school_life/widgets/drawer/custom_drawer.dart';
 import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
-import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
-
-import 'children/assignments-set.dart';
-import 'children/subjects-set.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -34,9 +34,10 @@ class _SettingsPageState extends State<SettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBarTitle: "Settings",
-      scaffoldBody: SingleChildScrollView(
+    return Scaffold(
+      appBar: CustomAppBar(title: "Settings"),
+      drawer: CustomDrawer(),
+      body: SingleChildScrollView(
         primary: false,
         child: Column(
           children: <Widget>[
@@ -126,7 +127,9 @@ class _SettingsPageState extends State<SettingsPage> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LifecycleEventsHandler(resumeCallback: () => ThemeService().updateColors(), child: AssignmentsSettingsPage()),
+          builder: (context) => LifecycleEventsHandler(
+              resumeCallback: () => ThemeService().updateColors(),
+              child: AssignmentsSettingsPage()),
         ),
       ),
     );
@@ -140,7 +143,9 @@ class _SettingsPageState extends State<SettingsPage> {
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LifecycleEventsHandler(resumeCallback: () => ThemeService().updateColors(), child: SubjectsSettingsPage()),
+          builder: (context) => LifecycleEventsHandler(
+              resumeCallback: () => ThemeService().updateColors(),
+              child: SubjectsSettingsPage()),
         ),
       ),
     );

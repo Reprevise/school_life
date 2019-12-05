@@ -7,8 +7,9 @@ import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/widgets/appbar/custom_appbar.dart';
+import 'package:school_life/widgets/drawer/custom_drawer.dart';
 import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
-import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
 class AssignmentsPage extends StatefulWidget {
   @override
@@ -75,24 +76,27 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return CustomScaffold(
-      appBarTitle: "Assignments",
-      appBarActions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.settings),
-          onPressed: () => Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => LifecycleEventsHandler(
-                resumeCallback: () => ThemeService().updateColors(),
-                child: AssignmentsSettingsPage(),
+    return Scaffold(
+      appBar: CustomAppBar(
+        title: "Assignments",
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () => Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => LifecycleEventsHandler(
+                  resumeCallback: () => ThemeService().updateColors(),
+                  child: AssignmentsSettingsPage(),
+                ),
               ),
             ),
           ),
-        ),
-      ],
-      fabLocation: FloatingActionButtonLocation.centerFloat,
-      fab: FloatingActionButton.extended(
+        ],
+      ),
+      drawer: CustomDrawer(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           RepositoryServiceSubject.getAllSubjects().then((subjects) {
             if (subjects.isEmpty) {
@@ -113,7 +117,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         ),
         icon: Icon(Icons.add),
       ),
-      scaffoldBody: SingleChildScrollView(
+      body: SingleChildScrollView(
         primary: false,
         padding: EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
