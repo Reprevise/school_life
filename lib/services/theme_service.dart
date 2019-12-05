@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/theme/themes.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:school_life/util/models/user_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,7 +31,29 @@ class ThemeService {
 
   void updateColors() async {
     _brightness ?? await getSavedBrightness();
-    Themes.updateColorsFromBrightness(_brightness);
+    updateColorsFromBrightness(_brightness);
+  }
+
+  static void updateColorsFromBrightness(Brightness brightness) {
+    if (brightness == Brightness.dark) {
+      setDarkSystemColors();
+      return;
+    }
+    setLightSystemColors();
+  }
+
+  static void setLightSystemColors() {
+    FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+//    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
+  }
+
+  static void setDarkSystemColors() {
+    FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
+    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+//    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
   }
 
   static Brightness _getBrightnessFromString(String themeModeName) {

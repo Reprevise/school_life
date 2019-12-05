@@ -194,14 +194,7 @@ class SubjectItem extends StatelessWidget {
         subject.name,
         overflow: TextOverflow.clip,
         maxLines: 1,
-        style: TextStyle(
-          fontSize: 24.0,
-          fontFamily: "Muli",
-          fontWeight: FontWeight.bold,
-          color: useWhiteForeground(Color(subject.colorValue))
-              ? Color(0xffffffff)
-              : Color(0xff000000),
-        ),
+        style: Theme.of(context).textTheme.display3,
       ),
     ));
     Widget subLocInfo = Column(

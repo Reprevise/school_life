@@ -53,7 +53,7 @@ class App extends StatelessWidget {
     return DynamicTheme(
         defaultBrightness: Brightness.light,
         data: (brightness) {
-          Themes.updateColorsFromBrightness(brightness);
+          ThemeService.updateColorsFromBrightness(brightness);
           if (brightness == Brightness.light) {
             return Themes.lightTheme;
           }

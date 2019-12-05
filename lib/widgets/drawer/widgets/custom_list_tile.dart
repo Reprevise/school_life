@@ -13,8 +13,8 @@ class CustomListTile extends StatelessWidget {
     @required this.text,
     @required this.onTap,
     @required this.topContainerColor,
-    this.iconColor = Colors.black,
-    this.textColor = Colors.black,
+    this.iconColor = Colors.white,
+    this.textColor = Colors.white,
   });
 
   @override

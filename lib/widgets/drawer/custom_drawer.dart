@@ -7,7 +7,7 @@ import 'package:school_life/widgets/drawer/widgets/custom_list_tile.dart';
 int _selectedIndex = 0;
 
 class CustomDrawer extends StatefulWidget {
-  get selectedIndex => _selectedIndex;
+  int get selectedIndex => _selectedIndex;
   set selectedIndex(int newIndex) => _selectedIndex = newIndex;
   final List<String> appRoutes = App.routes.keys.toList();
 
@@ -62,10 +62,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
         icon: d.icon,
         topContainerColor:
             _selectedIndex == i ? Color(0xffe8f0fe) : Colors.transparent,
-        iconColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
+        iconColor: _selectedIndex == i
+            ? Color(0xff1967d2)
+            : d.color != null ? d.color : Colors.grey[700],
         onTap: () => _onSelectItem(i),
         text: d.title,
-        textColor: _selectedIndex == i ? Color(0xff1967d2) : d.color,
+        textColor: _selectedIndex == i
+            ? Color(0xff1967d2)
+            : d.color != null ? d.color : Colors.grey[700],
       ));
     }
   }

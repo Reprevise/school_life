@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'subjects_db.dart';
 import 'package:school_life/util/models/subject.dart';
 
@@ -16,13 +18,42 @@ class RepositoryServiceSubject {
   }
 
   static Future<bool> checkIfSubNameExists(String subName) async {
-    List<dynamic> params = [subName];
+    List<dynamic> params = [subName.toLowerCase()];
     final data = await db.rawQuery(
         '''SELECT * FROM ${SubjectDBCreator.SUBJECTS_TABLE}
     WHERE ${SubjectDBCreator.IS_DELETED} == 0 AND LOWER(${SubjectDBCreator.NAME}) == ?''',
         params);
     if (data.isNotEmpty) return Future.value(true);
     return Future.value(false);
+  }
+
+  static Future<Subject> getSubjectFromName(String subjectName) async {
+    List<dynamic> params = [subjectName.toLowerCase()];
+    final data = await db.rawQuery(
+        '''SELECT * FROM ${SubjectDBCreator.SUBJECTS_TABLE}
+    WHERE ${SubjectDBCreator.IS_DELETED} == 0 AND LOWER(${SubjectDBCreator.NAME}) == ?''',
+        params);
+    if (data.length > 1) throw Exception('Many subjects with the same name!');
+    return Subject.fromJson(data.first);
+  }
+
+  static Future<List<Color>> getAvailableColors(
+      List<Color> wantedColors) async {
+    final List<Subject> allSubjects = await getAllSubjects();
+    if (allSubjects.isEmpty) return Future.value(wantedColors);
+    final List<int> subjectColorValues = [];
+    final List<int> availableColorValues = [];
+    wantedColors.forEach((color) => availableColorValues.add(color.value));
+    allSubjects
+        .forEach((subject) => subjectColorValues.add(subject.colorValue));
+    for (int subjectColorValue in subjectColorValues) {
+      if (availableColorValues.contains(subjectColorValue))
+        availableColorValues.remove(subjectColorValue);
+    }
+    final List<Color> availableColors = [];
+    availableColorValues
+        .forEach((colorValue) => availableColors.add(Color(colorValue)));
+    return Future.value(availableColors);
   }
 
   static Future<Subject> getSubject(int id) async {

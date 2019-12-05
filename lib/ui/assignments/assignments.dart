@@ -70,6 +70,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
 
   void deleteAssignment(Assignment assignment) async {
     await assignment.delete();
+    refreshAssignments();
   }
 
   @override
@@ -77,21 +78,17 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     return CustomScaffold(
       appBarTitle: "Assignments",
       appBarActions: <Widget>[
-        PopupMenuButton(
-          onSelected: (_) => Navigator.push(
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => LifecycleEventsHandler(resumeCallback: () => ThemeService().updateColors(), child: AssignmentsSettingsPage()),
+              builder: (context) => LifecycleEventsHandler(
+                resumeCallback: () => ThemeService().updateColors(),
+                child: AssignmentsSettingsPage(),
+              ),
             ),
           ),
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(
-                child: Text("Settings"),
-                value: "Settings",
-              ),
-            ];
-          },
         ),
       ],
       fabLocation: FloatingActionButtonLocation.centerFloat,

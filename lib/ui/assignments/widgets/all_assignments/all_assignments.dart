@@ -139,7 +139,10 @@ class AssignmentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = Theme.of(context).textTheme.button.color;
+    final textColor =
+        Theme.of(context).textTheme.display1.copyWith(color: Colors.black);
+    final String date =
+        "${assignment.dueDate.year}-${assignment.dueDate.month}-${assignment.dueDate.day}";
     return Card(
       color: Color(assignmentSubject.colorValue),
       elevation: 3.0,
@@ -152,14 +155,16 @@ class AssignmentItem extends StatelessWidget {
           child: Column(
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.only(top: 8.0),
+                padding: const EdgeInsets.only(top: 8.0, left: 8.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       assignment.name,
-                      style: TextStyle(color: textColor),
+                      overflow: TextOverflow.clip,
+                      maxLines: 1,
+                      style: Theme.of(context).textTheme.display2,
                     )
                   ],
                 ),
@@ -168,10 +173,7 @@ class AssignmentItem extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 16.0, top: 8),
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      "Subject: ${assignmentSubject.name}",
-                      style: TextStyle(color: textColor),
-                    ),
+                    Text("${assignmentSubject.name}", style: textColor),
                   ],
                 ),
               ),
@@ -179,10 +181,7 @@ class AssignmentItem extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 16.0, bottom: 8),
                 child: Row(
                   children: <Widget>[
-                    Text(
-                      "Due: ${assignment.dueDate}",
-                      style: TextStyle(color: textColor),
-                    ),
+                    Text(date, style: textColor),
                   ],
                 ),
               ),

@@ -27,8 +27,9 @@ class _SubjectsPageState extends State<SubjectsPage> {
     return CustomScaffold(
       appBarTitle: "Subjects",
       appBarActions: <Widget>[
-        PopupMenuButton(
-          onSelected: (_) => Navigator.push(
+        IconButton(
+          icon: Icon(Icons.settings),
+          onPressed: () => Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => LifecycleEventsHandler(
@@ -37,14 +38,6 @@ class _SubjectsPageState extends State<SubjectsPage> {
               ),
             ),
           ),
-          itemBuilder: (BuildContext context) {
-            return [
-              PopupMenuItem(
-                child: Text("Settings"),
-                value: "Settings",
-              ),
-            ];
-          },
         ),
       ],
       fab: FloatingActionButton.extended(

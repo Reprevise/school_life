@@ -4,65 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:school_life/blocs/add_subject/add_subject_form_bloc.dart';
-import 'package:school_life/ui/forms/widgets/custom_form_field.dart';
-
-import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/blocs/add_subject/add_subject_bloc.dart';
 import 'package:school_life/widgets/scaffold/custom_scaffold.dart';
 
-Color currentColor = Colors.yellow;
-
-class AddSubjectPage extends StatefulWidget {
-  @override
-  _AddSubjectPageState createState() => _AddSubjectPageState();
-}
-
-class _AddSubjectPageState extends State<AddSubjectPage> {
-  static final _subjectController = TextEditingController();
-  static final _roomTextController = TextEditingController();
-  static final _buildingTextController = TextEditingController();
-  static final _teacherTextController = TextEditingController();
-  static final addSubjectFormKey = GlobalKey<FormBuilderState>();
-
-  @override
-  void dispose() {
-    // dispose all of the text controllers
-    _subjectController.dispose();
-    _roomTextController.dispose();
-    _buildingTextController.dispose();
-    _teacherTextController.dispose();
-    super.dispose();
-  }
-
-  void addSubject() async {
-    // get the number of subjects, returns # of subjects + 1
-    int nextID = await RepositoryServiceSubject.subjectsCount();
-    // trimmed subject name
-    String subjectName = _subjectController.text.trim();
-    // get room field text
-    String roomText = _roomTextController.text.trim();
-    // get building field text
-    String building = _buildingTextController.text.trim();
-    // get teacher field text
-    String teacher = _teacherTextController.text.trim();
-    // get the color value and convert it to a string
-    int color = currentColor.value;
-    // create new subject based on text from form
-    Subject newSubject = Subject(
-      nextID,
-      subjectName,
-      roomText,
-      building,
-      teacher,
-      color,
-      false, // isDeleted value
-    );
-    await RepositoryServiceSubject.addSubject(newSubject);
-    Navigator.pushReplacementNamed(context, '/subjects');
-  }
-
+class AddSubjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScaffold(
@@ -71,39 +16,12 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
         icon: Icon(Icons.close),
         onPressed: () => Navigator.maybePop(context),
       ),
-      fab: FloatingActionButton(
-        child: Icon(Icons.check),
-        onPressed: () {
-          if (addSubjectFormKey.currentState.saveAndValidate()) addSubject();
-        },
-      ),
-      scaffoldBody: AddSubjectForm(
-        subjectCont: _subjectController,
-        roomTextCont: _roomTextController,
-        buildingCont: _buildingTextController,
-        teacherCont: _teacherTextController,
-        globalKey: addSubjectFormKey,
-      ),
+      scaffoldBody: AddSubjectForm(),
     );
   }
 }
 
 class AddSubjectForm extends StatefulWidget {
-  final TextEditingController subjectCont;
-  final TextEditingController roomTextCont;
-  final TextEditingController buildingCont;
-  final TextEditingController teacherCont;
-  final GlobalKey<FormBuilderState> globalKey;
-
-  AddSubjectForm(
-      {Key key,
-      @required this.globalKey,
-      @required this.subjectCont,
-      @required this.roomTextCont,
-      @required this.buildingCont,
-      @required this.teacherCont})
-      : super(key: key);
-
   @override
   _AddSubjectFormState createState() => _AddSubjectFormState();
 }
@@ -113,182 +31,18 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
   final FocusNode roomTextFocus = FocusNode();
   final FocusNode buildingFocus = FocusNode();
   final FocusNode teacherFocus = FocusNode();
-  List<String> subjectNames = [];
-  List<Color> availableColors = [
-    Colors.red,
-    Colors.pink,
-    Colors.purple,
-    Colors.deepPurple,
-    Colors.indigo,
-    Colors.blue,
-    Colors.lightBlue,
-    Colors.cyan,
-    Colors.teal,
-    Colors.green,
-    Colors.lightGreen,
-    Colors.lime,
-    Colors.yellow,
-    Colors.amber,
-    Colors.orange,
-    Colors.deepOrange,
-    Colors.brown,
-    Colors.grey,
-    Colors.blueGrey,
-  ];
-
-  @override
-  void initState() {
-    super.initState();
-    _getSubjectInfo();
-  }
-
-  void _getSubjectInfo() async {
-    final List<Subject> subjects =
-        await RepositoryServiceSubject.getAllSubjects();
-    if (subjects.isEmpty) return;
-    final List<String> nameTemp = [];
-    final List<int> subjectColorValues = [];
-    for (Subject subject in subjects) {
-      nameTemp.add(subject.name.toLowerCase());
-      subjectColorValues.add(subject.colorValue);
-    }
-    setState(() {
-      subjectNames = nameTemp;
-    });
-    _getAvailableColors(subjectColorValues);
-  }
-
-  void _getAvailableColors(List<int> subjectColorValues) {
-    final List<Color> availableColorsTemp = availableColors;
-    // loop through all the subject colors
-    for (int colorValue in subjectColorValues) {
-      if (availableColorsTemp.contains(colorValue)) {
-        availableColorsTemp.remove(Color(colorValue));
-      }
-    }
-    setState(() {
-      availableColors = availableColorsTemp;
-      currentColor = availableColorsTemp.first;
-    });
-  }
+  List<FocusNode> get nodes =>
+      [subjectFocus, roomTextFocus, buildingFocus, teacherFocus];
 
   @override
   void dispose() {
     // dispose of all FocusNode's
-    subjectFocus.dispose();
-    roomTextFocus.dispose();
-    buildingFocus.dispose();
-    teacherFocus.dispose();
+    nodes.forEach((node) => node.dispose());
     super.dispose();
-  }
-
-  changeFieldFocus(BuildContext context, FocusNode current, FocusNode next) {
-    // unfocus current node
-    current.unfocus();
-    // request to focus next node
-    FocusScope.of(context).requestFocus(next);
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget subjectNameFormField = CustomFormField(
-      attribute: 'subject-name',
-      focusNode: subjectFocus,
-      autofocus: true,
-      hintText: "Subject",
-      prefixIcon: Icons.subject,
-      initialValue: "",
-      controller: widget.subjectCont,
-      onFieldSubmitted: (_) =>
-          changeFieldFocus(context, subjectFocus, roomTextFocus),
-      validators: [
-        FormBuilderValidators.required(
-            errorText: "Please enter the subject name"),
-        FormBuilderValidators.maxLength(22,
-            errorText: "The subject can't be longer than 22 characters"),
-        (value) {
-          if (subjectNames.contains(value.trim().toLowerCase()))
-            return 'That subject name is taken';
-          return null;
-        }
-      ],
-    );
-    Widget roomField = CustomFormField(
-      attribute: 'room',
-      initialValue: "",
-      focusNode: roomTextFocus,
-      controller: widget.roomTextCont,
-      textCapitalization: TextCapitalization.none,
-      hintText: "Room",
-      validators: [
-        FormBuilderValidators.required(errorText: "Please enter the room I.D."),
-        FormBuilderValidators.maxLength(15,
-            errorText: "The room I.D. can't be longer than 15 characters"),
-      ],
-      prefixIcon: Icons.location_on,
-      onFieldSubmitted: (_) =>
-          changeFieldFocus(context, roomTextFocus, buildingFocus),
-    );
-    Widget buildingFormField = CustomFormField(
-      attribute: 'building',
-      initialValue: "",
-      focusNode: buildingFocus,
-      controller: widget.buildingCont,
-      hintText: "Building",
-      prefixIcon: Icons.business,
-      validators: [
-        FormBuilderValidators.maxLength(20,
-            errorText: "The building field can't be longer than 25 characters"),
-      ],
-      onFieldSubmitted: (_) =>
-          changeFieldFocus(context, buildingFocus, teacherFocus),
-    );
-    Widget teacherFormField = CustomFormField(
-      attribute: 'teacher',
-      focusNode: teacherFocus,
-      initialValue: "",
-      controller: widget.teacherCont,
-      textInputAction: TextInputAction.done,
-      hintText: "Teacher",
-      prefixIcon: Icons.person,
-      validators: [
-        FormBuilderValidators.required(
-            errorText: "Please enter the teacher's name"),
-        FormBuilderValidators.maxLength(30,
-            errorText: "The teacher's name can't be longer than 30 characters"),
-      ],
-      onFieldSubmitted: (_) => teacherFocus.unfocus(),
-    );
-    Widget selectColorBtn = RaisedButton(
-      elevation: 3.0,
-      color: currentColor,
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text("Select a color"),
-              content: SingleChildScrollView(
-                child: BlockPicker(
-                  availableColors: availableColors,
-                  pickerColor: currentColor,
-                  onColorChanged: (Color color) {
-                    Navigator.pop(context);
-                    setState(() {
-                      currentColor = color;
-                    });
-                  },
-                ),
-              ),
-            );
-          },
-        );
-      },
-      textColor: useWhiteForeground(currentColor)
-          ? Color(0xffffffff)
-          : Color(0xff000000),
-      child: Text("Change color"),
-    );
     return BlocProvider<AddSubjectFormBloc>(
       builder: (context) => AddSubjectFormBloc(),
       child: Builder(
@@ -298,76 +52,137 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
           return WillPopScope(
             onWillPop: () => formBloc.canPop(context),
             child: FormBlocListener<AddSubjectFormBloc, String, String>(
+              onSuccess: (context, state) {
+                Navigator.of(context).pushReplacementNamed('/subjects');
+              },
               child: ListView(
+                physics: ClampingScrollPhysics(),
                 padding: EdgeInsets.only(bottom: 10),
                 children: <Widget>[
                   TextFieldBlocBuilder(
                     autofocus: true,
                     textFieldBloc: formBloc.nameField,
+                    focusNode: subjectFocus,
+                    nextFocusNode: roomTextFocus,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      labelText: "Subject",
+                      prefixIcon: Icon(
+                        Icons.subject,
+                        color: Theme.of(context).primaryIconTheme.color,
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                  TextFieldBlocBuilder(
+                    textFieldBloc: formBloc.roomField,
+                    focusNode: roomTextFocus,
+                    nextFocusNode: buildingFocus,
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      labelText: "Room",
+                      prefixIcon: Icon(
+                        Icons.location_on,
+                        color: Theme.of(context).primaryIconTheme.color,
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                  TextFieldBlocBuilder(
+                    textFieldBloc: formBloc.buildingField,
+                    focusNode: buildingFocus,
+                    nextFocusNode: teacherFocus,
+                    textInputAction: TextInputAction.next,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      labelText: "Building",
+                      prefixIcon: Icon(
+                        Icons.business,
+                        color: Theme.of(context).primaryIconTheme.color,
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
+                  ),
+                  TextFieldBlocBuilder(
+                    textFieldBloc: formBloc.teacherField,
+                    focusNode: teacherFocus,
+                    textCapitalization: TextCapitalization.words,
+                    decoration: InputDecoration(
+                      labelText: "Teacher",
+                      prefixIcon: Icon(
+                        Icons.person,
+                        color: Theme.of(context).primaryIconTheme.color,
+                      ),
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
+                    ),
                   ),
                   BlocBuilder(
                     bloc: formBloc.colorField,
-                    builder: (context, _) {
-                      return RaisedButton(
-                        elevation: 3.0,
-                        color: currentColor,
-                        onPressed: () {
-                          showDialog(
+                    builder: (context, state) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 100.0),
+                        child: RaisedButton(
+                          elevation: 3.0,
+                          color: formBloc?.currentColor,
+                          textColor: useWhiteForeground(formBloc?.currentColor)
+                              ? Color(0xffffffff)
+                              : Color(0xff000000),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.horizontal(
+                              left: Radius.circular(50),
+                              right: Radius.circular(50),
+                            ),
+                          ),
+                          child: Text("Change color"),
+                          onPressed: () => showDialog(
                             context: context,
-                            builder: (BuildContext context) {
+                            builder: (context) {
                               return AlertDialog(
                                 title: Text("Select a color"),
                                 content: SingleChildScrollView(
                                   child: BlockPicker(
-                                    availableColors: availableColors,
-                                    pickerColor: currentColor,
+                                    availableColors: formBloc.availableColors,
+                                    pickerColor: formBloc.currentColor,
                                     onColorChanged: (Color color) {
-                                      Navigator.pop(context);
                                       formBloc.colorField.updateValue(color);
-                                      //? should we update the state? probably not
-                                      //? we can manage the colors in another class
-                                      setState(() {
-                                        currentColor = color;
-                                      });
+                                      formBloc.currentColor = color;
+                                      Navigator.pop(context);
                                     },
                                   ),
                                 ),
                               );
                             },
-                          );
-                        },
+                          ),
+                        ),
                       );
                     },
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 100.0),
+                    child: OutlineButton(
+                      highlightedBorderColor: Theme.of(context)
+                          .inputDecorationTheme
+                          .border
+                          .borderSide
+                          .color,
+                      onPressed: formBloc.submit,
+                      child: const Text("Submit"),
+                    ),
                   ),
                 ],
               ),
             ),
           );
         },
-      ),
-    );
-    return SingleChildScrollView(
-      padding: EdgeInsets.only(bottom: 10),
-      primary: false,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-        child: FormBuilder(
-          key: widget.globalKey,
-          child: Column(
-            children: <Widget>[
-              SizedBox(height: 20),
-              subjectNameFormField,
-              SizedBox(height: 10),
-              roomField,
-              SizedBox(height: 10),
-              buildingFormField,
-              SizedBox(height: 10),
-              teacherFormField,
-              SizedBox(height: 10),
-              selectColorBtn,
-            ],
-          ),
-        ),
       ),
     );
   }
