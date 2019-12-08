@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/ui/forms/add_subject/add_subject.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
 import 'package:school_life/ui/subjects/widgets/all_subjects/all_subjects.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
 
 class SubjectsPage extends StatefulWidget {
   @override
@@ -34,10 +32,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => LifecycleEventsHandler(
-                  resumeCallback: () => ThemeService().updateColors(),
-                  child: SubjectsSettingsPage(),
-                ),
+                builder: (context) => SubjectsSettingsPage(),
               ),
             ),
           ),
@@ -45,23 +40,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
       ),
       drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          future.then((subjectList) {
-            if (subjectList.length >= 19) {
-              _showTooManySubjectsDialog();
-              return;
-            }
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => LifecycleEventsHandler(
-                  resumeCallback: () => ThemeService().updateColors(),
-                  child: AddSubjectPage(),
-                ),
-              ),
-            );
-          });
-        },
+        onPressed: _handleAddSubjectButtonPress,
         label: Text(
           "Add Subject",
           style: TextStyle(fontFamily: "OpenSans"),
@@ -74,6 +53,20 @@ class _SubjectsPageState extends State<SubjectsPage> {
         child: Center(
           child: AllSubjects(future, deleteSubject),
         ),
+      ),
+    );
+  }
+
+  Future<void> _handleAddSubjectButtonPress() async {
+    final List<Subject> subjectList = await future;
+    if (subjectList.length >= 19) {
+      _showTooManySubjectsDialog();
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddSubjectPage(),
       ),
     );
   }

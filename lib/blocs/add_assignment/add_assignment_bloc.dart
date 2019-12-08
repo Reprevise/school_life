@@ -80,12 +80,12 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     return false;
   }
 
-  Future<bool> requestPop(BuildContext context) {
+  Future<bool> requestPop(BuildContext context) async {
     // if the text fields are empty, user can exit
-    if (_fieldsAreEmpty()) return Future.value(true);
+    if (_fieldsAreEmpty()) return true;
     // otherwise, show a popup dialog
     DialogOnPop.showPopupDialog(context);
     // default, return false
-    return Future.value(false);
+    return false;
   }
 }

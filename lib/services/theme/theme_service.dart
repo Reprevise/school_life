@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:school_life/services/device/android_details.dart';
 import 'package:school_life/util/models/user_settings.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeService {
   static final ThemeService _themeService = ThemeService._internal();
+  static final AndroidDetails _details = AndroidDetails();
   Brightness _brightness;
 
   factory ThemeService() => _themeService;
@@ -35,25 +37,30 @@ class ThemeService {
   }
 
   static void updateColorsFromBrightness(Brightness brightness) {
+    _setStatusBarColor();
     if (brightness == Brightness.dark) {
-      setDarkSystemColors();
-      return;
+      return _setDarkNavigationColors();
     }
-    setLightSystemColors();
+    return _setLightNavigationColors();
   }
 
-  static void setLightSystemColors() {
-    FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
-    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-//    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
+  static void _setLightNavigationColors() {
+    if (_details.canChangeNavbarIconColor()) {
+      FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+    }
   }
 
-  static void setDarkSystemColors() {
-    FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
-    FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
-    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-//    FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+  static void _setDarkNavigationColors() {
+    if (_details.canChangeNavbarIconColor()) {
+      FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+    }
+  }
+
+  static void _setStatusBarColor() {
+    if (_details.atleastHasLollipop())
+      FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   }
 
   static Brightness _getBrightnessFromString(String themeModeName) {

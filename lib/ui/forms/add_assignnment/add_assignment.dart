@@ -15,12 +15,10 @@ class AddAssignmentPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
         title: "Add Assignment",
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.close),
-            onPressed: () => Navigator.maybePop(context),
-          ),
-        ],
+        leading: IconButton(
+          icon: Icon(Icons.close),
+          onPressed: () => Navigator.maybePop(context),
+        ),
       ),
       drawer: CustomDrawer(),
       body: AddAssignmentForm(),

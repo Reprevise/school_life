@@ -6,7 +6,22 @@ class RepositoryServiceAssignment {
     final sql = '''SELECT * FROM ${AssignmentDBCreator.ASSIGNMENTS_TABLE}
     WHERE ${AssignmentDBCreator.IS_DELETED} == 0''';
     final data = await db.rawQuery(sql);
-    List<Assignment> assignments = List();
+    List<Assignment> assignments = [];
+
+    for (final node in data) {
+      final assignment = Assignment.fromJson(node);
+      assignments.add(assignment);
+    }
+    return assignments;
+  }
+
+  static Future<List<Assignment>> getAllAssociatedAssignments(
+      int subjectID) async {
+    final sql = '''SELECT * FROM ${AssignmentDBCreator.ASSIGNMENTS_TABLE} 
+    WHERE ${AssignmentDBCreator.IS_DELETED} == 0 
+    AND ${AssignmentDBCreator.SUBJECT_ID} == ?''';
+    final data = await db.rawQuery(sql, [subjectID]);
+    List<Assignment> assignments = [];
 
     for (final node in data) {
       final assignment = Assignment.fromJson(node);
@@ -51,8 +66,7 @@ class RepositoryServiceAssignment {
   static Future<void> deleteAssignment(Assignment assignment) async {
     final sql = '''UPDATE ${AssignmentDBCreator.ASSIGNMENTS_TABLE}
     SET ${AssignmentDBCreator.IS_DELETED} = 1
-    WHERE ${AssignmentDBCreator.ID} == ?
-    ''';
+    WHERE ${AssignmentDBCreator.ID} == ?''';
 
     List<dynamic> params = [assignment.id];
 
@@ -65,8 +79,7 @@ class RepositoryServiceAssignment {
     SET ${AssignmentDBCreator.DUE_DATE} = ?
     SET ${AssignmentDBCreator.SUBJECT_ID} = ?
     SET ${AssignmentDBCreator.DETAILS} = ?
-    WHERE ${AssignmentDBCreator.ID} == ?
-    ''';
+    WHERE ${AssignmentDBCreator.ID} == ?''';
 
     List<dynamic> params = [
       assignment.name,
@@ -80,8 +93,9 @@ class RepositoryServiceAssignment {
   }
 
   static Future<int> assignmentsCount() async {
-    final data = await db.rawQuery(
-        '''SELECT COUNT(*) FROM ${AssignmentDBCreator.ASSIGNMENTS_TABLE}''');
+    final sql = '''SELECT COUNT(*) FROM 
+    ${AssignmentDBCreator.ASSIGNMENTS_TABLE}''';
+    final data = await db.rawQuery(sql);
 
     int count = data[0].values.elementAt(0);
     int idForNewItem = count++;

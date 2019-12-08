@@ -1,11 +1,10 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/services/theme_service.dart';
+import 'package:school_life/services/theme/theme_service.dart';
 import 'package:school_life/ui/settings/children/assignments-set.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -72,9 +71,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildThemeToggle() {
     return ListTile(
-      leading: Icon(Icons.color_lens, size: 32),
+      leading: Icon(Icons.color_lens),
       title: Text("Change theme"),
-      subtitle: Text("Change the app theme"),
       onTap: () => showDialog(
         builder: (context) => buildThemeDialog(context),
         context: context,
@@ -121,15 +119,12 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildGoToAssignmentsSettings(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.assignment, size: 32),
+      leading: Icon(Icons.assignment),
       title: Text("Assignments Settings"),
-      subtitle: Text("Open assignments settings"),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LifecycleEventsHandler(
-              resumeCallback: () => ThemeService().updateColors(),
-              child: AssignmentsSettingsPage()),
+          builder: (context) => AssignmentsSettingsPage(),
         ),
       ),
     );
@@ -137,15 +132,13 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildGoToSubjectsSettings(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.school, size: 32),
+      leading: Icon(Icons.school),
+      contentPadding: EdgeInsets.symmetric(horizontal: 56, vertical: 8),
       title: Text("Subjects Settings"),
-      subtitle: Text("Open subjects settings"),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => LifecycleEventsHandler(
-              resumeCallback: () => ThemeService().updateColors(),
-              child: SubjectsSettingsPage()),
+          builder: (context) => SubjectsSettingsPage(),
         ),
       ),
     );

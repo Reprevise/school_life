@@ -139,7 +139,7 @@ class AssignmentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textColor =
+    final textStyle =
         Theme.of(context).textTheme.display1.copyWith(color: Colors.black);
     final String date =
         "${assignment.dueDate.year}-${assignment.dueDate.month}-${assignment.dueDate.day}";
@@ -164,7 +164,7 @@ class AssignmentItem extends StatelessWidget {
                       assignment.name,
                       overflow: TextOverflow.clip,
                       maxLines: 1,
-                      style: Theme.of(context).textTheme.display2,
+                      style: Theme.of(context).textTheme.display2.copyWith(color: Colors.black),
                     )
                   ],
                 ),
@@ -173,7 +173,7 @@ class AssignmentItem extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 16.0, top: 8),
                 child: Row(
                   children: <Widget>[
-                    Text("${assignmentSubject.name}", style: textColor),
+                    Text("${assignmentSubject.name}", style: textStyle),
                   ],
                 ),
               ),
@@ -181,7 +181,7 @@ class AssignmentItem extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 16.0, bottom: 8),
                 child: Row(
                   children: <Widget>[
-                    Text(date, style: textColor),
+                    Text(date, style: textStyle),
                   ],
                 ),
               ),

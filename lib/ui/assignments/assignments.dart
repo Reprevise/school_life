@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
+import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/assignments/widgets/all_assignments/all_assignments.dart';
 import 'package:school_life/ui/forms/add_assignnment/add_assignment.dart';
 import 'package:school_life/ui/settings/children/assignments-set.dart';
-import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/services/theme_service.dart';
 import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:school_life/widgets/lifecycle/lifecycle_events_handler.dart';
 
 class AssignmentsPage extends StatefulWidget {
   @override
@@ -19,12 +17,23 @@ class AssignmentsPage extends StatefulWidget {
 class _AssignmentsPageState extends State<AssignmentsPage> {
   Future<List<Assignment>> future;
   Map<int, Subject> assignmentSubjectsByID;
+  bool _userHasSubjects = false;
 
   @override
   void initState() {
     super.initState();
     future = RepositoryServiceAssignment.getAllAssignments();
+    _doesUserHaveSubjects();
     _getAssignmentSubjects();
+  }
+
+  void _doesUserHaveSubjects() async {
+    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
+    if (subjects.isNotEmpty) {
+      setState(() {
+        _userHasSubjects = true;
+      });
+    }
   }
 
   void _getAssignmentSubjects() async {
@@ -53,7 +62,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     // create temp map
     Map<int, Subject> subjectsByID = {};
     // loop through given subject ids
-    // assignmentSubjectIDs.forEach((subjectID) async {
     for (int subjectID in assignmentSubjectIDs) {
       // get subject from current id
       final _subject = await RepositoryServiceSubject.getSubject(subjectID);
@@ -63,15 +71,15 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     return subjectsByID;
   }
 
+  void deleteAssignment(Assignment assignment) async {
+    await assignment.delete();
+    refreshAssignments();
+  }
+
   void refreshAssignments() {
     setState(() {
       future = RepositoryServiceAssignment.getAllAssignments();
     });
-  }
-
-  void deleteAssignment(Assignment assignment) async {
-    await assignment.delete();
-    refreshAssignments();
   }
 
   @override
@@ -85,10 +93,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => LifecycleEventsHandler(
-                  resumeCallback: () => ThemeService().updateColors(),
-                  child: AssignmentsSettingsPage(),
-                ),
+                builder: (context) => AssignmentsSettingsPage(),
               ),
             ),
           ),
@@ -97,20 +102,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       drawer: CustomDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          RepositoryServiceSubject.getAllSubjects().then((subjects) {
-            if (subjects.isEmpty) {
-              userHasNoSubjects(context);
-              return;
-            }
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddAssignmentPage(),
-              ),
-            );
-          });
-        },
+        onPressed: () => _handleAddAssignmentPress(context),
         label: Text(
           "Add Assignment",
           style: TextStyle(fontFamily: "OpenSans"),
@@ -119,6 +111,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       ),
       body: SingleChildScrollView(
         primary: false,
+        physics: ClampingScrollPhysics(),
         padding: EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
           child: AllAssignments(
@@ -131,7 +124,20 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     );
   }
 
-  void userHasNoSubjects(BuildContext context) {
+  void _handleAddAssignmentPress(BuildContext context) {
+    if (!_userHasSubjects) {
+      _showNoSubjectsDialog(context);
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddAssignmentPage(),
+      ),
+    );
+  }
+
+  void _showNoSubjectsDialog(BuildContext context) {
     showDialog(
       barrierDismissible: false,
       context: context,

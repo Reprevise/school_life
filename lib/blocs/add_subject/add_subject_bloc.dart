@@ -110,10 +110,10 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   //! needs to return a future because WillPopScope needs it to be
-  Future<bool> canPop(BuildContext context) {
-    if (_fieldsAreEmpty()) return Future.value(true);
+  Future<bool> canPop(BuildContext context) async {
+    if (_fieldsAreEmpty()) return true;
     DialogOnPop.showPopupDialog(context);
-    return Future.value(false);
+    return false;
   }
 
   bool _fieldsAreEmpty() {

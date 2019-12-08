@@ -1,5 +1,7 @@
+import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/services/subjects_db/subjects_db.dart';
+import 'package:school_life/util/models/assignment.dart';
 
 class Subject {
   int id;
@@ -35,6 +37,11 @@ class Subject {
   }
 
   Future<void> delete() async {
-    await RepositoryServiceSubject.deleteSubject(this);
+    List<Assignment> assignments =
+        await RepositoryServiceAssignment.getAllAssociatedAssignments(id);
+    for (Assignment _assignment in assignments) {
+      _assignment.delete();
+    }
+    RepositoryServiceSubject.deleteSubject(this);
   }
 }

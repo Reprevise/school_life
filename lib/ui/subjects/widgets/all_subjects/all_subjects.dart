@@ -115,7 +115,7 @@ class SubjectItem extends StatelessWidget {
     );
   }
 
-  Widget buildTeachInfo(Subject subject) {
+  Widget buildTeacherInfo(Subject subject) {
     return RichText(
       text: TextSpan(
         style: TextStyle(
@@ -134,7 +134,7 @@ class SubjectItem extends StatelessWidget {
     );
   }
 
-  void _handleDeleteSubject(BuildContext context, Subject subject) {
+  void _showDeleteSubjectDialog(BuildContext context, Subject subject) {
     showDialog(
       context: context,
       barrierDismissible: true,
@@ -188,25 +188,27 @@ class SubjectItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Widget subName = Expanded(
-        child: Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: Text(
-        subject.name,
-        overflow: TextOverflow.clip,
-        maxLines: 1,
-        style: Theme.of(context).textTheme.display3,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0),
+        child: Text(
+          subject.name,
+          overflow: TextOverflow.clip,
+          maxLines: 1,
+          style: Theme.of(context).textTheme.display3,
+        ),
       ),
-    ));
+    );
     Widget subLocInfo = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: <Widget>[
         buildRoomInfo(subject),
         Visibility(
+          maintainSize: true,
           visible: subject.building.trim().isNotEmpty,
           child: buildBuildingInfo(subject),
         ),
-        buildTeachInfo(subject)
+        buildTeacherInfo(subject)
       ],
     );
     return Card(
@@ -214,7 +216,7 @@ class SubjectItem extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {},
-        onLongPress: () => _handleDeleteSubject(context, subject),
+        onLongPress: () => _showDeleteSubjectDialog(context, subject),
         child: Container(
           height: 100,
           width: 375,

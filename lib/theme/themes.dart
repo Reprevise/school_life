@@ -19,8 +19,6 @@ class Themes {
       focusedErrorBorder:
           OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
       focusColor: Colors.black,
-      filled: true,
-      fillColor: Colors.grey[500],
       labelStyle: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.bold,
@@ -94,8 +92,6 @@ class Themes {
       focusedErrorBorder:
           OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
       focusColor: Colors.white,
-      filled: true,
-      fillColor: Colors.grey[800],
       labelStyle: TextStyle(
         color: Colors.white,
         fontWeight: FontWeight.bold,
