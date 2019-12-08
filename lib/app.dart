@@ -11,7 +11,6 @@ import 'ui/home/home.dart';
 import 'ui/schedule/schedule.dart';
 import 'ui/settings/settings.dart';
 import 'ui/subjects/subjects.dart';
-import 'ui/upgrade/upgrade.dart';
 
 class App extends StatelessWidget {
   static final routes = <String, WidgetBuilder>{
@@ -21,7 +20,6 @@ class App extends StatelessWidget {
     '/subjects': (context) => SubjectsPage(),
     '/settings': (context) =>  SettingsPage(),
     '/help-feedback': (context) => HelpFeedbackPage(),
-    '/upgrade': (context) => UpgradePage(),
   };
 
   @override

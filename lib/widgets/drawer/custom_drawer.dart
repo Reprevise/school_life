@@ -35,11 +35,6 @@ class CustomDrawer extends StatelessWidget {
       title: "Help and Feedback",
       icon: OMIcons.help,
     ),
-    DrawerItem(
-      title: "Upgrade",
-      icon: OMIcons.star,
-      color: Colors.orange,
-    ),
   ];
 
   void _onSelectItem(BuildContext context, int index) {
