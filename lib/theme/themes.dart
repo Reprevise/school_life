@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Themes {
   static final ThemeData lightTheme = ThemeData(
@@ -53,24 +54,27 @@ class Themes {
     textTheme: TextTheme(
       body1: TextStyle(color: Colors.black),
       button: TextStyle(color: Colors.black),
-      display1: TextStyle(
+      display1: GoogleFonts.muli(
         fontSize: 15.0,
-        fontFamily: "Muli",
-        letterSpacing: .3,
         fontWeight: FontWeight.w700,
-        color: Colors.black,
+        textStyle: TextStyle(
+          letterSpacing: 0.3,
+          color: Colors.black,
+        )
       ),
-      display2: TextStyle(
+      display2: GoogleFonts.muli(
         fontSize: 21.0,
-        fontFamily: "Muli",
         fontWeight: FontWeight.w700,
-        color: Colors.black,
+        textStyle: TextStyle(
+          color: Colors.black,
+        ),
       ),
-      display3: TextStyle(
+      display3: GoogleFonts.muli(
         fontSize: 24.0,
-        fontFamily: "Muli",
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        textStyle: TextStyle(
+          color: Colors.black,
+        ),
       ),
     ),
   );
@@ -126,24 +130,27 @@ class Themes {
     textTheme: TextTheme(
       body1: TextStyle(color: Colors.white),
       button: TextStyle(color: Colors.black),
-      display1: TextStyle(
+      display1: GoogleFonts.muli(
         fontSize: 15.0,
-        fontFamily: "Muli",
-        letterSpacing: .3,
         fontWeight: FontWeight.w700,
-        color: Colors.black,
+        textStyle: TextStyle(
+          letterSpacing: 0.3,
+          color: Colors.black,
+        )
       ),
-      display2: TextStyle(
+      display2: GoogleFonts.muli(
         fontSize: 21.0,
-        fontFamily: "Muli",
         fontWeight: FontWeight.w700,
-        color: Colors.white,
+        textStyle: TextStyle(
+          color: Colors.white,
+        ),
       ),
-      display3: TextStyle(
+      display3: GoogleFonts.muli(
         fontSize: 24.0,
-        fontFamily: "Muli",
         fontWeight: FontWeight.bold,
-        color: Colors.black,
+        textStyle: TextStyle(
+          color: Colors.black,
+        ),
       ),
     ),
   );

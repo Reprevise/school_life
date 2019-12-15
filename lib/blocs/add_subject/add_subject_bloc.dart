@@ -6,6 +6,7 @@ import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/util/models/subject.dart';
 
 class AddSubjectFormBloc extends FormBloc<String, String> {
+  // ignore: close_sinks
   final nameField = TextFieldBloc(validators: [
     FieldBlocValidators.requiredTextFieldBloc,
     (val) {
@@ -13,6 +14,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
       return null;
     }
   ]);
+  // ignore: close_sinks
   final roomField = TextFieldBloc(validators: [
     FieldBlocValidators.requiredTextFieldBloc,
     (val) {
@@ -20,12 +22,14 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
       return null;
     }
   ]);
+  // ignore: close_sinks
   final buildingField = TextFieldBloc(validators: [
     (val) {
       if (val.length > 20) return 'Shorten to 20 characters please';
       return null;
     }
   ]);
+  // ignore: close_sinks
   final teacherField = TextFieldBloc(validators: [
     FieldBlocValidators.requiredTextFieldBloc,
     (val) {
@@ -33,6 +37,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
       return null;
     }
   ]);
+  // ignore: close_sinks
   final colorField = InputFieldBloc<Color>();
 
   final List<Color> _allAvailableColors = [
@@ -73,7 +78,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
 
   @override
   List<FieldBloc> get fieldBlocs =>
-      [nameField, roomField, buildingField, teacherField];
+      [nameField, roomField, buildingField, teacherField, colorField];
 
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {

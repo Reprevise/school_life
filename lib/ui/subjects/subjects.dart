@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/forms/add_subject/add_subject.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
@@ -17,15 +18,16 @@ class _SubjectsPageState extends State<SubjectsPage> {
 
   @override
   void initState() {
-    refreshSubjects();
     super.initState();
+    future = RepositoryServiceSubject.getAllSubjects();
   }
 
   @override
   Widget build(BuildContext context) {
+    print("subjects rebuilding");
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Subjects",
+        "Subjects",
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -43,7 +45,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
         onPressed: _handleAddSubjectButtonPress,
         label: Text(
           "Add Subject",
-          style: TextStyle(fontFamily: "OpenSans"),
+          style: GoogleFonts.openSans(),
         ),
         icon: Icon(Icons.add),
       ),

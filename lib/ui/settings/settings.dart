@@ -2,6 +2,7 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/services/theme/theme_service.dart';
 import 'package:school_life/ui/settings/children/assignments-set.dart';
+import 'package:school_life/ui/settings/children/schedule-set.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
@@ -34,20 +35,17 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Settings"),
+      appBar: CustomAppBar("Settings"),
       drawer: CustomDrawer(),
-      body: SingleChildScrollView(
+      body: ListView(
         primary: false,
-        child: Column(
-          children: <Widget>[
-            buildSettingHeader("Theme"),
-            buildThemeToggle(),
-            buildSettingHeader("Assignments"),
-            buildGoToAssignmentsSettings(context),
-            buildSettingHeader("Subjects"),
-            buildGoToSubjectsSettings(context),
-          ],
-        ),
+        children: <Widget>[
+          buildSettingHeader("Theme"),
+          buildThemeToggle(),
+          buildSettingHeader("Page Settings"),
+          buildGoToAssignmentsSettings(context),
+          buildGoToSubjectsSettings(context),
+        ],
       ),
     );
   }
@@ -73,6 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return ListTile(
       leading: Icon(Icons.color_lens),
       title: Text("Change theme"),
+      subtitle: Text("Change the app theme"),
       onTap: () => showDialog(
         builder: (context) => buildThemeDialog(context),
         context: context,
@@ -120,7 +119,8 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget buildGoToAssignmentsSettings(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.assignment),
-      title: Text("Assignments Settings"),
+      title: Text("Assignments"),
+      subtitle: Text("Open assignment settings"),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
@@ -133,12 +133,26 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget buildGoToSubjectsSettings(BuildContext context) {
     return ListTile(
       leading: Icon(Icons.school),
-      contentPadding: EdgeInsets.symmetric(horizontal: 56, vertical: 8),
-      title: Text("Subjects Settings"),
+      title: Text("Subjects"),
+      subtitle: Text("Open subject settings"),
       onTap: () => Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => SubjectsSettingsPage(),
+        ),
+      ),
+    );
+  }
+
+  Widget buildGoToScheduleSettings(BuildContext context) {
+    return ListTile(
+      leading: Icon(Icons.school),
+      title: Text("Schedule"),
+      subtitle: Text("Open schedule settings"),
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ScheduleSettingsPage(),
         ),
       ),
     );

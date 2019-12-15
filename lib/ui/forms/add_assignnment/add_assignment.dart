@@ -2,6 +2,7 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:form_bloc/form_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:school_life/blocs/add_assignment/add_assignment_bloc.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
@@ -14,7 +15,7 @@ class AddAssignmentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Add Assignment",
+        "Add Assignment",
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.maybePop(context),
@@ -36,10 +37,13 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
   final FocusNode detailsFocus = FocusNode();
   final FocusNode dueDateFocus = FocusNode();
   final FocusNode assignmentFocus = FocusNode();
+
   List<FocusNode> get nodes =>
       [subjectFocus, detailsFocus, dueDateFocus, assignmentFocus];
 
   List<Map<String, dynamic>> _subjectsMap;
+
+  AddAssignmentFormBloc _formBloc;
 
   @override
   void initState() {
@@ -51,6 +55,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
   void dispose() {
     // dispose of all FocusNode's
     nodes.forEach((node) => node.dispose());
+    _formBloc?.close();
     super.dispose();
   }
 
@@ -65,12 +70,6 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
     });
   }
 
-  void changeFieldFocus(
-      BuildContext context, FocusNode current, FocusNode next) {
-    current.unfocus();
-    FocusScope.of(context).requestFocus(next);
-  }
-
   @override
   Widget build(BuildContext context) {
     if (_subjectsMap == null) return Center(child: CircularProgressIndicator());
@@ -80,140 +79,148 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
       builder: (context) => AddAssignmentFormBloc(),
       child: Builder(
         builder: (context) {
-          final formBloc = BlocProvider.of<AddAssignmentFormBloc>(context);
+          _formBloc = BlocProvider.of<AddAssignmentFormBloc>(context);
 
           return WillPopScope(
-            onWillPop: () => formBloc.requestPop(context),
+            onWillPop: () => _formBloc.requestPop(context),
             child: FormBlocListener<AddAssignmentFormBloc, String, dynamic>(
               onSuccess: (context, state) {
                 Navigator.pushReplacementNamed(context, '/assignments');
               },
-              onFailure: (context, state) {
-                print(state.failureResponse);
-              },
-              onLoadFailed: (context, state) {
-                print("load failed");
-                print(state.canSubmit);
-              },
-              onLoading: (context, state) {
-                print("loading");
-              },
-              child: ListView(
-                physics: ClampingScrollPhysics(),
-                padding: EdgeInsets.only(bottom: 10),
-                children: <Widget>[
-                  TextFieldBlocBuilder(
-                    textFieldBloc: formBloc.nameField,
-                    autofocus: true,
-                    focusNode: assignmentFocus,
-                    nextFocusNode: dueDateFocus,
-                    textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      labelText: "Assignment Name",
-                      prefixIcon: Icon(
-                        Icons.assignment,
-                        color: Theme.of(context).primaryIconTheme.color,
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                    child: BlocBuilder(
-                      bloc: formBloc.dueDateField,
-                      builder: (context, state) {
-                        return DateTimeField(
-                          format: format,
-                          focusNode: dueDateFocus,
-                          onFieldSubmitted: (value) =>
-                              formBloc.dueDateField.updateValue(value),
-                          textInputAction: TextInputAction.done,
-                          decoration: InputDecoration(
-                            labelText: "Due date (${format.pattern})",
-                            prefixIcon: Icon(
-                              Icons.calendar_today,
-                              color: Theme.of(context).primaryIconTheme.color,
-                            ),
-                            focusedErrorBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.red),
+              child: BlocBuilder<AddAssignmentFormBloc, FormBlocState>(
+                builder: (context, state) {
+                  if (state is FormBlocLoading) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (state is FormBlocLoadFailed) {
+                    return Center(child: Text("Uh oh! Try again later."));
+                  } else {
+                    return SingleChildScrollView(
+                      physics: ClampingScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          TextFieldBlocBuilder(
+                            textFieldBloc: _formBloc.nameField,
+                            autofocus: true,
+                            focusNode: assignmentFocus,
+                            nextFocusNode: dueDateFocus,
+                            textInputAction: TextInputAction.next,
+                            textCapitalization: TextCapitalization.words,
+                            decoration: InputDecoration(
+                              labelText: "Assignment Name",
+                              prefixIcon: Icon(
+                                Icons.assignment,
+                                color: Theme.of(context).primaryIconTheme.color,
+                              ),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
+                              ),
                             ),
                           ),
-                          initialValue: formBloc.dueDateField.value,
-                          onShowPicker: (context, currentValue) {
-                            return showDatePicker(
-                              context: context,
-                              firstDate: DateTime.now().subtract(
-                                Duration(days: 1),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: BlocBuilder(
+                              bloc: _formBloc.dueDateField,
+                              builder: (context, state) {
+                                return DateTimeField(
+                                  format: format,
+                                  focusNode: dueDateFocus,
+                                  onFieldSubmitted: (value) =>
+                                      _formBloc.dueDateField.updateValue(value),
+                                  textInputAction: TextInputAction.done,
+                                  decoration: InputDecoration(
+                                    labelText: "Due date (${format.pattern})",
+                                    prefixIcon: Icon(
+                                      Icons.calendar_today,
+                                      color: Theme.of(context)
+                                          .primaryIconTheme
+                                          .color,
+                                    ),
+                                    focusedErrorBorder: OutlineInputBorder(
+                                      borderSide: BorderSide(color: Colors.red),
+                                    ),
+                                  ),
+                                  initialValue: _formBloc.dueDateField.value,
+                                  onShowPicker: (context, currentValue) {
+                                    return showDatePicker(
+                                      context: context,
+                                      firstDate: DateTime.now().subtract(
+                                        Duration(days: 1),
+                                      ),
+                                      initialDate: currentValue ?? DateTime.now(),
+                                      lastDate: DateTime.now().add(
+                                        Duration(days: 365 * 5),
+                                      ),
+                                    );
+                                  },
+                                  onChanged: (value) =>
+                                      _formBloc.dueDateField.updateValue(value),
+                                );
+                              },
+                            ),
+                          ),
+                          DropdownFieldBlocBuilder(
+                            selectFieldBloc: _formBloc.subjectField,
+                            millisecondsForShowDropdownItemsWhenKeyboardIsOpen:
+                                100,
+                            focusNode: subjectFocus,
+                            nextFocusNode: detailsFocus,
+                            itemBuilder: (context, value) => value,
+                            showEmptyItem: false,
+                            decoration: InputDecoration(
+                              labelText: "Subject",
+                              prefixIcon: Icon(
+                                Icons.subject,
+                                color: Theme.of(context).primaryIconTheme.color,
                               ),
-                              initialDate: currentValue ?? DateTime.now(),
-                              lastDate: DateTime.now().add(
-                                Duration(days: 365 * 5),
+                              focusedErrorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(color: Colors.red),
                               ),
-                            );
-                          },
-                          onChanged: (value) =>
-                              formBloc.dueDateField.updateValue(value),
-                        );
-                      },
-                    ),
-                  ),
-                  DropdownFieldBlocBuilder(
-                    selectFieldBloc: formBloc.subjectField,
-                    millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
-                    focusNode: subjectFocus,
-                    nextFocusNode: detailsFocus,
-                    itemBuilder: (context, value) => value,
-                    showEmptyItem: false,
-                    decoration: InputDecoration(
-                      labelText: "Subject",
-                      prefixIcon: Icon(
-                        Icons.subject,
-                        color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                          ),
+                          SizedBox(
+                            height: 100,
+                            child: TextFieldBlocBuilder(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              textFieldBloc: _formBloc.detailsField,
+                              focusNode: detailsFocus,
+                              expands: true,
+                              minLines: null,
+                              maxLines: null,
+                              keyboardType: TextInputType.multiline,
+                              textAlignVertical: TextAlignVertical.top,
+                              decoration: InputDecoration(
+                                labelText: "Details",
+                                prefixIcon: Icon(
+                                  Icons.details,
+                                  color: Theme.of(context).primaryIconTheme.color,
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(color: Colors.red),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.only(left: 8.0),
+                            child: OutlineButton(
+                              padding: EdgeInsets.zero,
+                              borderSide: Theme.of(context)
+                                  .inputDecorationTheme
+                                  .border
+                                  .borderSide,
+                              textColor: Theme.of(context).textTheme.body1.color,
+                              onPressed: _formBloc.submit,
+                              child: const Text("Submit"),
+                            ),
+                          ),
+                        ],
                       ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 100,
-                    child: TextFieldBlocBuilder(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      textFieldBloc: formBloc.detailsField,
-                      focusNode: detailsFocus,
-                      expands: true,
-                      minLines: null,
-                      maxLines: null,
-                      keyboardType: TextInputType.multiline,
-                      textAlignVertical: TextAlignVertical.top,
-                      decoration: InputDecoration(
-                        labelText: "Details",
-                        prefixIcon: Icon(
-                          Icons.details,
-                          color: Theme.of(context).primaryIconTheme.color,
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.red),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                    child: OutlineButton(
-                      highlightedBorderColor: Theme.of(context)
-                          .inputDecorationTheme
-                          .border
-                          .borderSide
-                          .color,
-                      onPressed: formBloc.submit,
-                      child: const Text("Submit"),
-                    ),
-                  ),
-                ],
+                    );
+                  }
+                },
               ),
             ),
           );

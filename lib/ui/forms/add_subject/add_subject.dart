@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
+import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/add_subject/add_subject_bloc.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
@@ -13,7 +14,7 @@ class AddSubjectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Add Subject",
+        "Add Subject",
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.maybePop(context),
@@ -31,17 +32,25 @@ class AddSubjectForm extends StatefulWidget {
 }
 
 class _AddSubjectFormState extends State<AddSubjectForm> {
-  final FocusNode subjectFocus = FocusNode();
-  final FocusNode roomTextFocus = FocusNode();
-  final FocusNode buildingFocus = FocusNode();
-  final FocusNode teacherFocus = FocusNode();
+  final FocusNode _subjectFocus = FocusNode();
+  final FocusNode _roomTextFocus = FocusNode();
+  final FocusNode _buildingFocus = FocusNode();
+  final FocusNode _teacherFocus = FocusNode();
+
   List<FocusNode> get nodes =>
-      [subjectFocus, roomTextFocus, buildingFocus, teacherFocus];
+      [_subjectFocus, _roomTextFocus, _buildingFocus, _teacherFocus];
+  AddSubjectFormBloc _formBloc;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
     // dispose of all FocusNode's
     nodes.forEach((node) => node.dispose());
+    _formBloc?.close();
     super.dispose();
   }
 
@@ -51,138 +60,142 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
       builder: (context) => AddSubjectFormBloc(),
       child: Builder(
         builder: (context) {
-          final formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
-
+          _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
           return WillPopScope(
-            onWillPop: () => formBloc.canPop(context),
+            onWillPop: () => _formBloc.canPop(context),
             child: FormBlocListener<AddSubjectFormBloc, String, String>(
               onSuccess: (context, state) {
                 Navigator.of(context).pushReplacementNamed('/subjects');
               },
-              child: ListView(
-                physics: ClampingScrollPhysics(),
-                padding: EdgeInsets.only(bottom: 10),
-                children: <Widget>[
-                  TextFieldBlocBuilder(
-                    autofocus: true,
-                    textFieldBloc: formBloc.nameField,
-                    focusNode: subjectFocus,
-                    nextFocusNode: roomTextFocus,
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
-                      labelText: "Subject",
-                      prefixIcon: Icon(
-                        Icons.subject,
-                        color: Theme.of(context).primaryIconTheme.color,
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  TextFieldBlocBuilder(
-                    textFieldBloc: formBloc.roomField,
-                    focusNode: roomTextFocus,
-                    nextFocusNode: buildingFocus,
-                    textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      labelText: "Room",
-                      prefixIcon: Icon(
-                        Icons.location_on,
-                        color: Theme.of(context).primaryIconTheme.color,
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  TextFieldBlocBuilder(
-                    textFieldBloc: formBloc.buildingField,
-                    focusNode: buildingFocus,
-                    nextFocusNode: teacherFocus,
-                    textInputAction: TextInputAction.next,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      labelText: "Building",
-                      prefixIcon: Icon(
-                        Icons.business,
-                        color: Theme.of(context).primaryIconTheme.color,
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  TextFieldBlocBuilder(
-                    textFieldBloc: formBloc.teacherField,
-                    focusNode: teacherFocus,
-                    textCapitalization: TextCapitalization.words,
-                    decoration: InputDecoration(
-                      labelText: "Teacher",
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: Theme.of(context).primaryIconTheme.color,
-                      ),
-                      focusedErrorBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
-                    ),
-                  ),
-                  BlocBuilder(
-                    bloc: formBloc.colorField,
-                    builder: (context, state) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                        child: RaisedButton(
-                          elevation: 3.0,
-                          color: formBloc?.currentColor,
-                          textColor: useWhiteForeground(formBloc?.currentColor)
-                              ? Color(0xffffffff)
-                              : Color(0xff000000),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.horizontal(
-                              left: Radius.circular(50),
-                              right: Radius.circular(50),
+              child: BlocBuilder<AddSubjectFormBloc, FormBlocState>(
+                builder: (context, state) {
+                  return SingleChildScrollView(
+                    physics: ClampingScrollPhysics(),
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        TextFieldBlocBuilder(
+                          autofocus: true,
+                          textFieldBloc: _formBloc.nameField,
+                          focusNode: _subjectFocus,
+                          nextFocusNode: _roomTextFocus,
+                          textInputAction: TextInputAction.next,
+                          decoration: InputDecoration(
+                            labelText: "Subject",
+                            prefixIcon: Icon(
+                              Icons.subject,
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
                             ),
                           ),
-                          child: Text("Change color"),
-                          onPressed: () => showDialog(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: Text("Select a color"),
-                                content: SingleChildScrollView(
-                                  child: BlockPicker(
-                                    availableColors: formBloc.availableColors,
-                                    pickerColor: formBloc.currentColor,
-                                    onColorChanged: (Color color) {
-                                      formBloc.colorField.updateValue(color);
-                                      formBloc.currentColor = color;
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                              );
-                            },
+                        ),
+                        TextFieldBlocBuilder(
+                          textFieldBloc: _formBloc.roomField,
+                          focusNode: _roomTextFocus,
+                          nextFocusNode: _buildingFocus,
+                          textInputAction: TextInputAction.next,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            labelText: "Room",
+                            prefixIcon: Icon(
+                              Icons.location_on,
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 100.0),
-                    child: OutlineButton(
-                      highlightedBorderColor: Theme.of(context)
-                          .inputDecorationTheme
-                          .border
-                          .borderSide
-                          .color,
-                      onPressed: formBloc.submit,
-                      child: const Text("Submit"),
+                        TextFieldBlocBuilder(
+                          textFieldBloc: _formBloc.buildingField,
+                          focusNode: _buildingFocus,
+                          nextFocusNode: _teacherFocus,
+                          textInputAction: TextInputAction.next,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            labelText: "Building",
+                            prefixIcon: Icon(
+                              Icons.business,
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        TextFieldBlocBuilder(
+                          textFieldBloc: _formBloc.teacherField,
+                          focusNode: _teacherFocus,
+                          textCapitalization: TextCapitalization.words,
+                          decoration: InputDecoration(
+                            labelText: "Teacher",
+                            prefixIcon: Icon(
+                              Icons.person,
+                              color: Theme.of(context).primaryIconTheme.color,
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.red),
+                            ),
+                          ),
+                        ),
+                        BlocBuilder(
+                          bloc: _formBloc.colorField,
+                          builder: (context, state) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: FlatButton(
+                                color: _formBloc.currentColor,
+                                textColor:
+                                    useWhiteForeground(_formBloc?.currentColor)
+                                        ? Color(0xffffffff)
+                                        : Color(0xff000000),
+                                child: Text("Change color"),
+                                onPressed: () => showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      title: Text("Select a color"),
+                                      content: SingleChildScrollView(
+                                        child: BlockPicker(
+                                          availableColors:
+                                              _formBloc.availableColors,
+                                          pickerColor: _formBloc.currentColor,
+                                          onColorChanged: (Color color) {
+                                            _formBloc.colorField
+                                                .updateValue(color);
+                                            _formBloc.currentColor = color;
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        Container(
+                          padding: const EdgeInsets.only(left: 8.0),
+                          child: OutlineButton(
+                            padding: EdgeInsets.zero,
+                            borderSide: Theme.of(context)
+                                .inputDecorationTheme
+                                .border
+                                .borderSide,
+                            textColor: Theme.of(context).textTheme.body1.color,
+                            onPressed: _formBloc.submit,
+                            child: const Text("Submit"),
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
+                  );
+                },
               ),
             ),
           );

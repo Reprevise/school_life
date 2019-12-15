@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/services/theme/theme_service.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/ui/forms/add_schedule/add_schedule.dart';
+import 'package:school_life/util/models/subject.dart';
 import 'package:school_life/widgets/appbar/custom_appbar.dart';
 import 'package:school_life/widgets/drawer/custom_drawer.dart';
-import 'package:table_calendar/table_calendar.dart';
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -10,49 +12,71 @@ class SchedulePage extends StatefulWidget {
 }
 
 class _SchedulePageState extends State<SchedulePage> {
-  final _calendarFormats = {
-    CalendarFormat.week: 'week',
-  };
-  CalendarController _calendarController;
+  bool _userHasSubjects = false;
 
   @override
   void initState() {
     super.initState();
-    _calendarController = CalendarController();
+    _doesUserHaveSubjects();
   }
 
-  TableCalendar _buildCalendar() {
-    return TableCalendar(
-      calendarController: _calendarController,
-      availableCalendarFormats: _calendarFormats,
-      initialCalendarFormat: CalendarFormat.week,
-      availableGestures: AvailableGestures.horizontalSwipe,
-      // builders: CalendarBuilders(
-      //   dayBuilder: _buildDays,
-      // ),
-      headerVisible: false,
-    );
+  void _doesUserHaveSubjects() async {
+    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
+    if (subjects.isNotEmpty) {
+      setState(() {
+        _userHasSubjects = true;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    ThemeService().updateColors();
     return Scaffold(
-      appBar: CustomAppBar(
-        title: "Schedule",
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.calendar_today),
-            onPressed: () {
-              setState(() {
-                _calendarController.setFocusedDay(DateTime.now());
-              });
-            },
-          ),
-        ],
-      ),
+      appBar: CustomAppBar("Schedule"),
       drawer: CustomDrawer(),
-      body: _buildCalendar(),
+      body: Container(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => _handleAddScheduleButtonPress(context),
+        label: Text(
+          "Add Subject Schedule",
+          style: GoogleFonts.openSans(),
+        ),
+        icon: Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  void _handleAddScheduleButtonPress(BuildContext context) {
+    if (!_userHasSubjects) {
+      _showNoSubjectsDialog(context);
+      return;
+    }
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddSchedulePage(),
+      ),
+    );
+  }
+
+  void _showNoSubjectsDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("No subjects found"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("Ok"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+      },
     );
   }
 }

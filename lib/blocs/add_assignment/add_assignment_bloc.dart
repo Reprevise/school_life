@@ -7,20 +7,34 @@ import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
+  // ignore: close_sinks
   final nameField = TextFieldBloc(
       validators: [FieldBlocValidators.requiredTextFieldBloc],
       initialValue: "");
+  // ignore: close_sinks
   final dueDateField = InputFieldBloc(
       validators: [FieldBlocValidators.requiredInputFieldBloc],
       initialValue: DateTime.now());
+  // ignore: close_sinks
   final subjectField = SelectFieldBloc(
     validators: [FieldBlocValidators.requiredSelectFieldBloc],
   );
+  // ignore: close_sinks
   final detailsField = TextFieldBloc(initialValue: "");
 
   @override
   List<FieldBloc> get fieldBlocs =>
       [nameField, dueDateField, subjectField, detailsField];
+
+  @override
+  Stream<FormBlocState<String, dynamic>> onLoading() async* {
+    yield* _setSubjectFieldValues();
+  }
+
+  @override
+  Stream<FormBlocState<String, dynamic>> onReload() async* {
+    yield* _setSubjectFieldValues();
+  }
 
   @override
   Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
@@ -52,20 +66,13 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     yield state.toSuccess();
   }
 
-  AddAssignmentFormBloc() {
-    _setSubjectFieldValues();
-  }
-
-  void _setSubjectFieldValues() async {
+  Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
     List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
     for (int i = 0; i < subjects.length; i++) {
       subjectField.addItem(subjects[i].name);
     }
-    _updateSubjectDropdown(subjects);
-  }
-
-  void _updateSubjectDropdown(List<Subject> subjects) {
     subjectField.updateInitialValue(subjects.first.name);
+    yield state.toLoaded();
   }
 
   bool _fieldsAreEmpty() {

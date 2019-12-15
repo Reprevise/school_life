@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/assignments/widgets/all_assignments/all_assignments.dart';
@@ -86,7 +87,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        title: "Assignments",
+        "Assignments",
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -105,7 +106,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         onPressed: () => _handleAddAssignmentPress(context),
         label: Text(
           "Add Assignment",
-          style: TextStyle(fontFamily: "OpenSans"),
+          style: GoogleFonts.openSans(),
         ),
         icon: Icon(Icons.add),
       ),

@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/utils.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:school_life/util/models/subject.dart';
 
-class AllSubjects extends StatefulWidget {
+class AllSubjects extends StatelessWidget {
   final Future<List<Subject>> future;
   final Function deleteSubject;
 
   AllSubjects(this.future, this.deleteSubject);
 
   @override
-  State<StatefulWidget> createState() => _AllSubjectsState();
-}
-
-class _AllSubjectsState extends State<AllSubjects> {
-  @override
   Widget build(BuildContext context) {
+    print("all subjects rebuilding");
     final fontSize = MediaQuery.of(context).size.width / 20;
 
     return FutureBuilder<List<Subject>>(
-      future: widget.future,
+      future: future,
       builder: (context, snapshot) {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
@@ -30,7 +27,7 @@ class _AllSubjectsState extends State<AllSubjects> {
                     .map(
                       (subject) => SubjectItem(
                         subject: subject,
-                        deleteSubject: widget.deleteSubject,
+                        deleteSubject: deleteSubject,
                       ),
                     )
                     .toList(),
@@ -88,7 +85,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: "Room: ",
-            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Muli"),
+            style: GoogleFonts.muli(fontWeight: FontWeight.bold),
           ),
           TextSpan(text: subject.room)
         ],
@@ -107,7 +104,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: "Building: ",
-            style: TextStyle(fontWeight: FontWeight.bold, fontFamily: "Muli"),
+            style: GoogleFonts.muli(fontWeight: FontWeight.bold),
           ),
           TextSpan(text: subject.building)
         ],
@@ -204,7 +201,6 @@ class SubjectItem extends StatelessWidget {
       children: <Widget>[
         buildRoomInfo(subject),
         Visibility(
-          maintainSize: true,
           visible: subject.building.trim().isNotEmpty,
           child: buildBuildingInfo(subject),
         ),

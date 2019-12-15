@@ -31,24 +31,8 @@ class AndroidDetails {
     };
   }
 
-  // is above android 7
-  bool isAboveNougat() {
-    if (_deviceData.isNotEmpty) {
-      return _deviceData['version.sdkInt'] > 24;
-    }
-    return null;
-  }
-
-  // has exactly android 7
-  bool hasNougat() {
-    if (_deviceData.isNotEmpty) {
-      return _deviceData['version.sdkInt'] == 24;
-    }
-    return null;
-  }
-
   // android 5
-  bool atleastHasLollipop() {
+  bool canChangeStatusBarColor() {
     if (_deviceData.isNotEmpty) {
       return _deviceData['version.sdkInt'] >= 21;
     }
