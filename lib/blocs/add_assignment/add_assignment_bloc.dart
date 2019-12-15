@@ -3,24 +3,37 @@ import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/util/date_utils.dart';
 import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   // ignore: close_sinks
   final nameField = TextFieldBloc(
-      validators: [FieldBlocValidators.requiredTextFieldBloc],
-      initialValue: "");
+    validators: [FieldBlocValidators.requiredTextFieldBloc],
+    initialValue: "",
+  );
   // ignore: close_sinks
-  final dueDateField = InputFieldBloc(
-      validators: [FieldBlocValidators.requiredInputFieldBloc],
-      initialValue: DateTime.now());
+  final dueDateField = InputFieldBloc<DateTime>(
+    validators: [
+      FieldBlocValidators.requiredInputFieldBloc,
+      (date) {
+        if (date.isBefore(DateUtils.getTodaysDate())) {
+          return "Can't be before today!";
+        }
+        return null;
+      },
+    ],
+    initialValue: DateTime.now(),
+  );
   // ignore: close_sinks
   final subjectField = SelectFieldBloc(
     validators: [FieldBlocValidators.requiredSelectFieldBloc],
   );
   // ignore: close_sinks
   final detailsField = TextFieldBloc(initialValue: "");
+
+  AddAssignmentFormBloc() : super(isLoading: true);
 
   @override
   List<FieldBloc> get fieldBlocs =>

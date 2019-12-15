@@ -6,7 +6,7 @@ class AssignmentsSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar("Assignment Settings"),
-      body: Placeholder(),
+      body: ListView(),
     );
   }
 }

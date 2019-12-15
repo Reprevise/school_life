@@ -42,7 +42,6 @@ class App extends StatelessWidget {
           routes: routes,
           theme: theme,
           navigatorObservers: [CustomRouteObserver()],
-          debugShowCheckedModeBanner: false,
           title: 'School Life',
         );
       },

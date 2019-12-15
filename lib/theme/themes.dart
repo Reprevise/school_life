@@ -6,7 +6,6 @@ class Themes {
   static final ThemeData lightTheme = ThemeData(
     brightness: Brightness.light,
     primaryColor: Colors.white,
-    // accentColor: Colors.white,
     accentColor: Colors.grey[600],
     backgroundColor: Colors.white,
     scaffoldBackgroundColor: Colors.white,
@@ -50,7 +49,6 @@ class Themes {
       buttonColor: Colors.black,
       textTheme: ButtonTextTheme.accent,
     ),
-    applyElevationOverlayColor: false,
     textTheme: TextTheme(
       body1: TextStyle(color: Colors.black),
       button: TextStyle(color: Colors.black),
@@ -82,7 +80,6 @@ class Themes {
   static final ThemeData darkTheme = ThemeData(
     brightness: Brightness.dark,
     primaryColor: Colors.grey[900],
-    // accentColor: Colors.grey[900],
     accentColor: Colors.grey[300],
     scaffoldBackgroundColor: Colors.grey[900],
     backgroundColor: Colors.grey[900],
@@ -126,7 +123,7 @@ class Themes {
       buttonColor: Colors.white,
       textTheme: ButtonTextTheme.accent,
     ),
-    applyElevationOverlayColor: false,
+    applyElevationOverlayColor: true,
     textTheme: TextTheme(
       body1: TextStyle(color: Colors.white),
       button: TextStyle(color: Colors.black),

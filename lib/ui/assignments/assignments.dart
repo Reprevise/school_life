@@ -7,8 +7,7 @@ import 'package:school_life/ui/forms/add_assignnment/add_assignment.dart';
 import 'package:school_life/ui/settings/children/assignments-set.dart';
 import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/index.dart';
 
 class AssignmentsPage extends StatefulWidget {
   @override

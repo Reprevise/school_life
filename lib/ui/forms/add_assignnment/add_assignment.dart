@@ -7,8 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:school_life/blocs/add_assignment/add_assignment_bloc.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/index.dart';
 
 class AddAssignmentPage extends StatelessWidget {
   @override
@@ -120,7 +119,8 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: BlocBuilder(
                               bloc: _formBloc.dueDateField,
                               builder: (context, state) {
@@ -141,6 +141,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                     focusedErrorBorder: OutlineInputBorder(
                                       borderSide: BorderSide(color: Colors.red),
                                     ),
+                                    errorText: state.error,
                                   ),
                                   initialValue: _formBloc.dueDateField.value,
                                   onShowPicker: (context, currentValue) {
@@ -149,14 +150,16 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                       firstDate: DateTime.now().subtract(
                                         Duration(days: 1),
                                       ),
-                                      initialDate: currentValue ?? DateTime.now(),
+                                      initialDate:
+                                          currentValue ?? DateTime.now(),
                                       lastDate: DateTime.now().add(
                                         Duration(days: 365 * 5),
                                       ),
                                     );
                                   },
-                                  onChanged: (value) =>
-                                      _formBloc.dueDateField.updateValue(value),
+                                  onChanged: (value) {
+                                    _formBloc.dueDateField.updateValue(value);
+                                  },
                                 );
                               },
                             ),
@@ -183,7 +186,8 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                           SizedBox(
                             height: 100,
                             child: TextFieldBlocBuilder(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               textFieldBloc: _formBloc.detailsField,
                               focusNode: detailsFocus,
                               expands: true,
@@ -195,7 +199,8 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                 labelText: "Details",
                                 prefixIcon: Icon(
                                   Icons.details,
-                                  color: Theme.of(context).primaryIconTheme.color,
+                                  color:
+                                      Theme.of(context).primaryIconTheme.color,
                                 ),
                                 focusedErrorBorder: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.red),
@@ -211,7 +216,8 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                   .inputDecorationTheme
                                   .border
                                   .borderSide,
-                              textColor: Theme.of(context).textTheme.body1.color,
+                              textColor:
+                                  Theme.of(context).textTheme.body1.color,
                               onPressed: _formBloc.submit,
                               child: const Text("Submit"),
                             ),

@@ -6,7 +6,7 @@ class SubjectsSettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar("Subject Settings"),
-      body: Placeholder(),
+      body: ListView(),
     );
   }
 }

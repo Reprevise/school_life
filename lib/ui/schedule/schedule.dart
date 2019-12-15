@@ -3,8 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/forms/add_schedule/add_schedule.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/index.dart';
 
 class SchedulePage extends StatefulWidget {
   @override

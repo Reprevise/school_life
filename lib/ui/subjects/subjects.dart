@@ -5,8 +5,7 @@ import 'package:school_life/ui/forms/add_subject/add_subject.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
 import 'package:school_life/ui/subjects/widgets/all_subjects/all_subjects.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/index.dart';
 
 class SubjectsPage extends StatefulWidget {
   @override

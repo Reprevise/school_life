@@ -4,8 +4,7 @@ import 'package:school_life/services/theme/theme_service.dart';
 import 'package:school_life/ui/settings/children/assignments-set.dart';
 import 'package:school_life/ui/settings/children/schedule-set.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/index.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -45,6 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
           buildSettingHeader("Page Settings"),
           buildGoToAssignmentsSettings(context),
           buildGoToSubjectsSettings(context),
+          buildGoToScheduleSettings(context),
         ],
       ),
     );
@@ -146,7 +146,7 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildGoToScheduleSettings(BuildContext context) {
     return ListTile(
-      leading: Icon(Icons.school),
+      leading: Icon(Icons.schedule),
       title: Text("Schedule"),
       subtitle: Text("Open schedule settings"),
       onTap: () => Navigator.push(

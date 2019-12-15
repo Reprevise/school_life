@@ -8,9 +8,6 @@
       "name": "Flutter Release",
       "type": "dart",
       "flutterMode": "release",
-      "args": [
-        "--enable-software-rendering"
-      ],
       "request": "launch",
       "program": "lib/main.dart"
     },
@@ -18,18 +15,12 @@
       "name": "Flutter Profile",
       "type": "dart",
       "request": "launch",
-      "args": [
-        "--enable-software-rendering"
-      ],
       "program": "lib/main.dart",
       "flutterMode": "profile",
     },
     {
       "name": "Flutter Debug",
       "request": "launch",
-      "args": [
-        "--enable-software-rendering"
-      ],
       "program": "lib/main.dart",
       "flutterMode": "debug",
       "type": "dart"

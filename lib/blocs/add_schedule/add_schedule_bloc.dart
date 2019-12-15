@@ -17,6 +17,8 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   // ignore: close_sinks
   final sameTimeEveryday = BooleanFieldBloc(initialValue: false);
 
+  AddScheduleFormBloc() : super(isLoading: true);
+
   @override
   List<FieldBloc> get fieldBlocs =>
       [subjectField, scheduleDaysField, sameTimeEveryday];

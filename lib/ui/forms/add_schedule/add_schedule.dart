@@ -4,8 +4,7 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/add_schedule/add_schedule_bloc.dart';
 import 'package:school_life/ui/forms/widgets/page_navigator.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
-import 'package:school_life/widgets/drawer/custom_drawer.dart';
+import 'package:school_life/widgets/index.dart';
 
 final PageController _controller = PageController();
 
