@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:school_life/app.dart';
+import 'package:school_life/routes.dart';
 import 'package:school_life/util/models/drawer_item.dart';
 
 int _selectedIndex = 0;
 
 class CustomDrawer extends StatelessWidget {
   int get selectedIndex => _selectedIndex;
-
   set selectedIndex(int newIndex) => _selectedIndex = newIndex;
-  final List<String> appRoutes = App.routes.keys.toList();
+  
+  final List<String> appRouteNames = routes.keys.toList();
   final List<DrawerItem> _drawerItems = [
     DrawerItem(
       title: "Home",
@@ -48,19 +47,8 @@ class CustomDrawer extends StatelessWidget {
       return;
     }
     _selectedIndex = index;
-    Navigator.of(context).pushReplacementNamed(appRoutes[index]);
+    Navigator.of(context).pushReplacementNamed(appRouteNames[index]);
   }
-
-  final Widget drawerHeader = SafeArea(
-    top: true,
-    child: Container(
-      padding: const EdgeInsets.only(left: 16),
-      child: Text(
-        "School Life",
-        style: GoogleFonts.openSans(fontSize: 24.0),
-      ),
-    ),
-  );
 
   Color _getItemColor(BuildContext context, int currentIndex, Color itemColor) {
     if (_selectedIndex == currentIndex) return Color(0xff1967d2);
@@ -73,17 +61,27 @@ class CustomDrawer extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final iconColor = Theme.of(context).primaryIconTheme.color;
     final Color containerColor = Color(0xffe8f0fe);
+
+    final Widget drawerHeader = SafeArea(
+      top: true,
+      left: true,
+      minimum: const EdgeInsets.all(16),
+      child: Text(
+        "School Life",
+        style: textTheme.display3,
+      ),
+    );
+
     return Drawer(
       child: Container(
         color: Theme.of(context).primaryColor,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
           children: <Widget>[
             drawerHeader,
             ListView.builder(
               itemCount: _drawerItems.length,
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.only(top: 10),
               shrinkWrap: true,
               itemBuilder: (context, i) {
                 DrawerItem d = _drawerItems[i];

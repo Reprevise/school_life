@@ -4,7 +4,7 @@ import 'package:school_life/services/theme/theme_service.dart';
 import 'package:school_life/ui/settings/children/assignments-set.dart';
 import 'package:school_life/ui/settings/children/schedule-set.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 
 class SettingsPage extends StatefulWidget {
   @override

@@ -51,14 +51,17 @@ class Themes {
     ),
     textTheme: TextTheme(
       body1: TextStyle(color: Colors.black),
-      button: TextStyle(color: Colors.black),
+      button: GoogleFonts.openSans(
+        fontWeight: FontWeight.bold,
+        textStyle: TextStyle(color: Colors.black),
+      ),
       display1: GoogleFonts.muli(
         fontSize: 15.0,
         fontWeight: FontWeight.w700,
         textStyle: TextStyle(
           letterSpacing: 0.3,
           color: Colors.black,
-        )
+        ),
       ),
       display2: GoogleFonts.muli(
         fontSize: 21.0,
@@ -126,14 +129,17 @@ class Themes {
     applyElevationOverlayColor: true,
     textTheme: TextTheme(
       body1: TextStyle(color: Colors.white),
-      button: TextStyle(color: Colors.black),
+      button: GoogleFonts.openSans(
+        fontWeight: FontWeight.bold,
+        textStyle: TextStyle(color: Colors.black),
+      ),
       display1: GoogleFonts.muli(
         fontSize: 15.0,
         fontWeight: FontWeight.w700,
         textStyle: TextStyle(
           letterSpacing: 0.3,
           color: Colors.black,
-        )
+        ),
       ),
       display2: GoogleFonts.muli(
         fontSize: 21.0,
@@ -151,5 +157,4 @@ class Themes {
       ),
     ),
   );
-
 }

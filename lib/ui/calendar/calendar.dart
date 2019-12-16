@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {

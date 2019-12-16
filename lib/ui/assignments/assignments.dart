@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/assignments/widgets/all_assignments/all_assignments.dart';
@@ -7,7 +6,7 @@ import 'package:school_life/ui/forms/add_assignnment/add_assignment.dart';
 import 'package:school_life/ui/settings/children/assignments-set.dart';
 import 'package:school_life/util/models/assignment.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 
 class AssignmentsPage extends StatefulWidget {
   @override
@@ -103,11 +102,8 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _handleAddAssignmentPress(context),
-        label: Text(
-          "Add Assignment",
-          style: GoogleFonts.openSans(),
-        ),
-        icon: Icon(Icons.add),
+        label: const Text("Add Assignment"),
+        icon: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
         primary: false,

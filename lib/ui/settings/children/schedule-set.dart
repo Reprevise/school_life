@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/widgets/appbar/custom_appbar.dart';
+import 'package:school_life/components/index.dart';
 
 class ScheduleSettingsPage extends StatelessWidget {
   @override

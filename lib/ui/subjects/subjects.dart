@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/forms/add_subject/add_subject.dart';
 import 'package:school_life/ui/settings/children/subjects-set.dart';
 import 'package:school_life/ui/subjects/widgets/all_subjects/all_subjects.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 
 class SubjectsPage extends StatefulWidget {
   @override
@@ -42,11 +41,8 @@ class _SubjectsPageState extends State<SubjectsPage> {
       drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddSubjectButtonPress,
-        label: Text(
-          "Add Subject",
-          style: GoogleFonts.openSans(),
-        ),
-        icon: Icon(Icons.add),
+        label: const Text("Add Subject"),
+        icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(

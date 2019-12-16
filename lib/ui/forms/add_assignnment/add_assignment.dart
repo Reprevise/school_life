@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:school_life/blocs/add_assignment/add_assignment_bloc.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 
 class AddAssignmentPage extends StatelessWidget {
   @override

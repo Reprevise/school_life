@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 
 class HelpFeedbackPage extends StatelessWidget {
   @override

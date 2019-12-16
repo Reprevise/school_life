@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/ui/forms/add_schedule/add_schedule.dart';
 import 'package:school_life/util/models/subject.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -36,11 +35,8 @@ class _SchedulePageState extends State<SchedulePage> {
       body: Container(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _handleAddScheduleButtonPress(context),
-        label: Text(
-          "Add Subject Schedule",
-          style: GoogleFonts.openSans(),
-        ),
-        icon: Icon(Icons.add),
+        label: const Text("Add Subject Schedule"),
+        icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );

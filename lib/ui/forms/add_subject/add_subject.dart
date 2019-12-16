@@ -6,7 +6,7 @@ import 'package:flutter_colorpicker/utils.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/add_subject/add_subject_bloc.dart';
-import 'package:school_life/widgets/index.dart';
+import 'package:school_life/components/index.dart';
 
 class AddSubjectPage extends StatelessWidget {
   @override
