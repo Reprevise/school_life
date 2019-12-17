@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'subjects_db.dart';
-import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/models/subject.dart';
 
 class RepositoryServiceSubject {
   static Future<List<Subject>> getAllSubjects() async {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:school_life/routes.dart';
-import 'package:school_life/util/models/drawer_item.dart';
+import 'package:school_life/models/drawer_item.dart';
 
 int _selectedIndex = 0;
 

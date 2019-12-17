@@ -1,9 +1,9 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/services/theme/theme_service.dart';
-import 'package:school_life/ui/settings/children/assignments-set.dart';
-import 'package:school_life/ui/settings/children/schedule-set.dart';
-import 'package:school_life/ui/settings/children/subjects-set.dart';
+import 'package:school_life/screens/settings/children/assignments-set.dart';
+import 'package:school_life/screens/settings/children/schedule-set.dart';
+import 'package:school_life/screens/settings/children/subjects-set.dart';
 import 'package:school_life/components/index.dart';
 
 class SettingsPage extends StatefulWidget {

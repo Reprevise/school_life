@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:school_life/routes.dart';
 import 'package:school_life/services/theme/theme_service.dart';
-import 'package:school_life/theme/themes.dart';
+import 'package:school_life/theme/style.dart';
 import 'package:school_life/custom_route_observer.dart';
 
 class App extends StatelessWidget {

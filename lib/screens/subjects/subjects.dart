@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/ui/forms/add_subject/add_subject.dart';
-import 'package:school_life/ui/settings/children/subjects-set.dart';
-import 'package:school_life/ui/subjects/widgets/all_subjects/all_subjects.dart';
-import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/screens/forms/add_subject/add_subject.dart';
+import 'package:school_life/screens/settings/children/subjects-set.dart';
+import 'package:school_life/screens/subjects/widgets/all_subjects/all_subjects.dart';
+import 'package:school_life/models/subject.dart';
 import 'package:school_life/components/index.dart';
 
 class SubjectsPage extends StatefulWidget {

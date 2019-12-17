@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/ui/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/models/subject.dart';
 
 class AddSubjectFormBloc extends FormBloc<String, String> {
   // ignore: close_sinks

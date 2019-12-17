@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
 import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/ui/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
 import 'package:school_life/util/date_utils.dart';
-import 'package:school_life/util/models/assignment.dart';
-import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/models/assignment.dart';
+import 'package:school_life/models/subject.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   // ignore: close_sinks

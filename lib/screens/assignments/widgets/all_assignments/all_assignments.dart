@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/util/models/assignment.dart';
-import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/models/assignment.dart';
+import 'package:school_life/models/subject.dart';
 
 class AllAssignments extends StatelessWidget {
   final Future<List<Assignment>> future;

@@ -1,5 +1,5 @@
 import 'assignments_db.dart';
-import 'package:school_life/util/models/assignment.dart';
+import 'package:school_life/models/assignment.dart';
 
 class RepositoryServiceAssignment {
   static Future<List<Assignment>> getAllAssignments() async {

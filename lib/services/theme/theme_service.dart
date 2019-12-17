@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:school_life/services/device/android_details.dart';
 import 'package:school_life/services/prefs_manager.dart';
-import 'package:school_life/util/models/user_settings.dart';
+import 'package:school_life/models/user_settings.dart';
 
 class ThemeService {
   static final ThemeService _themeService = ThemeService._internal();

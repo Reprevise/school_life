@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/utils.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:school_life/util/models/subject.dart';
+import 'package:school_life/models/subject.dart';
 
 class AllSubjects extends StatelessWidget {
   final Future<List<Subject>> future;
