@@ -1,7 +1,7 @@
-import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/services/subjects_db/subjects_db.dart';
+import 'package:school_life/services/databases/assignments_repository.dart';
+import 'package:school_life/services/databases/subjects_db.dart';
 import 'package:school_life/models/assignment.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 
 class Subject {
   int id;
@@ -23,25 +23,45 @@ class Subject {
   );
 
   Subject.fromJson(Map<String, dynamic> json) {
-    id = json[SubjectDBCreator.ID];
-    name = json[SubjectDBCreator.NAME];
-    room = json[SubjectDBCreator.ROOM];
-    building = json[SubjectDBCreator.BUILDING];
-    teacher = json[SubjectDBCreator.TEACHER];
-    colorValue = json[SubjectDBCreator.COLOR];
-    isDeleted = json[SubjectDBCreator.IS_DELETED] == 1;
+    id = json[SubjectsDBCreator.ID];
+    name = json[SubjectsDBCreator.NAME];
+    room = json[SubjectsDBCreator.ROOM];
+    building = json[SubjectsDBCreator.BUILDING];
+    teacher = json[SubjectsDBCreator.TEACHER];
+    colorValue = json[SubjectsDBCreator.COLOR];
+    isDeleted = json[SubjectsDBCreator.IS_DELETED] == 1;
   }
 
-  Map<String, dynamic> toJson() {
+  Map<String, dynamic> toDBJson() {
+    return {
+      SubjectsDBCreator.ID: id,
+      SubjectsDBCreator.NAME: name,
+      SubjectsDBCreator.ROOM: room,
+      SubjectsDBCreator.BUILDING: building,
+      SubjectsDBCreator.TEACHER: teacher,
+      SubjectsDBCreator.COLOR: colorValue,
+      SubjectsDBCreator.IS_DELETED: isDeleted ? 1 : 0,
+    };
+  }
+
+  Map<String, dynamic> toDBUpdatableValuesJson() {
+    return {
+      SubjectsDBCreator.NAME: name,
+      SubjectsDBCreator.ROOM: room,
+      SubjectsDBCreator.BUILDING: building,
+      SubjectsDBCreator.TEACHER: teacher,
+      SubjectsDBCreator.COLOR: colorValue,
+    };
+  }
+
+  Map<String, dynamic> toSelectJson() {
     return {'display': name, 'value': id};
   }
 
   Future<void> delete() async {
     List<Assignment> assignments =
-        await RepositoryServiceAssignment.getAllAssociatedAssignments(id);
-    for (Assignment _assignment in assignments) {
-      _assignment.delete();
-    }
-    RepositoryServiceSubject.deleteSubject(this);
+        await AssignmentsRepository.getAssignmentsFromSubjectID(id);
+    assignments.forEach((assignment) => assignment.delete());
+    SubjectsRepository.deleteSubject(this);
   }
 }

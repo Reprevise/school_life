@@ -1,9 +1,7 @@
-class DateUtils {
-  static DateTime getTodaysDate() {
-    final DateTime now = DateTime.now();
-    final int day = now.day;
-    final int month = now.month;
-    final int year = now.year;
-    return DateTime(year, month, day);
-  }
+import 'package:flutter/material.dart';
+
+extension BetterDates on DateTime {
+  DateTime get todaysDate => DateTime(year, month, day);
+  TimeOfDay get currentTime => TimeOfDay.fromDateTime(this);
+  DateTime addYears(int years) => this.add(Duration(days: 365 * years));
 }

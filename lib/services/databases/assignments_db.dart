@@ -1,11 +1,9 @@
-import 'dart:io';
-
-import 'package:path/path.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
-Database db;
+Database assignmentsDB;
 
-class AssignmentDBCreator {
+class AssignmentsDBCreator {
   static const ASSIGNMENTS_TABLE = 'assignments';
   static const ID = '_id';
   static const NAME = 'name';
@@ -28,22 +26,9 @@ class AssignmentDBCreator {
     await db.execute(subjectSql);
   }
 
-  Future<String> getDatabasePath(String dbName) async {
-    final databasePath = await getDatabasesPath();
-    final path = join(databasePath, dbName);
-
-    // make sure path exists
-    if (await Directory(dirname(path)).exists()) {
-      // await deleteDatabase(path);
-    } else {
-      await Directory(dirname(path)).create(recursive: true);
-    }
-    return path;
-  }
-
-  Future<void> initDatabase() async {
-    final path = await getDatabasePath('assignments_db');
-    db = await openDatabase(path, version: 1, onCreate: onCreate);
+  Future<void> initializeDatabase() async {
+    final path = await DatabaseHelper.getDBPath('assignments_db');
+    assignmentsDB = await openDatabase(path, version: 1, onCreate: onCreate);
   }
 
   Future<void> onCreate(Database db, int version) async {

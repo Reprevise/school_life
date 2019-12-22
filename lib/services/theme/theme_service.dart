@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/services/device/android_details.dart';
 import 'package:school_life/services/prefs_manager.dart';
 import 'package:school_life/models/user_settings.dart';
 
 class ThemeService {
-  static final ThemeService _themeService = ThemeService._internal();
-  static final AndroidDetails _details = AndroidDetails();
+  static AndroidDetails _details;
 
-  factory ThemeService() => _themeService;
-
-  ThemeService._internal(); // empty constructor
+  ThemeService() {
+    _details = getIt<AndroidDetails>();
+  } // empty constructor
 
   void saveCurrentBrightnessToDisk(Brightness brightness) {
-    prefsManager.saveString(UserSettingsKeys.THEME, _getBrightnessName(brightness));
+    getIt<PrefsManager>()
+        .saveString(UserSettingsKeys.THEME, _getBrightnessName(brightness));
   }
 
   static void updateColorsFromBrightness(Brightness brightness) {

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/components/index.dart';
+import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/forms/add_subject/add_subject.dart';
 import 'package:school_life/screens/settings/children/subjects-set.dart';
 import 'package:school_life/screens/subjects/widgets/all_subjects/all_subjects.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/components/index.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 
 class SubjectsPage extends StatefulWidget {
   @override
@@ -17,12 +17,11 @@ class _SubjectsPageState extends State<SubjectsPage> {
   @override
   void initState() {
     super.initState();
-    future = RepositoryServiceSubject.getAllSubjects();
+    future = SubjectsRepository.getAllSubjects();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("subjects rebuilding");
     return Scaffold(
       appBar: CustomAppBar(
         "Subjects",
@@ -99,7 +98,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
 
   void refreshSubjects() {
     setState(() {
-      future = RepositoryServiceSubject.getAllSubjects();
+      future = SubjectsRepository.getAllSubjects();
     });
   }
 }

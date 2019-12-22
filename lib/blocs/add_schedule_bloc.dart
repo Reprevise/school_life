@@ -1,8 +1,10 @@
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AddScheduleFormBloc extends FormBloc<String, dynamic> {
+  AddScheduleFormBloc() : super(isLoading: true);
+
   // ignore: close_sinks
   final subjectField = SelectFieldBloc(
     validators: [FieldBlocValidators.requiredSelectFieldBloc],
@@ -17,11 +19,12 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   // ignore: close_sinks
   final sameTimeEveryday = BooleanFieldBloc(initialValue: false);
 
-  AddScheduleFormBloc() : super(isLoading: true);
-
   @override
-  List<FieldBloc> get fieldBlocs =>
-      [subjectField, scheduleDaysField, sameTimeEveryday];
+  List<FieldBloc> get fieldBlocs => [
+        subjectField,
+        scheduleDaysField,
+        sameTimeEveryday,
+      ];
 
   @override
   Stream<FormBlocState<String, dynamic>> onLoading() async* {
@@ -39,9 +42,9 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
-    for (int i = 0; i < subjects.length; i++) {
-      subjectField.addItem(subjects[i].name);
+    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+    for (Subject subject in subjects) {
+      subjectField.addItem(subject.name);
     }
     subjectField.updateInitialValue(subjects.first.name);
     yield state.toLoaded();

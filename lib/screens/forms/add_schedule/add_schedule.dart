@@ -54,6 +54,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                     children: <Widget>[
                       _FirstPage(_formBloc),
                       _SecondPage(_formBloc),
+                      _ThirdPage(_formBloc),
                     ],
                   );
                 }
@@ -67,7 +68,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
 }
 
 class _FirstPage extends StatefulWidget {
-  final formBloc;
+  final AddScheduleFormBloc formBloc;
 
   _FirstPage(this.formBloc);
 
@@ -148,7 +149,7 @@ class __FirstPageState extends State<_FirstPage>
 }
 
 class _SecondPage extends StatefulWidget {
-  final formBloc;
+  final AddScheduleFormBloc formBloc;
 
   _SecondPage(this.formBloc);
 
@@ -189,6 +190,51 @@ class __SecondPageState extends State<_SecondPage>
                   ),
                 ),
               ),
+            ),
+          ),
+        ),
+        PageNavigator(_controller),
+      ],
+    );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+}
+
+class _ThirdPage extends StatefulWidget {
+  final AddScheduleFormBloc formBloc;
+
+  _ThirdPage(this.formBloc);
+
+  @override
+  _ThirdPageState createState() => _ThirdPageState();
+}
+
+class _ThirdPageState extends State<_ThirdPage>
+    with AutomaticKeepAliveClientMixin<_ThirdPage> {
+  @override
+  Widget build(BuildContext context) {
+    super.build(context);
+    num cWidth = MediaQuery.of(context).size.width * 0.8;
+    return Column(
+      children: <Widget>[
+        Container(
+          width: cWidth,
+          child: Text(
+            "What times do you have this subject?",
+            textAlign: TextAlign.left,
+            style: Theme.of(context).textTheme.display2,
+          ),
+        ),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                // TODO start and end times here
+              ],
             ),
           ),
         ),

@@ -23,22 +23,17 @@ class AllAssignments extends StatelessWidget {
         switch (snapshot.connectionState) {
           case ConnectionState.waiting:
             return Center(child: CircularProgressIndicator());
-          default:
-            if (!snapshot.hasData)
-              return Center(child: CircularProgressIndicator());
-            if (snapshot.data.length > 0) {
+          case ConnectionState.done:
+            if (snapshot.hasData && snapshot.data.isNotEmpty) {
               return Column(
                 children: snapshot.data.map(
                   (assignment) {
-                    if (assignmentSubjectsByID == null)
-                      return Center(child: CircularProgressIndicator());
                     Subject currentSubject =
                         assignmentSubjectsByID[assignment.subjectID];
                     return AssignmentItem(
-                      assignment: assignment,
-                      assignmentSubject: currentSubject,
-                      onLongPress: () =>
-                          deleteAssignmentPopup(context, assignment),
+                      assignment,
+                      () => deleteAssignmentPopup(context, assignment),
+                      currentSubject,
                     );
                   },
                 ).toList(),
@@ -71,6 +66,9 @@ class AllAssignments extends StatelessWidget {
                 ],
               );
             }
+            break;
+          default:
+            return Center(child: Text("Something went wrong :("));
         }
       },
     );
@@ -131,18 +129,18 @@ class AssignmentItem extends StatelessWidget {
   final Function onLongPress;
   final Subject assignmentSubject;
 
-  AssignmentItem({
-    @required this.assignment,
+  const AssignmentItem(
+    this.assignment,
     this.onLongPress,
     this.assignmentSubject,
-  });
+  );
 
   @override
   Widget build(BuildContext context) {
-    final textStyle =
-        Theme.of(context).textTheme.display1.copyWith(color: Colors.black);
-    final String date =
-        "${assignment.dueDate.year}-${assignment.dueDate.month}-${assignment.dueDate.day}";
+    final textTheme = Theme.of(context).textTheme;
+    final textStyle = textTheme.display1.copyWith(color: Colors.black);
+    final DateTime dueDate = assignment.dueDate;
+    final String date = "${dueDate.year}-${dueDate.month}-${dueDate.day}";
     return Card(
       color: Color(assignmentSubject.colorValue),
       elevation: 3.0,
@@ -164,7 +162,7 @@ class AssignmentItem extends StatelessWidget {
                       assignment.name,
                       overflow: TextOverflow.clip,
                       maxLines: 1,
-                      style: Theme.of(context).textTheme.display2.copyWith(color: Colors.black),
+                      style: textTheme.display3.copyWith(color: Colors.black),
                     )
                   ],
                 ),
@@ -178,7 +176,7 @@ class AssignmentItem extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 16.0, bottom: 8),
+                padding: const EdgeInsets.only(left: 16.0),
                 child: Row(
                   children: <Widget>[
                     Text(date, style: textStyle),

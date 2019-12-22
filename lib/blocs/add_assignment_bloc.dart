@@ -1,16 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/blocs/validators.dart';
 import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/services/databases/assignments_repository.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/date_utils.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
+  Map<int, Subject> subjectsFromIDs = <int, Subject>{};
+
+  AddAssignmentFormBloc() : super(isLoading: true);
+
   // ignore: close_sinks
   final nameField = TextFieldBloc(
-    validators: [FieldBlocValidators.requiredTextFieldBloc],
+    validators: [
+      FieldBlocValidators.requiredTextFieldBloc,
+      (val) => Validators.maxLength(val, 22),
+    ],
     initialValue: "",
   );
   // ignore: close_sinks
@@ -18,7 +26,8 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     validators: [
       FieldBlocValidators.requiredInputFieldBloc,
       (date) {
-        if (date.isBefore(DateUtils.getTodaysDate())) {
+        Validators.maxLength(date.toString(), 15);
+        if (date.isBefore(DateTime.now().todaysDate)) {
           return "Can't be before today!";
         }
         return null;
@@ -32,8 +41,6 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   );
   // ignore: close_sinks
   final detailsField = TextFieldBloc(initialValue: "");
-
-  AddAssignmentFormBloc() : super(isLoading: true);
 
   @override
   List<FieldBloc> get fieldBlocs =>
@@ -51,19 +58,17 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
 
   @override
   Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
-    print("submitting");
     // get the number of subjects, returns # of subjects + 1
-    int _nextID = await RepositoryServiceAssignment.assignmentsCount();
+    int _nextID = await AssignmentsRepository.assignmentsCount();
     // trimmed assignment name
     String _assignmentName = nameField.value.trim();
     // trimmed due date
     DateTime _dueDate = dueDateField.value;
     DateTime _newDate = DateTime(_dueDate.year, _dueDate.month, _dueDate.day);
     // subject field value
-    String _subjectName = subjectField.value;
-    Subject _subject =
-        await RepositoryServiceSubject.getSubjectFromName(_subjectName);
-    int _subjectID = _subject.id;
+    print(subjectField.value);
+    var _selectedSubject = subjectField.value;
+    int _subjectID = _selectedSubject[1];
     // trimmed details text
     String _detailsText = detailsField.value.trim();
     // create new assignment based on text from form
@@ -75,14 +80,14 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
       _detailsText,
       false, // isDeleted value, always false when creating
     );
-    await RepositoryServiceAssignment.addAssignment(newAssignment);
+    AssignmentsRepository.addAssignment(newAssignment);
     yield state.toSuccess();
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
+    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
     for (int i = 0; i < subjects.length; i++) {
-      subjectField.addItem(subjects[i].name);
+      subjectField.addItem([subjects[i].name, subjects[i].id]);
     }
     subjectField.updateInitialValue(subjects.first.name);
     yield state.toLoaded();

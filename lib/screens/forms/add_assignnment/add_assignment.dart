@@ -5,9 +5,8 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:school_life/blocs/blocs.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/models/subject.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/util/date_utils.dart';
 
 class AddAssignmentPage extends StatelessWidget {
   @override
@@ -40,15 +39,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
   List<FocusNode> get nodes =>
       [subjectFocus, detailsFocus, dueDateFocus, assignmentFocus];
 
-  List<Map<String, dynamic>> _subjectsMap;
-
   AddAssignmentFormBloc _formBloc;
-
-  @override
-  void initState() {
-    super.initState();
-    _setSubjectsMap();
-  }
 
   @override
   void dispose() {
@@ -58,20 +49,8 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
     super.dispose();
   }
 
-  void _setSubjectsMap() async {
-    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
-    List<Map<String, dynamic>> temp = [];
-    for (int i = 0; i < subjects.length; i++) {
-      temp.add(subjects[i].toJson());
-    }
-    setState(() {
-      _subjectsMap = temp;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (_subjectsMap == null) return Center(child: CircularProgressIndicator());
     final format = DateFormat("yyyy-MM-dd");
 
     return BlocProvider<AddAssignmentFormBloc>(
@@ -127,8 +106,6 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                 return DateTimeField(
                                   format: format,
                                   focusNode: dueDateFocus,
-                                  onFieldSubmitted: (value) =>
-                                      _formBloc.dueDateField.updateValue(value),
                                   textInputAction: TextInputAction.done,
                                   decoration: InputDecoration(
                                     labelText: "Due date (${format.pattern})",
@@ -147,14 +124,10 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                   onShowPicker: (context, currentValue) {
                                     return showDatePicker(
                                       context: context,
-                                      firstDate: DateTime.now().subtract(
-                                        Duration(days: 1),
-                                      ),
+                                      firstDate: DateTime.now().todaysDate,
                                       initialDate:
                                           currentValue ?? DateTime.now(),
-                                      lastDate: DateTime.now().add(
-                                        Duration(days: 365 * 5),
-                                      ),
+                                      lastDate: DateTime.now().addYears(5),
                                     );
                                   },
                                   onChanged: (value) {
@@ -170,7 +143,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                 100,
                             focusNode: subjectFocus,
                             nextFocusNode: detailsFocus,
-                            itemBuilder: (context, value) => value,
+                            itemBuilder: (context, value) => value[0],
                             showEmptyItem: false,
                             decoration: InputDecoration(
                               labelText: "Subject",

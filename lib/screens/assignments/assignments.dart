@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/services/assignments_db/repo_service_assignment.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
+import 'package:school_life/components/index.dart';
+import 'package:school_life/models/assignment.dart';
+import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/widgets/all_assignments/all_assignments.dart';
 import 'package:school_life/screens/forms/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/settings/children/assignments-set.dart';
-import 'package:school_life/models/assignment.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/components/index.dart';
+import 'package:school_life/services/databases/assignments_repository.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AssignmentsPage extends StatefulWidget {
   @override
@@ -21,13 +21,13 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   @override
   void initState() {
     super.initState();
-    future = RepositoryServiceAssignment.getAllAssignments();
+    future = AssignmentsRepository.getAllAssignments();
     _doesUserHaveSubjects();
     _getAssignmentSubjects();
   }
 
   void _doesUserHaveSubjects() async {
-    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
+    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
     if (subjects.isNotEmpty) {
       setState(() {
         _userHasSubjects = true;
@@ -47,12 +47,9 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   Future<List<int>> _getSubjectsList() async {
     // get list of assignments
     final List<Assignment> assignments = await future;
-    // create temporary list that holds the ids of all assignments
-    final List<int> assignmentSubjectIDs = [];
-    // loop through all the assignments to put all ids in above list
-    for (Assignment assignment in assignments) {
-      assignmentSubjectIDs.add(assignment.subjectID);
-    }
+    // create list that holds the ids of all assignments
+    final List<int> assignmentSubjectIDs =
+        assignments.map((assignment) => assignment.subjectID).toList();
     return assignmentSubjectIDs;
   }
 
@@ -63,7 +60,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     // loop through given subject ids
     for (int subjectID in assignmentSubjectIDs) {
       // get subject from current id
-      final _subject = await RepositoryServiceSubject.getSubject(subjectID);
+      final _subject = await SubjectsRepository.getSubject(subjectID);
       // assign subject id to its subject
       subjectsByID[subjectID] = _subject;
     }
@@ -77,12 +74,14 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
 
   void refreshAssignments() {
     setState(() {
-      future = RepositoryServiceAssignment.getAllAssignments();
+      future = AssignmentsRepository.getAllAssignments();
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (assignmentSubjectsByID == null)
+      return Center(child: CircularProgressIndicator());
     return Scaffold(
       appBar: CustomAppBar(
         "Assignments",

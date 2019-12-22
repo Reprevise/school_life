@@ -1,5 +1,6 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/services/theme/theme_service.dart';
 import 'package:school_life/screens/settings/children/assignments-set.dart';
 import 'package:school_life/screens/settings/children/schedule-set.dart';
@@ -13,12 +14,10 @@ class SettingsPage extends StatefulWidget {
 
 class _SettingsPageState extends State<SettingsPage> {
   Brightness _currentBrightness;
-  ThemeService _themeService;
 
   @override
   void initState() {
     super.initState();
-    _themeService = ThemeService();
     _currentBrightness = DynamicTheme.of(context).brightness;
   }
 
@@ -27,7 +26,7 @@ class _SettingsPageState extends State<SettingsPage> {
     setState(() {
       _currentBrightness = newBrightness;
     });
-    _themeService.saveCurrentBrightnessToDisk(newBrightness);
+    getIt<ThemeService>().saveCurrentBrightnessToDisk(newBrightness);
     DynamicTheme.of(context).setBrightness(newBrightness);
   }
 

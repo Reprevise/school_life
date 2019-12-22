@@ -50,7 +50,11 @@ class Themes {
       textTheme: ButtonTextTheme.accent,
     ),
     textTheme: TextTheme(
-      body1: TextStyle(color: Colors.black),
+      body1: GoogleFonts.rubik(
+        textStyle: TextStyle(
+          color: Colors.black,
+        ),
+      ),
       button: GoogleFonts.openSans(
         fontWeight: FontWeight.bold,
         textStyle: TextStyle(color: Colors.black),
@@ -128,7 +132,11 @@ class Themes {
     ),
     applyElevationOverlayColor: true,
     textTheme: TextTheme(
-      body1: TextStyle(color: Colors.white),
+      body1: GoogleFonts.rubik(
+        textStyle: TextStyle(
+          color: Colors.white,
+        ),
+      ),
       button: GoogleFonts.openSans(
         fontWeight: FontWeight.bold,
         textStyle: TextStyle(color: Colors.black),
@@ -152,7 +160,7 @@ class Themes {
         fontSize: 24.0,
         fontWeight: FontWeight.bold,
         textStyle: TextStyle(
-          color: Colors.black,
+          color: Colors.white,
         ),
       ),
     ),

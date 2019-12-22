@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
-import 'package:flutter_colorpicker/utils.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/blocs/add_subject/add_subject_bloc.dart';
+import 'package:school_life/blocs/blocs.dart';
 import 'package:school_life/components/index.dart';
 
 class AddSubjectPage extends StatelessWidget {
@@ -148,10 +147,7 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
                               padding: const EdgeInsets.only(left: 8.0),
                               child: FlatButton(
                                 color: _formBloc.currentColor,
-                                textColor:
-                                    useWhiteForeground(_formBloc?.currentColor)
-                                        ? Color(0xffffffff)
-                                        : Color(0xff000000),
+                                textColor: Color(0xff000000),
                                 child: Text("Change color"),
                                 onPressed: () => showDialog(
                                   context: context,

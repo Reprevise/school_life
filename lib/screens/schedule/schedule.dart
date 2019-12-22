@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/services/subjects_db/repo_service_subject.dart';
-import 'package:school_life/screens/forms/add_schedule/add_schedule.dart';
-import 'package:school_life/models/subject.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/models/subject.dart';
+import 'package:school_life/screens/forms/add_schedule/add_schedule.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -19,7 +19,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void _doesUserHaveSubjects() async {
-    List<Subject> subjects = await RepositoryServiceSubject.getAllSubjects();
+    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
     if (subjects.isNotEmpty) {
       setState(() {
         _userHasSubjects = true;

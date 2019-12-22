@@ -1,10 +1,11 @@
+import 'package:school_life/main.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PrefsManager {
   SharedPreferences prefs;
 
   PrefsManager() {
-    _init();
+    _init().then((_) => getIt.signalReady(this));
   }
 
   Future<void> _init() async {
@@ -12,19 +13,17 @@ class PrefsManager {
   }
 
   saveString(String key, String value) async {
-    if (prefs == null) await _init();
+    prefs ?? await _init();
     prefs.setString(key, value);
   }
 
   saveStringList(String key, List<String> value) async {
-    if (prefs == null) await _init();
+    prefs ?? await _init();
     prefs.setStringList(key, value);
   }
 
   Future<String> getString(String key) async {
-    if (prefs == null) await _init();
+    prefs ?? await _init();
     return prefs.getString(key);
   }
 }
-
-final PrefsManager prefsManager = PrefsManager();

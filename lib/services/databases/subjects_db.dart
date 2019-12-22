@@ -1,11 +1,9 @@
-import 'dart:io';
-
-import 'package:path/path.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 import 'package:sqflite/sqflite.dart';
 
-Database db;
+Database subjectsDB;
 
-class SubjectDBCreator {
+class SubjectsDBCreator {
   static const SUBJECTS_TABLE = 'subjects';
   static const ID = '_id';
   static const NAME = 'name';
@@ -30,22 +28,9 @@ class SubjectDBCreator {
     await db.execute(subjectSql);
   }
 
-  Future<String> getDatabasePath(String dbName) async {
-    final databasePath = await getDatabasesPath();
-    final path = join(databasePath, dbName);
-
-    // make sure path exists
-    if (await Directory(dirname(path)).exists()) {
-      // await deleteDatabase(path);
-    } else {
-      await Directory(dirname(path)).create(recursive: true);
-    }
-    return path;
-  }
-
   Future<void> initDatabase() async {
-    final path = await getDatabasePath('subjects_db');
-    db = await openDatabase(path, version: 1, onCreate: onCreate);
+    final path = await DatabaseHelper.getDBPath('subjects_db');
+    subjectsDB = await openDatabase(path, version: 1, onCreate: onCreate);
   }
 
   Future<void> onCreate(Database db, int version) async {

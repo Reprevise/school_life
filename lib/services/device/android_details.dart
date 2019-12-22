@@ -1,19 +1,17 @@
 import 'package:device_info/device_info.dart';
 import 'package:flutter/services.dart';
+import 'package:school_life/main.dart';
 
 class AndroidDetails {
-  static final AndroidDetails _instance = AndroidDetails._internal();
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = {};
   bool isInitialized = false;
 
-  factory AndroidDetails() => _instance;
-
-  AndroidDetails._internal() {
-    _init();
+  AndroidDetails() {
+    _init().then((_) => getIt.signalReady(this));
   }
 
-  _init() async {
+  Future<void> _init() async {
     try {
       AndroidDeviceInfo _deviceInfo = await deviceInfoPlugin.androidInfo;
       _deviceData = _getDeviceData(_deviceInfo);
