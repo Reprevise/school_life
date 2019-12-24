@@ -25,7 +25,6 @@ void showNoSubjectsDialog(BuildContext context) {
 void showDeleteAssignmentDialog(
   BuildContext context,
   Assignment assignment,
-  void Function(Assignment) deleteAssignment,
 ) {
   showDialog(
     context: context,
@@ -57,8 +56,8 @@ void showDeleteAssignmentDialog(
               "Yes",
               style: TextStyle(color: _contentStyleColor),
             ),
-            onPressed: () {
-              deleteAssignment(assignment);
+            onPressed: () async {
+              await assignment.delete();
               Navigator.pop(context);
             },
           ),
@@ -99,11 +98,7 @@ void showTooManySubjectsDialog(BuildContext context) {
   );
 }
 
-void showDeleteSubjectDialog(
-  BuildContext context,
-  Subject subject,
-  void Function(Subject) deleteSubject,
-) {
+void showDeleteSubjectDialog(BuildContext context, Subject subject) {
   showDialog(
     context: context,
     barrierDismissible: true,
@@ -134,8 +129,8 @@ void showDeleteSubjectDialog(
                 color: Theme.of(context).dialogTheme.contentTextStyle.color,
               ),
             ),
-            onPressed: () {
-              deleteSubject(subject);
+            onPressed: () async {
+              await subject.delete();
               Navigator.pop(context);
             },
           ),

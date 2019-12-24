@@ -3,21 +3,17 @@ import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/subjects_db.dart';
 
 class SubjectsRepository {
-  static Future<List<Subject>> getAllSubjects() async {
-    final data = await subjectsDB.query(
-      SubjectsDBCreator.SUBJECTS_TABLE,
-      where: '${SubjectsDBCreator.IS_DELETED} = 0',
-    );
-    List<Subject> subjects =
-        data.map((node) => Subject.fromJson(node)).toList();
+  static int get newID => getAllSubjects().length;
 
-    return subjects;
+  static List<Subject> getAllSubjects() {
+    final List<Subject> data = subjectsDB.values.toList();
+    return data ?? [];
   }
 
   @deprecated
   static Future<List<Color>> getAvailableColors(
       List<Color> wantedColors) async {
-    final List<Subject> allSubjects = await getAllSubjects();
+    final List<Subject> allSubjects = getAllSubjects();
     if (allSubjects.isEmpty) return wantedColors;
     final List<int> subjectColorValues =
         allSubjects.map((subject) => subject.colorValue).toList();
@@ -33,8 +29,8 @@ class SubjectsRepository {
     return availableColors;
   }
 
-  static Future<Map<int, Subject>> getSubjectsMap() async {
-    final List<Subject> allSubjects = await getAllSubjects();
+  static Map<int, Subject> getSubjectsMap() {
+    final List<Subject> allSubjects = getAllSubjects();
     Map<int, Subject> subjectsByID = {};
     for (Subject subject in allSubjects) {
       subjectsByID[subject.id] = subject;
@@ -43,40 +39,18 @@ class SubjectsRepository {
   }
 
   static Future<Subject> getSubject(int id) async {
-    final data = await subjectsDB.query(SubjectsDBCreator.SUBJECTS_TABLE,
-        where: '${SubjectsDBCreator.ID} = ?', whereArgs: [id]);
-
-    final subject = Subject.fromJson(data.first);
-    return subject;
+    return subjectsDB.getAt(id);
   }
 
   static void addSubject(Subject subject) {
-    subjectsDB.insert(SubjectsDBCreator.SUBJECTS_TABLE, subject.toDBJson());
+    subjectsDB.add(subject);
   }
 
   static void deleteSubject(Subject subject) {
-    subjectsDB.update(
-      SubjectsDBCreator.SUBJECTS_TABLE,
-      {SubjectsDBCreator.IS_DELETED: 1},
-      where: '${SubjectsDBCreator.ID} = ?',
-      whereArgs: [subject.id],
-    );
+    subjectsDB.delete(subject.id);
   }
 
   static Future<void> updateSubject(Subject subject) async {
-    subjectsDB.update(
-      SubjectsDBCreator.SUBJECTS_TABLE,
-      subject.toDBUpdatableValuesJson(),
-      where: '${SubjectsDBCreator.ID} = ?',
-      whereArgs: [subject.id],
-    );
-  }
-
-  static Future<int> getNewSubjectID() async {
-    final sql = 'SELECT COUNT(*) FROM ${SubjectsDBCreator.SUBJECTS_TABLE}';
-    final data = await subjectsDB.rawQuery(sql);
-
-    int count = data[0].values.first;
-    return count++;
+    subjectsDB.put(subject.id, subject);
   }
 }

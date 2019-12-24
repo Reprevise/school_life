@@ -15,20 +15,18 @@ class AssignmentsPage extends StatefulWidget {
 }
 
 class _AssignmentsPageState extends State<AssignmentsPage> {
-  Future<List<Assignment>> _future;
   Map<int, Subject> _assignmentSubjectsByID;
   bool _userHasSubjects = false;
 
   @override
   void initState() {
     super.initState();
-    _future = AssignmentsRepository.getAllAssignments();
     _doesUserHaveSubjects();
     _getSubjectsMap();
   }
 
-  void _doesUserHaveSubjects() async {
-    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+  void _doesUserHaveSubjects() {
+    List<Subject> subjects = SubjectsRepository.getAllSubjects();
     if (subjects.isNotEmpty) {
       setState(() {
         _userHasSubjects = true;
@@ -37,21 +35,9 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   }
 
   void _getSubjectsMap() async {
-    Map<int, Subject> subjectsByID = await SubjectsRepository.getSubjectsMap();
+    Map<int, Subject> subjectsByID = SubjectsRepository.getSubjectsMap();
     setState(() {
       _assignmentSubjectsByID = subjectsByID;
-    });
-  }
-
-  void deleteAssignment(Assignment assignment) async {
-    await assignment.delete();
-    refreshAssignments();
-  }
-
-  void refreshAssignments() {
-    Future<List<Assignment>> assignments = AssignmentsRepository.getAllAssignments();
-    setState(() {
-      _future = assignments;
     });
   }
 
@@ -87,9 +73,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         padding: EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
           child: AssignmentsList(
-            _future,
             _assignmentSubjectsByID,
-            deleteAssignment,
           ),
         ),
       ),

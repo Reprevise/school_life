@@ -1,15 +1,25 @@
+import 'package:hive/hive.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/services/databases/subjects_db.dart';
 import 'package:school_life/models/assignment.dart';
-import 'package:school_life/services/databases/subjects_repository.dart';
 
-class Subject {
+part 'subject.g.dart';
+
+@HiveType()
+class Subject extends HiveObject {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String name;
+  @HiveField(2)
   String room;
+  @HiveField(3)
   String building;
+  @HiveField(4)
   String teacher;
+  @HiveField(5)
   int colorValue;
+  @HiveField(6)
   bool isDeleted;
 
   Subject(
@@ -54,14 +64,15 @@ class Subject {
     };
   }
 
-  Map<String, dynamic> toSelectJson() {
+  Map<String, dynamic> toDropdownJson() {
     return {'display': name, 'value': id};
   }
 
+  @override
   Future<void> delete() async {
     List<Assignment> assignments =
         await AssignmentsRepository.getAssignmentsFromSubjectID(id);
     assignments.forEach((assignment) => assignment.delete());
-    SubjectsRepository.deleteSubject(this);
+    return super.delete();
   }
 }

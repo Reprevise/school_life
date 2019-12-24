@@ -64,16 +64,14 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   @override
   Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    int _nextID = await AssignmentsRepository.assignmentsCount();
+    int _nextID = AssignmentsRepository.newID;
     // trimmed assignment name
     String _assignmentName = nameField.value.trim();
     // trimmed due date
     DateTime _dueDate = dueDateField.value;
     DateTime _newDate = DateTime(_dueDate.year, _dueDate.month, _dueDate.day);
     // subject field value
-    print(subjectField.value);
-    var _selectedSubject = subjectField.value;
-    int _subjectID = _selectedSubject['value'];
+    int _subjectID = subjectField.value['value'];
     // trimmed details text
     String _detailsText = detailsField.value.trim();
     // create new assignment based on text from form
@@ -90,14 +88,13 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   }
 
   Future<void> _getAssignmentNames() async {
-    List<Assignment> assignments =
-        await AssignmentsRepository.getAllAssignments();
+    List<Assignment> assignments = AssignmentsRepository.getAllAssignments();
     _assignmentNames =
         assignments.map((assignment) => assignment.name.toLowerCase()).toList();
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+    List<Subject> subjects = SubjectsRepository.getAllSubjects();
     for (Subject subject in subjects) {
       subjectField.addItem({'name': subject.name, 'value': subject.id});
     }

@@ -5,12 +5,10 @@ import 'package:school_life/models/subject.dart';
 
 class AssignmentItem extends StatelessWidget {
   final Assignment assignment;
-  final void Function(Assignment) deleteAssignment;
   final Subject assignmentSubject;
 
   const AssignmentItem(
     this.assignment,
-    this.deleteAssignment,
     this.assignmentSubject,
   );
 
@@ -28,7 +26,6 @@ class AssignmentItem extends StatelessWidget {
         onLongPress: () => showDeleteAssignmentDialog(
           context,
           assignment,
-          deleteAssignment,
         ),
         child: Container(
           height: 100,

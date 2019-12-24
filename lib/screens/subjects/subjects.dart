@@ -13,13 +13,6 @@ class SubjectsPage extends StatefulWidget {
 }
 
 class _SubjectsPageState extends State<SubjectsPage> {
-  Future<List<Subject>> future;
-
-  @override
-  void initState() {
-    super.initState();
-    future = SubjectsRepository.getAllSubjects();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,14 +41,14 @@ class _SubjectsPageState extends State<SubjectsPage> {
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
-          child: SubjectsList(future, deleteSubject),
+          child: SubjectsList(),
         ),
       ),
     );
   }
 
   Future<void> _handleAddSubjectButtonPress(BuildContext context) async {
-    final List<Subject> subjectList = await future;
+    final List<Subject> subjectList = SubjectsRepository.getAllSubjects();
     if (subjectList.length >= 19) {
       showTooManySubjectsDialog(context);
       return;
@@ -66,17 +59,5 @@ class _SubjectsPageState extends State<SubjectsPage> {
         builder: (context) => AddSubjectPage(),
       ),
     );
-  }
-
-  void deleteSubject(Subject subject) async {
-    await subject.delete();
-    refreshSubjects();
-  }
-
-  void refreshSubjects() {
-    Future<List<Subject>> subjects = SubjectsRepository.getAllSubjects();
-    setState(() {
-      future = subjects;
-    });
   }
 }

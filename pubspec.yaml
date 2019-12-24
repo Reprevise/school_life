@@ -9,8 +9,6 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  sqflite: any
-  path: any
   intl: any
   outline_material_icons: any
   form_bloc: ^0.6.0
@@ -21,12 +19,17 @@ dependencies:
   shared_preferences: ^0.5.4+1
   flutter_statusbarcolor: ^0.2.2
   flutter_colorpicker: any
-  table_calendar: ^2.1.0
+  flutter_calendar_carousel: ^1.4.10
   device_info: ^0.4.1+3
   google_fonts: ^0.2.0
   get_it: ^3.0.3
+  hive: ^1.2.0
+  hive_flutter: ^0.2.1
+  path_provider: ^1.5.1
 
 dev_dependencies:
+  hive_generator: ^0.6.0
+  build_runner: ^1.7.2
   flutter_test:
     sdk: flutter
 

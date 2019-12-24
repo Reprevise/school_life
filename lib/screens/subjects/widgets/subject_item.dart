@@ -4,9 +4,8 @@ import 'package:school_life/models/subject.dart';
 
 class SubjectItem extends StatelessWidget {
   final Subject subject;
-  final Function(Subject) deleteSubject;
 
-  const SubjectItem(this.subject, this.deleteSubject);
+  const SubjectItem(this.subject);
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +80,7 @@ class SubjectItem extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {},
-        onLongPress: () => showDeleteSubjectDialog(context, subject, deleteSubject),
+        onLongPress: () => showDeleteSubjectDialog(context, subject),
         child: Container(
           height: 100,
           width: 375,

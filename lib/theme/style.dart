@@ -56,6 +56,9 @@ class Themes {
       ),
       body2: GoogleFonts.muli(
         fontWeight: FontWeight.bold,
+        textStyle: TextStyle(
+          color: Colors.black,
+        ),
       ),
       button: GoogleFonts.openSans(
         fontWeight: FontWeight.bold,
@@ -137,6 +140,12 @@ class Themes {
       body1: GoogleFonts.rubik(
         textStyle: TextStyle(
           color: Colors.white,
+        ),
+      ),
+      body2: GoogleFonts.muli(
+        fontWeight: FontWeight.bold,
+        textStyle: TextStyle(
+          color: Colors.black,
         ),
       ),
       button: GoogleFonts.openSans(

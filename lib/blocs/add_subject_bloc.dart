@@ -82,7 +82,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    int nextID = await SubjectsRepository.getNewSubjectID();
+    int nextID = SubjectsRepository.newID;
     // trimmed subject name
     String subjectName = nameField.value.trim();
     // get room field text
