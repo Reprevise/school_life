@@ -22,7 +22,6 @@ class Themes {
       labelStyle: TextStyle(
         color: Colors.black,
         fontWeight: FontWeight.bold,
-        letterSpacing: .5,
       ),
       border: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.grey[600]),
@@ -54,6 +53,9 @@ class Themes {
         textStyle: TextStyle(
           color: Colors.black,
         ),
+      ),
+      body2: GoogleFonts.muli(
+        fontWeight: FontWeight.bold,
       ),
       button: GoogleFonts.openSans(
         fontWeight: FontWeight.bold,

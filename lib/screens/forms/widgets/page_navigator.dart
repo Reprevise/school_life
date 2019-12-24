@@ -9,6 +9,12 @@ class PageNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final buttonShape = RoundedRectangleBorder(
+            borderRadius: BorderRadius.horizontal(
+              left: Radius.circular(15),
+              right: Radius.circular(15),
+            ),
+          );
     return ButtonBar(
       alignment: MainAxisAlignment.spaceBetween,
       buttonMinWidth: 100,
@@ -23,12 +29,7 @@ class PageNavigator extends StatelessWidget {
               curve: Curves.easeIn,
             );
           },
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(15),
-              right: Radius.circular(15),
-            ),
-          ),
+          shape: buttonShape,
         ),
         FlatButton(
           color: Colors.blue[800],
@@ -40,12 +41,7 @@ class PageNavigator extends StatelessWidget {
               curve: Curves.easeIn,
             );
           },
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(15),
-              right: Radius.circular(15),
-            ),
-          ),
+          shape: buttonShape,
         ),
       ],
     );

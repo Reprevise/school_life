@@ -1,6 +1,6 @@
-import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:intl/intl.dart';
@@ -31,20 +31,10 @@ class AddAssignmentForm extends StatefulWidget {
 }
 
 class _AddAssignmentFormState extends State<AddAssignmentForm> {
-  final FocusNode subjectFocus = FocusNode();
-  final FocusNode detailsFocus = FocusNode();
-  final FocusNode dueDateFocus = FocusNode();
-  final FocusNode assignmentFocus = FocusNode();
-
-  List<FocusNode> get nodes =>
-      [subjectFocus, detailsFocus, dueDateFocus, assignmentFocus];
-
   AddAssignmentFormBloc _formBloc;
 
   @override
   void dispose() {
-    // dispose of all FocusNode's
-    nodes.forEach((node) => node.dispose());
     _formBloc?.close();
     super.dispose();
   }
@@ -82,8 +72,6 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                           TextFieldBlocBuilder(
                             textFieldBloc: _formBloc.nameField,
                             autofocus: true,
-                            focusNode: assignmentFocus,
-                            nextFocusNode: dueDateFocus,
                             textInputAction: TextInputAction.next,
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
@@ -103,34 +91,13 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                             child: BlocBuilder(
                               bloc: _formBloc.dueDateField,
                               builder: (context, state) {
-                                return DateTimeField(
-                                  format: format,
-                                  focusNode: dueDateFocus,
-                                  textInputAction: TextInputAction.done,
-                                  decoration: InputDecoration(
-                                    labelText: "Due date (${format.pattern})",
-                                    prefixIcon: Icon(
-                                      Icons.calendar_today,
-                                      color: Theme.of(context)
-                                          .primaryIconTheme
-                                          .color,
-                                    ),
-                                    focusedErrorBorder: OutlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.red),
-                                    ),
-                                    errorText: state.error,
-                                  ),
+                                return DateTimeFormField(
+                                  formatter: format,
+                                  onlyDate: true,
+                                  label: "Due date",
+                                  firstDate: DateTime.now().todaysDate,
                                   initialValue: _formBloc.dueDateField.value,
-                                  onShowPicker: (context, currentValue) {
-                                    return showDatePicker(
-                                      context: context,
-                                      firstDate: DateTime.now().todaysDate,
-                                      initialDate:
-                                          currentValue ?? DateTime.now(),
-                                      lastDate: DateTime.now().addYears(5),
-                                    );
-                                  },
-                                  onChanged: (value) {
+                                  onSaved: (value) {
                                     _formBloc.dueDateField.updateValue(value);
                                   },
                                 );
@@ -139,16 +106,12 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                           ),
                           DropdownFieldBlocBuilder(
                             selectFieldBloc: _formBloc.subjectField,
-                            millisecondsForShowDropdownItemsWhenKeyboardIsOpen:
-                                100,
-                            focusNode: subjectFocus,
-                            nextFocusNode: detailsFocus,
-                            itemBuilder: (context, value) => value[0],
+                            itemBuilder: (context, value) => value['name'],
                             showEmptyItem: false,
                             decoration: InputDecoration(
                               labelText: "Subject",
                               prefixIcon: Icon(
-                                Icons.subject,
+                                Icons.school,
                                 color: Theme.of(context).primaryIconTheme.color,
                               ),
                               focusedErrorBorder: OutlineInputBorder(
@@ -162,7 +125,6 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8),
                               textFieldBloc: _formBloc.detailsField,
-                              focusNode: detailsFocus,
                               expands: true,
                               minLines: null,
                               maxLines: null,
@@ -171,7 +133,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                               decoration: InputDecoration(
                                 labelText: "Details",
                                 prefixIcon: Icon(
-                                  Icons.details,
+                                  Icons.subject,
                                   color:
                                       Theme.of(context).primaryIconTheme.color,
                                 ),

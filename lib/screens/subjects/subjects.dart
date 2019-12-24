@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/forms/add_subject/add_subject.dart';
 import 'package:school_life/screens/settings/children/subjects-set.dart';
-import 'package:school_life/screens/subjects/widgets/all_subjects/all_subjects.dart';
+import 'package:school_life/screens/subjects/widgets/subjects_list.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class SubjectsPage extends StatefulWidget {
@@ -39,7 +40,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
       ),
       drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _handleAddSubjectButtonPress,
+        onPressed: () => _handleAddSubjectButtonPress(context),
         label: const Text("Add Subject"),
         icon: const Icon(Icons.add),
       ),
@@ -47,16 +48,16 @@ class _SubjectsPageState extends State<SubjectsPage> {
       body: SingleChildScrollView(
         padding: EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
-          child: AllSubjects(future, deleteSubject),
+          child: SubjectsList(future, deleteSubject),
         ),
       ),
     );
   }
 
-  Future<void> _handleAddSubjectButtonPress() async {
+  Future<void> _handleAddSubjectButtonPress(BuildContext context) async {
     final List<Subject> subjectList = await future;
     if (subjectList.length >= 19) {
-      _showTooManySubjectsDialog();
+      showTooManySubjectsDialog(context);
       return;
     }
     Navigator.push(
@@ -67,38 +68,15 @@ class _SubjectsPageState extends State<SubjectsPage> {
     );
   }
 
-  void _showTooManySubjectsDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            "Too many subjects",
-            style: Theme.of(context).textTheme.display2,
-          ),
-          content: Text(
-            "You have 19 subjects, that's a lot! \nUnfortunately, we don't support more than 19 subjects. :( \nHowever, we will in the future, stay tuned!",
-          ),
-          actions: <Widget>[
-            MaterialButton(
-              child: Text("Aw :("),
-              onPressed: () => Navigator.pop(context),
-            )
-          ],
-        );
-      },
-    );
-  }
-
   void deleteSubject(Subject subject) async {
     await subject.delete();
     refreshSubjects();
   }
 
   void refreshSubjects() {
+    Future<List<Subject>> subjects = SubjectsRepository.getAllSubjects();
     setState(() {
-      future = SubjectsRepository.getAllSubjects();
+      future = subjects;
     });
   }
 }

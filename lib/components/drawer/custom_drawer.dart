@@ -29,7 +29,7 @@ class CustomDrawer extends StatelessWidget {
     ),
     DrawerItem(
       title: "Subjects",
-      icon: OMIcons.subject,
+      icon: OMIcons.school,
     ),
     DrawerItem(
       title: "Settings",

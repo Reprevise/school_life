@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/validators.dart';
-import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
+import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/date_utils.dart';
@@ -9,7 +9,7 @@ import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
-  Map<int, Subject> subjectsFromIDs = <int, Subject>{};
+  static List<String> _assignmentNames = [];
 
   AddAssignmentFormBloc() : super(isLoading: true);
 
@@ -17,6 +17,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   final nameField = TextFieldBloc(
     validators: [
       FieldBlocValidators.requiredTextFieldBloc,
+      validateAssignmentName,
       (val) => Validators.maxLength(val, 22),
     ],
     initialValue: "",
@@ -24,9 +25,11 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   // ignore: close_sinks
   final dueDateField = InputFieldBloc<DateTime>(
     validators: [
-      FieldBlocValidators.requiredInputFieldBloc,
       (date) {
-        Validators.maxLength(date.toString(), 15);
+        String dateString = date.toString();
+        Validators.maxLength(dateString, 15);
+        if (date == null || dateString.isEmpty)
+          return "A due date is required!";
         if (date.isBefore(DateTime.now().todaysDate)) {
           return "Can't be before today!";
         }
@@ -48,11 +51,13 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
 
   @override
   Stream<FormBlocState<String, dynamic>> onLoading() async* {
+    await _getAssignmentNames();
     yield* _setSubjectFieldValues();
   }
 
   @override
   Stream<FormBlocState<String, dynamic>> onReload() async* {
+    await _getAssignmentNames();
     yield* _setSubjectFieldValues();
   }
 
@@ -68,7 +73,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     // subject field value
     print(subjectField.value);
     var _selectedSubject = subjectField.value;
-    int _subjectID = _selectedSubject[1];
+    int _subjectID = _selectedSubject['value'];
     // trimmed details text
     String _detailsText = detailsField.value.trim();
     // create new assignment based on text from form
@@ -84,13 +89,25 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     yield state.toSuccess();
   }
 
+  Future<void> _getAssignmentNames() async {
+    List<Assignment> assignments =
+        await AssignmentsRepository.getAllAssignments();
+    _assignmentNames =
+        assignments.map((assignment) => assignment.name.toLowerCase()).toList();
+  }
+
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
     List<Subject> subjects = await SubjectsRepository.getAllSubjects();
-    for (int i = 0; i < subjects.length; i++) {
-      subjectField.addItem([subjects[i].name, subjects[i].id]);
+    for (Subject subject in subjects) {
+      subjectField.addItem({'name': subject.name, 'value': subject.id});
     }
-    subjectField.updateInitialValue(subjects.first.name);
     yield state.toLoaded();
+  }
+
+  static String validateAssignmentName(String name) {
+    if (_assignmentNames.contains(name.toLowerCase()))
+      return 'That assignment already exists';
+    return null;
   }
 
   bool _fieldsAreEmpty() {
@@ -99,7 +116,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     var _subjectField = subjectField.value;
     String _detailsField = detailsField.value.trim();
     // if they're all empty, return true
-    if (_nameField.isEmpty && _subjectField != null && _detailsField.isEmpty)
+    if (_nameField.isEmpty && _subjectField == null && _detailsField.isEmpty)
       return true;
     // otherwise, return false
     return false;
@@ -109,7 +126,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     // if the text fields are empty, user can exit
     if (_fieldsAreEmpty()) return true;
     // otherwise, show a popup dialog
-    DialogOnPop.showPopupDialog(context);
+    showOnPopDialog(context);
     // default, return false
     return false;
   }

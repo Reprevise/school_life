@@ -3,9 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:school_life/main.dart';
 
 class AndroidDetails {
-  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  static final DeviceInfoPlugin _deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, dynamic> _deviceData = {};
-  bool isInitialized = false;
 
   AndroidDetails() {
     _init().then((_) => getIt.signalReady(this));
@@ -13,9 +12,8 @@ class AndroidDetails {
 
   Future<void> _init() async {
     try {
-      AndroidDeviceInfo _deviceInfo = await deviceInfoPlugin.androidInfo;
+      AndroidDeviceInfo _deviceInfo = await _deviceInfoPlugin.androidInfo;
       _deviceData = _getDeviceData(_deviceInfo);
-      isInitialized = true;
     } on PlatformException {
       _deviceData = <String, dynamic>{
         'Error:': 'Failed to get platform version.',

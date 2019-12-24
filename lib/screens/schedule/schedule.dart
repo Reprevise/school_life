@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/forms/add_schedule/add_schedule.dart';
@@ -44,7 +45,7 @@ class _SchedulePageState extends State<SchedulePage> {
 
   void _handleAddScheduleButtonPress(BuildContext context) {
     if (!_userHasSubjects) {
-      _showNoSubjectsDialog(context);
+      showNoSubjectsDialog(context);
       return;
     }
     Navigator.push(
@@ -52,26 +53,6 @@ class _SchedulePageState extends State<SchedulePage> {
       MaterialPageRoute(
         builder: (context) => AddSchedulePage(),
       ),
-    );
-  }
-
-  void _showNoSubjectsDialog(BuildContext context) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("No subjects found"),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Ok"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
     );
   }
 }

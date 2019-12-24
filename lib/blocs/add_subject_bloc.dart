@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/validators.dart';
+import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/screens/forms/widgets/dialog_on_pop.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AddSubjectFormBloc extends FormBloc<String, String> {
@@ -70,13 +69,13 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
 
   @override
   Stream<FormBlocState<String, String>> onLoading() async* {
-    await _getSubjectNames();
+    yield* _getSubjectNames();
     yield* _getAvailableColors();
   }
 
   @override
   Stream<FormBlocState<String, String>> onReload() async* {
-    await _getSubjectNames();
+    yield* _getSubjectNames();
     yield* _getAvailableColors();
   }
 
@@ -108,15 +107,20 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
     yield state.toSuccess();
   }
 
-  Future<void> _getSubjectNames() async {
+  Stream<FormBlocState<String, String>> _getSubjectNames() async* {
     List<Subject> subjects = await SubjectsRepository.getAllSubjects();
     _subjectNames =
         subjects.map((subject) => subject.name.toLowerCase()).toList();
   }
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
-    final availableColors =
-        await SubjectsRepository.getAvailableColors(_allAvailableColors);
+    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+    List<int> subjectColorValues =
+        subjects.map((subject) => subject.colorValue).toList();
+    availableColors = _allAvailableColors
+        .map((color) => color.value)
+        .where((value) => !subjectColorValues.contains(value))
+        .map((value) => Color(value)).toList();
     colorField.updateValue(availableColors.first);
     currentColor = Color(availableColors.first.value);
     yield state.toLoaded();
@@ -131,7 +135,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   //! needs to return a future because WillPopScope needs it to be
   Future<bool> canPop(BuildContext context) async {
     if (_fieldsAreEmpty()) return true;
-    DialogOnPop.showPopupDialog(context);
+    showOnPopDialog(context);
     return false;
   }
 

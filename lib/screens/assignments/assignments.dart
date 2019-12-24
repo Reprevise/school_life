@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/screens/assignments/widgets/all_assignments/all_assignments.dart';
+import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/forms/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/settings/children/assignments-set.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
@@ -14,16 +15,16 @@ class AssignmentsPage extends StatefulWidget {
 }
 
 class _AssignmentsPageState extends State<AssignmentsPage> {
-  Future<List<Assignment>> future;
-  Map<int, Subject> assignmentSubjectsByID;
+  Future<List<Assignment>> _future;
+  Map<int, Subject> _assignmentSubjectsByID;
   bool _userHasSubjects = false;
 
   @override
   void initState() {
     super.initState();
-    future = AssignmentsRepository.getAllAssignments();
+    _future = AssignmentsRepository.getAllAssignments();
     _doesUserHaveSubjects();
-    _getAssignmentSubjects();
+    _getSubjectsMap();
   }
 
   void _doesUserHaveSubjects() async {
@@ -35,36 +36,11 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     }
   }
 
-  void _getAssignmentSubjects() async {
-    List<int> assignmentSubjectIDs = await _getSubjectsList();
-    Map<int, Subject> assignmentSubjectsMap =
-        await _getSubjectsMap(assignmentSubjectIDs);
+  void _getSubjectsMap() async {
+    Map<int, Subject> subjectsByID = await SubjectsRepository.getSubjectsMap();
     setState(() {
-      assignmentSubjectsByID = assignmentSubjectsMap;
+      _assignmentSubjectsByID = subjectsByID;
     });
-  }
-
-  Future<List<int>> _getSubjectsList() async {
-    // get list of assignments
-    final List<Assignment> assignments = await future;
-    // create list that holds the ids of all assignments
-    final List<int> assignmentSubjectIDs =
-        assignments.map((assignment) => assignment.subjectID).toList();
-    return assignmentSubjectIDs;
-  }
-
-  Future<Map<int, Subject>> _getSubjectsMap(
-      List<int> assignmentSubjectIDs) async {
-    // create temp map
-    Map<int, Subject> subjectsByID = {};
-    // loop through given subject ids
-    for (int subjectID in assignmentSubjectIDs) {
-      // get subject from current id
-      final _subject = await SubjectsRepository.getSubject(subjectID);
-      // assign subject id to its subject
-      subjectsByID[subjectID] = _subject;
-    }
-    return subjectsByID;
   }
 
   void deleteAssignment(Assignment assignment) async {
@@ -73,14 +49,15 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   }
 
   void refreshAssignments() {
+    Future<List<Assignment>> assignments = AssignmentsRepository.getAllAssignments();
     setState(() {
-      future = AssignmentsRepository.getAllAssignments();
+      _future = assignments;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (assignmentSubjectsByID == null)
+    if (_assignmentSubjectsByID == null)
       return Center(child: CircularProgressIndicator());
     return Scaffold(
       appBar: CustomAppBar(
@@ -109,9 +86,9 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         physics: ClampingScrollPhysics(),
         padding: EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
-          child: AllAssignments(
-            future,
-            assignmentSubjectsByID,
+          child: AssignmentsList(
+            _future,
+            _assignmentSubjectsByID,
             deleteAssignment,
           ),
         ),
@@ -121,7 +98,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
 
   void _handleAddAssignmentPress(BuildContext context) {
     if (!_userHasSubjects) {
-      _showNoSubjectsDialog(context);
+      showNoSubjectsDialog(context);
       return;
     }
     Navigator.push(
@@ -129,26 +106,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       MaterialPageRoute(
         builder: (context) => AddAssignmentPage(),
       ),
-    );
-  }
-
-  void _showNoSubjectsDialog(BuildContext context) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text("No subjects found"),
-          actions: <Widget>[
-            FlatButton(
-              child: Text("Ok"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-      },
     );
   }
 }

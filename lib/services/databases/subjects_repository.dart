@@ -14,18 +14,7 @@ class SubjectsRepository {
     return subjects;
   }
 
-  // static Future<Subject> getSubjectFromName(String subjectName) async {
-  //   final data = await subjectsDB.query(
-  //     SubjectsDBCreator.SUBJECTS_TABLE,
-  //     where: '${SubjectsDBCreator.IS_DELETED} = 0 AND '
-  //         'LOWER(${SubjectsDBCreator.NAME}) = ?',
-  //     whereArgs: [subjectName.toLowerCase()],
-  //   );
-  //   if (data.isEmpty) return null;
-  //   if (data.length > 1) throw Exception('Many subjects with the same name!');
-  //   return Subject.fromJson(data.first);
-  // }
-
+  @deprecated
   static Future<List<Color>> getAvailableColors(
       List<Color> wantedColors) async {
     final List<Subject> allSubjects = await getAllSubjects();
@@ -42,6 +31,15 @@ class SubjectsRepository {
     final List<Color> availableColors =
         availableColorValues.map((colorValue) => Color(colorValue)).toList();
     return availableColors;
+  }
+
+  static Future<Map<int, Subject>> getSubjectsMap() async {
+    final List<Subject> allSubjects = await getAllSubjects();
+    Map<int, Subject> subjectsByID = {};
+    for (Subject subject in allSubjects) {
+      subjectsByID[subject.id] = subject;
+    }
+    return subjectsByID;
   }
 
   static Future<Subject> getSubject(int id) async {
