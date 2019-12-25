@@ -20,10 +20,6 @@ class CustomDrawer extends StatelessWidget {
       icon: OMIcons.assignment,
     ),
     DrawerItem(
-      title: "Calendar",
-      icon: OMIcons.calendarToday,
-    ),
-    DrawerItem(
       title: "Schedule",
       icon: OMIcons.schedule,
     ),

@@ -9,9 +9,9 @@ class AssignmentsRepository {
     return data ?? [];
   }
 
-  static Future<List<Assignment>> getAssignmentsFromSubjectID(int subjectID) {
-    getAllAssignments()
-        .where((assignment) => assignment.subjectID == subjectID);
+  static List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
+    return getAllAssignments()
+        .where((assignment) => assignment.subjectID == subjectID).toList() ?? [];
   }
 
   static Future<Assignment> getAssignmentFromID(int id) async {

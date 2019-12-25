@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/forms/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/settings/children/assignments-set.dart';
-import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AssignmentsPage extends StatefulWidget {

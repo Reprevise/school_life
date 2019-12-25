@@ -19,12 +19,10 @@ class _SchedulePageState extends State<SchedulePage> {
     _doesUserHaveSubjects();
   }
 
-  void _doesUserHaveSubjects() async {
-    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+  void _doesUserHaveSubjects() {
+    List<Subject> subjects = SubjectsRepository.getAllSubjects();
     if (subjects.isNotEmpty) {
-      setState(() {
-        _userHasSubjects = true;
-      });
+      _userHasSubjects = true;
     }
   }
 

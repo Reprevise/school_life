@@ -108,13 +108,13 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   Stream<FormBlocState<String, String>> _getSubjectNames() async* {
-    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+    List<Subject> subjects = SubjectsRepository.getAllSubjects();
     _subjectNames =
         subjects.map((subject) => subject.name.toLowerCase()).toList();
   }
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
-    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+    List<Subject> subjects = SubjectsRepository.getAllSubjects();
     List<int> subjectColorValues =
         subjects.map((subject) => subject.colorValue).toList();
     availableColors = _allAvailableColors

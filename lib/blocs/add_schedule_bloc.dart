@@ -42,7 +42,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    List<Subject> subjects = await SubjectsRepository.getAllSubjects();
+    List<Subject> subjects = SubjectsRepository.getAllSubjects();
     for (Subject subject in subjects) {
       subjectField.addItem(subject.name);
     }

@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/subjects/widgets/subject_item.dart';
+import 'package:school_life/services/databases/subjects_db.dart';
 
 class SubjectsList extends StatelessWidget {
   @override
@@ -10,7 +11,7 @@ class SubjectsList extends StatelessWidget {
     final fontSize = MediaQuery.of(context).size.width / 20;
 
     return WatchBoxBuilder(
-      box: Hive.box<Subject>("subjects_db"),
+      box: Hive.box<Subject>(SubjectsDBCreator.SUBJECTS_BOX),
       builder: (context, box) {
         if (box.isEmpty) {
           return Column(

@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
-import 'package:school_life/services/databases/subjects_db.dart';
 import 'package:school_life/models/assignment.dart';
 
 part 'subject.g.dart';
@@ -32,46 +31,10 @@ class Subject extends HiveObject {
     this.isDeleted,
   );
 
-  Subject.fromJson(Map<String, dynamic> json) {
-    id = json[SubjectsDBCreator.ID];
-    name = json[SubjectsDBCreator.NAME];
-    room = json[SubjectsDBCreator.ROOM];
-    building = json[SubjectsDBCreator.BUILDING];
-    teacher = json[SubjectsDBCreator.TEACHER];
-    colorValue = json[SubjectsDBCreator.COLOR];
-    isDeleted = json[SubjectsDBCreator.IS_DELETED] == 1;
-  }
-
-  Map<String, dynamic> toDBJson() {
-    return {
-      SubjectsDBCreator.ID: id,
-      SubjectsDBCreator.NAME: name,
-      SubjectsDBCreator.ROOM: room,
-      SubjectsDBCreator.BUILDING: building,
-      SubjectsDBCreator.TEACHER: teacher,
-      SubjectsDBCreator.COLOR: colorValue,
-      SubjectsDBCreator.IS_DELETED: isDeleted ? 1 : 0,
-    };
-  }
-
-  Map<String, dynamic> toDBUpdatableValuesJson() {
-    return {
-      SubjectsDBCreator.NAME: name,
-      SubjectsDBCreator.ROOM: room,
-      SubjectsDBCreator.BUILDING: building,
-      SubjectsDBCreator.TEACHER: teacher,
-      SubjectsDBCreator.COLOR: colorValue,
-    };
-  }
-
-  Map<String, dynamic> toDropdownJson() {
-    return {'display': name, 'value': id};
-  }
-
   @override
-  Future<void> delete() async {
+  Future<void> delete() {
     List<Assignment> assignments =
-        await AssignmentsRepository.getAssignmentsFromSubjectID(id);
+       AssignmentsRepository.getAssignmentsFromSubjectID(id);
     assignments.forEach((assignment) => assignment.delete());
     return super.delete();
   }
