@@ -15,25 +15,25 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
     validators: [
       FieldBlocValidators.requiredTextFieldBloc,
       validateSubjectName,
-      (val) => Validators.maxLength(val, 22),
+          (val) => Validators.maxLength(val, 50),
     ],
   );
 
   // ignore: close_sinks
   final roomField = TextFieldBloc(validators: [
     FieldBlocValidators.requiredTextFieldBloc,
-    (val) => Validators.maxLength(val, 15),
+        (val) => Validators.maxLength(val, 35),
   ]);
 
   // ignore: close_sinks
   final buildingField = TextFieldBloc(validators: [
-    (val) => Validators.maxLength(val, 20),
+        (val) => Validators.maxLength(val, 35),
   ]);
 
   // ignore: close_sinks
   final teacherField = TextFieldBloc(validators: [
     FieldBlocValidators.requiredTextFieldBloc,
-    (val) => Validators.maxLength(val, 30),
+        (val) => Validators.maxLength(val, 40),
   ]);
 
   // ignore: close_sinks
@@ -92,7 +92,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
     // get teacher field text
     String teacher = teacherField.value.trim();
     // get the color value
-    int colorValue = colorField.value.value;
+    Color color = colorField.value;
     // create new subject based on text from form
     Subject newSubject = Subject(
       nextID,
@@ -100,7 +100,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
       roomText,
       building,
       teacher,
-      colorValue,
+      color,
       false, // isDeleted value
     );
     SubjectsRepository.addSubject(newSubject);
@@ -114,15 +114,14 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
-    List<Subject> subjects = SubjectsRepository.getAllSubjects();
-    List<int> subjectColorValues =
-        subjects.map((subject) => subject.colorValue).toList();
+    List<Color> subjectColors = SubjectsRepository.getAllSubjects()
+        .map((subject) => subject.color)
+        .toList();
     availableColors = _allAvailableColors
-        .map((color) => color.value)
-        .where((value) => !subjectColorValues.contains(value))
-        .map((value) => Color(value)).toList();
+        .where((color) => !subjectColors.contains(color))
+        .toList();
     colorField.updateValue(availableColors.first);
-    currentColor = Color(availableColors.first.value);
+    currentColor = availableColors.first;
     yield state.toLoaded();
   }
 

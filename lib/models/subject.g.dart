@@ -19,7 +19,7 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       fields[2] as String,
       fields[3] as String,
       fields[4] as String,
-      fields[5] as int,
+      fields[5] as dynamic,
       fields[6] as bool,
     );
   }
@@ -39,7 +39,7 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       ..writeByte(4)
       ..write(obj.teacher)
       ..writeByte(5)
-      ..write(obj.colorValue)
+      ..write(obj.color)
       ..writeByte(6)
       ..write(obj.isDeleted);
   }

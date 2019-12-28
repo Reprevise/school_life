@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/validators.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/models/assignment.dart';
+import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/date_utils.dart';
-import 'package:school_life/models/assignment.dart';
-import 'package:school_life/models/subject.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   static List<String> _assignmentNames = [];
@@ -18,7 +18,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     validators: [
       FieldBlocValidators.requiredTextFieldBloc,
       validateAssignmentName,
-      (val) => Validators.maxLength(val, 22),
+          (val) => Validators.maxLength(val, 50),
     ],
     initialValue: "",
   );
@@ -72,6 +72,9 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     DateTime _newDate = DateTime(_dueDate.year, _dueDate.month, _dueDate.day);
     // subject field value
     int _subjectID = subjectField.value['value'];
+    Color color = SubjectsRepository
+        .getSubject(_subjectID)
+        .color;
     // trimmed details text
     String _detailsText = detailsField.value.trim();
     // create new assignment based on text from form
@@ -81,6 +84,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
       _newDate,
       _subjectID,
       _detailsText,
+      color,
       false, // isDeleted value, always false when creating
     );
     AssignmentsRepository.addAssignment(newAssignment);

@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 part 'assignment.g.dart';
@@ -15,14 +16,15 @@ class Assignment extends HiveObject {
   @HiveField(4)
   String details;
   @HiveField(5)
+  Color color;
+  @HiveField(6)
   bool isDeleted;
 
-  Assignment(
-    this.id,
-    this.name,
-    this.dueDate,
-    this.subjectID,
-    this.details,
-    this.isDeleted,
-  );
+  Assignment(this.id,
+      this.name,
+      this.dueDate,
+      this.subjectID,
+      this.details,
+      this.color,
+      this.isDeleted,);
 }

@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/models/assignment.dart';
+import 'package:school_life/services/databases/assignments_repository.dart';
 
 part 'subject.g.dart';
 
@@ -17,24 +18,22 @@ class Subject extends HiveObject {
   @HiveField(4)
   String teacher;
   @HiveField(5)
-  int colorValue;
+  Color color;
   @HiveField(6)
   bool isDeleted;
 
-  Subject(
-    this.id,
-    this.name,
-    this.room,
-    this.building,
-    this.teacher,
-    this.colorValue,
-    this.isDeleted,
-  );
+  Subject(this.id,
+      this.name,
+      this.room,
+      this.building,
+      this.teacher,
+      this.color,
+      this.isDeleted,);
 
   @override
   Future<void> delete() {
     List<Assignment> assignments =
-       AssignmentsRepository.getAssignmentsFromSubjectID(id);
+    AssignmentsRepository.getAssignmentsFromSubjectID(id);
     assignments.forEach((assignment) => assignment.delete());
     return super.delete();
   }

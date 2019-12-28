@@ -1,16 +1,16 @@
+import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/screens/assignments/details/assignment_details.dart';
 
 class AssignmentItem extends StatelessWidget {
   final Assignment assignment;
   final Subject assignmentSubject;
 
-  const AssignmentItem(
-    this.assignment,
-    this.assignmentSubject,
-  );
+  const AssignmentItem(this.assignment,
+      this.assignmentSubject,);
 
   @override
   Widget build(BuildContext context) {
@@ -19,10 +19,17 @@ class AssignmentItem extends StatelessWidget {
     final DateTime dueDate = assignment.dueDate;
     final String date = "${dueDate.year}-${dueDate.month}-${dueDate.day}";
     return Card(
-      color: Color(assignmentSubject.colorValue),
+      color: assignment.color,
       elevation: 3.0,
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AssignmentDetailsPage(assignment),
+            ),
+          );
+        },
         onLongPress: () => showDeleteAssignmentDialog(
           context,
           assignment,
@@ -30,35 +37,23 @@ class AssignmentItem extends StatelessWidget {
         child: Container(
           height: 100,
           width: 375,
+          padding: const EdgeInsets.only(left: 8),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              SizedBox(height: 8),
+              TextOneLine(
+                assignment.name,
+                textAlign: TextAlign.start,
+                style: textTheme.display2.copyWith(color: Colors.black),
+              ),
+              SizedBox(height: 8),
               Padding(
-                padding: const EdgeInsets.only(top: 8.0, left: 8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      assignment.name,
-                      overflow: TextOverflow.clip,
-                      maxLines: 1,
-                      style: textTheme.display3.copyWith(color: Colors.black),
-                    )
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0, top: 8),
-                child: Row(
-                  children: <Widget>[
                     Text("${assignmentSubject.name}", style: textStyle),
-                  ],
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Row(
-                  children: <Widget>[
                     Text(date, style: textStyle),
                   ],
                 ),

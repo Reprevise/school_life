@@ -86,6 +86,13 @@ class Themes {
           color: Colors.black,
         ),
       ),
+      display4: GoogleFonts.muli(
+        fontSize: 32.0,
+        fontWeight: FontWeight.bold,
+        textStyle: TextStyle(
+          color: Colors.black,
+        ),
+      ),
     ),
   );
 
@@ -169,6 +176,13 @@ class Themes {
       ),
       display3: GoogleFonts.muli(
         fontSize: 24.0,
+        fontWeight: FontWeight.bold,
+        textStyle: TextStyle(
+          color: Colors.white,
+        ),
+      ),
+      display4: GoogleFonts.muli(
+        fontSize: 32.0,
         fontWeight: FontWeight.bold,
         textStyle: TextStyle(
           color: Colors.white,

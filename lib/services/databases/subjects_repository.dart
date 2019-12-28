@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/subjects_db.dart';
 
@@ -10,25 +9,6 @@ class SubjectsRepository {
     return data ?? [];
   }
 
-  @deprecated
-  static Future<List<Color>> getAvailableColors(
-      List<Color> wantedColors) async {
-    final List<Subject> allSubjects = getAllSubjects();
-    if (allSubjects.isEmpty) return wantedColors;
-    final List<int> subjectColorValues =
-        allSubjects.map((subject) => subject.colorValue).toList();
-    final List<int> availableColorValues =
-        wantedColors.map((color) => color.value).toList();
-    for (int colorValue in subjectColorValues) {
-      if (availableColorValues.contains(colorValue)) {
-        availableColorValues.remove(colorValue);
-      }
-    }
-    final List<Color> availableColors =
-        availableColorValues.map((colorValue) => Color(colorValue)).toList();
-    return availableColors;
-  }
-
   static Map<int, Subject> getSubjectsMap() {
     final List<Subject> allSubjects = getAllSubjects();
     Map<int, Subject> subjectsByID = {};
@@ -38,7 +18,7 @@ class SubjectsRepository {
     return subjectsByID;
   }
 
-  static Future<Subject> getSubject(int id) async {
+  static Subject getSubject(int id) {
     return subjectsDB.getAt(id);
   }
 

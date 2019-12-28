@@ -1,3 +1,4 @@
+import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/subject.dart';
@@ -14,12 +15,11 @@ class SubjectItem extends StatelessWidget {
 
     Widget subjectName = Padding(
       padding: const EdgeInsets.only(left: 8.0),
-      child: Text(
+      child: TextOneLine(
         subject.name,
-        overflow: TextOverflow.clip,
-        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.left,
-        style: textTheme.display3.copyWith(color: Colors.black),
+        style: textTheme.display2.copyWith(color: Colors.black),
       ),
     );
     Widget roomText = RichText(
@@ -76,7 +76,7 @@ class SubjectItem extends StatelessWidget {
       ],
     );
     return Card(
-      color: Color(subject.colorValue),
+      color: subject.color,
       elevation: 3.0,
       child: InkWell(
         onTap: () {},
@@ -85,20 +85,15 @@ class SubjectItem extends StatelessWidget {
           height: 100,
           width: 375,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Padding(
                 padding: const EdgeInsets.only(top: 8.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[subjectName],
-                ),
+                child: subjectName,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 16.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[extraSubjectInfo],
-                ),
+                child: extraSubjectInfo,
               ),
             ],
           ),
