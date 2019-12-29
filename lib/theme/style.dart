@@ -40,13 +40,19 @@ class Themes {
       ),
     ),
     floatingActionButtonTheme: FloatingActionButtonThemeData(
-      backgroundColor: Colors.grey[800],
+      backgroundColor: Colors.black,
       foregroundColor: Colors.white,
       elevation: 2.0,
     ),
     buttonTheme: ButtonThemeData(
       buttonColor: Colors.black,
       textTheme: ButtonTextTheme.accent,
+    ),
+    accentTextTheme: TextTheme(
+      body2: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.grey[600],
+      )
     ),
     textTheme: TextTheme(
       body1: GoogleFonts.rubik(
@@ -143,6 +149,12 @@ class Themes {
       textTheme: ButtonTextTheme.accent,
     ),
     applyElevationOverlayColor: true,
+    accentTextTheme: TextTheme(
+      body2: TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.grey[300],
+      )
+    ),
     textTheme: TextTheme(
       body1: GoogleFonts.rubik(
         textStyle: TextStyle(

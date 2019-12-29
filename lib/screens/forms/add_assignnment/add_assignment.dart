@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_datetime_formfield/flutter_datetime_formfield.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:school_life/blocs/blocs.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/screens/forms/widgets/date_time_field.dart';
 import 'package:school_life/util/date_utils.dart';
 
 class AddAssignmentPage extends StatelessWidget {
@@ -90,14 +90,12 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                 const EdgeInsets.symmetric(horizontal: 8.0),
                             child: BlocBuilder(
                               bloc: _formBloc.dueDateField,
-                              builder: (context, state) {
-                                return DateTimeFormField(
-                                  formatter: format,
-                                  onlyDate: true,
-                                  label: "Due date",
-                                  firstDate: DateTime.now().todaysDate,
-                                  initialValue: _formBloc.dueDateField.value,
-                                  onSaved: (value) {
+                              builder: (context, FieldBlocState state) {
+                                return DateField(
+                                  format: format,
+                                  labelText: "Due date",
+                                  selectedDate: DateTime.now().todaysDate,
+                                  onDateChanged: (value) {
                                     _formBloc.dueDateField.updateValue(value);
                                   },
                                 );

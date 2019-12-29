@@ -4,7 +4,7 @@ import 'package:school_life/components/index.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/forms/add_assignnment/add_assignment.dart';
-import 'package:school_life/screens/settings/children/assignments-set.dart';
+import 'package:school_life/screens/settings/pages/assignments-set.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AssignmentsPage extends StatefulWidget {
@@ -62,7 +62,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _handleAddAssignmentPress(context),
-        label: const Text("Add Assignment"),
+        label: const Text("ADD ASSIGNMENT"),
         icon: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(

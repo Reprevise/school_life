@@ -11,7 +11,7 @@ void showNoSubjectsDialog(BuildContext context) {
         title: Text("No subjects found"),
         actions: <Widget>[
           FlatButton(
-            child: Text("Ok"),
+            child: Text("OK"),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -53,7 +53,7 @@ void showDeleteAssignmentDialog(
         actions: <Widget>[
           MaterialButton(
             child: Text(
-              "Yes",
+              "YES",
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () async {
@@ -63,7 +63,7 @@ void showDeleteAssignmentDialog(
           ),
           MaterialButton(
             child: Text(
-              "No",
+              "NO",
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () => Navigator.pop(context),
@@ -89,7 +89,7 @@ void showTooManySubjectsDialog(BuildContext context) {
         ),
         actions: <Widget>[
           MaterialButton(
-            child: Text("Aw :("),
+            child: Text("OK"),
             onPressed: () => Navigator.pop(context),
           )
         ],
@@ -124,7 +124,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
         actions: <Widget>[
           MaterialButton(
             child: Text(
-              "Yes",
+              "YES",
               style: TextStyle(
                 color: Theme.of(context).dialogTheme.contentTextStyle.color,
               ),
@@ -136,7 +136,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
           ),
           MaterialButton(
             child: Text(
-              "No",
+              "NO",
               style: TextStyle(
                 color: Theme.of(context).dialogTheme.contentTextStyle.color,
               ),
@@ -167,7 +167,7 @@ void showOnPopDialog(BuildContext context) {
         actions: <Widget>[
           MaterialButton(
             child: Text(
-              "No",
+              "NO",
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () {
@@ -176,7 +176,7 @@ void showOnPopDialog(BuildContext context) {
           ),
           MaterialButton(
             child: Text(
-              "Discard",
+              "DISCARD",
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () {

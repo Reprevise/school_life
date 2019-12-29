@@ -7,7 +7,12 @@ class ScheduleSettingsPage extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar("Schedule Settings"),
       body: ListView(
-
+        primary: false,
+        children: <Widget>[
+          ListTile(
+            title: Text(""),
+          )
+        ],
       ),
     );
   }

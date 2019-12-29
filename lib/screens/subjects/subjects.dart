@@ -3,7 +3,7 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/forms/add_subject/add_subject.dart';
-import 'package:school_life/screens/settings/children/subjects-set.dart';
+import 'package:school_life/screens/settings/pages/subjects-set.dart';
 import 'package:school_life/screens/subjects/widgets/subjects_list.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
@@ -34,7 +34,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
       drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _handleAddSubjectButtonPress(context),
-        label: const Text("Add Subject"),
+        label: const Text("ADD SUBJECT"),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

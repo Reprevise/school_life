@@ -237,13 +237,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.2.6"
-  flutter_datetime_formfield:
-    dependency: "direct main"
-    description:
-      name: flutter_datetime_formfield
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.1"
   flutter_form_bloc:
     dependency: "direct main"
     description:

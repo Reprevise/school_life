@@ -1,11 +1,13 @@
 import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/main.dart';
-import 'package:school_life/services/theme/theme_service.dart';
-import 'package:school_life/screens/settings/children/assignments-set.dart';
-import 'package:school_life/screens/settings/children/schedule-set.dart';
-import 'package:school_life/screens/settings/children/subjects-set.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/main.dart';
+import 'package:school_life/screens/settings/pages/assignments-set.dart';
+import 'package:school_life/screens/settings/pages/schedule-set.dart';
+import 'package:school_life/screens/settings/pages/subjects-set.dart';
+import 'package:school_life/screens/settings/widgets/setting_header.dart';
+import 'package:school_life/screens/settings/widgets/setting_router.dart';
+import 'package:school_life/services/theme/theme_service.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -21,7 +23,7 @@ class _SettingsPageState extends State<SettingsPage> {
     _currentBrightness = DynamicTheme.of(context).brightness;
   }
 
-  void _changeTheme(Brightness newBrightness, BuildContext context) {
+  void _changeTheme(Brightness newBrightness) {
     if (newBrightness == DynamicTheme.of(context).brightness) return;
     setState(() {
       _currentBrightness = newBrightness;
@@ -38,122 +40,75 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         primary: false,
         children: <Widget>[
-          buildSettingHeader("Theme"),
           buildThemeToggle(),
-          buildSettingHeader("Page Settings"),
-          buildGoToAssignmentsSettings(context),
-          buildGoToSubjectsSettings(context),
-          buildGoToScheduleSettings(context),
+          Divider(color: Colors.grey),
+          SettingHeader("Page Settings"),
+          SettingRouter(
+            icon: Icons.assignment,
+            title: "Assignments",
+            route: AssignmentsSettingsPage(),
+          ),
+          SettingRouter(
+            icon: Icons.school,
+            title: "Subjects",
+            route: SubjectsSettingsPage(),
+          ),
+          SettingRouter(
+            icon: Icons.schedule,
+            title: "Schedule",
+            route: ScheduleSettingsPage(),
+          ),
         ],
       ),
-    );
-  }
-
-  Widget buildSettingHeader(String title) {
-    return Row(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-          child: Text(
-            title,
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              color: Theme.of(context).accentColor,
-            ),
-          ),
-        ),
-      ],
     );
   }
 
   Widget buildThemeToggle() {
     return ListTile(
       leading: Icon(Icons.color_lens),
-      title: Text("Change theme"),
-      subtitle: Text("Change the app theme"),
+      title: Text("Theme"),
+      subtitle: Text(_currentBrightness == Brightness.light ? "Light" : "Dark"),
       onTap: () => showDialog(
-        builder: (context) => buildThemeDialog(context),
         context: context,
+        builder: (context) => buildThemeDialog(),
       ),
     );
   }
 
-  Widget buildThemeDialog(BuildContext context) {
+  Widget buildThemeDialog() {
     return SimpleDialog(
       elevation: 1,
       title: Text("Change theme"),
       children: <Widget>[
-        buildSelectLightTheme(context),
-        buildSelectDarkTheme(context),
+        buildSelectLightTheme(),
+        buildSelectDarkTheme(),
       ],
     );
   }
 
-  Widget buildSelectLightTheme(BuildContext context) {
+  Widget buildSelectLightTheme() {
     return RadioListTile<Brightness>(
       title: Text("Light Theme"),
       value: Brightness.light,
       activeColor: Colors.black,
       groupValue: _currentBrightness,
       onChanged: (value) {
-        _changeTheme(value, context);
+        _changeTheme(value);
         Navigator.pop(context);
       },
     );
   }
 
-  Widget buildSelectDarkTheme(BuildContext context) {
+  Widget buildSelectDarkTheme() {
     return RadioListTile<Brightness>(
       title: Text("Dark Theme"),
       value: Brightness.dark,
       activeColor: Colors.black,
       groupValue: _currentBrightness,
       onChanged: (value) {
-        _changeTheme(value, context);
+        _changeTheme(value);
         Navigator.pop(context);
       },
-    );
-  }
-
-  Widget buildGoToAssignmentsSettings(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.assignment),
-      title: Text("Assignments"),
-      subtitle: Text("Open assignment settings"),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => AssignmentsSettingsPage(),
-        ),
-      ),
-    );
-  }
-
-  Widget buildGoToSubjectsSettings(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.school),
-      title: Text("Subjects"),
-      subtitle: Text("Open subject settings"),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SubjectsSettingsPage(),
-        ),
-      ),
-    );
-  }
-
-  Widget buildGoToScheduleSettings(BuildContext context) {
-    return ListTile(
-      leading: Icon(Icons.schedule),
-      title: Text("Schedule"),
-      subtitle: Text("Open schedule settings"),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ScheduleSettingsPage(),
-        ),
-      ),
     );
   }
 }

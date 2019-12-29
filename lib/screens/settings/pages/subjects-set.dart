@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
 
-class AssignmentsSettingsPage extends StatelessWidget {
+class SubjectsSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar("Assignment Settings"),
+      appBar: CustomAppBar("Subjects Settings"),
       body: ListView(),
     );
   }

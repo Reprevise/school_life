@@ -16,18 +16,41 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
     items: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   );
 
+  int oldNumberOfDays = 0;
+
   // ignore: close_sinks
   final sameTimeEveryday = BooleanFieldBloc(initialValue: false);
+
+  final List<InputFieldBloc> startEndTimeFields = [];
 
   @override
   List<FieldBloc> get fieldBlocs => [
         subjectField,
         scheduleDaysField,
         sameTimeEveryday,
+        ...startEndTimeFields,
       ];
+
+  void addStartEndTimeFields() {
+    startEndTimeFields.add(InputFieldBloc());
+    startEndTimeFields.add(InputFieldBloc());
+  }
+
+  void removeStartEndTimeFields() {
+    startEndTimeFields.removeLast();
+    startEndTimeFields.removeLast();
+  }
+
+  void changeDays(MultiSelectFieldBlocState<String> state) {
+    print("changing days");
+    if (state.value.length > oldNumberOfDays) addStartEndTimeFields();
+    else if (state.value.length < oldNumberOfDays) removeStartEndTimeFields();
+    oldNumberOfDays = state.value.length;
+  }
 
   @override
   Stream<FormBlocState<String, dynamic>> onLoading() async* {
+    scheduleDaysField.listen(changeDays);
     yield* _setSubjectFieldValues();
   }
 
@@ -38,6 +61,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
 
   @override
   Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
+    // TODO: onSubmitting()
     yield state.toSuccess();
   }
 

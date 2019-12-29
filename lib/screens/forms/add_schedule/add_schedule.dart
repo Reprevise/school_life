@@ -3,8 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/blocs.dart';
-import 'package:school_life/screens/forms/widgets/page_navigator.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/screens/forms/widgets/date_time_field.dart';
+import 'package:school_life/screens/forms/widgets/page_navigator.dart';
+import 'package:school_life/util/date_utils.dart';
 
 final PageController _controller = PageController();
 
@@ -174,20 +176,18 @@ class __SecondPageState extends State<_SecondPage>
           ),
         ),
         Expanded(
-          child: Container(
-            child: Center(
-              child: CheckboxGroupFieldBlocBuilder<String>(
-                multiSelectFieldBloc: widget.formBloc.scheduleDaysField,
-                itemBuilder: (context, value) => value,
-                decoration: InputDecoration(
-                  labelText: "Days",
-                  prefixIcon: Icon(
-                    Icons.view_day,
-                    color: Theme.of(context).primaryIconTheme.color,
-                  ),
-                  focusedErrorBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
+          child: Center(
+            child: CheckboxGroupFieldBlocBuilder<String>(
+              multiSelectFieldBloc: widget.formBloc.scheduleDaysField,
+              itemBuilder: (context, value) => value,
+              decoration: InputDecoration(
+                labelText: "Days",
+                prefixIcon: Icon(
+                  Icons.view_day,
+                  color: Theme.of(context).primaryIconTheme.color,
+                ),
+                focusedErrorBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
                 ),
               ),
             ),
@@ -202,22 +202,16 @@ class __SecondPageState extends State<_SecondPage>
   bool get wantKeepAlive => true;
 }
 
-class _ThirdPage extends StatefulWidget {
+class _ThirdPage extends StatelessWidget {
+  const _ThirdPage(this.formBloc);
+
   final AddScheduleFormBloc formBloc;
 
-  _ThirdPage(this.formBloc);
-
-  @override
-  _ThirdPageState createState() => _ThirdPageState();
-}
-
-class _ThirdPageState extends State<_ThirdPage>
-    with AutomaticKeepAliveClientMixin<_ThirdPage> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     num cWidth = MediaQuery.of(context).size.width * 0.8;
     return Column(
+      mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Container(
           width: cWidth,
@@ -228,21 +222,29 @@ class _ThirdPageState extends State<_ThirdPage>
           ),
         ),
         Expanded(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                // TODO start and end times here
-              ],
-            ),
+          child: GridView.count(
+            crossAxisCount: 2,
+            padding: EdgeInsets.zero,
+            primary: false,
+            crossAxisSpacing: 10,
+            children: formBloc.startEndTimeFields.map((field) {
+              return BlocBuilder(
+                bloc: field,
+                builder: (context, state) {
+                  return TimeField(
+                    labelText: "",
+                    selectedTime: DateTime.now().currentTime,
+                    onTimeChanged: (value) {
+                      field.updateValue(value);
+                    },
+                  );
+                },
+              );
+            }).toList(),
           ),
         ),
         PageNavigator(_controller),
       ],
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

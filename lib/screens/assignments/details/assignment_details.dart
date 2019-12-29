@@ -11,9 +11,7 @@ class AssignmentDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme
-        .of(context)
-        .textTheme;
+    TextTheme textTheme = Theme.of(context).textTheme;
     Color lightAccent = assignment.color.getLighterAccent();
     Color darkAccent = assignment.color.getDarkerAccent();
 
@@ -30,10 +28,7 @@ class AssignmentDetailsPage extends StatelessWidget {
               child: Container(
                 child: Text(
                   assignment.name,
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .display3,
+                  style: Theme.of(context).textTheme.display3,
                 ),
               ),
             ),
@@ -55,29 +50,36 @@ class AssignmentDetailsPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text(
-                          "Details",
-                          style: textTheme.display2,
+                      Visibility(
+                        visible: assignment.details.isNotEmpty,
+                        child: Column(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(left: 16.0),
+                              child: Text(
+                                "Details",
+                                style: textTheme.display2,
+                              ),
+                            ),
+                            SizedBox(height: 8),
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                color: darkAccent,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: Text(
+                                assignment.details,
+                                style: textTheme.body1.copyWith(
+                                    color: useWhiteForeground(darkAccent)
+                                        ? Colors.white
+                                        : Colors.black),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      SizedBox(height: 8),
-                      Container(
-                        padding: EdgeInsets.all(12),
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: darkAccent,
-                          borderRadius: BorderRadius.circular(16),
-                        ),
-                        child: Text(
-                          assignment.details,
-                          style: textTheme.body1.copyWith(
-                              color: useWhiteForeground(darkAccent)
-                                  ? Colors.white
-                                  : Colors.black),
-                        ),
-                      )
                     ],
                   ),
                 ),
