@@ -1,32 +1,40 @@
+import 'package:hive/hive.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/services/databases/assignments_db.dart';
 
 class AssignmentsRepository {
-  static int get newID => getAllAssignments().length;
+  Box _assignmentsDB;
+  int get newID => getAllAssignments().length;
 
-  static List<Assignment> getAllAssignments() {
-    final List<Assignment> data = assignmentsDB.values.toList();
+  AssignmentsRepository() {
+    _assignmentsDB = Hive.box(AssignmentsDBCreator.ASSIGNMENTS_BOX);
+  }
+
+  List<Assignment> getAllAssignments() {
+    final List<Assignment> data = _assignmentsDB.values.toList();
     return data ?? [];
   }
 
-  static List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
+  List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
     return getAllAssignments()
-        .where((assignment) => assignment.subjectID == subjectID).toList() ?? [];
+            .where((assignment) => assignment.subjectID == subjectID)
+            .toList() ??
+        [];
   }
 
-  static Future<Assignment> getAssignmentFromID(int id) async {
-    return assignmentsDB.getAt(id);
+  Future<Assignment> getAssignmentFromID(int id) async {
+    return _assignmentsDB.getAt(id);
   }
 
-  static void addAssignment(Assignment assignment) {
-    assignmentsDB.add(assignment);
+  void addAssignment(Assignment assignment) {
+    _assignmentsDB.add(assignment);
   }
 
-  static void deleteAssignment(Assignment assignment) {
-    assignmentsDB.delete(assignment.id);
+  void deleteAssignment(Assignment assignment) {
+    _assignmentsDB.delete(assignment.id);
   }
 
-  static void updateAssignment(Assignment assignment) {
-    assignmentsDB.put(assignment.id, assignment);
+  void updateAssignment(Assignment assignment) {
+    _assignmentsDB.put(assignment.id, assignment);
   }
 }

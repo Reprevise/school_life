@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/forms/add_assignnment/add_assignment.dart';
@@ -13,27 +14,29 @@ class AssignmentsPage extends StatefulWidget {
 }
 
 class _AssignmentsPageState extends State<AssignmentsPage> {
+  SubjectsRepository subjects;
   Map<int, Subject> _assignmentSubjectsByID;
   bool _userHasSubjects = false;
 
   @override
   void initState() {
     super.initState();
+    subjects = getIt<SubjectsRepository>();
     _doesUserHaveSubjects();
     _getSubjectsMap();
   }
 
   void _doesUserHaveSubjects() {
-    List<Subject> subjects = SubjectsRepository.getAllSubjects();
-    if (subjects.isNotEmpty) {
+    List<Subject> allSubjects = subjects.getAllSubjects();
+    if (allSubjects.isNotEmpty) {
       setState(() {
         _userHasSubjects = true;
       });
     }
   }
 
-  void _getSubjectsMap() async {
-    Map<int, Subject> subjectsByID = SubjectsRepository.getSubjectsMap();
+  void _getSubjectsMap() {
+    Map<int, Subject> subjectsByID = subjects.getSubjectsMap();
     setState(() {
       _assignmentSubjectsByID = subjectsByID;
     });

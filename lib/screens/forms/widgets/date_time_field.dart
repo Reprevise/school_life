@@ -59,7 +59,7 @@ class TimeField extends StatelessWidget {
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay picked =
-        await showTimePicker(context: context, initialTime: selectedTime);
+        await showTimePicker(context: context, initialTime: DateTime.now().currentTime);
     if (picked != null && picked != selectedTime) onTimeChanged(picked);
   }
 
@@ -71,8 +71,9 @@ class TimeField extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: _InputDropdown(
-            valueText: selectedTime.format(context),
+            valueText: selectedTime != null ? selectedTime.format(context) : "",
             valueStyle: valueStyle,
+            labelText: labelText,
             onPressed: () => _selectTime(context),
           ),
         )

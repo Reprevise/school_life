@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/forms/add_subject/add_subject.dart';
 import 'package:school_life/screens/settings/pages/subjects-set.dart';
@@ -48,7 +49,7 @@ class _SubjectsPageState extends State<SubjectsPage> {
   }
 
   Future<void> _handleAddSubjectButtonPress(BuildContext context) async {
-    final List<Subject> subjectList = SubjectsRepository.getAllSubjects();
+    final List<Subject> subjectList = getIt<SubjectsRepository>().getAllSubjects();
     if (subjectList.length >= 19) {
       showTooManySubjectsDialog(context);
       return;

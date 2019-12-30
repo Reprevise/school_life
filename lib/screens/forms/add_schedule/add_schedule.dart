@@ -6,7 +6,6 @@ import 'package:school_life/blocs/blocs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/screens/forms/widgets/date_time_field.dart';
 import 'package:school_life/screens/forms/widgets/page_navigator.dart';
-import 'package:school_life/util/date_utils.dart';
 
 final PageController _controller = PageController();
 
@@ -222,25 +221,58 @@ class _ThirdPage extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: GridView.count(
-            crossAxisCount: 2,
-            padding: EdgeInsets.zero,
-            primary: false,
-            crossAxisSpacing: 10,
-            children: formBloc.startEndTimeFields.map((field) {
-              return BlocBuilder(
-                bloc: field,
-                builder: (context, state) {
-                  return TimeField(
-                    labelText: "",
-                    selectedTime: DateTime.now().currentTime,
-                    onTimeChanged: (value) {
-                      field.updateValue(value);
-                    },
-                  );
-                },
-              );
-            }).toList(),
+          child: Center(
+            child: SingleChildScrollView(
+              child: Row(
+                children: <Widget>[
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: formBloc.startTimeFields.map((field) {
+                        return BlocBuilder(
+                          bloc: field,
+                          builder: (context, state) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TimeField(
+                                labelText: "Start time",
+                                onTimeChanged: (value) =>
+                                    field.updateValue(value),
+                                selectedTime: field.value,
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: formBloc.endTimeFields.map((field) {
+                        return BlocBuilder(
+                          bloc: field,
+                          builder: (context, state) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: TimeField(
+                                labelText: "End time",
+                                onTimeChanged: (value) =>
+                                    field.updateValue(value),
+                                selectedTime: field.value,
+                              ),
+                            );
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                ],
+              ),
+            ),
           ),
         ),
         PageNavigator(_controller),

@@ -2,38 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/validators.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AddSubjectFormBloc extends FormBloc<String, String> {
+  SubjectsRepository subjects;
   static List<String> _subjectNames = [];
 
-  AddSubjectFormBloc() : super(isLoading: true);
+  AddSubjectFormBloc() : super(isLoading: true) {
+    subjects = getIt<SubjectsRepository>();
+  }
 
   // ignore: close_sinks
   final nameField = TextFieldBloc(
     validators: [
       FieldBlocValidators.requiredTextFieldBloc,
       validateSubjectName,
-          (val) => Validators.maxLength(val, 50),
+      (val) => Validators.maxLength(val, 50),
     ],
   );
 
   // ignore: close_sinks
   final roomField = TextFieldBloc(validators: [
     FieldBlocValidators.requiredTextFieldBloc,
-        (val) => Validators.maxLength(val, 35),
+    (val) => Validators.maxLength(val, 35),
   ]);
 
   // ignore: close_sinks
   final buildingField = TextFieldBloc(validators: [
-        (val) => Validators.maxLength(val, 35),
+    (val) => Validators.maxLength(val, 35),
   ]);
 
   // ignore: close_sinks
   final teacherField = TextFieldBloc(validators: [
     FieldBlocValidators.requiredTextFieldBloc,
-        (val) => Validators.maxLength(val, 40),
+    (val) => Validators.maxLength(val, 40),
   ]);
 
   // ignore: close_sinks
@@ -82,7 +86,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    int nextID = SubjectsRepository.newID;
+    int nextID = subjects.newID;
     // trimmed subject name
     String subjectName = nameField.value.trim();
     // get room field text
@@ -103,18 +107,18 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
       color,
       false, // isDeleted value
     );
-    SubjectsRepository.addSubject(newSubject);
+    subjects.addSubject(newSubject);
     yield state.toSuccess();
   }
 
   Stream<FormBlocState<String, String>> _getSubjectNames() async* {
-    List<Subject> subjects = SubjectsRepository.getAllSubjects();
+    List<Subject> allSubjects = subjects.getAllSubjects();
     _subjectNames =
-        subjects.map((subject) => subject.name.toLowerCase()).toList();
+        allSubjects.map((subject) => subject.name.toLowerCase()).toList();
   }
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
-    List<Color> subjectColors = SubjectsRepository.getAllSubjects()
+    List<Color> subjectColors = subjects.getAllSubjects()
         .map((subject) => subject.color)
         .toList();
     availableColors = _allAvailableColors

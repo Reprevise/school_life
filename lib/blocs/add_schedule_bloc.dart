@@ -1,9 +1,14 @@
 import 'package:form_bloc/form_bloc.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AddScheduleFormBloc extends FormBloc<String, dynamic> {
-  AddScheduleFormBloc() : super(isLoading: true);
+  SubjectsRepository subjects;
+
+  AddScheduleFormBloc() : super(isLoading: true) {
+    subjects = getIt<SubjectsRepository>();
+  }
 
   // ignore: close_sinks
   final subjectField = SelectFieldBloc(
@@ -21,29 +26,34 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   // ignore: close_sinks
   final sameTimeEveryday = BooleanFieldBloc(initialValue: false);
 
-  final List<InputFieldBloc> startEndTimeFields = [];
+  final List<InputFieldBloc> startTimeFields = [], endTimeFields = [];
+
+  final Map<int, FieldBloc> fields = {
+    DateTime.monday: InputFieldBloc(toStringName: "Monday"),
+  };
 
   @override
   List<FieldBloc> get fieldBlocs => [
         subjectField,
         scheduleDaysField,
         sameTimeEveryday,
-        ...startEndTimeFields,
+        ...startTimeFields,
+        ...endTimeFields,
       ];
 
   void addStartEndTimeFields() {
-    startEndTimeFields.add(InputFieldBloc());
-    startEndTimeFields.add(InputFieldBloc());
+    startTimeFields.add(InputFieldBloc());
+    endTimeFields.add(InputFieldBloc());
   }
 
   void removeStartEndTimeFields() {
-    startEndTimeFields.removeLast();
-    startEndTimeFields.removeLast();
+    startTimeFields.removeLast();
+    endTimeFields.removeLast();
   }
 
   void changeDays(MultiSelectFieldBlocState<String> state) {
-    print("changing days");
-    if (state.value.length > oldNumberOfDays) addStartEndTimeFields();
+    if (state.value.length > oldNumberOfDays)
+      addStartEndTimeFields();
     else if (state.value.length < oldNumberOfDays) removeStartEndTimeFields();
     oldNumberOfDays = state.value.length;
   }
@@ -66,11 +76,11 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    List<Subject> subjects = SubjectsRepository.getAllSubjects();
-    for (Subject subject in subjects) {
+    List<Subject> allSubjects = subjects.getAllSubjects();
+    for (Subject subject in allSubjects) {
       subjectField.addItem(subject.name);
     }
-    subjectField.updateInitialValue(subjects.first.name);
+    subjectField.updateInitialValue(allSubjects.first.name);
     yield state.toLoaded();
   }
 }

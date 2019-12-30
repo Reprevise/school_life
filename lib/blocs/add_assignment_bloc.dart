@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/blocs/validators.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
@@ -9,16 +10,21 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/date_utils.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
+  AssignmentsRepository assignments;
+  SubjectsRepository subjects;
   static List<String> _assignmentNames = [];
 
-  AddAssignmentFormBloc() : super(isLoading: true);
+  AddAssignmentFormBloc() : super(isLoading: true) {
+    assignments = getIt<AssignmentsRepository>();
+    subjects = getIt<SubjectsRepository>();
+  }
 
   // ignore: close_sinks
   final nameField = TextFieldBloc(
     validators: [
       FieldBlocValidators.requiredTextFieldBloc,
       validateAssignmentName,
-          (val) => Validators.maxLength(val, 50),
+      (val) => Validators.maxLength(val, 50),
     ],
     initialValue: "",
   );
@@ -64,7 +70,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   @override
   Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    int _nextID = AssignmentsRepository.newID;
+    int _nextID = assignments.newID;
     // trimmed assignment name
     String _assignmentName = nameField.value.trim();
     // trimmed due date
@@ -72,9 +78,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     DateTime _newDate = DateTime(_dueDate.year, _dueDate.month, _dueDate.day);
     // subject field value
     int _subjectID = subjectField.value['value'];
-    Color color = SubjectsRepository
-        .getSubject(_subjectID)
-        .color;
+    Color color = subjects.getSubject(_subjectID).color;
     // trimmed details text
     String _detailsText = detailsField.value.trim();
     // create new assignment based on text from form
@@ -87,19 +91,19 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
       color,
       false, // isDeleted value, always false when creating
     );
-    AssignmentsRepository.addAssignment(newAssignment);
+    assignments.addAssignment(newAssignment);
     yield state.toSuccess();
   }
 
   Future<void> _getAssignmentNames() async {
-    List<Assignment> assignments = AssignmentsRepository.getAllAssignments();
+    List<Assignment> allAssignments = assignments.getAllAssignments();
     _assignmentNames =
-        assignments.map((assignment) => assignment.name.toLowerCase()).toList();
+        allAssignments.map((assignment) => assignment.name.toLowerCase()).toList();
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    List<Subject> subjects = SubjectsRepository.getAllSubjects();
-    for (Subject subject in subjects) {
+    List<Subject> allSubjects = subjects.getAllSubjects();
+    for (Subject subject in allSubjects) {
       subjectField.addItem({'name': subject.name, 'value': subject.id});
     }
     yield state.toLoaded();
