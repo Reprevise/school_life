@@ -1,13 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/services/databases/subjects_db.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 
 class SubjectsRepository {
-  Box _subjectsDB;
+  Box<Subject> _subjectsDB;
   int get newID => getAllSubjects().length;
 
   SubjectsRepository() {
-    _subjectsDB = Hive.box(SubjectsDBCreator.SUBJECTS_BOX);
+    _subjectsDB = Hive.box(DatabaseHelper.SUBJECTS_BOX);
   }
 
   List<Subject> getAllSubjects() {

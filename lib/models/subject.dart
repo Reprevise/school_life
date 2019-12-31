@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/assignment.dart';
+import 'package:school_life/models/single_day_schedule.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
 
 part 'subject.g.dart';
@@ -22,6 +23,8 @@ class Subject extends HiveObject {
   Color color;
   @HiveField(6)
   bool isDeleted;
+  @HiveField(7)
+  List<SingleDaySchedule> schedule;
 
   Subject(
     this.id,
@@ -30,6 +33,7 @@ class Subject extends HiveObject {
     this.building,
     this.teacher,
     this.color,
+    this.schedule,
     this.isDeleted,
   );
 

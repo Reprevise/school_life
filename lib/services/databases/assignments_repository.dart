@@ -1,13 +1,13 @@
 import 'package:hive/hive.dart';
 import 'package:school_life/models/assignment.dart';
-import 'package:school_life/services/databases/assignments_db.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 
 class AssignmentsRepository {
-  Box _assignmentsDB;
+  Box<Assignment> _assignmentsDB;
   int get newID => getAllAssignments().length;
 
   AssignmentsRepository() {
-    _assignmentsDB = Hive.box(AssignmentsDBCreator.ASSIGNMENTS_BOX);
+    _assignmentsDB = Hive.box(DatabaseHelper.ASSIGNMENTS_BOX);
   }
 
   List<Assignment> getAllAssignments() {

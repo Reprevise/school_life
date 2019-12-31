@@ -57,6 +57,7 @@ class SubjectDetailsPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 8),
+                      // TODO: implement schedule section
 //                      Container(
 //                        padding: EdgeInsets.all(12),
 //                        width: double.infinity,

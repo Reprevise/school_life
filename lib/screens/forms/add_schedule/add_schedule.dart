@@ -68,20 +68,13 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   }
 }
 
-class _FirstPage extends StatefulWidget {
+class _FirstPage extends StatelessWidget {
   final AddScheduleFormBloc formBloc;
 
   _FirstPage(this.formBloc);
 
   @override
-  __FirstPageState createState() => __FirstPageState();
-}
-
-class __FirstPageState extends State<_FirstPage>
-    with AutomaticKeepAliveClientMixin {
-  @override
   Widget build(BuildContext context) {
-    super.build(context);
     num cWidth = MediaQuery.of(context).size.width * 0.8;
 
     return Column(
@@ -98,7 +91,7 @@ class __FirstPageState extends State<_FirstPage>
           child: Container(
             child: Center(
               child: DropdownFieldBlocBuilder(
-                selectFieldBloc: widget.formBloc.subjectField,
+                selectFieldBloc: formBloc.subjectField,
                 millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
                 itemBuilder: (context, value) => value,
                 showEmptyItem: false,
@@ -149,20 +142,13 @@ class __FirstPageState extends State<_FirstPage>
   bool get wantKeepAlive => true;
 }
 
-class _SecondPage extends StatefulWidget {
+class _SecondPage extends StatelessWidget {
+  const _SecondPage(this.formBloc);
+
   final AddScheduleFormBloc formBloc;
 
-  _SecondPage(this.formBloc);
-
-  @override
-  __SecondPageState createState() => __SecondPageState();
-}
-
-class __SecondPageState extends State<_SecondPage>
-    with AutomaticKeepAliveClientMixin<_SecondPage> {
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     num cWidth = MediaQuery.of(context).size.width * 0.8;
     return Column(
       children: <Widget>[
@@ -177,7 +163,7 @@ class __SecondPageState extends State<_SecondPage>
         Expanded(
           child: Center(
             child: CheckboxGroupFieldBlocBuilder<String>(
-              multiSelectFieldBloc: widget.formBloc.scheduleDaysField,
+              multiSelectFieldBloc: formBloc.scheduleDaysField,
               itemBuilder: (context, value) => value,
               decoration: InputDecoration(
                 labelText: "Days",
@@ -196,9 +182,6 @@ class __SecondPageState extends State<_SecondPage>
       ],
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class _ThirdPage extends StatelessWidget {

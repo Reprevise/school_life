@@ -1,7 +1,13 @@
+import 'dart:convert';
+
 import 'package:form_bloc/form_bloc.dart';
+import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/models/user_settings.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
+import 'package:school_life/util/days_from_integer.dart';
 
 class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   SubjectsRepository subjects;
@@ -16,9 +22,8 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   );
 
   // ignore: close_sinks
-  final scheduleDaysField = MultiSelectFieldBloc(
+  final scheduleDaysField = MultiSelectFieldBloc<String>(
     validators: [FieldBlocValidators.requiredMultiSelectFieldBloc],
-    items: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
   );
 
   int oldNumberOfDays = 0;
@@ -60,12 +65,14 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
 
   @override
   Stream<FormBlocState<String, dynamic>> onLoading() async* {
+    getAvailableDays();
     scheduleDaysField.listen(changeDays);
     yield* _setSubjectFieldValues();
   }
 
   @override
   Stream<FormBlocState<String, dynamic>> onReload() async* {
+    getAvailableDays();
     yield* _setSubjectFieldValues();
   }
 
@@ -82,5 +89,16 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
     }
     subjectField.updateInitialValue(allSubjects.first.name);
     yield state.toLoaded();
+  }
+
+  void getAvailableDays() {
+    var box = Hive.box(DatabaseHelper.SETTINGS_BOX);
+    Map<String, bool> map =
+        json.decode(box.get(UserSettingsKeys.SCHOOL_DAYS)).cast<String, bool>();
+    map.removeWhere((key, value) => value == false);
+    List<String> days = map.keys
+        .map<String>((dayStringInts) => daysFromIntegerString[dayStringInts])
+        .toList();
+    days.forEach((item) => scheduleDaysField.addItem(item));
   }
 }

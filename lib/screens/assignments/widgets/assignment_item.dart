@@ -4,6 +4,7 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/details/assignment_details.dart';
+import 'package:school_life/screens/assignments/details/assignment_detailsx.dart';
 
 class AssignmentItem extends StatelessWidget {
   final Assignment assignment;
@@ -26,7 +27,8 @@ class AssignmentItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => AssignmentDetailsPage(assignment),
+              // builder: (context) => AssignmentDetailsPage(assignment),
+              builder: (context) => AssignmentDetailsPageX(assignment),
             ),
           );
         },

@@ -5,14 +5,15 @@ class MainSettingsDefaults {
 }
 
 class ScheduleSettingsDefaults {
-  static Map<int, bool> defaultDaysOfSchool = {
-    DateTime.monday: true,
-    DateTime.tuesday: true,
-    DateTime.wednesday: true,
-    DateTime.thursday: true,
-    DateTime.friday: true,
-    DateTime.saturday: false,
-    DateTime.sunday: false,
+  // 1 is Monday, 7 is Sunday, etc...
+  static Map<String, bool> defaultDaysOfSchool = {
+    "1": true,
+    "2": true,
+    "3": true,
+    "4": true,
+    "5": true,
+    "6": false,
+    "7": false,
   };
 
 }

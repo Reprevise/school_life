@@ -11,11 +11,11 @@ GetIt getIt = GetIt.I;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseHelper().initializeDatabases();
   getIt.registerSingleton<AndroidDetails>(AndroidDetails(), signalsReady: true);
+  await Future.delayed(Duration(milliseconds: 50));
   getIt.registerSingleton<ThemeService>(ThemeService());
   getIt.registerSingleton<AssignmentsRepository>(AssignmentsRepository());
   getIt.registerSingleton<SubjectsRepository>(SubjectsRepository());
-  // TODO: initialize a settings repository
-  await DatabaseHelper().initializeDatabases();
   runApp(App());
 }

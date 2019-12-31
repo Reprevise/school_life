@@ -4,7 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/widgets/assignment_item.dart';
-import 'package:school_life/services/databases/assignments_db.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 
 class AssignmentsList extends StatelessWidget {
   final Map<int, Subject> assignmentSubjectsByID;
@@ -18,7 +18,7 @@ class AssignmentsList extends StatelessWidget {
     final fontSize = MediaQuery.of(context).size.width / 20;
 
     return WatchBoxBuilder(
-      box: Hive.box<Assignment>(AssignmentsDBCreator.ASSIGNMENTS_BOX),
+      box: Hive.box<Assignment>(DatabaseHelper.ASSIGNMENTS_BOX),
       builder: (context, box) {
         if (box.isNotEmpty) {
           return Column(

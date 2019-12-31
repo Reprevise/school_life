@@ -105,6 +105,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
       building,
       teacher,
       color,
+      null, // TODO: remove eventually
       false, // isDeleted value
     );
     subjects.addSubject(newSubject);

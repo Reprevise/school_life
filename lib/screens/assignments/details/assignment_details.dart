@@ -9,6 +9,10 @@ class AssignmentDetailsPage extends StatelessWidget {
 
   const AssignmentDetailsPage(this.assignment);
 
+  Color getTextColorFromBackground(Color backgroundColor) {
+    return useWhiteForeground(backgroundColor) ? Colors.white : Colors.black;
+  }
+
   @override
   Widget build(BuildContext context) {
     TextTheme textTheme = Theme.of(context).textTheme;
@@ -17,7 +21,9 @@ class AssignmentDetailsPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: lightAccent,
-      appBar: CustomAppBar(""),
+      appBar: CustomAppBar(
+        "",
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -28,7 +34,9 @@ class AssignmentDetailsPage extends StatelessWidget {
               child: Container(
                 child: Text(
                   assignment.name,
-                  style: Theme.of(context).textTheme.display3,
+                  style: textTheme.display3.copyWith(
+                    color: getTextColorFromBackground(lightAccent),
+                  ),
                 ),
               ),
             ),
@@ -53,6 +61,7 @@ class AssignmentDetailsPage extends StatelessWidget {
                       Visibility(
                         visible: assignment.details.isNotEmpty,
                         child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
                               padding: const EdgeInsets.only(left: 16.0),
@@ -63,7 +72,7 @@ class AssignmentDetailsPage extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Container(
-                              padding: EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(12),
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 color: darkAccent,
@@ -72,9 +81,8 @@ class AssignmentDetailsPage extends StatelessWidget {
                               child: Text(
                                 assignment.details,
                                 style: textTheme.body1.copyWith(
-                                    color: useWhiteForeground(darkAccent)
-                                        ? Colors.white
-                                        : Colors.black),
+                                  color: getTextColorFromBackground(darkAccent),
+                                ),
                               ),
                             ),
                           ],

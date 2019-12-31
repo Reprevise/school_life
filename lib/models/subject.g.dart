@@ -20,6 +20,7 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       fields[3] as String,
       fields[4] as String,
       fields[5] as dynamic,
+      (fields[7] as List)?.cast<SingleDaySchedule>(),
       fields[6] as bool,
     );
   }
@@ -27,7 +28,7 @@ class SubjectAdapter extends TypeAdapter<Subject> {
   @override
   void write(BinaryWriter writer, Subject obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -41,6 +42,8 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       ..writeByte(5)
       ..write(obj.color)
       ..writeByte(6)
-      ..write(obj.isDeleted);
+      ..write(obj.isDeleted)
+      ..writeByte(7)
+      ..write(obj.schedule);
   }
 }
