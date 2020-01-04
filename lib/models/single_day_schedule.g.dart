@@ -8,6 +8,9 @@ part of 'single_day_schedule.dart';
 
 class SingleDayScheduleAdapter extends TypeAdapter<SingleDaySchedule> {
   @override
+  final typeId = 3;
+
+  @override
   SingleDaySchedule read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{

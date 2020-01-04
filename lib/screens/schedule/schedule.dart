@@ -3,7 +3,7 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/screens/forms/add_schedule/add_schedule.dart';
+import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
 import 'package:school_life/screens/settings/pages/schedule-set.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 

@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'assignment.g.dart';
 
-@HiveType()
+@HiveType(typeId: 1)
 class Assignment extends HiveObject {
   @HiveField(0)
   int id;
@@ -20,11 +20,13 @@ class Assignment extends HiveObject {
   @HiveField(6)
   bool isDeleted;
 
-  Assignment(this.id,
-      this.name,
-      this.dueDate,
-      this.subjectID,
-      this.details,
-      this.color,
-      this.isDeleted,);
+  Assignment(
+    this.id,
+    this.name,
+    this.dueDate,
+    this.subjectID,
+    this.details,
+    this.color,
+    this.isDeleted,
+  );
 }

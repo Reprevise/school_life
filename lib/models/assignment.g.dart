@@ -8,6 +8,9 @@ part of 'assignment.dart';
 
 class AssignmentAdapter extends TypeAdapter<Assignment> {
   @override
+  final typeId = 1;
+
+  @override
   Assignment read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/blocs/validators.dart';
+import 'package:school_life/bloc/validators.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
@@ -119,9 +119,8 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
-    List<Color> subjectColors = subjects.getAllSubjects()
-        .map((subject) => subject.color)
-        .toList();
+    List<Color> subjectColors =
+        subjects.getAllSubjects().map((subject) => subject.color).toList();
     availableColors = _allAvailableColors
         .where((color) => !subjectColors.contains(color))
         .toList();

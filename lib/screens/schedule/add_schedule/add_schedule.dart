@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/blocs/blocs.dart';
+import 'package:school_life/bloc/blocs.dart';
+import 'package:school_life/components/forms/date_time_field.dart';
+import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/screens/forms/widgets/date_time_field.dart';
-import 'package:school_life/screens/forms/widgets/page_navigator.dart';
 
 final PageController _controller = PageController();
 
@@ -109,37 +109,13 @@ class _FirstPage extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(right: 8.0, bottom: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              FlatButton(
-                color: Colors.blue[800],
-                textColor: Colors.white,
-                child: const Text("Next"),
-                onPressed: () {
-                  _controller.nextPage(
-                    duration: Duration(milliseconds: 200),
-                    curve: Curves.easeIn,
-                  );
-                },
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.horizontal(
-                    left: Radius.circular(15),
-                    right: Radius.circular(15),
-                  ),
-                ),
-              )
-            ],
-          ),
+        PageNavigator(
+          _controller,
+          firstPage: true,
         ),
       ],
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class _SecondPage extends StatelessWidget {
@@ -214,15 +190,16 @@ class _ThirdPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: formBloc.startTimeFields.map((field) {
                         return BlocBuilder(
-                          bloc: field,
+                          bloc: field[1],
                           builder: (context, state) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TimeField(
                                 labelText: "Start time",
                                 onTimeChanged: (value) =>
-                                    field.updateValue(value),
-                                selectedTime: field.value,
+                                    field[1].updateValue(value),
+                                errorText: field[1].state.error,
+                                selectedTime: field[1].value,
                               ),
                             );
                           },
@@ -236,15 +213,16 @@ class _ThirdPage extends StatelessWidget {
                       mainAxisSize: MainAxisSize.min,
                       children: formBloc.endTimeFields.map((field) {
                         return BlocBuilder(
-                          bloc: field,
+                          bloc: field[1],
                           builder: (context, state) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TimeField(
-                                labelText: "End time",
+                                labelText: "${field[0]} end time",
                                 onTimeChanged: (value) =>
-                                    field.updateValue(value),
-                                selectedTime: field.value,
+                                    field[1].updateValue(value),
+                                errorText: field[1].state.error,
+                                selectedTime: field[1].value,
                               ),
                             );
                           },
@@ -258,7 +236,11 @@ class _ThirdPage extends StatelessWidget {
             ),
           ),
         ),
-        PageNavigator(_controller),
+        PageNavigator(
+          _controller,
+          finalPage: true,
+          onSubmit: formBloc.submit,
+        ),
       ],
     );
   }

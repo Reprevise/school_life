@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/blocs/validators.dart';
+import 'package:school_life/bloc/validators.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/assignment.dart';
@@ -97,8 +97,9 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
 
   Future<void> _getAssignmentNames() async {
     List<Assignment> allAssignments = assignments.getAllAssignments();
-    _assignmentNames =
-        allAssignments.map((assignment) => assignment.name.toLowerCase()).toList();
+    _assignmentNames = allAssignments
+        .map((assignment) => assignment.name.toLowerCase())
+        .toList();
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {

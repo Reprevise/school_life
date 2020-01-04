@@ -17,9 +17,8 @@ class AssignmentsRepository {
 
   List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
     return getAllAssignments()
-            .where((assignment) => assignment.subjectID == subjectID)
-            .toList() ??
-        [];
+        .where((assignment) => assignment.subjectID == subjectID)
+        .toList();
   }
 
   Future<Assignment> getAssignmentFromID(int id) async {

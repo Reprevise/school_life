@@ -31,7 +31,8 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   // ignore: close_sinks
   final sameTimeEveryday = BooleanFieldBloc(initialValue: false);
 
-  final List<InputFieldBloc> startTimeFields = [], endTimeFields = [];
+  final List<Map<String, InputFieldBloc>> startTimeFields = [],
+      endTimeFields = [];
 
   final Map<int, FieldBloc> fields = {
     DateTime.monday: InputFieldBloc(toStringName: "Monday"),
@@ -42,25 +43,27 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
         subjectField,
         scheduleDaysField,
         sameTimeEveryday,
-        ...startTimeFields,
-        ...endTimeFields,
+        ...List.from(startTimeFields.map((map) => map.values)),
+        ...List.from(endTimeFields.map((map) => map.values)),
       ];
 
-  void addStartEndTimeFields() {
-    startTimeFields.add(InputFieldBloc());
-    endTimeFields.add(InputFieldBloc());
-  }
+  // ignore: close_sinks
+  final requiredInputField =
+      InputFieldBloc(validators: [FieldBlocValidators.requiredInputFieldBloc]);
 
-  void removeStartEndTimeFields() {
-    startTimeFields.removeLast();
-    endTimeFields.removeLast();
+  void addStartEndTimeFields(String day) {
+    Map<String, InputFieldBloc> map =
+        {day, requiredInputField} as Map<String, InputFieldBloc>;
+    startTimeFields.add(map);
+    endTimeFields.add(map);
   }
 
   void changeDays(MultiSelectFieldBlocState<String> state) {
-    if (state.value.length > oldNumberOfDays)
-      addStartEndTimeFields();
-    else if (state.value.length < oldNumberOfDays) removeStartEndTimeFields();
-    oldNumberOfDays = state.value.length;
+    startTimeFields.clear();
+    endTimeFields.clear();
+    for (var item in state.value) {
+      addStartEndTimeFields(item);
+    }
   }
 
   @override

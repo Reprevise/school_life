@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'single_day_schedule.g.dart';
 
-@HiveType()
+@HiveType(typeId: 3)
 class SingleDaySchedule {
   @HiveField(0)
   int day;

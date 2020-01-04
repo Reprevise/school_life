@@ -12,4 +12,7 @@ class ColorAdapter extends TypeAdapter<Color> {
   void write(BinaryWriter writer, Color obj) {
     writer.writeInt(obj.value);
   }
+
+  @override
+  int get typeId => 0;
 }

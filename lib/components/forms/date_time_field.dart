@@ -5,13 +5,15 @@ import 'package:school_life/util/date_utils.dart';
 class DateField extends StatelessWidget {
   const DateField({
     Key key,
-    this.labelText,
+    @required this.labelText,
+    @required this.errorText,
     @required this.selectedDate,
     @required this.onDateChanged,
     @required this.format,
   }) : super(key: key);
 
   final String labelText;
+  final String errorText;
   final DateTime selectedDate;
   final ValueChanged<DateTime> onDateChanged;
   final DateFormat format;
@@ -36,6 +38,8 @@ class DateField extends StatelessWidget {
           flex: 3,
           child: _InputDropdown(
             valueText: format.format(selectedDate),
+            labelText: labelText,
+            errorText: errorText,
             valueStyle: valueStyle,
             onPressed: () => _selectDate(context),
           ),
@@ -48,18 +52,20 @@ class DateField extends StatelessWidget {
 class TimeField extends StatelessWidget {
   const TimeField({
     Key key,
-    this.labelText,
-    this.selectedTime,
-    this.onTimeChanged,
+    @required this.labelText,
+    @required this.errorText,
+    @required this.selectedTime,
+    @required this.onTimeChanged,
   }) : super(key: key);
 
+  final String errorText;
   final String labelText;
   final TimeOfDay selectedTime;
   final ValueChanged<TimeOfDay> onTimeChanged;
 
   Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay picked =
-        await showTimePicker(context: context, initialTime: DateTime.now().currentTime);
+    final TimeOfDay picked = await showTimePicker(
+        context: context, initialTime: DateTime.now().currentTime);
     if (picked != null && picked != selectedTime) onTimeChanged(picked);
   }
 
@@ -74,6 +80,7 @@ class TimeField extends StatelessWidget {
             valueText: selectedTime != null ? selectedTime.format(context) : "",
             valueStyle: valueStyle,
             labelText: labelText,
+            errorText: errorText,
             onPressed: () => _selectTime(context),
           ),
         )
@@ -85,19 +92,19 @@ class TimeField extends StatelessWidget {
 class _InputDropdown extends StatelessWidget {
   const _InputDropdown({
     Key key,
-    this.labelText = "",
-    this.valueText,
+    @required this.labelText,
+    @required this.valueText,
+    @required this.errorText,
+    @required this.onPressed,
     this.valueStyle,
-    this.onPressed,
-    this.child,
     this.decoration = const InputDecoration(),
   }) : super(key: key);
 
   final String labelText;
   final String valueText;
+  final String errorText;
   final TextStyle valueStyle;
   final VoidCallback onPressed;
-  final Widget child;
   final InputDecoration decoration;
 
   @override
@@ -107,6 +114,7 @@ class _InputDropdown extends StatelessWidget {
       child: InputDecorator(
         decoration: decoration.copyWith(
           labelText: labelText,
+          errorText: errorText,
         ),
         baseStyle: valueStyle,
         child: Row(

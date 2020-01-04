@@ -15,15 +15,6 @@ class SubjectsRepository {
     return data ?? [];
   }
 
-  Map<int, Subject> getSubjectsMap() {
-    final List<Subject> allSubjects = getAllSubjects();
-    Map<int, Subject> subjectsByID = {};
-    for (Subject subject in allSubjects) {
-      subjectsByID[subject.id] = subject;
-    }
-    return subjectsByID;
-  }
-
   Subject getSubject(int id) {
     return _subjectsDB.getAt(id);
   }

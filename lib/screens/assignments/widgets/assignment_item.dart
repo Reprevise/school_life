@@ -4,20 +4,22 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/details/assignment_details.dart';
-import 'package:school_life/screens/assignments/details/assignment_detailsx.dart';
 
 class AssignmentItem extends StatelessWidget {
   final Assignment assignment;
   final Subject assignmentSubject;
 
-  const AssignmentItem(this.assignment,
-      this.assignmentSubject,);
+  const AssignmentItem(
+    this.assignment,
+    this.assignmentSubject,
+  );
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
     final textStyle = textTheme.display1.copyWith(color: Colors.black);
     final DateTime dueDate = assignment.dueDate;
+    final bool useBorder = true;
     final String date = "${dueDate.year}-${dueDate.month}-${dueDate.day}";
     return Card(
       color: assignment.color,
@@ -27,8 +29,7 @@ class AssignmentItem extends StatelessWidget {
           Navigator.push(
             context,
             MaterialPageRoute(
-              // builder: (context) => AssignmentDetailsPage(assignment),
-              builder: (context) => AssignmentDetailsPageX(assignment),
+              builder: (context) => AssignmentDetailsPage(assignment),
             ),
           );
         },
@@ -39,6 +40,12 @@ class AssignmentItem extends StatelessWidget {
         child: Container(
           height: 100,
           width: 375,
+          decoration: BoxDecoration(
+            border: useBorder
+                ? Border.all(
+                    style: BorderStyle.solid, width: 2, color: Colors.grey)
+                : null,
+          ),
           padding: const EdgeInsets.only(left: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

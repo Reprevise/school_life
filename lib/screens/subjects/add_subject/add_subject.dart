@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/blocs/blocs.dart';
+import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/index.dart';
 
 class AddSubjectPage extends StatelessWidget {

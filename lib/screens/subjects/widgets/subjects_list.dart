@@ -9,10 +9,11 @@ class SubjectsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final fontSize = MediaQuery.of(context).size.width / 20;
+    final Box<Subject> box = Hive.box<Subject>(DatabaseHelper.SUBJECTS_BOX);
 
-    return WatchBoxBuilder(
-      box: Hive.box<Subject>(DatabaseHelper.SUBJECTS_BOX),
-      builder: (context, box) {
+    return ValueListenableBuilder(
+      valueListenable: box.listenable(),
+      builder: (context, Box<Subject> box, child) {
         if (box.isEmpty) {
           return Column(
             children: <Widget>[
@@ -44,9 +45,8 @@ class SubjectsList extends StatelessWidget {
           );
         } else {
           return Column(
-            children: box.values
-                .map((subject) => SubjectItem(subject))
-                .toList(),
+            children:
+                box.values.map((subject) => SubjectItem(subject)).toList(),
           );
         }
       },

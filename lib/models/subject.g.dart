@@ -8,6 +8,9 @@ part of 'subject.dart';
 
 class SubjectAdapter extends TypeAdapter<Subject> {
   @override
+  final typeId = 2;
+
+  @override
   Subject read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{

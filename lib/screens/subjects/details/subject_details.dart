@@ -38,7 +38,7 @@ class SubjectDetailsPage extends StatelessWidget {
               width: double.infinity,
               decoration: BoxDecoration(
                 color: subject.color,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(36),
                   topRight: Radius.circular(36),
                 ),
@@ -58,21 +58,6 @@ class SubjectDetailsPage extends StatelessWidget {
                       ),
                       SizedBox(height: 8),
                       // TODO: implement schedule section
-//                      Container(
-//                        padding: EdgeInsets.all(12),
-//                        width: double.infinity,
-//                        decoration: BoxDecoration(
-//                          color: darkAccent,
-//                          borderRadius: BorderRadius.circular(16),
-//                        ),
-//                        child: Text(
-//                          assignment.details,
-//                          style: textTheme.body1.copyWith(
-//                              color: useWhiteForeground(darkAccent)
-//                                  ? Colors.white
-//                                  : Colors.black),
-//                        ),
-//                      )
                     ],
                   ),
                 ),

@@ -7,7 +7,7 @@ import 'package:school_life/services/databases/assignments_repository.dart';
 
 part 'subject.g.dart';
 
-@HiveType()
+@HiveType(typeId: 2)
 class Subject extends HiveObject {
   @HiveField(0)
   int id;
