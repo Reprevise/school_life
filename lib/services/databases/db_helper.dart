@@ -11,7 +11,7 @@ class DatabaseHelper {
   static const SUBJECTS_BOX = 'subjects_db';
   static const SETTINGS_BOX = 'settings_db';
 
-  Future<void> initializeDatabases() async {
+  static Future<void> initializeDatabases() async {
     await Hive.initFlutter();
     Hive.registerAdapter<Color>(ColorAdapter());
     Hive.registerAdapter<Assignment>(AssignmentAdapter());

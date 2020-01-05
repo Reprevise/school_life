@@ -44,7 +44,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
     final format = DateFormat("yyyy-MM-dd");
 
     return BlocProvider<AddAssignmentFormBloc>(
-      builder: (context) => AddAssignmentFormBloc(),
+      create: (context) => AddAssignmentFormBloc(),
       child: Builder(
         builder: (context) {
           _formBloc = BlocProvider.of<AddAssignmentFormBloc>(context);

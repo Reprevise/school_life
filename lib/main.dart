@@ -7,13 +7,13 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/services/device/android_details.dart';
 import 'package:school_life/services/theme/theme_service.dart';
 
-GetIt getIt = GetIt.I;
+GetIt getIt = GetIt.instance;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await DatabaseHelper().initializeDatabases();
+  await DatabaseHelper.initializeDatabases();
   getIt.registerSingleton<AndroidDetails>(AndroidDetails(), signalsReady: true);
-  await Future.delayed(Duration(milliseconds: 50));
+  await getIt.readyFuture;
   getIt.registerSingleton<ThemeService>(ThemeService());
   getIt.registerSingleton<AssignmentsRepository>(AssignmentsRepository());
   getIt.registerSingleton<SubjectsRepository>(SubjectsRepository());

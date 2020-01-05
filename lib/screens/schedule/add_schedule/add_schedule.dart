@@ -35,7 +35,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
       ),
       drawer: CustomDrawer(),
       body: BlocProvider<AddScheduleFormBloc>(
-        builder: (context) => AddScheduleFormBloc(),
+        create: (context) => AddScheduleFormBloc(),
         child: Builder(builder: (context) {
           _formBloc = BlocProvider.of<AddScheduleFormBloc>(context);
           return FormBlocListener<AddScheduleFormBloc, String, dynamic>(

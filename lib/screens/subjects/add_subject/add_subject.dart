@@ -41,7 +41,7 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AddSubjectFormBloc>(
-      builder: (context) => AddSubjectFormBloc(),
+      create: (context) => AddSubjectFormBloc(),
       child: Builder(
         builder: (context) {
           _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
