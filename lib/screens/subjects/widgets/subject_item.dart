@@ -4,16 +4,16 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/subject.dart';
 
 class SubjectItem extends StatelessWidget {
-  final Subject subject;
-
   const SubjectItem(this.subject);
+
+  final Subject subject;
 
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
     final TextStyle bodyStyle = textTheme.body1.copyWith(color: Colors.black);
 
-    Widget subjectName = Padding(
+    final Widget subjectName = Padding(
       padding: const EdgeInsets.only(left: 8.0),
       child: TextOneLine(
         subject.name,
@@ -22,49 +22,49 @@ class SubjectItem extends StatelessWidget {
         style: textTheme.display2.copyWith(color: Colors.black),
       ),
     );
-    Widget roomText = RichText(
+    final Widget roomText = RichText(
       text: TextSpan(
         style: TextStyle(
-          color: Color(0xff000000),
+          color: Colors.black,
         ),
         children: <TextSpan>[
           TextSpan(
-            text: "Room: ",
+            text: 'Room: ',
             style: Theme.of(context).textTheme.body2,
           ),
           TextSpan(text: subject.room, style: bodyStyle)
         ],
       ),
     );
-    Widget buildingText = RichText(
+    final Widget buildingText = RichText(
       text: TextSpan(
         style: TextStyle(
-          color: Color(0xff000000),
+          color: Colors.black,
         ),
         children: <TextSpan>[
           TextSpan(
-            text: "Building: ",
+            text: 'Building: ',
             style: Theme.of(context).textTheme.body2,
           ),
           TextSpan(text: subject.building, style: bodyStyle)
         ],
       ),
     );
-    Widget teacherText = RichText(
+    final Widget teacherText = RichText(
       text: TextSpan(
         style: TextStyle(
-          color: Color(0xff000000),
+          color: Colors.black,
         ),
         children: <TextSpan>[
           TextSpan(
-            text: "Teacher: ",
+            text: 'Teacher: ',
             style: Theme.of(context).textTheme.body2,
           ),
           TextSpan(text: subject.teacher, style: bodyStyle)
         ],
       ),
     );
-    Widget extraSubjectInfo = Column(
+    final Widget extraSubjectInfo = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         roomText,

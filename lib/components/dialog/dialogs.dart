@@ -3,15 +3,15 @@ import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 
 void showNoSubjectsDialog(BuildContext context) {
-  showDialog(
+  showDialog<void>(
     barrierDismissible: false,
     context: context,
-    builder: (context) {
+    builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("No subjects found"),
+        title: const Text('No subjects found'),
         actions: <Widget>[
           FlatButton(
-            child: Text("OK"),
+            child: const Text('OK'),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -26,10 +26,10 @@ void showDeleteAssignmentDialog(
   BuildContext context,
   Assignment assignment,
 ) {
-  showDialog(
+  showDialog<void>(
     context: context,
     barrierDismissible: true,
-    builder: (context) {
+    builder: (BuildContext context) {
       final DialogTheme _dialogTheme = Theme.of(context).dialogTheme;
       final Color _contentStyleColor = _dialogTheme.contentTextStyle.color;
       return AlertDialog(
@@ -40,9 +40,9 @@ void showDeleteAssignmentDialog(
               fontSize: 16,
             ),
             children: <TextSpan>[
-              TextSpan(text: "Do you want to delete "),
+              const TextSpan(text: 'Do you want to delete '),
               TextSpan(
-                text: "${assignment.name}?",
+                text: '${assignment.name}?',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -53,7 +53,7 @@ void showDeleteAssignmentDialog(
         actions: <Widget>[
           MaterialButton(
             child: Text(
-              "YES",
+              'YES',
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () async {
@@ -63,7 +63,7 @@ void showDeleteAssignmentDialog(
           ),
           MaterialButton(
             child: Text(
-              "NO",
+              'NO',
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () => Navigator.pop(context),
@@ -75,21 +75,21 @@ void showDeleteAssignmentDialog(
 }
 
 void showTooManySubjectsDialog(BuildContext context) {
-  showDialog(
+  showDialog<void>(
     context: context,
     barrierDismissible: false,
-    builder: (context) {
+    builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          "Too many subjects",
+          'Too many subjects',
           style: Theme.of(context).textTheme.display2,
         ),
-        content: Text(
-          "You have 19 subjects, that's a lot! \nUnfortunately, we don't support more than 19 subjects. :( \nHowever, we will in the future, stay tuned!",
+        content: const Text(
+          'You have 19 subjects, that\'s a lot! \nUnfortunately, we don\'t support more than 19 subjects. :( \nHowever, we will in the future, stay tuned!',
         ),
         actions: <Widget>[
           MaterialButton(
-            child: Text("OK"),
+            child: const Text('OK'),
             onPressed: () => Navigator.pop(context),
           )
         ],
@@ -99,10 +99,10 @@ void showTooManySubjectsDialog(BuildContext context) {
 }
 
 void showDeleteSubjectDialog(BuildContext context, Subject subject) {
-  showDialog(
+  showDialog<void>(
     context: context,
     barrierDismissible: true,
-    builder: (context) {
+    builder: (BuildContext context) {
       return AlertDialog(
         title: RichText(
           text: TextSpan(
@@ -111,9 +111,9 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
               fontSize: 16,
             ),
             children: <TextSpan>[
-              TextSpan(text: "Do you want to delete "),
+              const TextSpan(text: 'Do you want to delete '),
               TextSpan(
-                text: "${subject.name}?",
+                text: '${subject.name}?',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                 ),
@@ -124,7 +124,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
         actions: <Widget>[
           MaterialButton(
             child: Text(
-              "YES",
+              'YES',
               style: TextStyle(
                 color: Theme.of(context).dialogTheme.contentTextStyle.color,
               ),
@@ -136,7 +136,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
           ),
           MaterialButton(
             child: Text(
-              "NO",
+              'NO',
               style: TextStyle(
                 color: Theme.of(context).dialogTheme.contentTextStyle.color,
               ),
@@ -152,13 +152,13 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
 void showOnPopDialog(BuildContext context) {
   final DialogTheme _dialogTheme = Theme.of(context).dialogTheme;
   final Color _contentStyleColor = _dialogTheme.contentTextStyle.color;
-  showDialog(
+  showDialog<void>(
     context: context,
     barrierDismissible: false,
-    builder: (context) {
+    builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          "Discard your changes?",
+          'Discard your changes?',
           style: TextStyle(
             color: _dialogTheme.titleTextStyle.color,
             fontSize: 16,
@@ -167,7 +167,7 @@ void showOnPopDialog(BuildContext context) {
         actions: <Widget>[
           MaterialButton(
             child: Text(
-              "NO",
+              'NO',
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () {
@@ -176,7 +176,7 @@ void showOnPopDialog(BuildContext context) {
           ),
           MaterialButton(
             child: Text(
-              "DISCARD",
+              'DISCARD',
               style: TextStyle(color: _contentStyleColor),
             ),
             onPressed: () {

@@ -6,9 +6,9 @@ import 'package:school_life/models/assignment.dart';
 import 'package:school_life/util/color_utils.dart';
 
 class AssignmentDetailsPage extends StatelessWidget {
-  final Assignment assignment;
-
   const AssignmentDetailsPage(this.assignment);
+
+  final Assignment assignment;
 
   Color getTextColorFromBackground(Color backgroundColor) {
     return useWhiteForeground(backgroundColor) ? Colors.white : Colors.black;
@@ -16,20 +16,20 @@ class AssignmentDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextTheme textTheme = Theme.of(context).textTheme;
-    Color lightAccent = assignment.color.getLighterAccent();
-    Color darkAccent = assignment.color.getDarkerAccent();
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final Color lightAccent = assignment.color.getLighterAccent();
+    final Color darkAccent = assignment.color.getDarkerAccent();
 
     return Scaffold(
       backgroundColor: lightAccent,
       body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) {
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
           return <Widget>[DetailsPageAppbar(assignment.name, lightAccent)];
         },
         body: Container(
           decoration: BoxDecoration(
             color: assignment.color,
-            borderRadius: BorderRadius.only(
+            borderRadius: const BorderRadius.only(
               topLeft: Radius.circular(36),
               topRight: Radius.circular(36),
             ),
@@ -37,7 +37,7 @@ class AssignmentDetailsPage extends StatelessWidget {
           child: ScrollConfiguration(
             behavior: NoGlowScrollBehavior(),
             child: SingleChildScrollView(
-              padding: EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Column(
@@ -50,11 +50,11 @@ class AssignmentDetailsPage extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.only(left: 16.0),
                             child: Text(
-                              "Details",
+                              'Details',
                               style: textTheme.display2,
                             ),
                           ),
-                          SizedBox(height: 8),
+                          const SizedBox(height: 8),
                           Container(
                             padding: const EdgeInsets.all(12),
                             width: double.infinity,
@@ -84,7 +84,7 @@ class AssignmentDetailsPage extends StatelessWidget {
     // return Scaffold(
     //   backgroundColor: lightAccent,
     //   appBar: CustomAppBar(
-    //     "",
+    //     '',
     //   ),
     //   body: Column(
     //     crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +128,7 @@ class AssignmentDetailsPage extends StatelessWidget {
     //                         Padding(
     //                           padding: const EdgeInsets.only(left: 16.0),
     //                           child: Text(
-    //                             "Details",
+    //                             'Details',
     //                             style: textTheme.display2,
     //                           ),
     //                         ),

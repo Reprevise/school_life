@@ -8,36 +8,36 @@ int _selectedIndex = 0;
 class CustomDrawer extends StatelessWidget {
   int get selectedIndex => _selectedIndex;
   set selectedIndex(int newIndex) => _selectedIndex = newIndex;
-  
+
   final List<String> appRouteNames = routes.keys.toList();
-  final List<DrawerItem> _drawerItems = [
+  final List<DrawerItem> _drawerItems = <DrawerItem>[
     DrawerItem(
-      title: "Home",
+      title: 'Home',
       icon: OMIcons.home,
     ),
     DrawerItem(
-      title: "Assignments",
+      title: 'Assignments',
       icon: OMIcons.assignment,
     ),
     DrawerItem(
-      title: "Schedule",
+      title: 'Schedule',
       icon: OMIcons.schedule,
     ),
     DrawerItem(
-      title: "Subjects",
+      title: 'Subjects',
       icon: OMIcons.school,
     ),
     DrawerItem(
-      title: "Settings",
+      title: 'Settings',
       icon: OMIcons.settings,
     ),
     DrawerItem(
-      title: "Help and Feedback",
+      title: 'Help and Feedback',
       icon: OMIcons.help,
     ),
   ];
 
-  _onSelectItem(BuildContext context, int index) {
+  void _onSelectItem(BuildContext context, int index) {
     if (_selectedIndex == index) {
       Navigator.of(context).pop();
       return;
@@ -47,23 +47,27 @@ class CustomDrawer extends StatelessWidget {
   }
 
   Color _getItemColor(BuildContext context, int currentIndex, Color itemColor) {
-    if (_selectedIndex == currentIndex) return Color(0xff1967d2);
-    if (itemColor != null) return itemColor;
+    if (_selectedIndex == currentIndex) {
+      return const Color(0xff1967d2);
+    }
+    if (itemColor != null) {
+      return itemColor;
+    }
     return Theme.of(context).textTheme.body1.color;
   }
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final iconColor = Theme.of(context).primaryIconTheme.color;
-    final Color containerColor = Color(0xffe8f0fe);
+    const Color containerColor = Color(0xffe8f0fe);
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final Color iconColor = Theme.of(context).primaryIconTheme.color;
 
     final Widget drawerHeader = SafeArea(
       top: true,
       left: true,
       minimum: const EdgeInsets.all(16),
       child: Text(
-        "School Life",
+        'School Life',
         style: textTheme.display3,
       ),
     );
@@ -79,8 +83,8 @@ class CustomDrawer extends StatelessWidget {
               itemCount: _drawerItems.length,
               padding: const EdgeInsets.only(top: 10),
               shrinkWrap: true,
-              itemBuilder: (context, i) {
-                DrawerItem d = _drawerItems[i];
+              itemBuilder: (BuildContext context, int i) {
+                final DrawerItem d = _drawerItems[i];
                 return Container(
                   color:
                       _selectedIndex == i ? containerColor : Colors.transparent,

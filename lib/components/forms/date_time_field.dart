@@ -26,7 +26,9 @@ class DateField extends StatelessWidget {
       firstDate: date,
       lastDate: date.addYears(5),
     );
-    if (picked != null && picked != selectedDate) onDateChanged(picked);
+    if (picked != null && picked != selectedDate) {
+      onDateChanged(picked);
+    }
   }
 
   @override
@@ -66,7 +68,9 @@ class TimeField extends StatelessWidget {
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
         context: context, initialTime: DateTime.now().currentTime);
-    if (picked != null && picked != selectedTime) onTimeChanged(picked);
+    if (picked != null && picked != selectedTime) {
+      onTimeChanged(picked);
+    }
   }
 
   @override
@@ -77,7 +81,7 @@ class TimeField extends StatelessWidget {
       children: <Widget>[
         Expanded(
           child: _InputDropdown(
-            valueText: selectedTime != null ? selectedTime.format(context) : "",
+            valueText: selectedTime != null ? selectedTime.format(context) : '',
             valueStyle: valueStyle,
             labelText: labelText,
             errorText: errorText,

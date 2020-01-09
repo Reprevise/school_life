@@ -18,18 +18,18 @@ class ChooseDaysOfSchoolDialog extends StatefulWidget {
 class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
   _ChooseDaysOfSchoolDialogState(this._selectedDays);
 
-  Map<String, bool> _selectedDays;
+  final Map<String, bool> _selectedDays;
 
   @override
   Widget build(BuildContext context) {
     final DialogTheme _dialogTheme = Theme.of(context).dialogTheme;
     final Color _contentStyleColor = _dialogTheme.contentTextStyle.color;
     return AlertDialog(
-      title: Text("What days do you have school?"),
+      title: const Text('What days do you have school?'),
       actions: <Widget>[
         MaterialButton(
           child: Text(
-            "SAVE",
+            'SAVE',
             style: TextStyle(color: _contentStyleColor),
           ),
           onPressed: () {
@@ -42,65 +42,65 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
         child: Column(
           children: <Widget>[
             CheckboxListTile(
-              title: Text("Monday"),
-              value: _selectedDays["1"],
-              onChanged: (value) {
+              title: const Text('Monday'),
+              value: _selectedDays['1'],
+              onChanged: (bool value) {
                 setState(() {
-                  _selectedDays["1"] = value;
+                  _selectedDays['1'] = value;
                 });
               },
             ),
             CheckboxListTile(
-              title: Text("Tuesday"),
-              value: _selectedDays["2"],
-              onChanged: (value) {
+              title: const Text('Tuesday'),
+              value: _selectedDays['2'],
+              onChanged: (bool value) {
                 setState(() {
-                  _selectedDays["2"] = value;
+                  _selectedDays['2'] = value;
                 });
               },
             ),
             CheckboxListTile(
-              title: Text("Wednesday"),
-              value: _selectedDays["3"],
-              onChanged: (value) {
+              title: const Text('Wednesday'),
+              value: _selectedDays['3'],
+              onChanged: (bool value) {
                 setState(() {
-                  _selectedDays["3"] = value;
+                  _selectedDays['3'] = value;
                 });
               },
             ),
             CheckboxListTile(
-              title: Text("Thursday"),
-              value: _selectedDays["4"],
-              onChanged: (value) {
+              title: const Text('Thursday'),
+              value: _selectedDays['4'],
+              onChanged: (bool value) {
                 setState(() {
-                  _selectedDays["4"] = value;
+                  _selectedDays['4'] = value;
                 });
               },
             ),
             CheckboxListTile(
-              title: Text("Friday"),
-              value: _selectedDays["5"],
-              onChanged: (value) {
+              title: const Text('Friday'),
+              value: _selectedDays['5'],
+              onChanged: (bool value) {
                 setState(() {
-                  _selectedDays["5"] = value;
+                  _selectedDays['5'] = value;
                 });
               },
             ),
             CheckboxListTile(
-              title: Text("Saturday"),
-              value: _selectedDays["6"],
-              onChanged: (value) {
+              title: const Text('Saturday'),
+              value: _selectedDays['6'],
+              onChanged: (bool value) {
                 setState(() {
-                  _selectedDays["6"] = value;
+                  _selectedDays['6'] = value;
                 });
               },
             ),
             CheckboxListTile(
-              title: Text("Sunday"),
-              value: _selectedDays["7"],
-              onChanged: (value) {
+              title: const Text('Sunday'),
+              value: _selectedDays['7'],
+              onChanged: (bool value) {
                 setState(() {
-                  _selectedDays["7"] = value;
+                  _selectedDays['7'] = value;
                 });
               },
             ),

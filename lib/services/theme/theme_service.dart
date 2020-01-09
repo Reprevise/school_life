@@ -7,17 +7,18 @@ import 'package:school_life/services/device/android_details.dart';
 import 'package:school_life/models/user_settings.dart';
 
 class ThemeService {
-  static AndroidDetails _details;
-  Box settings;
-  static const Map<Brightness, String> BRIGHTNESS_TO_STRING = {
-    Brightness.light: "light",
-    Brightness.dark: "dark",
-  };
-
   ThemeService() {
     _details = getIt<AndroidDetails>();
-    settings = Hive.box(DatabaseHelper.SETTINGS_BOX);
-  } // empty constructor
+    settings = Hive.box<dynamic>(DatabaseHelper.SETTINGS_BOX);
+  }
+
+  static AndroidDetails _details;
+  Box<dynamic> settings;
+  static const Map<Brightness, String> BRIGHTNESS_TO_STRING =
+      <Brightness, String>{
+    Brightness.light: 'light',
+    Brightness.dark: 'dark',
+  };
 
   void saveCurrentBrightnessToDisk(Brightness brightness) {
     settings.put(UserSettingsKeys.THEME, BRIGHTNESS_TO_STRING[brightness]);

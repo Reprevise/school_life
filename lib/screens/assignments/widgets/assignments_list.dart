@@ -11,17 +11,18 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 class AssignmentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final fontSize = MediaQuery.of(context).size.width / 20;
-    Box<Assignment> box = Hive.box<Assignment>(DatabaseHelper.ASSIGNMENTS_BOX);
+    final double fontSize = MediaQuery.of(context).size.width / 20;
+    final Box<Assignment> box =
+        Hive.box<Assignment>(DatabaseHelper.ASSIGNMENTS_BOX);
 
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<Box<Assignment>>(
       valueListenable: box.listenable(),
-      builder: (context, Box<Assignment> box, child) {
+      builder: (BuildContext context, Box<Assignment> box, Widget child) {
         if (box.isNotEmpty) {
           return Column(
             children: box.values.map(
-              (assignment) {
-                Subject currentSubject = getIt<SubjectsRepository>()
+              (Assignment assignment) {
+                final Subject currentSubject = getIt<SubjectsRepository>()
                     .getSubject(assignment.subjectID);
                 return AssignmentItem(
                   assignment,
@@ -39,16 +40,16 @@ class AssignmentsList extends StatelessWidget {
                 size: 128.0,
               ),
               Text(
-                "You don't have any assignments due!",
+                'You don\'t have any assignments due!',
                 style: Theme.of(context)
                     .textTheme
                     .display2
                     .copyWith(fontSize: fontSize),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
-                "Woo-hoo!",
+                'Woo-hoo!',
                 style: Theme.of(context)
                     .textTheme
                     .display2

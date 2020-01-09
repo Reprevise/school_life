@@ -3,21 +3,21 @@ import 'package:school_life/models/assignment.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
 class AssignmentsRepository {
-  Box<Assignment> _assignmentsDB;
-  int get newID => getAllAssignments().length;
-
   AssignmentsRepository() {
     _assignmentsDB = Hive.box(DatabaseHelper.ASSIGNMENTS_BOX);
   }
 
+  Box<Assignment> _assignmentsDB;
+  int get newID => getAllAssignments().length;
+
   List<Assignment> getAllAssignments() {
     final List<Assignment> data = _assignmentsDB.values.toList();
-    return data ?? [];
+    return data ?? <Assignment>[];
   }
 
   List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
     return getAllAssignments()
-        .where((assignment) => assignment.subjectID == subjectID)
+        .where((Assignment assignment) => assignment.subjectID == subjectID)
         .toList();
   }
 

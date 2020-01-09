@@ -6,6 +6,7 @@ import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/forms/date_time_field.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/components/scroll_behavior/no_glow.dart';
 
 final PageController _controller = PageController();
 
@@ -27,7 +28,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        "Add Schedule",
+        'Add Schedule',
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.maybePop(context),
@@ -35,23 +36,23 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
       ),
       drawer: CustomDrawer(),
       body: BlocProvider<AddScheduleFormBloc>(
-        create: (context) => AddScheduleFormBloc(),
-        child: Builder(builder: (context) {
+        create: (BuildContext context) => AddScheduleFormBloc(),
+        child: Builder(builder: (BuildContext context) {
           _formBloc = BlocProvider.of<AddScheduleFormBloc>(context);
           return FormBlocListener<AddScheduleFormBloc, String, dynamic>(
-            onSuccess: (context, state) {
-              Navigator.of(context).pushNamed("/schedule");
+            onSuccess: (BuildContext context, dynamic state) {
+              Navigator.of(context).pushNamed('/schedule');
             },
-            child: BlocBuilder<AddScheduleFormBloc, FormBlocState>(
-              builder: (context, state) {
+            child: BlocBuilder<AddScheduleFormBloc, dynamic>(
+              builder: (BuildContext context, dynamic state) {
                 if (state is FormBlocLoading) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 } else if (state is FormBlocLoadFailed) {
-                  return Center(child: Text("Uh oh! Try again later"));
+                  return const Center(child: Text('Uh oh! Try again later'));
                 } else {
                   return PageView(
                     controller: _controller,
-                    physics: NeverScrollableScrollPhysics(),
+                    physics: const NeverScrollableScrollPhysics(),
                     children: <Widget>[
                       _FirstPage(_formBloc),
                       _SecondPage(_formBloc),
@@ -69,20 +70,20 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
 }
 
 class _FirstPage extends StatelessWidget {
-  final AddScheduleFormBloc formBloc;
+  const _FirstPage(this.formBloc);
 
-  _FirstPage(this.formBloc);
+  final AddScheduleFormBloc formBloc;
 
   @override
   Widget build(BuildContext context) {
-    num cWidth = MediaQuery.of(context).size.width * 0.8;
+    final double cWidth = MediaQuery.of(context).size.width * 0.8;
 
     return Column(
       children: <Widget>[
         Container(
           width: cWidth,
           child: Text(
-            "What subject do you want to create a schedule for?",
+            'What subject do you want to create a schedule for?',
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.display2,
           ),
@@ -90,13 +91,13 @@ class _FirstPage extends StatelessWidget {
         Expanded(
           child: Container(
             child: Center(
-              child: DropdownFieldBlocBuilder(
+              child: DropdownFieldBlocBuilder<String>(
                 selectFieldBloc: formBloc.subjectField,
                 millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
-                itemBuilder: (context, value) => value,
+                itemBuilder: (BuildContext context, String value) => value,
                 showEmptyItem: false,
                 decoration: InputDecoration(
-                  labelText: "Subject",
+                  labelText: 'Subject',
                   prefixIcon: Icon(
                     Icons.subject,
                     color: Theme.of(context).primaryIconTheme.color,
@@ -125,13 +126,13 @@ class _SecondPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    num cWidth = MediaQuery.of(context).size.width * 0.8;
+    final double cWidth = MediaQuery.of(context).size.width * 0.8;
     return Column(
       children: <Widget>[
         Container(
           width: cWidth,
           child: Text(
-            "What days do you have this subject on?",
+            'What days do you have this subject on?',
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.display2,
           ),
@@ -140,9 +141,9 @@ class _SecondPage extends StatelessWidget {
           child: Center(
             child: CheckboxGroupFieldBlocBuilder<String>(
               multiSelectFieldBloc: formBloc.scheduleDaysField,
-              itemBuilder: (context, value) => value,
+              itemBuilder: (BuildContext context, String value) => value,
               decoration: InputDecoration(
-                labelText: "Days",
+                labelText: 'Days',
                 prefixIcon: Icon(
                   Icons.view_day,
                   color: Theme.of(context).primaryIconTheme.color,
@@ -167,72 +168,83 @@ class _ThirdPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    num cWidth = MediaQuery.of(context).size.width * 0.8;
+    final double cWidth = MediaQuery.of(context).size.width * 0.8;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         Container(
           width: cWidth,
           child: Text(
-            "What times do you have this subject?",
+            'What times do you have this subject?',
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.display2,
           ),
         ),
+        // TODO: sort fields by day
         Expanded(
           child: Center(
-            child: SingleChildScrollView(
-              child: Row(
-                children: <Widget>[
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: formBloc.startTimeFields.map((field) {
-                        return BlocBuilder(
-                          bloc: field[1],
-                          builder: (context, state) {
+            child: Row(
+              children: <Widget>[
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ScrollConfiguration(
+                    behavior: NoGlowScrollBehavior(),
+                    child: ListView.builder(
+                      itemCount: formBloc.startTimeFields.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final InputFieldBloc<TimeOfDay> currentField =
+                            formBloc.startTimeFields[index];
+                        return BlocBuilder<InputFieldBloc<TimeOfDay>, dynamic>(
+                          bloc: currentField,
+                          builder: (BuildContext context, dynamic state) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TimeField(
-                                labelText: "Start time",
-                                onTimeChanged: (value) =>
-                                    field[1].updateValue(value),
-                                errorText: field[1].state.error,
-                                selectedTime: field[1].value,
+                                labelText:
+                                    '${currentField.state.toStringName} start time',
+                                onTimeChanged: (TimeOfDay value) =>
+                                    currentField.updateValue(value),
+                                errorText: currentField.state.error,
+                                selectedTime: currentField.value,
                               ),
                             );
                           },
                         );
-                      }).toList(),
+                      },
                     ),
                   ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: formBloc.endTimeFields.map((field) {
-                        return BlocBuilder(
-                          bloc: field[1],
-                          builder: (context, state) {
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: ScrollConfiguration(
+                    behavior: NoGlowScrollBehavior(),
+                    child: ListView.builder(
+                      itemCount: formBloc.endTimeFields.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        final InputFieldBloc<TimeOfDay> currentField =
+                            formBloc.endTimeFields[index];
+                        return BlocBuilder<InputFieldBloc<TimeOfDay>, dynamic>(
+                          bloc: currentField,
+                          builder: (BuildContext context, dynamic state) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: TimeField(
-                                labelText: "${field[0]} end time",
-                                onTimeChanged: (value) =>
-                                    field[1].updateValue(value),
-                                errorText: field[1].state.error,
-                                selectedTime: field[1].value,
+                                labelText:
+                                    '${currentField.state.toStringName} end time',
+                                onTimeChanged: (TimeOfDay value) =>
+                                    currentField.updateValue(value),
+                                errorText: currentField.state.error,
+                                selectedTime: currentField.value,
                               ),
                             );
                           },
                         );
-                      }).toList(),
+                      },
                     ),
                   ),
-                  SizedBox(width: 10),
-                ],
-              ),
+                ),
+                const SizedBox(width: 10),
+              ],
             ),
           ),
         ),

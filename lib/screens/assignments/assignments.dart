@@ -25,7 +25,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   }
 
   void _doesUserHaveSubjects() {
-    List<Subject> allSubjects = subjects.getAllSubjects();
+    final List<Subject> allSubjects = subjects.getAllSubjects();
     if (allSubjects.isNotEmpty) {
       _userHasSubjects = true;
     }
@@ -35,14 +35,14 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        "Assignments",
+        'Assignments',
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () => Navigator.push(
               context,
-              MaterialPageRoute(
-                builder: (context) => AssignmentsSettingsPage(),
+              MaterialPageRoute<AssignmentsSettingsPage>(
+                builder: (BuildContext context) => AssignmentsSettingsPage(),
               ),
             ),
           ),
@@ -52,13 +52,13 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _handleAddAssignmentPress(context),
-        label: const Text("ADD ASSIGNMENT"),
+        label: const Text('ADD ASSIGNMENT'),
         icon: const Icon(Icons.add),
       ),
       body: SingleChildScrollView(
         primary: false,
-        physics: ClampingScrollPhysics(),
-        padding: EdgeInsets.only(top: 20, bottom: 70),
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
           child: AssignmentsList(),
         ),
@@ -71,10 +71,10 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       showNoSubjectsDialog(context);
       return;
     }
-    Navigator.push(
+    Navigator.push<AddAssignmentPage>(
       context,
-      MaterialPageRoute(
-        builder: (context) => AddAssignmentPage(),
+      MaterialPageRoute<AddAssignmentPage>(
+        builder: (BuildContext context) => AddAssignmentPage(),
       ),
     );
   }

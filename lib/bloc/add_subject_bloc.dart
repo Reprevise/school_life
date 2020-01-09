@@ -7,43 +7,41 @@ import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AddSubjectFormBloc extends FormBloc<String, String> {
-  SubjectsRepository subjects;
-  static List<String> _subjectNames = [];
-
   AddSubjectFormBloc() : super(isLoading: true) {
     subjects = getIt<SubjectsRepository>();
   }
 
-  // ignore: close_sinks
-  final nameField = TextFieldBloc(
-    validators: [
+  SubjectsRepository subjects;
+  static List<String> _subjectNames = <String>[];
+
+  final TextFieldBloc nameField = TextFieldBloc(
+    validators: <String Function(String)>[
       FieldBlocValidators.requiredTextFieldBloc,
       validateSubjectName,
-      (val) => Validators.maxLength(val, 50),
+      (String val) => Validators.maxLength(val, 50),
     ],
   );
 
-  // ignore: close_sinks
-  final roomField = TextFieldBloc(validators: [
+  final TextFieldBloc roomField =
+      TextFieldBloc(validators: <String Function(String)>[
     FieldBlocValidators.requiredTextFieldBloc,
-    (val) => Validators.maxLength(val, 35),
+    (String val) => Validators.maxLength(val, 35),
   ]);
 
-  // ignore: close_sinks
-  final buildingField = TextFieldBloc(validators: [
-    (val) => Validators.maxLength(val, 35),
+  final TextFieldBloc buildingField =
+      TextFieldBloc(validators: <String Function(String)>[
+    (String val) => Validators.maxLength(val, 35),
   ]);
 
-  // ignore: close_sinks
-  final teacherField = TextFieldBloc(validators: [
+  final TextFieldBloc teacherField =
+      TextFieldBloc(validators: <String Function(String)>[
     FieldBlocValidators.requiredTextFieldBloc,
-    (val) => Validators.maxLength(val, 40),
+    (String val) => Validators.maxLength(val, 40),
   ]);
 
-  // ignore: close_sinks
-  final colorField = InputFieldBloc<Color>();
+  final InputFieldBloc<Color> colorField = InputFieldBloc<Color>();
 
-  final List<Color> _allAvailableColors = [
+  final List<Color> _allAvailableColors = <Color>[
     Colors.red,
     Colors.pink,
     Colors.purple,
@@ -68,8 +66,13 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   Color currentColor = Colors.yellow;
 
   @override
-  List<FieldBloc> get fieldBlocs =>
-      [nameField, roomField, buildingField, teacherField, colorField];
+  List<FieldBloc> get fieldBlocs => <FieldBloc>[
+        nameField,
+        roomField,
+        buildingField,
+        teacherField,
+        colorField
+      ];
 
   @override
   Stream<FormBlocState<String, String>> onLoading() async* {
@@ -86,19 +89,19 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    int nextID = subjects.newID;
+    final int nextID = subjects.newID;
     // trimmed subject name
-    String subjectName = nameField.value.trim();
+    final String subjectName = nameField.value.trim();
     // get room field text
-    String roomText = roomField.value.trim();
+    final String roomText = roomField.value.trim();
     // get building field text
-    String building = buildingField.value.trim();
+    final String building = buildingField.value.trim();
     // get teacher field text
-    String teacher = teacherField.value.trim();
+    final String teacher = teacherField.value.trim();
     // get the color value
-    Color color = colorField.value;
+    final Color color = colorField.value;
     // create new subject based on text from form
-    Subject newSubject = Subject(
+    final Subject newSubject = Subject(
       nextID,
       subjectName,
       roomText,
@@ -113,16 +116,19 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   Stream<FormBlocState<String, String>> _getSubjectNames() async* {
-    List<Subject> allSubjects = subjects.getAllSubjects();
-    _subjectNames =
-        allSubjects.map((subject) => subject.name.toLowerCase()).toList();
+    final List<Subject> allSubjects = subjects.getAllSubjects();
+    _subjectNames = allSubjects
+        .map((Subject subject) => subject.name.toLowerCase())
+        .toList();
   }
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
-    List<Color> subjectColors =
-        subjects.getAllSubjects().map((subject) => subject.color).toList();
+    final List<Color> subjectColors = subjects
+        .getAllSubjects()
+        .map((Subject subject) => subject.color)
+        .toList();
     availableColors = _allAvailableColors
-        .where((color) => !subjectColors.contains(color))
+        .where((Color color) => !subjectColors.contains(color))
         .toList();
     colorField.updateValue(availableColors.first);
     currentColor = availableColors.first;
@@ -137,24 +143,28 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
 
   //! needs to return a future because WillPopScope needs it to be
   Future<bool> canPop(BuildContext context) async {
-    if (_fieldsAreEmpty()) return true;
+    if (_fieldsAreEmpty()) {
+      return true;
+    }
     showOnPopDialog(context);
     return false;
   }
 
   bool _fieldsAreEmpty() {
     // get all controllers' text and trim them
-    String name = nameField.value.trim();
-    String room = roomField.value.trim();
-    String building = buildingField.value.trim();
-    String teacher = teacherField.value.trim();
-    var subjectColor = colorField.value;
+    final String name = nameField.value.trim();
+    final String room = roomField.value.trim();
+    final String building = buildingField.value.trim();
+    final String teacher = teacherField.value.trim();
+    final Color subjectColor = colorField.value;
     // if they're all empty, return true
     if (name.isEmpty &&
         room.isEmpty &&
         building.isEmpty &&
         teacher.isEmpty &&
-        subjectColor != null) return true;
+        subjectColor != null) {
+      return true;
+    }
     // otherwise, return false
     return false;
   }

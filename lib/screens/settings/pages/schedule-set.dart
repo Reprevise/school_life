@@ -15,47 +15,51 @@ class ScheduleSettingsPage extends StatefulWidget {
 }
 
 class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
-  Box settings;
-  Map<String, bool> _selectedDays = {};
+  Box<dynamic> settings;
+  Map<String, bool> _selectedDays = <String, bool>{};
 
   @override
   void initState() {
     super.initState();
-    settings = Hive.box(DatabaseHelper.SETTINGS_BOX);
+    settings = Hive.box<dynamic>(DatabaseHelper.SETTINGS_BOX);
     _getSelectedDays();
   }
 
   void _getSelectedDays() {
-    String mapString = settings.get(UserSettingsKeys.SCHOOL_DAYS);
+    final String mapString =
+        settings.get(UserSettingsKeys.SCHOOL_DAYS) as String;
     if (mapString == null) {
       _selectedDays = ScheduleSettingsDefaults.defaultDaysOfSchool;
     }
-    Map<String, bool> map = json.decode(mapString).cast<String, bool>();
+    final Map<String, bool> map =
+        json.decode(mapString).cast<String, bool>() as Map<String, bool>;
     _selectedDays = map;
   }
 
   void _selectSchoolDaysDialog() {
-    showDialog(
+    showDialog<void>(
       context: context,
       barrierDismissible: false,
-      child: ChooseDaysOfSchoolDialog(
-        selectedDays: _selectedDays,
-        onSaved: (value) {
-          final String mapString = jsonEncode(value);
-          settings.put(UserSettingsKeys.SCHOOL_DAYS, mapString);
-          setState(() {
-            _selectedDays = value;
-          });
-        },
-      ),
+      builder: (BuildContext context) {
+        return ChooseDaysOfSchoolDialog(
+          selectedDays: _selectedDays,
+          onSaved: (Map<String, bool> value) {
+            final String mapString = jsonEncode(value);
+            settings.put(UserSettingsKeys.SCHOOL_DAYS, mapString);
+            setState(() {
+              _selectedDays = value;
+            });
+          },
+        );
+      },
     );
   }
 
   String _getDisplayableDays() {
-    List<String> days = [];
-    Map<String, bool> temp = Map.from(_selectedDays);
-    temp.removeWhere((key, value) => value == false);
-    List daysInIntegerString = temp.keys.toList();
+    final List<String> days = <String>[];
+    final Map<String, bool> temp = Map<String, bool>.from(_selectedDays);
+    temp.removeWhere((String key, bool value) => value == false);
+    final List<String> daysInIntegerString = temp.keys.toList();
     for (String item in daysInIntegerString) {
       days.add(daysFromIntegerString[item]);
     }
@@ -65,12 +69,12 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar("Schedule Settings"),
+      appBar: const CustomAppBar('Schedule Settings'),
       body: ListView(
         primary: false,
         children: <Widget>[
           ListTile(
-            title: Text("School Days"),
+            title: const Text('School Days'),
             subtitle: Text(_getDisplayableDays()),
             onTap: _selectSchoolDaysDialog,
           )

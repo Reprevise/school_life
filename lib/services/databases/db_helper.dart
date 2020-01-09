@@ -7,9 +7,9 @@ import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/adapters/color_adapter.dart';
 
 class DatabaseHelper {
-  static const ASSIGNMENTS_BOX = 'assignments_db';
-  static const SUBJECTS_BOX = 'subjects_db';
-  static const SETTINGS_BOX = 'settings_db';
+  static const String ASSIGNMENTS_BOX = 'assignments_db';
+  static const String SUBJECTS_BOX = 'subjects_db';
+  static const String SETTINGS_BOX = 'settings_db';
 
   static Future<void> initializeDatabases() async {
     await Hive.initFlutter();
@@ -19,6 +19,6 @@ class DatabaseHelper {
     Hive.registerAdapter<SingleDaySchedule>(SingleDayScheduleAdapter());
     await Hive.openBox<Subject>(SUBJECTS_BOX);
     await Hive.openBox<Assignment>(ASSIGNMENTS_BOX);
-    await Hive.openBox(SETTINGS_BOX);
+    await Hive.openBox<dynamic>(SETTINGS_BOX);
   }
 }

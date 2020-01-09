@@ -21,10 +21,9 @@ class SettingRouter extends StatelessWidget {
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: Icon(Icons.arrow_right),
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => route,
+      onTap: () => Navigator.of(context).push(
+        MaterialPageRoute<Widget>(
+          builder: (BuildContext context) => route,
         ),
       ),
     );

@@ -3,16 +3,16 @@ import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
 class SubjectsRepository {
-  Box<Subject> _subjectsDB;
-  int get newID => getAllSubjects().length;
-
   SubjectsRepository() {
     _subjectsDB = Hive.box(DatabaseHelper.SUBJECTS_BOX);
   }
 
+  Box<Subject> _subjectsDB;
+  int get newID => getAllSubjects().length;
+
   List<Subject> getAllSubjects() {
     final List<Subject> data = _subjectsDB.values.toList();
-    return data ?? [];
+    return data ?? <Subject>[];
   }
 
   Subject getSubject(int id) {

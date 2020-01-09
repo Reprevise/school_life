@@ -22,7 +22,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void _doesUserHaveSubjects() {
-    List<Subject> subjects = getIt<SubjectsRepository>().getAllSubjects();
+    final List<Subject> subjects = getIt<SubjectsRepository>().getAllSubjects();
     if (subjects.isNotEmpty) {
       _userHasSubjects = true;
     }
@@ -32,14 +32,13 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        "Schedule",
+        'Schedule',
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ScheduleSettingsPage(),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<ScheduleSettingsPage>(
+                builder: (BuildContext context) => ScheduleSettingsPage(),
               ),
             ),
           ),
@@ -49,7 +48,7 @@ class _SchedulePageState extends State<SchedulePage> {
       body: Container(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,
-        label: const Text("ADD SUBJECT SCHEDULE"),
+        label: const Text('ADD SUBJECT SCHEDULE'),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -61,10 +60,9 @@ class _SchedulePageState extends State<SchedulePage> {
       showNoSubjectsDialog(context);
       return;
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddSchedulePage(),
+    Navigator.of(context).push(
+      MaterialPageRoute<AddSchedulePage>(
+        builder: (BuildContext context) => AddSchedulePage(),
       ),
     );
   }

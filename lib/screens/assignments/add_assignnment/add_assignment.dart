@@ -13,7 +13,7 @@ class AddAssignmentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        "Add Assignment",
+        'Add Assignment',
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.maybePop(context),
@@ -41,29 +41,29 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
 
   @override
   Widget build(BuildContext context) {
-    final format = DateFormat("yyyy-MM-dd");
+    final DateFormat format = DateFormat('yyyy-MM-dd');
 
     return BlocProvider<AddAssignmentFormBloc>(
-      create: (context) => AddAssignmentFormBloc(),
+      create: (BuildContext context) => AddAssignmentFormBloc(),
       child: Builder(
-        builder: (context) {
+        builder: (BuildContext context) {
           _formBloc = BlocProvider.of<AddAssignmentFormBloc>(context);
 
           return WillPopScope(
             onWillPop: () => _formBloc.requestPop(context),
             child: FormBlocListener<AddAssignmentFormBloc, String, dynamic>(
-              onSuccess: (context, state) {
+              onSuccess: (BuildContext context, dynamic state) {
                 Navigator.pushReplacementNamed(context, '/assignments');
               },
-              child: BlocBuilder<AddAssignmentFormBloc, FormBlocState>(
-                builder: (context, state) {
+              child: BlocBuilder<AddAssignmentFormBloc, dynamic>(
+                builder: (BuildContext context, dynamic state) {
                   if (state is FormBlocLoading) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (state is FormBlocLoadFailed) {
-                    return Center(child: Text("Uh oh! Try again later."));
+                    return const Center(child: Text('Uh oh! Try again later.'));
                   } else {
                     return SingleChildScrollView(
-                      physics: ClampingScrollPhysics(),
+                      physics: const ClampingScrollPhysics(),
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -75,7 +75,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                             textInputAction: TextInputAction.next,
                             textCapitalization: TextCapitalization.words,
                             decoration: InputDecoration(
-                              labelText: "Assignment Name",
+                              labelText: 'Assignment Name',
                               prefixIcon: Icon(
                                 Icons.assignment,
                                 color: Theme.of(context).primaryIconTheme.color,
@@ -88,27 +88,30 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: BlocBuilder(
+                            child:
+                                BlocBuilder<InputFieldBloc<DateTime>, dynamic>(
                               bloc: _formBloc.dueDateField,
-                              builder: (context, FieldBlocState state) {
+                              builder: (BuildContext context, dynamic state) {
                                 return DateField(
                                   format: format,
-                                  errorText: state.error,
-                                  labelText: "Due date",
+                                  errorText: _formBloc.dueDateField.state.error,
+                                  labelText: 'Due date',
                                   selectedDate: DateTime.now().todaysDate,
-                                  onDateChanged: (value) {
+                                  onDateChanged: (DateTime value) {
                                     _formBloc.dueDateField.updateValue(value);
                                   },
                                 );
                               },
                             ),
                           ),
-                          DropdownFieldBlocBuilder(
+                          DropdownFieldBlocBuilder<Map<String, String>>(
                             selectFieldBloc: _formBloc.subjectField,
-                            itemBuilder: (context, value) => value['name'],
+                            itemBuilder:
+                                (BuildContext context, dynamic value) =>
+                                    value['name'] as String,
                             showEmptyItem: false,
                             decoration: InputDecoration(
-                              labelText: "Subject",
+                              labelText: 'Subject',
                               prefixIcon: Icon(
                                 Icons.school,
                                 color: Theme.of(context).primaryIconTheme.color,
@@ -130,7 +133,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                               keyboardType: TextInputType.multiline,
                               textAlignVertical: TextAlignVertical.top,
                               decoration: InputDecoration(
-                                labelText: "Details",
+                                labelText: 'Details',
                                 prefixIcon: Icon(
                                   Icons.subject,
                                   color:
@@ -153,7 +156,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                               textColor:
                                   Theme.of(context).textTheme.body1.color,
                               onPressed: _formBloc.submit,
-                              child: const Text("Submit"),
+                              child: const Text('Submit'),
                             ),
                           ),
                         ],

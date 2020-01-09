@@ -10,12 +10,16 @@ class DetailsPageAppbar extends StatelessWidget {
   final Color backgroundColor;
 
   Brightness getForegroundBrightness() {
-    if (useWhiteForeground(backgroundColor)) return Brightness.dark;
+    if (useWhiteForeground(backgroundColor)) {
+      return Brightness.dark;
+    }
     return Brightness.light;
   }
 
   Color getIconThemeColor() {
-    if (!useWhiteForeground(backgroundColor)) return Colors.black;
+    if (!useWhiteForeground(backgroundColor)) {
+      return Colors.black;
+    }
     return Colors.white;
   }
 

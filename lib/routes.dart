@@ -7,10 +7,10 @@ import 'package:school_life/screens/settings/settings.dart';
 import 'package:school_life/screens/subjects/subjects.dart';
 
 final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
-  '/': (context) => HomePage(),
-  '/assignments': (context) => AssignmentsPage(),
-  '/schedule': (context) => SchedulePage(),
-  '/subjects': (context) => SubjectsPage(),
-  '/settings': (context) => SettingsPage(),
-  '/help-feedback': (context) => HelpFeedbackPage(),
+  '/': (BuildContext context) => HomePage(),
+  '/assignments': (BuildContext context) => AssignmentsPage(),
+  '/schedule': (BuildContext context) => SchedulePage(),
+  '/subjects': (BuildContext context) => SubjectsPage(),
+  '/settings': (BuildContext context) => SettingsPage(),
+  '/help-feedback': (BuildContext context) => HelpFeedbackPage(),
 };

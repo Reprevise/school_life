@@ -9,6 +9,17 @@ part 'subject.g.dart';
 
 @HiveType(typeId: 2)
 class Subject extends HiveObject {
+  Subject(
+    this.id,
+    this.name,
+    this.room,
+    this.building,
+    this.teacher,
+    this.color,
+    this.schedule,
+    this.isDeleted,
+  );
+
   @HiveField(0)
   int id;
   @HiveField(1)
@@ -26,22 +37,13 @@ class Subject extends HiveObject {
   @HiveField(7)
   List<SingleDaySchedule> schedule;
 
-  Subject(
-    this.id,
-    this.name,
-    this.room,
-    this.building,
-    this.teacher,
-    this.color,
-    this.schedule,
-    this.isDeleted,
-  );
-
   @override
   Future<void> delete() {
-    List<Assignment> assignments =
+    final List<Assignment> assignments =
         getIt<AssignmentsRepository>().getAssignmentsFromSubjectID(id);
-    assignments.forEach((assignment) => assignment.delete());
+    for (Assignment assignment in assignments) {
+      assignment.delete();
+    }
     return super.delete();
   }
 }

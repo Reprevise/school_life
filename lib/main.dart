@@ -9,7 +9,7 @@ import 'package:school_life/services/theme/theme_service.dart';
 
 GetIt getIt = GetIt.instance;
 
-void main() async {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await DatabaseHelper.initializeDatabases();
   getIt.registerSingleton<AndroidDetails>(AndroidDetails(), signalsReady: true);

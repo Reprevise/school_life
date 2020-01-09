@@ -3,16 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  final List<Widget> actions;
-  final Widget leading;
-
   const CustomAppBar(
     this.title, {
     this.actions,
     this.leading,
   });
 
+  final String title;
+  final List<Widget> actions;
+  final Widget leading;
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -20,7 +19,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       brightness: DynamicTheme.of(context).brightness,
       backgroundColor: Colors.transparent,
-      actions: actions == null ? [] : actions,
+      actions: actions ?? <Widget>[],
       title: Text(
         title,
         style: GoogleFonts.openSans(
@@ -35,5 +34,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(50.0);
+  Size get preferredSize => const Size.fromHeight(50.0);
 }

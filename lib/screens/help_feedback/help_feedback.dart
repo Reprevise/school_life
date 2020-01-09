@@ -5,7 +5,7 @@ class HelpFeedbackPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar("Help & Feedback"),
+      appBar: const CustomAppBar('Help & Feedback'),
       drawer: CustomDrawer(),
       body: Container(),
     );

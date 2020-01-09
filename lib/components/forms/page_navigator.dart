@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 
 class PageNavigator extends StatelessWidget {
-  final PageController controller;
-  final bool finalPage;
-  final bool firstPage;
-  final VoidCallback onSubmit;
-
-  PageNavigator(
+  const PageNavigator(
     this.controller, {
     this.finalPage = false,
     this.firstPage = false,
     this.onSubmit,
   });
 
+  final PageController controller;
+  final bool finalPage;
+  final bool firstPage;
+  final VoidCallback onSubmit;
+
   @override
   Widget build(BuildContext context) {
-    final buttonShape = RoundedRectangleBorder(
+    const RoundedRectangleBorder buttonShape = RoundedRectangleBorder(
       borderRadius: BorderRadius.horizontal(
         left: Radius.circular(15),
         right: Radius.circular(15),
@@ -26,10 +26,10 @@ class PageNavigator extends StatelessWidget {
       return FlatButton(
         color: Colors.blue[900],
         textColor: Colors.white,
-        child: const Text("Next"),
+        child: const Text('Next'),
         onPressed: () {
           controller.nextPage(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             curve: Curves.easeIn,
           );
         },
@@ -41,10 +41,10 @@ class PageNavigator extends StatelessWidget {
       return FlatButton(
         color: Colors.grey,
         textColor: Colors.white,
-        child: const Text("Previous"),
+        child: const Text('Previous'),
         onPressed: () {
           controller.previousPage(
-            duration: Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 200),
             curve: Curves.easeIn,
           );
         },
@@ -56,7 +56,7 @@ class PageNavigator extends StatelessWidget {
       return FlatButton(
         color: Colors.blue[900],
         textColor: Colors.white,
-        child: const Text("Submit"),
+        child: const Text('Submit'),
         onPressed: onSubmit,
         shape: buttonShape,
       );
@@ -68,7 +68,7 @@ class PageNavigator extends StatelessWidget {
       buttonMinWidth: 100,
       children: <Widget>[
         if (!firstPage) buildPreviousButton(),
-        finalPage ? buildSubmitButton() : buildNextButton(),
+        if (finalPage) buildSubmitButton() else buildNextButton(),
       ],
     );
   }

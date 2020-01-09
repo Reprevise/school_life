@@ -8,12 +8,12 @@ import 'package:school_life/services/databases/db_helper.dart';
 class SubjectsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final fontSize = MediaQuery.of(context).size.width / 20;
+    final double fontSize = MediaQuery.of(context).size.width / 20;
     final Box<Subject> box = Hive.box<Subject>(DatabaseHelper.SUBJECTS_BOX);
 
-    return ValueListenableBuilder(
+    return ValueListenableBuilder<Box<Subject>>(
       valueListenable: box.listenable(),
-      builder: (context, Box<Subject> box, child) {
+      builder: (BuildContext context, Box<Subject> box, Widget child) {
         if (box.isEmpty) {
           return Column(
             children: <Widget>[
@@ -23,18 +23,18 @@ class SubjectsList extends StatelessWidget {
                 size: 128.0,
               ),
               Text(
-                "You don't have any subjects!",
+                'You don\'t have any subjects!',
                 style: Theme.of(context)
                     .textTheme
                     .display2
                     .copyWith(fontSize: fontSize),
                 textAlign: TextAlign.center,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               Text(
-                "Click the button below to add some!",
+                'Click the button below to add some!',
                 style: Theme.of(context)
                     .textTheme
                     .display2
@@ -45,8 +45,9 @@ class SubjectsList extends StatelessWidget {
           );
         } else {
           return Column(
-            children:
-                box.values.map((subject) => SubjectItem(subject)).toList(),
+            children: box.values
+                .map((Subject subject) => SubjectItem(subject))
+                .toList(),
           );
         }
       },

@@ -6,30 +6,32 @@ import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/details/assignment_details.dart';
 
 class AssignmentItem extends StatelessWidget {
-  final Assignment assignment;
-  final Subject assignmentSubject;
-
   const AssignmentItem(
     this.assignment,
     this.assignmentSubject,
   );
 
+  final Assignment assignment;
+  final Subject assignmentSubject;
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final textStyle = textTheme.display1.copyWith(color: Colors.black);
+    const bool useBorder = true;
+    final TextTheme textTheme = Theme.of(context).textTheme;
+    final TextStyle textStyle =
+        textTheme.display1.copyWith(color: Colors.black);
     final DateTime dueDate = assignment.dueDate;
-    final bool useBorder = true;
-    final String date = "${dueDate.year}-${dueDate.month}-${dueDate.day}";
+    final String date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
     return Card(
       color: assignment.color,
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          Navigator.push(
+          Navigator.push<AssignmentDetailsPage>(
             context,
-            MaterialPageRoute(
-              builder: (context) => AssignmentDetailsPage(assignment),
+            MaterialPageRoute<AssignmentDetailsPage>(
+              builder: (BuildContext context) =>
+                  AssignmentDetailsPage(assignment),
             ),
           );
         },
@@ -50,19 +52,19 @@ class AssignmentItem extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               TextOneLine(
                 assignment.name,
                 textAlign: TextAlign.start,
                 style: textTheme.display2.copyWith(color: Colors.black),
               ),
-              SizedBox(height: 8),
+              const SizedBox(height: 8),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text("${assignmentSubject.name}", style: textStyle),
+                    Text('${assignmentSubject.name}', style: textStyle),
                     Text(date, style: textStyle),
                   ],
                 ),

@@ -18,14 +18,13 @@ class SubjectsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomAppBar(
-        "Subjects",
+        'Subjects',
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SubjectsSettingsPage(),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute<SubjectsSettingsPage>(
+                builder: (BuildContext context) => SubjectsSettingsPage(),
               ),
             ),
           ),
@@ -34,12 +33,12 @@ class SubjectsPage extends StatelessWidget {
       drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _handleAddSubjectButtonPress(context),
-        label: const Text("ADD SUBJECT"),
+        label: const Text('ADD SUBJECT'),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: SingleChildScrollView(
-        padding: EdgeInsets.only(top: 20, bottom: 70),
+        padding: const EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
           child: SubjectsList(),
         ),
@@ -54,10 +53,9 @@ class SubjectsPage extends StatelessWidget {
       showTooManySubjectsDialog(context);
       return;
     }
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddSubjectPage(),
+    Navigator.of(context).push(
+      MaterialPageRoute<AddSubjectPage>(
+        builder: (BuildContext context) => AddSubjectPage(),
       ),
     );
   }

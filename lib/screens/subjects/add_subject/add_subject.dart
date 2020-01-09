@@ -12,7 +12,7 @@ class AddSubjectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        "Add Subject",
+        'Add Subject',
         leading: IconButton(
           icon: Icon(Icons.close),
           onPressed: () => Navigator.maybePop(context),
@@ -41,18 +41,18 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<AddSubjectFormBloc>(
-      create: (context) => AddSubjectFormBloc(),
+      create: (BuildContext context) => AddSubjectFormBloc(),
       child: Builder(
-        builder: (context) {
+        builder: (BuildContext context) {
           _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
           return WillPopScope(
             onWillPop: () => _formBloc.canPop(context),
             child: FormBlocListener<AddSubjectFormBloc, String, String>(
-              onSuccess: (context, state) {
+              onSuccess: (BuildContext context, dynamic state) {
                 Navigator.of(context).pushReplacementNamed('/subjects');
               },
-              child: BlocBuilder<AddSubjectFormBloc, FormBlocState>(
-                builder: (context, state) {
+              child: BlocBuilder<AddSubjectFormBloc, dynamic>(
+                builder: (BuildContext context, dynamic state) {
                   return AddSubjectFormFields(_formBloc);
                 },
               ),
@@ -79,7 +79,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
   final FocusNode _buildingFocus = FocusNode();
   final FocusNode _teacherFocus = FocusNode();
 
-  List<FocusNode> get nodes => [
+  List<FocusNode> get nodes => <FocusNode>[
         _subjectFocus,
         _roomTextFocus,
         _buildingFocus,
@@ -89,14 +89,16 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
   @override
   void dispose() {
     // dispose of all FocusNode's
-    nodes.forEach((node) => node.dispose());
+    for (FocusNode node in nodes) {
+      node.dispose();
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      physics: ClampingScrollPhysics(),
+      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 10),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -109,7 +111,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
             nextFocusNode: _roomTextFocus,
             textInputAction: TextInputAction.next,
             decoration: InputDecoration(
-              labelText: "Subject",
+              labelText: 'Subject',
               prefixIcon: Icon(
                 Icons.subject,
                 color: Theme.of(context).primaryIconTheme.color,
@@ -126,7 +128,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
             textInputAction: TextInputAction.next,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Room",
+              labelText: 'Room',
               prefixIcon: Icon(
                 Icons.location_on,
                 color: Theme.of(context).primaryIconTheme.color,
@@ -143,7 +145,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
             textInputAction: TextInputAction.next,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Building",
+              labelText: 'Building',
               prefixIcon: Icon(
                 Icons.business,
                 color: Theme.of(context).primaryIconTheme.color,
@@ -158,7 +160,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
             focusNode: _teacherFocus,
             textCapitalization: TextCapitalization.words,
             decoration: InputDecoration(
-              labelText: "Teacher",
+              labelText: 'Teacher',
               prefixIcon: Icon(
                 Icons.person,
                 color: Theme.of(context).primaryIconTheme.color,
@@ -177,7 +179,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
                   Theme.of(context).inputDecorationTheme.border.borderSide,
               textColor: Theme.of(context).textTheme.body1.color,
               onPressed: widget.formBloc.submit,
-              child: const Text("Submit"),
+              child: const Text('Submit'),
             ),
           ),
         ],
@@ -193,20 +195,20 @@ class SubjectColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder(
+    return BlocBuilder<InputFieldBloc<Color>, dynamic>(
       bloc: formBloc.colorField,
-      builder: (context, state) {
+      builder: (BuildContext context, dynamic state) {
         return Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: FlatButton(
             color: formBloc.currentColor,
-            textColor: Color(0xff000000),
-            child: Text("Change color"),
-            onPressed: () => showDialog(
+            textColor: Colors.black,
+            child: const Text('Change color'),
+            onPressed: () => showDialog<void>(
               context: context,
-              builder: (context) {
+              builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text("Select a color"),
+                  title: const Text('Select a color'),
                   content: SingleChildScrollView(
                     child: BlockPicker(
                       availableColors: formBloc.availableColors,

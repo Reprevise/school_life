@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
@@ -10,60 +11,56 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/days_from_integer.dart';
 
 class AddScheduleFormBloc extends FormBloc<String, dynamic> {
-  SubjectsRepository subjects;
-
   AddScheduleFormBloc() : super(isLoading: true) {
     subjects = getIt<SubjectsRepository>();
   }
 
-  // ignore: close_sinks
-  final subjectField = SelectFieldBloc(
-    validators: [FieldBlocValidators.requiredSelectFieldBloc],
+  SubjectsRepository subjects;
+
+  final SelectFieldBloc<String> subjectField = SelectFieldBloc<String>(
+    validators: <String Function(String)>[
+      FieldBlocValidators.requiredSelectFieldBloc
+    ],
   );
 
-  // ignore: close_sinks
-  final scheduleDaysField = MultiSelectFieldBloc<String>(
-    validators: [FieldBlocValidators.requiredMultiSelectFieldBloc],
+  final MultiSelectFieldBloc<String> scheduleDaysField =
+      MultiSelectFieldBloc<String>(
+    validators: <String Function(List<String>)>[
+      FieldBlocValidators.requiredMultiSelectFieldBloc
+    ],
   );
 
   int oldNumberOfDays = 0;
 
-  // ignore: close_sinks
-  final sameTimeEveryday = BooleanFieldBloc(initialValue: false);
+  final BooleanFieldBloc sameTimeEveryday =
+      BooleanFieldBloc(initialValue: false);
 
-  final List<Map<String, InputFieldBloc>> startTimeFields = [],
-      endTimeFields = [];
+  final List<InputFieldBloc<TimeOfDay>> startTimeFields =
+          <InputFieldBloc<TimeOfDay>>[],
+      endTimeFields = <InputFieldBloc<TimeOfDay>>[];
 
-  final Map<int, FieldBloc> fields = {
-    DateTime.monday: InputFieldBloc(toStringName: "Monday"),
+  final Map<int, FieldBloc> fields = <int, FieldBloc>{
+    DateTime.monday: InputFieldBloc<DateTime>(toStringName: 'Monday'),
   };
 
   @override
-  List<FieldBloc> get fieldBlocs => [
+  List<FieldBloc> get fieldBlocs => <FieldBloc>[
         subjectField,
         scheduleDaysField,
         sameTimeEveryday,
-        ...List.from(startTimeFields.map((map) => map.values)),
-        ...List.from(endTimeFields.map((map) => map.values)),
+        ...startTimeFields,
+        ...endTimeFields,
       ];
 
-  // ignore: close_sinks
-  final requiredInputField =
-      InputFieldBloc(validators: [FieldBlocValidators.requiredInputFieldBloc]);
-
   void addStartEndTimeFields(String day) {
-    Map<String, InputFieldBloc> map =
-        {day, requiredInputField} as Map<String, InputFieldBloc>;
-    startTimeFields.add(map);
-    endTimeFields.add(map);
+    startTimeFields.add(InputFieldBloc<TimeOfDay>(toStringName: day));
+    endTimeFields.add(InputFieldBloc<TimeOfDay>(toStringName: day));
   }
 
   void changeDays(MultiSelectFieldBlocState<String> state) {
     startTimeFields.clear();
     endTimeFields.clear();
-    for (var item in state.value) {
-      addStartEndTimeFields(item);
-    }
+    state.value.forEach(addStartEndTimeFields);
   }
 
   @override
@@ -86,7 +83,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    List<Subject> allSubjects = subjects.getAllSubjects();
+    final List<Subject> allSubjects = subjects.getAllSubjects();
     for (Subject subject in allSubjects) {
       subjectField.addItem(subject.name);
     }
@@ -95,13 +92,14 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   void getAvailableDays() {
-    var box = Hive.box(DatabaseHelper.SETTINGS_BOX);
-    Map<String, bool> map =
-        json.decode(box.get(UserSettingsKeys.SCHOOL_DAYS)).cast<String, bool>();
-    map.removeWhere((key, value) => value == false);
-    List<String> days = map.keys
-        .map<String>((dayStringInts) => daysFromIntegerString[dayStringInts])
+    final Box<dynamic> box = Hive.box<dynamic>(DatabaseHelper.SETTINGS_BOX);
+    final String mapString = box.get(UserSettingsKeys.SCHOOL_DAYS) as String;
+    final Map<String, bool> map = json.decode(mapString) as Map<String, bool>;
+    map.removeWhere((String key, bool value) => value == false);
+    final List<String> days = map.keys
+        .map<String>(
+            (String dayStringInts) => daysFromIntegerString[dayStringInts])
         .toList();
-    days.forEach((item) => scheduleDaysField.addItem(item));
+    days.forEach(scheduleDaysField.addItem);
   }
 }

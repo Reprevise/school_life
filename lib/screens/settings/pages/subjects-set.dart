@@ -5,7 +5,7 @@ class SubjectsSettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar("Subjects Settings"),
+      appBar: const CustomAppBar('Subjects Settings'),
       body: ListView(),
     );
   }

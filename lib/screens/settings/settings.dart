@@ -24,7 +24,9 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _changeTheme(Brightness newBrightness) {
-    if (newBrightness == DynamicTheme.of(context).brightness) return;
+    if (newBrightness == DynamicTheme.of(context).brightness) {
+      return;
+    }
     setState(() {
       _currentBrightness = newBrightness;
     });
@@ -35,27 +37,27 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar("Settings"),
+      appBar: const CustomAppBar('Settings'),
       drawer: CustomDrawer(),
       body: ListView(
         primary: false,
         children: <Widget>[
           buildThemeToggle(),
           Divider(color: Colors.grey),
-          SettingHeader("Page Settings"),
+          const SettingHeader('Page Settings'),
           SettingRouter(
             icon: Icons.assignment,
-            title: "Assignments",
+            title: 'Assignments',
             route: AssignmentsSettingsPage(),
           ),
           SettingRouter(
             icon: Icons.school,
-            title: "Subjects",
+            title: 'Subjects',
             route: SubjectsSettingsPage(),
           ),
           SettingRouter(
             icon: Icons.schedule,
-            title: "Schedule",
+            title: 'Schedule',
             route: ScheduleSettingsPage(),
           ),
         ],
@@ -66,11 +68,11 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget buildThemeToggle() {
     return ListTile(
       leading: Icon(Icons.color_lens),
-      title: Text("Theme"),
-      subtitle: Text(_currentBrightness == Brightness.light ? "Light" : "Dark"),
-      onTap: () => showDialog(
+      title: const Text('Theme'),
+      subtitle: Text(_currentBrightness == Brightness.light ? 'Light' : 'Dark'),
+      onTap: () => showDialog<void>(
         context: context,
-        builder: (context) => buildThemeDialog(),
+        builder: (BuildContext context) => buildThemeDialog(),
       ),
     );
   }
@@ -78,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget buildThemeDialog() {
     return SimpleDialog(
       elevation: 1,
-      title: Text("Change theme"),
+      title: const Text('Change theme'),
       children: <Widget>[
         buildSelectLightTheme(),
         buildSelectDarkTheme(),
@@ -88,11 +90,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildSelectLightTheme() {
     return RadioListTile<Brightness>(
-      title: Text("Light Theme"),
+      title: const Text('Light Theme'),
       value: Brightness.light,
       activeColor: Colors.black,
       groupValue: _currentBrightness,
-      onChanged: (value) {
+      onChanged: (Brightness value) {
         _changeTheme(value);
         Navigator.pop(context);
       },
@@ -101,11 +103,11 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Widget buildSelectDarkTheme() {
     return RadioListTile<Brightness>(
-      title: Text("Dark Theme"),
+      title: const Text('Dark Theme'),
       value: Brightness.dark,
       activeColor: Colors.black,
       groupValue: _currentBrightness,
-      onChanged: (value) {
+      onChanged: (Brightness value) {
         _changeTheme(value);
         Navigator.pop(context);
       },

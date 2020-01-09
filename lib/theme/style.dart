@@ -13,7 +13,7 @@ class Themes {
     textSelectionColor: Colors.black12,
     cursorColor: Colors.black,
     dividerColor: Colors.black,
-    primaryIconTheme: IconThemeData(color: Colors.black),
+    primaryIconTheme: const IconThemeData(color: Colors.black),
     buttonColor: Colors.grey[600],
     inputDecorationTheme: InputDecorationTheme(
       focusedErrorBorder:
@@ -26,11 +26,11 @@ class Themes {
       border: OutlineInputBorder(
         borderSide: BorderSide(color: Colors.grey[600]),
       ),
-      focusedBorder: OutlineInputBorder(
+      focusedBorder: const OutlineInputBorder(
         borderSide: BorderSide(color: Colors.black),
       ),
     ),
-    dialogTheme: DialogTheme(
+    dialogTheme: const DialogTheme(
       elevation: 1,
       contentTextStyle: TextStyle(
         color: Colors.black,
@@ -44,36 +44,35 @@ class Themes {
       foregroundColor: Colors.white,
       elevation: 2.0,
     ),
-    buttonTheme: ButtonThemeData(
+    buttonTheme: const ButtonThemeData(
       buttonColor: Colors.black,
       textTheme: ButtonTextTheme.accent,
     ),
     accentTextTheme: TextTheme(
-      body2: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.grey[600],
-      )
-    ),
+        body2: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: Colors.grey[600],
+    )),
     textTheme: TextTheme(
       body1: GoogleFonts.rubik(
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
       body2: GoogleFonts.muli(
         fontWeight: FontWeight.bold,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
       button: GoogleFonts.openSans(
         fontWeight: FontWeight.bold,
-        textStyle: TextStyle(color: Colors.black),
+        textStyle: const TextStyle(color: Colors.black),
       ),
       display1: GoogleFonts.muli(
         fontSize: 15.0,
         fontWeight: FontWeight.w700,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           letterSpacing: 0.3,
           color: Colors.black,
         ),
@@ -81,21 +80,21 @@ class Themes {
       display2: GoogleFonts.muli(
         fontSize: 21.0,
         fontWeight: FontWeight.w700,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
       display3: GoogleFonts.muli(
         fontSize: 24.0,
         fontWeight: FontWeight.bold,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
       display4: GoogleFonts.muli(
         fontSize: 32.0,
         fontWeight: FontWeight.bold,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
@@ -150,11 +149,10 @@ class Themes {
     ),
     applyElevationOverlayColor: true,
     accentTextTheme: TextTheme(
-      body2: TextStyle(
-        fontWeight: FontWeight.bold,
-        color: Colors.grey[300],
-      )
-    ),
+        body2: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: Colors.grey[300],
+    )),
     textTheme: TextTheme(
       body1: GoogleFonts.rubik(
         textStyle: TextStyle(
@@ -163,18 +161,18 @@ class Themes {
       ),
       body2: GoogleFonts.muli(
         fontWeight: FontWeight.bold,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           color: Colors.black,
         ),
       ),
       button: GoogleFonts.openSans(
         fontWeight: FontWeight.bold,
-        textStyle: TextStyle(color: Colors.black),
+        textStyle: const TextStyle(color: Colors.black),
       ),
       display1: GoogleFonts.muli(
         fontSize: 15.0,
         fontWeight: FontWeight.w700,
-        textStyle: TextStyle(
+        textStyle: const TextStyle(
           letterSpacing: 0.3,
           color: Colors.black,
         ),
