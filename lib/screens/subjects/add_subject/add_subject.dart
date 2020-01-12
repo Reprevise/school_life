@@ -12,13 +12,7 @@ class AddSubjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        'Add Subject',
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: Router.navigator.maybePop,
-        ),
-      ),
+      appBar: const CustomAppBar('Add Subject'),
       drawer: CustomDrawer(),
       body: AddSubjectForm(),
     );

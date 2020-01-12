@@ -27,13 +27,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        'Add Schedule',
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: Router.navigator.maybePop,
-        ),
-      ),
+      appBar: const CustomAppBar('Add Schedule'),
       drawer: CustomDrawer(),
       body: BlocProvider<AddScheduleFormBloc>(
         create: (BuildContext context) => AddScheduleFormBloc(),

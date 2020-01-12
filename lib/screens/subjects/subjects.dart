@@ -57,6 +57,7 @@ class SubjectsPage extends StatelessWidget {
     Router.navigator.push(
       MaterialPageRoute<AddSubjectPage>(
         builder: (BuildContext context) => AddSubjectPage(),
+        fullscreenDialog: true,
       ),
     );
   }

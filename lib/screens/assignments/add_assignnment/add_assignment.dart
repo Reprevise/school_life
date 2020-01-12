@@ -13,13 +13,7 @@ class AddAssignmentPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        'Add Assignment',
-        leading: IconButton(
-          icon: Icon(Icons.close),
-          onPressed: Router.navigator.maybePop,
-        ),
-      ),
+      appBar: const CustomAppBar('Add Assignment'),
       drawer: CustomDrawer(),
       body: AddAssignmentForm(),
     );

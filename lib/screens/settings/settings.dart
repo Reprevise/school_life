@@ -49,14 +49,14 @@ class _SettingsPageState extends State<SettingsPage> {
             route: AssignmentsSettingsPage(),
           ),
           RouterTile(
-            icon: Icons.school,
-            title: 'Subjects',
-            route: SubjectsSettingsPage(),
-          ),
-          RouterTile(
             icon: Icons.schedule,
             title: 'Schedule',
             route: ScheduleSettingsPage(),
+          ),
+          RouterTile(
+            icon: Icons.school,
+            title: 'Subjects',
+            route: SubjectsSettingsPage(),
           ),
         ],
       ),
