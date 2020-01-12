@@ -84,8 +84,16 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
         items: availableDays,
         initialValue: availableDays.first,
       ),
-      'startTimeBloc': InputFieldBloc<TimeOfDay>(),
-      'endTimeBloc': InputFieldBloc<TimeOfDay>(),
+      'startTimeBloc': InputFieldBloc<TimeOfDay>(
+        validators: <String Function(TimeOfDay)>[
+          FieldBlocValidators.requiredInputFieldBloc,
+        ],
+      ),
+      'endTimeBloc': InputFieldBloc<TimeOfDay>(
+        validators: <String Function(TimeOfDay)>[
+          FieldBlocValidators.requiredInputFieldBloc,
+        ],
+      ),
     });
   }
 }

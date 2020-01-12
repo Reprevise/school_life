@@ -14,8 +14,14 @@ class SubjectsList extends StatelessWidget {
     return ValueListenableBuilder<Box<Subject>>(
       valueListenable: box.listenable(),
       builder: (BuildContext context, Box<Subject> box, Widget child) {
-        if (box.isEmpty) {
-          return Column(
+        return Visibility(
+          visible: box.isNotEmpty,
+          child: Column(
+            children: box.values
+                .map((Subject subject) => SubjectItem(subject))
+                .toList(),
+          ),
+          replacement: Column(
             children: <Widget>[
               Icon(
                 Icons.school,
@@ -30,9 +36,7 @@ class SubjectsList extends StatelessWidget {
                     .copyWith(fontSize: fontSize),
                 textAlign: TextAlign.center,
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               Text(
                 'Click the button below to add some!',
                 style: Theme.of(context)
@@ -42,14 +46,8 @@ class SubjectsList extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ],
-          );
-        } else {
-          return Column(
-            children: box.values
-                .map((Subject subject) => SubjectItem(subject))
-                .toList(),
-          );
-        }
+          ),
+        );
       },
     );
   }

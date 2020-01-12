@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 class PageNavigator extends StatelessWidget {
   const PageNavigator(
     this.controller, {
-    this.finalPage = false,
-    this.firstPage = false,
+    this.isFinalPage = false,
+    this.isFirstPage = false,
     this.onSubmit,
   });
 
   final PageController controller;
-  final bool finalPage;
-  final bool firstPage;
+  final bool isFinalPage;
+  final bool isFirstPage;
   final VoidCallback onSubmit;
 
   @override
@@ -64,11 +64,17 @@ class PageNavigator extends StatelessWidget {
 
     return ButtonBar(
       alignment:
-          firstPage ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
+          isFirstPage ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
       buttonMinWidth: 100,
       children: <Widget>[
-        if (!firstPage) buildPreviousButton(),
-        if (finalPage) buildSubmitButton() else buildNextButton(),
+        Visibility(
+          visible: !isFirstPage,
+          child: buildPreviousButton(),
+          maintainSize: true,
+          maintainAnimation: true,
+          maintainState: true,
+        ),
+        if (isFinalPage) buildSubmitButton() else buildNextButton(),
       ],
     );
   }

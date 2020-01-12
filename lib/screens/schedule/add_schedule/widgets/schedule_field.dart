@@ -52,6 +52,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
           ),
           DropdownFieldBlocBuilder<String>(
             selectFieldBloc: widget.dayFieldBloc,
+            decoration: const InputDecoration(labelText: 'Day'),
             itemBuilder: (BuildContext context, String value) => value,
             showEmptyItem: false,
           ),

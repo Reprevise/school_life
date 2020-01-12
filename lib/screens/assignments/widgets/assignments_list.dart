@@ -18,8 +18,9 @@ class AssignmentsList extends StatelessWidget {
     return ValueListenableBuilder<Box<Assignment>>(
       valueListenable: box.listenable(),
       builder: (BuildContext context, Box<Assignment> box, Widget child) {
-        if (box.isNotEmpty) {
-          return Column(
+        return Visibility(
+          visible: box.isNotEmpty,
+          child: Column(
             children: box.values.map(
               (Assignment assignment) {
                 final Subject currentSubject = getIt<SubjectsRepository>()
@@ -30,9 +31,8 @@ class AssignmentsList extends StatelessWidget {
                 );
               },
             ).toList(),
-          );
-        } else {
-          return Column(
+          ),
+          replacement: Column(
             children: <Widget>[
               Icon(
                 Icons.assignment,
@@ -57,8 +57,8 @@ class AssignmentsList extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ],
-          );
-        }
+          ),
+        );
       },
     );
   }

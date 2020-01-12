@@ -8,8 +8,6 @@ import 'package:school_life/components/index.dart';
 import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
 
-final PageController _controller = PageController();
-
 class AddSchedulePage extends StatefulWidget {
   @override
   _AddSchedulePageState createState() => _AddSchedulePageState();
@@ -17,10 +15,12 @@ class AddSchedulePage extends StatefulWidget {
 
 class _AddSchedulePageState extends State<AddSchedulePage> {
   AddScheduleFormBloc _formBloc;
+  final PageController _controller = PageController();
 
   @override
   void dispose() {
     _formBloc?.close();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -51,8 +51,8 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                     controller: _controller,
                     physics: const NeverScrollableScrollPhysics(),
                     children: <Widget>[
-                      _FirstPage(_formBloc),
-                      _SecondPage(_formBloc),
+                      _FirstPage(_formBloc, _controller),
+                      _SecondPage(_formBloc, _controller),
                     ],
                   );
                 }
@@ -66,9 +66,10 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
 }
 
 class _FirstPage extends StatelessWidget {
-  const _FirstPage(this.formBloc);
+  const _FirstPage(this.formBloc, this.controller);
 
   final AddScheduleFormBloc formBloc;
+  final PageController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -107,8 +108,8 @@ class _FirstPage extends StatelessWidget {
           ),
         ),
         PageNavigator(
-          _controller,
-          firstPage: true,
+          controller,
+          isFirstPage: true,
         ),
       ],
     );
@@ -116,9 +117,10 @@ class _FirstPage extends StatelessWidget {
 }
 
 class _SecondPage extends StatefulWidget {
-  const _SecondPage(this.formBloc);
+  const _SecondPage(this.formBloc, this.controller);
 
   final AddScheduleFormBloc formBloc;
+  final PageController controller;
 
   @override
   __SecondPageState createState() => __SecondPageState();
@@ -141,41 +143,68 @@ class __SecondPageState extends State<_SecondPage> {
         ),
         Expanded(
           child: Center(
-            child: ListView.builder(
-              itemCount: widget.formBloc.scheduleFields.length,
-              itemBuilder: (BuildContext context, int i) {
-                final Map<String, FieldBloc> currentMap =
-                    widget.formBloc.scheduleFields[i];
-                return ScheduleField(
-                  dayFieldBloc:
-                      currentMap['dayFieldBloc'] as SelectFieldBloc<String>,
-                  startTimeBloc:
-                      currentMap['startTimeBloc'] as InputFieldBloc<TimeOfDay>,
-                  endTimeBloc:
-                      currentMap['endTimeBloc'] as InputFieldBloc<TimeOfDay>,
-                  onRemove: () {
-                    widget.formBloc.scheduleFields.removeAt(i);
-                    setState(() {});
-                  },
-                );
-              },
+            child: Visibility(
+              visible: widget.formBloc.scheduleFields.isNotEmpty,
+              child: ScheduleFields(widget.formBloc),
+              replacement: const Text('Click the button below to add fields.'),
             ),
           ),
         ),
         FlatButton(
           child: const Text('Add Field'),
-          shape: const RoundedRectangleBorder(),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.horizontal(
+              left: Radius.circular(8),
+              right: Radius.circular(8),
+            ),
+          ),
+          color: Colors.grey[700],
           onPressed: () {
             widget.formBloc.addScheduleField();
             setState(() {});
           },
         ),
         PageNavigator(
-          _controller,
-          finalPage: true,
+          widget.controller,
+          isFinalPage: true,
           onSubmit: widget.formBloc.submit,
         ),
       ],
+    );
+  }
+}
+
+class ScheduleFields extends StatefulWidget {
+  const ScheduleFields(
+    this.formBloc, {
+    Key key,
+  }) : super(key: key);
+
+  final AddScheduleFormBloc formBloc;
+
+  @override
+  _ScheduleFieldsState createState() => _ScheduleFieldsState();
+}
+
+class _ScheduleFieldsState extends State<ScheduleFields> {
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: widget.formBloc.scheduleFields.length,
+      itemBuilder: (BuildContext context, int i) {
+        final Map<String, FieldBloc> currentMap =
+            widget.formBloc.scheduleFields[i];
+        return ScheduleField(
+          dayFieldBloc: currentMap['dayFieldBloc'] as SelectFieldBloc<String>,
+          startTimeBloc:
+              currentMap['startTimeBloc'] as InputFieldBloc<TimeOfDay>,
+          endTimeBloc: currentMap['endTimeBloc'] as InputFieldBloc<TimeOfDay>,
+          onRemove: () {
+            widget.formBloc.scheduleFields.removeAt(i);
+            setState(() {});
+          },
+        );
+      },
     );
   }
 }
