@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
-import 'package:school_life/routes.dart';
 import 'package:school_life/models/drawer_item.dart';
+import 'package:school_life/routing/router.dart';
+import 'package:school_life/routing/router.gr.dart';
 
 int _selectedIndex = 0;
 
@@ -9,7 +10,6 @@ class CustomDrawer extends StatelessWidget {
   int get selectedIndex => _selectedIndex;
   set selectedIndex(int newIndex) => _selectedIndex = newIndex;
 
-  final List<String> appRouteNames = routes.keys.toList();
   final List<DrawerItem> _drawerItems = <DrawerItem>[
     DrawerItem(
       title: 'Home',
@@ -37,13 +37,13 @@ class CustomDrawer extends StatelessWidget {
     ),
   ];
 
-  void _onSelectItem(BuildContext context, int index) {
+  void _onSelectItem(int index) {
     if (_selectedIndex == index) {
-      Navigator.of(context).pop();
+      Router.navigator.pop();
       return;
     }
     _selectedIndex = index;
-    Navigator.of(context).pushReplacementNamed(appRouteNames[index]);
+    Router.navigator.pushReplacementNamed(routes[index]);
   }
 
   Color _getItemColor(BuildContext context, int currentIndex, Color itemColor) {
@@ -94,7 +94,7 @@ class CustomDrawer extends StatelessWidget {
                       d.icon,
                       color: _getItemColor(context, i, iconColor),
                     ),
-                    onTap: () => _onSelectItem(context, i),
+                    onTap: () => _onSelectItem(i),
                     title: Text(
                       d.title,
                       style: textTheme.display1.copyWith(

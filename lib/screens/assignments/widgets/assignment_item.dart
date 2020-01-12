@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/assignments/details/assignment_details.dart';
 
 class AssignmentItem extends StatelessWidget {
@@ -27,8 +28,7 @@ class AssignmentItem extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          Navigator.push<AssignmentDetailsPage>(
-            context,
+          Router.navigator.push(
             MaterialPageRoute<AssignmentDetailsPage>(
               builder: (BuildContext context) =>
                   AssignmentDetailsPage(assignment),

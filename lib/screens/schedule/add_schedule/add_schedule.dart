@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/blocs.dart';
-import 'package:school_life/components/forms/date_time_field.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/components/scroll_behavior/no_glow.dart';
+import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
 
 final PageController _controller = PageController();
 
@@ -31,7 +31,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
         'Add Schedule',
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () => Navigator.maybePop(context),
+          onPressed: Router.navigator.maybePop,
         ),
       ),
       drawer: CustomDrawer(),
@@ -40,11 +40,14 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
         child: Builder(builder: (BuildContext context) {
           _formBloc = BlocProvider.of<AddScheduleFormBloc>(context);
           return FormBlocListener<AddScheduleFormBloc, String, dynamic>(
-            onSuccess: (BuildContext context, dynamic state) {
-              Navigator.of(context).pushNamed('/schedule');
+            onSuccess:
+                (BuildContext context, FormBlocSuccess<String, dynamic> state) {
+              Router.navigator.pushNamed(Router.schedule);
             },
-            child: BlocBuilder<AddScheduleFormBloc, dynamic>(
-              builder: (BuildContext context, dynamic state) {
+            child: BlocBuilder<AddScheduleFormBloc,
+                FormBlocState<String, dynamic>>(
+              builder:
+                  (BuildContext context, FormBlocState<String, dynamic> state) {
                 if (state is FormBlocLoading) {
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is FormBlocLoadFailed) {
@@ -56,7 +59,6 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                     children: <Widget>[
                       _FirstPage(_formBloc),
                       _SecondPage(_formBloc),
-                      _ThirdPage(_formBloc),
                     ],
                   );
                 }
@@ -119,53 +121,16 @@ class _FirstPage extends StatelessWidget {
   }
 }
 
-class _SecondPage extends StatelessWidget {
+class _SecondPage extends StatefulWidget {
   const _SecondPage(this.formBloc);
 
   final AddScheduleFormBloc formBloc;
 
   @override
-  Widget build(BuildContext context) {
-    final double cWidth = MediaQuery.of(context).size.width * 0.8;
-    return Column(
-      children: <Widget>[
-        Container(
-          width: cWidth,
-          child: Text(
-            'What days do you have this subject on?',
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.display2,
-          ),
-        ),
-        Expanded(
-          child: Center(
-            child: CheckboxGroupFieldBlocBuilder<String>(
-              multiSelectFieldBloc: formBloc.scheduleDaysField,
-              itemBuilder: (BuildContext context, String value) => value,
-              decoration: InputDecoration(
-                labelText: 'Days',
-                prefixIcon: Icon(
-                  Icons.view_day,
-                  color: Theme.of(context).primaryIconTheme.color,
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red),
-                ),
-              ),
-            ),
-          ),
-        ),
-        PageNavigator(_controller),
-      ],
-    );
-  }
+  __SecondPageState createState() => __SecondPageState();
 }
 
-class _ThirdPage extends StatelessWidget {
-  const _ThirdPage(this.formBloc);
-
-  final AddScheduleFormBloc formBloc;
-
+class __SecondPageState extends State<_SecondPage> {
   @override
   Widget build(BuildContext context) {
     final double cWidth = MediaQuery.of(context).size.width * 0.8;
@@ -175,83 +140,46 @@ class _ThirdPage extends StatelessWidget {
         Container(
           width: cWidth,
           child: Text(
-            'What times do you have this subject?',
+            'Let\'s setup the schedule',
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.display2,
           ),
         ),
-        // TODO: sort fields by day
         Expanded(
           child: Center(
-            child: Row(
-              children: <Widget>[
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ScrollConfiguration(
-                    behavior: NoGlowScrollBehavior(),
-                    child: ListView.builder(
-                      itemCount: formBloc.startTimeFields.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final InputFieldBloc<TimeOfDay> currentField =
-                            formBloc.startTimeFields[index];
-                        return BlocBuilder<InputFieldBloc<TimeOfDay>, dynamic>(
-                          bloc: currentField,
-                          builder: (BuildContext context, dynamic state) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TimeField(
-                                labelText:
-                                    '${currentField.state.toStringName} start time',
-                                onTimeChanged: (TimeOfDay value) =>
-                                    currentField.updateValue(value),
-                                errorText: currentField.state.error,
-                                selectedTime: currentField.value,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ScrollConfiguration(
-                    behavior: NoGlowScrollBehavior(),
-                    child: ListView.builder(
-                      itemCount: formBloc.endTimeFields.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final InputFieldBloc<TimeOfDay> currentField =
-                            formBloc.endTimeFields[index];
-                        return BlocBuilder<InputFieldBloc<TimeOfDay>, dynamic>(
-                          bloc: currentField,
-                          builder: (BuildContext context, dynamic state) {
-                            return Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: TimeField(
-                                labelText:
-                                    '${currentField.state.toStringName} end time',
-                                onTimeChanged: (TimeOfDay value) =>
-                                    currentField.updateValue(value),
-                                errorText: currentField.state.error,
-                                selectedTime: currentField.value,
-                              ),
-                            );
-                          },
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-              ],
+            child: ListView.builder(
+              itemCount: widget.formBloc.scheduleFields.length,
+              itemBuilder: (BuildContext context, int i) {
+                final Map<String, FieldBloc> currentMap =
+                    widget.formBloc.scheduleFields[i];
+                return ScheduleField(
+                  dayFieldBloc:
+                      currentMap['dayFieldBloc'] as SelectFieldBloc<String>,
+                  startTimeBloc:
+                      currentMap['startTimeBloc'] as InputFieldBloc<TimeOfDay>,
+                  endTimeBloc:
+                      currentMap['endTimeBloc'] as InputFieldBloc<TimeOfDay>,
+                  onRemove: () {
+                    widget.formBloc.scheduleFields.removeAt(i);
+                    setState(() {});
+                  },
+                );
+              },
             ),
           ),
+        ),
+        FlatButton(
+          child: const Text('Add Field'),
+          shape: const RoundedRectangleBorder(),
+          onPressed: () {
+            widget.formBloc.addScheduleField();
+            setState(() {});
+          },
         ),
         PageNavigator(
           _controller,
           finalPage: true,
-          onSubmit: formBloc.submit,
+          onSubmit: widget.formBloc.submit,
         ),
       ],
     );

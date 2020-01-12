@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/routing/router.gr.dart';
 
 class ChooseDaysOfSchoolDialog extends StatefulWidget {
   const ChooseDaysOfSchoolDialog({
@@ -34,7 +35,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           ),
           onPressed: () {
             widget.onSaved(_selectedDays);
-            Navigator.pop(context);
+            Router.navigator.pop();
           },
         ),
       ],

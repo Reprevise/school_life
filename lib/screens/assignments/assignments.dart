@@ -3,9 +3,10 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/assignments/add_assignnment/add_assignment.dart';
-import 'package:school_life/screens/settings/pages/assignments-set.dart';
+import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AssignmentsPage extends StatefulWidget {
@@ -39,8 +40,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Navigator.push(
-              context,
+            onPressed: () => Router.navigator.push(
               MaterialPageRoute<AssignmentsSettingsPage>(
                 builder: (BuildContext context) => AssignmentsSettingsPage(),
               ),
@@ -51,7 +51,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       drawer: CustomDrawer(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _handleAddAssignmentPress(context),
+        onPressed: _handleAddAssignmentPress,
         label: const Text('ADD ASSIGNMENT'),
         icon: const Icon(Icons.add),
       ),
@@ -66,13 +66,12 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     );
   }
 
-  void _handleAddAssignmentPress(BuildContext context) {
+  void _handleAddAssignmentPress() {
     if (!_userHasSubjects) {
       showNoSubjectsDialog(context);
       return;
     }
-    Navigator.push<AddAssignmentPage>(
-      context,
+    Router.navigator.push<AddAssignmentPage>(
       MaterialPageRoute<AddAssignmentPage>(
         builder: (BuildContext context) => AddAssignmentPage(),
       ),

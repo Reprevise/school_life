@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/forms/date_time_field.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/util/date_utils.dart';
 
 class AddAssignmentPage extends StatelessWidget {
@@ -16,7 +17,7 @@ class AddAssignmentPage extends StatelessWidget {
         'Add Assignment',
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () => Navigator.maybePop(context),
+          onPressed: Router.navigator.maybePop,
         ),
       ),
       drawer: CustomDrawer(),
@@ -53,10 +54,12 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
             onWillPop: () => _formBloc.requestPop(context),
             child: FormBlocListener<AddAssignmentFormBloc, String, dynamic>(
               onSuccess: (BuildContext context, dynamic state) {
-                Navigator.pushReplacementNamed(context, '/assignments');
+                Router.navigator.pushReplacementNamed(Router.assignments);
               },
-              child: BlocBuilder<AddAssignmentFormBloc, dynamic>(
-                builder: (BuildContext context, dynamic state) {
+              child: BlocBuilder<AddAssignmentFormBloc,
+                  FormBlocState<String, dynamic>>(
+                builder: (BuildContext context,
+                    FormBlocState<String, dynamic> state) {
                   if (state is FormBlocLoading) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (state is FormBlocLoadFailed) {
@@ -88,13 +91,14 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                           Padding(
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 8.0),
-                            child:
-                                BlocBuilder<InputFieldBloc<DateTime>, dynamic>(
+                            child: BlocBuilder<InputFieldBloc<DateTime>,
+                                InputFieldBlocState<DateTime>>(
                               bloc: _formBloc.dueDateField,
-                              builder: (BuildContext context, dynamic state) {
+                              builder: (BuildContext context,
+                                  InputFieldBlocState<DateTime> state) {
                                 return DateField(
                                   format: format,
-                                  errorText: _formBloc.dueDateField.state.error,
+                                  errorText: state.error,
                                   labelText: 'Due date',
                                   selectedDate: DateTime.now().todaysDate,
                                   onDateChanged: (DateTime value) {
@@ -106,9 +110,9 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                           ),
                           DropdownFieldBlocBuilder<Map<String, String>>(
                             selectFieldBloc: _formBloc.subjectField,
-                            itemBuilder:
-                                (BuildContext context, dynamic value) =>
-                                    value['name'] as String,
+                            itemBuilder: (BuildContext context,
+                                    Map<String, String> value) =>
+                                value['name'],
                             showEmptyItem: false,
                             decoration: InputDecoration(
                               labelText: 'Subject',

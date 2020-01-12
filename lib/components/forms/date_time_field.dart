@@ -76,19 +76,22 @@ class TimeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle valueStyle = Theme.of(context).textTheme.body1;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: <Widget>[
-        Expanded(
-          child: _InputDropdown(
-            valueText: selectedTime != null ? selectedTime.format(context) : '',
-            valueStyle: valueStyle,
-            labelText: labelText,
-            errorText: errorText,
-            onPressed: () => _selectTime(context),
-          ),
-        )
-      ],
+    return Expanded(
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Expanded(
+            child: _InputDropdown(
+              valueText:
+                  selectedTime != null ? selectedTime.format(context) : '',
+              valueStyle: valueStyle,
+              labelText: labelText,
+              errorText: errorText,
+              onPressed: () => _selectTime(context),
+            ),
+          )
+        ],
+      ),
     );
   }
 }

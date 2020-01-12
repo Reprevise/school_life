@@ -16,8 +16,9 @@ class Themes {
     primaryIconTheme: const IconThemeData(color: Colors.black),
     buttonColor: Colors.grey[600],
     inputDecorationTheme: InputDecorationTheme(
-      focusedErrorBorder:
-          OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+      focusedErrorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red),
+      ),
       focusColor: Colors.black,
       labelStyle: TextStyle(
         color: Colors.black,
@@ -114,8 +115,9 @@ class Themes {
     primaryIconTheme: IconThemeData(color: Colors.white),
     buttonColor: Colors.white,
     inputDecorationTheme: InputDecorationTheme(
-      focusedErrorBorder:
-          OutlineInputBorder(borderSide: BorderSide(color: Colors.red)),
+      focusedErrorBorder: const OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.red),
+      ),
       focusColor: Colors.white,
       labelStyle: TextStyle(
         color: Colors.white,

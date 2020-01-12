@@ -6,6 +6,7 @@ import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/routing/router.gr.dart';
 
 class AddSubjectPage extends StatelessWidget {
   @override
@@ -15,7 +16,7 @@ class AddSubjectPage extends StatelessWidget {
         'Add Subject',
         leading: IconButton(
           icon: Icon(Icons.close),
-          onPressed: () => Navigator.maybePop(context),
+          onPressed: Router.navigator.maybePop,
         ),
       ),
       drawer: CustomDrawer(),
@@ -49,10 +50,12 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
             onWillPop: () => _formBloc.canPop(context),
             child: FormBlocListener<AddSubjectFormBloc, String, String>(
               onSuccess: (BuildContext context, dynamic state) {
-                Navigator.of(context).pushReplacementNamed('/subjects');
+                Router.navigator.pushReplacementNamed(Router.subjects);
               },
-              child: BlocBuilder<AddSubjectFormBloc, dynamic>(
-                builder: (BuildContext context, dynamic state) {
+              child: BlocBuilder<AddSubjectFormBloc,
+                  FormBlocState<String, String>>(
+                builder: (BuildContext context,
+                    FormBlocState<String, String> state) {
                   return AddSubjectFormFields(_formBloc);
                 },
               ),
@@ -216,7 +219,7 @@ class SubjectColorPicker extends StatelessWidget {
                       onColorChanged: (Color color) {
                         formBloc.colorField.updateValue(color);
                         formBloc.currentColor = color;
-                        Navigator.pop(context);
+                        Router.navigator.pop();
                       },
                     ),
                   ),

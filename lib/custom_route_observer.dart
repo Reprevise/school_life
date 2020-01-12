@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/routing/router.dart';
 
 class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   final CustomDrawer drawer = CustomDrawer();
@@ -8,8 +9,7 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
     super.didPop(route, previousRoute);
     if (previousRoute is PageRoute && route is PageRoute) {
-      drawer.selectedIndex =
-          drawer.appRouteNames.indexOf(previousRoute.settings.name);
+      drawer.selectedIndex = routes.indexOf(previousRoute.settings.name);
     }
   }
 }

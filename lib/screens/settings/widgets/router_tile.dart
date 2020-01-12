@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/routing/router.gr.dart';
 
-class SettingRouter extends StatelessWidget {
-  const SettingRouter({
+class RouterTile extends StatelessWidget {
+  const RouterTile({
     Key key,
     @required this.icon,
     @required this.title,
@@ -21,7 +22,7 @@ class SettingRouter extends StatelessWidget {
       title: Text(title),
       subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: Icon(Icons.arrow_right),
-      onTap: () => Navigator.of(context).push(
+      onTap: () => Router.navigator.push(
         MaterialPageRoute<Widget>(
           builder: (BuildContext context) => route,
         ),

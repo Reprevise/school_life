@@ -2,11 +2,9 @@ import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
-import 'package:school_life/screens/settings/pages/assignments-set.dart';
-import 'package:school_life/screens/settings/pages/schedule-set.dart';
-import 'package:school_life/screens/settings/pages/subjects-set.dart';
-import 'package:school_life/screens/settings/widgets/setting_header.dart';
-import 'package:school_life/screens/settings/widgets/setting_router.dart';
+import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/screens/settings/pages/index.dart';
+import 'package:school_life/screens/settings/widgets/index.dart';
 import 'package:school_life/services/theme/theme_service.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -45,17 +43,17 @@ class _SettingsPageState extends State<SettingsPage> {
           buildThemeToggle(),
           Divider(color: Colors.grey),
           const SettingHeader('Page Settings'),
-          SettingRouter(
+          RouterTile(
             icon: Icons.assignment,
             title: 'Assignments',
             route: AssignmentsSettingsPage(),
           ),
-          SettingRouter(
+          RouterTile(
             icon: Icons.school,
             title: 'Subjects',
             route: SubjectsSettingsPage(),
           ),
-          SettingRouter(
+          RouterTile(
             icon: Icons.schedule,
             title: 'Schedule',
             route: ScheduleSettingsPage(),
@@ -96,7 +94,7 @@ class _SettingsPageState extends State<SettingsPage> {
       groupValue: _currentBrightness,
       onChanged: (Brightness value) {
         _changeTheme(value);
-        Navigator.pop(context);
+        Router.navigator.pop();
       },
     );
   }
@@ -109,7 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
       groupValue: _currentBrightness,
       onChanged: (Brightness value) {
         _changeTheme(value);
-        Navigator.pop(context);
+        Router.navigator.pop();
       },
     );
   }

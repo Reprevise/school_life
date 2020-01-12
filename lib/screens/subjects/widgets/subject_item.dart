@@ -24,7 +24,7 @@ class SubjectItem extends StatelessWidget {
     );
     final Widget roomText = RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
         ),
         children: <TextSpan>[
@@ -38,7 +38,7 @@ class SubjectItem extends StatelessWidget {
     );
     final Widget buildingText = RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
         ),
         children: <TextSpan>[
@@ -52,7 +52,7 @@ class SubjectItem extends StatelessWidget {
     );
     final Widget teacherText = RichText(
       text: TextSpan(
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.black,
         ),
         children: <TextSpan>[

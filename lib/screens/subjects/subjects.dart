@@ -5,7 +5,8 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/screens/settings/pages/subjects-set.dart';
+import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
 import 'package:school_life/screens/subjects/widgets/subjects_list.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
@@ -22,7 +23,7 @@ class SubjectsPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Navigator.of(context).push(
+            onPressed: () => Router.navigator.push(
               MaterialPageRoute<SubjectsSettingsPage>(
                 builder: (BuildContext context) => SubjectsSettingsPage(),
               ),
@@ -53,7 +54,7 @@ class SubjectsPage extends StatelessWidget {
       showTooManySubjectsDialog(context);
       return;
     }
-    Navigator.of(context).push(
+    Router.navigator.push(
       MaterialPageRoute<AddSubjectPage>(
         builder: (BuildContext context) => AddSubjectPage(),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/routing/router.gr.dart';
 
 void showNoSubjectsDialog(BuildContext context) {
   showDialog<void>(
@@ -13,7 +14,7 @@ void showNoSubjectsDialog(BuildContext context) {
           FlatButton(
             child: const Text('OK'),
             onPressed: () {
-              Navigator.pop(context);
+              Router.navigator.pop();
             },
           )
         ],
@@ -58,7 +59,7 @@ void showDeleteAssignmentDialog(
             ),
             onPressed: () async {
               await assignment.delete();
-              Navigator.pop(context);
+              Router.navigator.pop();
             },
           ),
           MaterialButton(
@@ -66,7 +67,7 @@ void showDeleteAssignmentDialog(
               'NO',
               style: TextStyle(color: _contentStyleColor),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: () => Router.navigator.pop(),
           )
         ],
       );
@@ -90,7 +91,7 @@ void showTooManySubjectsDialog(BuildContext context) {
         actions: <Widget>[
           MaterialButton(
             child: const Text('OK'),
-            onPressed: () => Navigator.pop(context),
+            onPressed: Router.navigator.pop,
           )
         ],
       );
@@ -131,7 +132,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
             ),
             onPressed: () async {
               await subject.delete();
-              Navigator.pop(context);
+              Router.navigator.pop();
             },
           ),
           MaterialButton(
@@ -141,7 +142,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
                 color: Theme.of(context).dialogTheme.contentTextStyle.color,
               ),
             ),
-            onPressed: () => Navigator.pop(context),
+            onPressed: Router.navigator.pop,
           )
         ],
       );
@@ -170,9 +171,7 @@ void showOnPopDialog(BuildContext context) {
               'NO',
               style: TextStyle(color: _contentStyleColor),
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            onPressed: Router.navigator.pop,
           ),
           MaterialButton(
             child: Text(
@@ -181,8 +180,8 @@ void showOnPopDialog(BuildContext context) {
             ),
             onPressed: () {
               // pop twice since dialog and back to assignments page
-              Navigator.pop(context);
-              Navigator.pop(context);
+              Router.navigator.pop();
+              Router.navigator.pop();
             },
           )
         ],

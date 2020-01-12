@@ -3,8 +3,9 @@ import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
-import 'package:school_life/screens/settings/pages/schedule-set.dart';
+import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class SchedulePage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _SchedulePageState extends State<SchedulePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Navigator.of(context).push(
+            onPressed: () => Router.navigator.push(
               MaterialPageRoute<ScheduleSettingsPage>(
                 builder: (BuildContext context) => ScheduleSettingsPage(),
               ),
@@ -60,7 +61,7 @@ class _SchedulePageState extends State<SchedulePage> {
       showNoSubjectsDialog(context);
       return;
     }
-    Navigator.of(context).push(
+    Router.navigator.push(
       MaterialPageRoute<AddSchedulePage>(
         builder: (BuildContext context) => AddSchedulePage(),
       ),
