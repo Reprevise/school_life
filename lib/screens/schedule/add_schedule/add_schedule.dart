@@ -28,7 +28,6 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar('Add Schedule'),
-      drawer: CustomDrawer(),
       body: BlocProvider<AddScheduleFormBloc>(
         create: (BuildContext context) => AddScheduleFormBloc(),
         child: Builder(builder: (BuildContext context) {
@@ -146,7 +145,6 @@ class __SecondPageState extends State<_SecondPage> {
             child: Visibility(
               visible: widget.formBloc.scheduleFields.isNotEmpty,
               child: ScheduleFields(widget.formBloc),
-              replacement: const Text('Click the button below to add fields.'),
             ),
           ),
         ),

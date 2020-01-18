@@ -5,6 +5,8 @@ import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
+import 'package:school_life/screens/schedule/widgets/header.dart';
+import 'package:school_life/screens/schedule/widgets/schedules_list.dart';
 import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
@@ -34,6 +36,7 @@ class _SchedulePageState extends State<SchedulePage> {
     return Scaffold(
       appBar: CustomAppBar(
         'Schedule',
+        elevation: 4,
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
@@ -43,10 +46,29 @@ class _SchedulePageState extends State<SchedulePage> {
               ),
             ),
           ),
+          IconButton(
+            icon: Icon(Icons.today),
+            onPressed: () {
+              // TODO: change selectedDay in cal. controller
+            },
+          ),
         ],
       ),
       drawer: CustomDrawer(),
-      body: Container(),
+      body: SingleChildScrollView(
+        primary: false,
+        physics: const ClampingScrollPhysics(),
+        padding: const EdgeInsets.only(top: 20, bottom: 70),
+        child: Column(
+          children: <Widget>[
+            // TODO: sync days of school in settings with calendar
+            ScheduleHeader(
+              onDaySelected: (DateTime date, List<dynamic> events) {},
+            ),
+            SchedulesList(),
+          ],
+        ),
+      ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,
         label: const Text('ADD SUBJECT SCHEDULE'),
@@ -64,7 +86,6 @@ class _SchedulePageState extends State<SchedulePage> {
     Router.navigator.push(
       MaterialPageRoute<AddSchedulePage>(
         builder: (BuildContext context) => AddSchedulePage(),
-        fullscreenDialog: true,
       ),
     );
   }

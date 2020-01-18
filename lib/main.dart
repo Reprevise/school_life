@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:school_life/app.dart';
@@ -15,18 +17,23 @@ Future<void> main() async {
   // ensure everything's good to go
   WidgetsFlutterBinding.ensureInitialized();
   // initialize all HiveDB databases
-  await DatabaseHelper.initializeDatabases();
+  await DatabaseHelper.initializeHiveBoxes();
   // get all device details (version)
-  getIt.registerSingleton<AndroidDetails>(AndroidDetails(), signalsReady: true);
-  // await until everything is ready
-  await getIt.readyFuture;
+  getIt.registerSingletonAsync<AndroidDetails>(
+    (Completer<dynamic> completer) => AndroidDetailsImplementation(completer),
+  );
+  getIt.registerSingletonAsync<ThemeService>(
+    (_) => Future<ThemeService>.value(ThemeService()),
+    dependsOn: <Type>[AndroidDetails],
+  );
+  // ! Hive must be initialized
   // Register repositories
-  getIt.registerSingleton<ThemeService>(ThemeService());
   getIt.registerSingleton<AssignmentsRepository>(AssignmentsRepository());
   getIt.registerSingleton<SubjectsRepository>(SubjectsRepository());
   // Register settings helpers
-  // ! Hive must be initialized
   getIt.registerSingleton<ScheduleHelper>(ScheduleHelper());
+  // await ready
+  await getIt.allReady();
   // finally run the app
   runApp(App());
 }

@@ -20,7 +20,15 @@ class Router {
   static const schedule = '/schedule';
   static const subjects = '/subjects';
   static const settings = '/settings';
-  static const helpFeedback = '/helpFeedback';
+  static const helpFeedback = '/help-feedback';
+  static const routes = [
+    home,
+    assignments,
+    schedule,
+    subjects,
+    settings,
+    helpFeedback,
+  ];
   static GlobalKey<NavigatorState> get navigatorKey =>
       getNavigatorKey<Router>();
   static NavigatorState get navigator => navigatorKey.currentState;

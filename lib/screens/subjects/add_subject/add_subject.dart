@@ -13,7 +13,6 @@ class AddSubjectPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar('Add Subject'),
-      drawer: CustomDrawer(),
       body: AddSubjectForm(),
     );
   }

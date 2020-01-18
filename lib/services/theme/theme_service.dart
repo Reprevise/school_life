@@ -8,12 +8,13 @@ import 'package:school_life/models/user_settings.dart';
 
 class ThemeService {
   ThemeService() {
-    _details = getIt<AndroidDetails>();
+    _details = getIt.get<AndroidDetails>();
     settings = Hive.box<dynamic>(DatabaseHelper.SETTINGS_BOX);
   }
 
-  static AndroidDetails _details;
+  AndroidDetails _details;
   Box<dynamic> settings;
+
   static const Map<Brightness, String> BRIGHTNESS_TO_STRING =
       <Brightness, String>{
     Brightness.light: 'light',
@@ -24,7 +25,7 @@ class ThemeService {
     settings.put(UserSettingsKeys.THEME, BRIGHTNESS_TO_STRING[brightness]);
   }
 
-  static void updateColorsFromBrightness(Brightness brightness) {
+  void updateColorsFromBrightness(Brightness brightness) {
     _setStatusBarColor();
     if (brightness == Brightness.dark) {
       return _setDarkNavigationColors();
@@ -32,21 +33,21 @@ class ThemeService {
     return _setLightNavigationColors();
   }
 
-  static void _setLightNavigationColors() {
+  void _setLightNavigationColors() {
     if (_details.canChangeNavbarIconColor()) {
       // FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
       // FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     }
   }
 
-  static void _setDarkNavigationColors() {
+  void _setDarkNavigationColors() {
     if (_details.canChangeNavbarIconColor()) {
       // FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
       // FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     }
   }
 
-  static void _setStatusBarColor() {
+  void _setStatusBarColor() {
     if (_details.canChangeStatusBarColor())
       FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   }

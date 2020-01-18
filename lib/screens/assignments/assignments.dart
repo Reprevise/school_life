@@ -43,7 +43,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
             onPressed: () => Router.navigator.push(
               MaterialPageRoute<AssignmentsSettingsPage>(
                 builder: (BuildContext context) => AssignmentsSettingsPage(),
-                fullscreenDialog: true,
               ),
             ),
           ),

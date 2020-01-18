@@ -6,25 +6,7 @@ import 'package:school_life/screens/schedule/schedule.dart';
 import 'package:school_life/screens/settings/settings.dart';
 import 'package:school_life/screens/subjects/subjects.dart';
 
-// final Map<String, WidgetBuilder> routes = <String, WidgetBuilder>{
-//   '/': (BuildContext context) => HomePage(),
-//   '/assignments': (BuildContext context) => AssignmentsPage(),
-//   '/schedule': (BuildContext context) => SchedulePage(),
-//   '/subjects': (BuildContext context) => SubjectsPage(),
-//   '/settings': (BuildContext context) => SettingsPage(),
-//   '/help-feedback': (BuildContext context) => HelpFeedbackPage(),
-// };
-
-const List<String> routes = <String>[
-  '/',
-  '/assignments',
-  '/schedule',
-  '/subjects',
-  '/settings',
-  '/helpFeedback',
-];
-
-@autoRouter
+@AutoRouter(generateRouteList: true)
 class $Router {
   @initial
   HomePage home;

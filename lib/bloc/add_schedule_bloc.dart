@@ -27,7 +27,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   final BooleanFieldBloc sameTimeEveryday =
       BooleanFieldBloc(initialValue: false);
 
-  List<Map<String, FieldBloc>> scheduleFields = [];
+  List<Map<String, FieldBloc>> scheduleFields = <Map<String, FieldBloc>>[];
 
   @override
   List<FieldBloc> get fieldBlocs => <FieldBloc>[

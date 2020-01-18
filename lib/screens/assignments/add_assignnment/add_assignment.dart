@@ -14,7 +14,6 @@ class AddAssignmentPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar('Add Assignment'),
-      drawer: CustomDrawer(),
       body: AddAssignmentForm(),
     );
   }

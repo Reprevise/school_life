@@ -22,8 +22,9 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       fields[2] as String,
       fields[3] as String,
       fields[4] as String,
-      fields[5] as dynamic,
-      (fields[7] as List)?.cast<SingleDaySchedule>(),
+      fields[5] as Color,
+      (fields[7] as Map)?.map((dynamic k, dynamic v) =>
+          MapEntry(k as String, (v as List)?.cast<DateTime>())),
       fields[6] as bool,
     );
   }

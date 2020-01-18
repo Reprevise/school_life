@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:school_life/models/drawer_item.dart';
-import 'package:school_life/routing/router.dart';
 import 'package:school_life/routing/router.gr.dart';
 
 int _selectedIndex = 0;
@@ -43,7 +42,7 @@ class CustomDrawer extends StatelessWidget {
       return;
     }
     _selectedIndex = index;
-    Router.navigator.pushReplacementNamed(routes[index]);
+    Router.navigator.pushNamed(Router.routes[index]);
   }
 
   Color _getItemColor(BuildContext context, int currentIndex, Color itemColor) {

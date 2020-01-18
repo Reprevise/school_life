@@ -25,6 +25,7 @@ class ScheduleHelper {
         _settingsBox.get(UserSettingsKeys.SCHOOL_DAYS) as String;
     if (mapString == null) {
       _selectedDays = ScheduleSettingsDefaults.defaultDaysOfSchool;
+      return;
     }
     final Map<String, dynamic> map =
         jsonDecode(mapString) as Map<String, dynamic>;

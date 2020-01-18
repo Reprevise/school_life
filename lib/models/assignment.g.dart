@@ -22,7 +22,7 @@ class AssignmentAdapter extends TypeAdapter<Assignment> {
       fields[2] as DateTime,
       fields[3] as int,
       fields[4] as String,
-      fields[5] as dynamic,
+      fields[5] as Color,
       fields[6] as bool,
     );
   }
