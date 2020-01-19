@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_colorpicker/block_picker.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/routing/router.gr.dart';

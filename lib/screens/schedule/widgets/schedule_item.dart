@@ -84,7 +84,7 @@ class ScheduleItem extends StatelessWidget {
               children: <Widget>[
                 Text(
                   startTime,
-                  style: TextStyle(color: Colors.white),
+                  style: const TextStyle(color: Colors.white),
                 ),
                 Text(
                   endTime,
