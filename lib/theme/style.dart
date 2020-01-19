@@ -75,7 +75,7 @@ final ThemeData lightTheme = ThemeData(
     ),
     display1: GoogleFonts.muli(
       fontSize: 15.0,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         letterSpacing: 0.3,
         color: Colors.black,
@@ -83,7 +83,7 @@ final ThemeData lightTheme = ThemeData(
     ),
     display2: GoogleFonts.muli(
       fontSize: 21.0,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.black,
       ),
@@ -129,14 +129,14 @@ final ThemeData darkTheme = ThemeData(
       fontFamily: 'Arial',
       fontSize: 16.0,
     ),
-    focusedBorder: OutlineInputBorder(
+    focusedBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.white),
     ),
     border: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.grey[300]),
     ),
   ),
-  dialogTheme: DialogTheme(
+  dialogTheme: const DialogTheme(
     elevation: 0,
     contentTextStyle: TextStyle(
       color: Colors.white,
@@ -145,12 +145,12 @@ final ThemeData darkTheme = ThemeData(
       color: Colors.white,
     ),
   ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Colors.white,
     foregroundColor: Colors.black,
     elevation: 2.0,
   ),
-  buttonTheme: ButtonThemeData(
+  buttonTheme: const ButtonThemeData(
     buttonColor: Colors.white,
     textTheme: ButtonTextTheme.accent,
   ),
@@ -163,7 +163,7 @@ final ThemeData darkTheme = ThemeData(
   ),
   textTheme: TextTheme(
     body1: GoogleFonts.rubik(
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
@@ -179,7 +179,7 @@ final ThemeData darkTheme = ThemeData(
     ),
     display1: GoogleFonts.muli(
       fontSize: 15.0,
-      fontWeight: FontWeight.w700,
+      fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         letterSpacing: 0.3,
         color: Colors.black,
@@ -187,22 +187,22 @@ final ThemeData darkTheme = ThemeData(
     ),
     display2: GoogleFonts.muli(
       fontSize: 21.0,
-      fontWeight: FontWeight.w700,
-      textStyle: TextStyle(
+      fontWeight: FontWeight.bold,
+      textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
     display3: GoogleFonts.muli(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
     display4: GoogleFonts.muli(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
-      textStyle: TextStyle(
+      textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
