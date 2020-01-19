@@ -47,8 +47,8 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   );
 
   // ignore: close_sinks
-  final SelectFieldBloc<Map<String, String>> subjectField =
-      SelectFieldBloc<Map<String, String>>(
+  final SelectFieldBloc<Map<String, dynamic>> subjectField =
+      SelectFieldBloc<Map<String, dynamic>>(
     validators: <String Function(dynamic)>[
       FieldBlocValidators.requiredSelectFieldBloc
     ],
@@ -84,8 +84,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     final DateTime _newDate =
         DateTime(_dueDate.year, _dueDate.month, _dueDate.day);
     // subject field value
-    final String _subjectIDString = subjectField.value['value'];
-    final int _subjectID = int.parse(_subjectIDString);
+    final int _subjectID = subjectField.value['value'] as int;
     final Color color = subjects.getSubject(_subjectID).color;
     // trimmed details text
     final String _detailsText = detailsField.value.trim();
@@ -113,9 +112,9 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
     final List<Subject> allSubjects = subjects.getAllSubjects();
     for (Subject subject in allSubjects) {
-      subjectField.addItem(<String, String>{
+      subjectField.addItem(<String, dynamic>{
         'name': subject.name,
-        'value': subject.id.toString()
+        'value': subject.id,
       });
     }
     yield state.toLoaded();
@@ -130,7 +129,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   bool _fieldsAreEmpty() {
     // get all controllers' text and trim them
     final String _nameField = nameField.value.trim();
-    final Map<String, String> _subjectField = subjectField.value;
+    final Map<String, dynamic> _subjectField = subjectField.value;
     final String _detailsField = detailsField.value.trim();
     // if they're all empty, return true
     if (_nameField.isEmpty && _subjectField == null && _detailsField.isEmpty)

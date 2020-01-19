@@ -4,6 +4,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/adapters/color_adapter.dart';
+import 'package:school_life/services/adapters/time_adapter.dart';
 
 class DatabaseHelper {
   static const String ASSIGNMENTS_BOX = 'assignments_db';
@@ -13,6 +14,7 @@ class DatabaseHelper {
   static Future<void> initializeHiveBoxes() async {
     await Hive.initFlutter();
     Hive.registerAdapter<Color>(ColorAdapter());
+    Hive.registerAdapter<TimeOfDay>(TimeAdapter());
     Hive.registerAdapter<Assignment>(AssignmentAdapter());
     Hive.registerAdapter<Subject>(SubjectAdapter());
     await Hive.openBox<Subject>(SUBJECTS_BOX);
