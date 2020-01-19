@@ -9,6 +9,8 @@ import 'package:school_life/screens/schedule/widgets/header.dart';
 import 'package:school_life/screens/schedule/widgets/schedules_list.dart';
 import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
+import 'package:school_life/util/date_utils.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class SchedulePage extends StatefulWidget {
   @override
@@ -17,10 +19,13 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   bool _userHasSubjects = false;
+  DateTime selectedCalendarDay;
+  final CalendarController controller = CalendarController();
 
   @override
   void initState() {
     super.initState();
+    selectedCalendarDay = DateTime.now().todaysDate;
     _doesUserHaveSubjects();
   }
 
@@ -29,6 +34,12 @@ class _SchedulePageState extends State<SchedulePage> {
     if (subjects.isNotEmpty) {
       _userHasSubjects = true;
     }
+  }
+
+  void onDayChanged(DateTime day, List<dynamic> events) {
+    setState(() {
+      selectedCalendarDay = day;
+    });
   }
 
   @override
@@ -49,7 +60,12 @@ class _SchedulePageState extends State<SchedulePage> {
           IconButton(
             icon: Icon(Icons.today),
             onPressed: () {
-              // TODO: change selectedDay in cal. controller
+              final DateTime now = DateTime.now().todaysDate;
+              setState(() {
+                selectedCalendarDay = now;
+                controller.setSelectedDay(now);
+                controller.setFocusedDay(now);
+              });
             },
           ),
         ],
@@ -63,9 +79,12 @@ class _SchedulePageState extends State<SchedulePage> {
           children: <Widget>[
             // TODO: sync days of school in settings with calendar
             ScheduleHeader(
-              onDaySelected: (DateTime date, List<dynamic> events) {},
+              onDaySelected: onDayChanged,
+              controller: controller,
             ),
-            SchedulesList(),
+            SchedulesList(
+              selectedDay: selectedCalendarDay,
+            ),
           ],
         ),
       ),

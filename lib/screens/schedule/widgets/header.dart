@@ -3,9 +3,13 @@ import 'package:school_life/util/date_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleHeader extends StatelessWidget {
-  ScheduleHeader({Key key, @required this.onDaySelected}) : super(key: key);
+  const ScheduleHeader({
+    Key key,
+    @required this.onDaySelected,
+    @required this.controller,
+  }) : super(key: key);
 
-  final CalendarController controller = CalendarController();
+  final CalendarController controller;
   final Function(DateTime, List<dynamic>) onDaySelected;
 
   @override
