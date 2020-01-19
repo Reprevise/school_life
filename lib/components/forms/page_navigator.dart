@@ -66,6 +66,7 @@ class PageNavigator extends StatelessWidget {
       alignment:
           isFirstPage ? MainAxisAlignment.end : MainAxisAlignment.spaceBetween,
       buttonMinWidth: 100,
+      buttonHeight: 35,
       children: <Widget>[
         Visibility(
           visible: !isFirstPage,
