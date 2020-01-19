@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:hive/hive.dart';
 import 'package:school_life/models/settings_defaults.dart';
-import 'package:school_life/models/user_settings.dart';
+import 'package:school_life/models/user_settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
 class ScheduleHelper {

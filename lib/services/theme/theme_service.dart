@@ -4,7 +4,7 @@ import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/device/android_details.dart';
-import 'package:school_life/models/user_settings.dart';
+import 'package:school_life/models/user_settings_keys.dart';
 
 class ThemeService {
   ThemeService() {

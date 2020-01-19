@@ -20,9 +20,9 @@ class App extends StatelessWidget {
       data: (Brightness brightness) {
         getIt.get<ThemeService>().updateColorsFromBrightness(brightness);
         if (brightness == Brightness.dark) {
-          return Themes.darkTheme;
+          return darkTheme;
         }
-        return Themes.lightTheme;
+        return lightTheme;
       },
       defaultBrightness: Brightness.light,
       themedWidgetBuilder: (BuildContext context, ThemeData theme) {

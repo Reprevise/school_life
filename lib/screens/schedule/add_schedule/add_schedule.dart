@@ -100,7 +100,7 @@ class _FirstPage extends StatelessWidget {
                     Icons.subject,
                     color: Theme.of(context).primaryIconTheme.color,
                   ),
-                  focusedErrorBorder: OutlineInputBorder(
+                  focusedErrorBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.red),
                   ),
                 ),
