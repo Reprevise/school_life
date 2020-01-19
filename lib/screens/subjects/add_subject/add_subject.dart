@@ -112,7 +112,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
                 Icons.subject,
                 color: Theme.of(context).primaryIconTheme.color,
               ),
-              focusedErrorBorder: OutlineInputBorder(
+              focusedErrorBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.red),
               ),
             ),
@@ -129,7 +129,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
                 Icons.location_on,
                 color: Theme.of(context).primaryIconTheme.color,
               ),
-              focusedErrorBorder: OutlineInputBorder(
+              focusedErrorBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.red),
               ),
             ),
@@ -146,7 +146,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
                 Icons.business,
                 color: Theme.of(context).primaryIconTheme.color,
               ),
-              focusedErrorBorder: OutlineInputBorder(
+              focusedErrorBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.red),
               ),
             ),
@@ -161,7 +161,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
                 Icons.person,
                 color: Theme.of(context).primaryIconTheme.color,
               ),
-              focusedErrorBorder: OutlineInputBorder(
+              focusedErrorBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.red),
               ),
             ),

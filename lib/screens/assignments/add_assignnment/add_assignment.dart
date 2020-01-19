@@ -76,7 +76,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                 Icons.assignment,
                                 color: Theme.of(context).primaryIconTheme.color,
                               ),
-                              focusedErrorBorder: OutlineInputBorder(
+                              focusedErrorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.red),
                               ),
                             ),
@@ -113,7 +113,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                 Icons.school,
                                 color: Theme.of(context).primaryIconTheme.color,
                               ),
-                              focusedErrorBorder: OutlineInputBorder(
+                              focusedErrorBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(color: Colors.red),
                               ),
                             ),
@@ -136,7 +136,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                   color:
                                       Theme.of(context).primaryIconTheme.color,
                                 ),
-                                focusedErrorBorder: OutlineInputBorder(
+                                focusedErrorBorder: const OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.red),
                                 ),
                               ),

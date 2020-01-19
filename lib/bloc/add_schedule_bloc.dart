@@ -7,7 +7,7 @@ import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/models/user_settings.dart';
+import 'package:school_life/models/user_settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/days_from_integer.dart';
