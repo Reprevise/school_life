@@ -7,12 +7,14 @@ class ScheduleItem extends StatelessWidget {
     Key key,
     this.isFirst,
     this.isLast,
+    @required this.selectedDay,
   })  : assert(isFirst || isLast),
         super(key: key);
 
   final Subject subject;
   final bool isFirst;
   final bool isLast;
+  final DateTime selectedDay;
 
   BorderRadius getBorderRadius() {
     const Radius radius = Radius.circular(10);
@@ -45,7 +47,10 @@ class ScheduleItem extends StatelessWidget {
             ),
             child: Column(
               children: <Widget>[
-                Container(),
+                Text(subject.schedule[selectedDay.weekday.toString()][0]
+                    .toString()),
+                Text(subject.schedule[selectedDay.weekday.toString()][1]
+                    .toString()),
               ],
             ),
           ),

@@ -87,10 +87,12 @@ class _FirstPage extends StatelessWidget {
         Expanded(
           child: Container(
             child: Center(
-              child: DropdownFieldBlocBuilder<String>(
+              child: DropdownFieldBlocBuilder<Map<String, dynamic>>(
                 selectFieldBloc: formBloc.subjectField,
                 millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
-                itemBuilder: (BuildContext context, String value) => value,
+                itemBuilder:
+                    (BuildContext context, Map<String, dynamic> value) =>
+                        value['name'] as String,
                 showEmptyItem: false,
                 decoration: InputDecoration(
                   labelText: 'Subject',
@@ -122,10 +124,10 @@ class _SecondPage extends StatefulWidget {
   final PageController controller;
 
   @override
-  __SecondPageState createState() => __SecondPageState();
+  _SecondPageState createState() => _SecondPageState();
 }
 
-class __SecondPageState extends State<_SecondPage> {
+class _SecondPageState extends State<_SecondPage> {
   @override
   Widget build(BuildContext context) {
     final double cWidth = MediaQuery.of(context).size.width * 0.8;
@@ -141,26 +143,10 @@ class __SecondPageState extends State<_SecondPage> {
           ),
         ),
         Expanded(
-          child: Center(
-            child: Visibility(
-              visible: widget.formBloc.scheduleFields.isNotEmpty,
-              child: ScheduleFields(widget.formBloc),
-            ),
+          child: Visibility(
+            visible: widget.formBloc.scheduleFields.isNotEmpty,
+            child: ScheduleFields(widget.formBloc),
           ),
-        ),
-        FlatButton(
-          child: const Text('Add Field'),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(8),
-              right: Radius.circular(8),
-            ),
-          ),
-          color: Colors.grey[700],
-          onPressed: () {
-            widget.formBloc.addScheduleField();
-            setState(() {});
-          },
         ),
         PageNavigator(
           widget.controller,
@@ -188,6 +174,7 @@ class _ScheduleFieldsState extends State<ScheduleFields> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: widget.formBloc.scheduleFields.length,
       itemBuilder: (BuildContext context, int i) {
         final Map<String, FieldBloc> currentMap =

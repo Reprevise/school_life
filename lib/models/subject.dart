@@ -34,7 +34,7 @@ class Subject extends HiveObject {
   @HiveField(6)
   bool isDeleted;
   @HiveField(7)
-  Map<String, List<DateTime>> schedule;
+  Map<String, List<TimeOfDay>> schedule;
 
   @override
   Future<void> delete() {
