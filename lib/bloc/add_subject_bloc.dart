@@ -116,7 +116,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   Stream<FormBlocState<String, String>> _getSubjectNames() async* {
-    final List<Subject> allSubjects = subjects.getAllSubjects();
+    final List<Subject> allSubjects = subjects.allSubjects;
     _subjectNames = allSubjects
         .map((Subject subject) => subject.name.toLowerCase())
         .toList();
@@ -124,7 +124,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
     final List<Color> subjectColors = subjects
-        .getAllSubjects()
+        .allSubjects
         .map((Subject subject) => subject.color)
         .toList();
     availableColors = _allAvailableColors

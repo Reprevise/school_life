@@ -25,12 +25,12 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   void initState() {
     super.initState();
-    selectedCalendarDay = DateTime.now().todaysDate;
+    selectedCalendarDay = DateTime.now().onlyDate;
     _doesUserHaveSubjects();
   }
 
   void _doesUserHaveSubjects() {
-    final List<Subject> subjects = getIt<SubjectsRepository>().getAllSubjects();
+    final List<Subject> subjects = getIt<SubjectsRepository>().allSubjects;
     if (subjects.isNotEmpty) {
       _userHasSubjects = true;
     }
@@ -60,7 +60,7 @@ class _SchedulePageState extends State<SchedulePage> {
           IconButton(
             icon: Icon(Icons.today),
             onPressed: () {
-              final DateTime now = DateTime.now().todaysDate;
+              final DateTime now = DateTime.now().onlyDate;
               setState(() {
                 selectedCalendarDay = now;
                 controller.setSelectedDay(now);

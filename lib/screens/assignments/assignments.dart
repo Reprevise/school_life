@@ -26,7 +26,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   }
 
   void _doesUserHaveSubjects() {
-    final List<Subject> allSubjects = subjects.getAllSubjects();
+    final List<Subject> allSubjects = subjects.allSubjects;
     if (allSubjects.isNotEmpty) {
       _userHasSubjects = true;
     }

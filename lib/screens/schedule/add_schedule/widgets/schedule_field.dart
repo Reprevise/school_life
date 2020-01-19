@@ -71,7 +71,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
                       InputFieldBlocState<TimeOfDay> state) {
                     return TimeField(
                       labelText: 'Start time',
-                      errorText: state.hasError ? 'Required' : null,
+                      errorText: state.error,
                       selectedTime: widget.startTimeBloc.value,
                       onTimeChanged: (TimeOfDay time) {
                         widget.startTimeBloc.updateValue(time);
@@ -88,7 +88,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
                       InputFieldBlocState<TimeOfDay> state) {
                     return TimeField(
                       labelText: 'End time',
-                      errorText: state.hasError ? 'Required' : null,
+                      errorText: state.error,
                       selectedTime: widget.endTimeBloc.value,
                       onTimeChanged: (TimeOfDay time) {
                         widget.endTimeBloc.updateValue(time);

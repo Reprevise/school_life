@@ -93,7 +93,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                   format: format,
                                   errorText: state.error,
                                   labelText: 'Due date',
-                                  selectedDate: DateTime.now().todaysDate,
+                                  selectedDate: DateTime.now().onlyDate,
                                   onDateChanged: (DateTime value) {
                                     _formBloc.dueDateField.updateValue(value);
                                   },

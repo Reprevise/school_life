@@ -4,13 +4,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:school_life/bloc/validators.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/models/user_settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
-import 'package:school_life/util/days_from_integer.dart';
+import 'package:school_life/util/days_util.dart';
 
 class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   AddScheduleFormBloc() : super(isLoading: true) {
@@ -80,8 +81,8 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
       LinkedHashMap<String, List<TimeOfDay>> map) {
     final List<String> mapKeys = map.keys.toList()
       ..sort((String stringOne, String stringTwo) {
-        final int numberOne = int.parse(stringOne);
-        final int numberTwo = int.parse(stringTwo);
+        final int numberOne = daysToInteger[stringOne];
+        final int numberTwo = daysToInteger[stringTwo];
         return numberOne.compareTo(numberTwo);
       });
     print('Map Keys: $mapKeys');
@@ -94,7 +95,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    final List<Subject> allSubjects = subjects.getAllSubjects();
+    final List<Subject> allSubjects = subjects.allSubjects;
     for (Subject subject in allSubjects) {
       subjectField.addItem(<String, dynamic>{
         'name': subject.name,
@@ -122,14 +123,16 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   void addScheduleField(String day) {
+    final SelectFieldBloc<String> dayFieldBloc = SelectFieldBloc<String>(
+      items: availableDays,
+      initialValue: day ?? availableDays.first,
+    );
     scheduleFields.add(<String, FieldBloc>{
-      'dayFieldBloc': SelectFieldBloc<String>(
-        items: availableDays,
-        initialValue: day ?? availableDays.first,
-      ),
+      'dayFieldBloc': dayFieldBloc,
       'startTimeBloc': InputFieldBloc<TimeOfDay>(
         validators: <String Function(TimeOfDay)>[
           FieldBlocValidators.requiredInputFieldBloc,
+          (TimeOfDay time) => Validators.notSameStartTime(time, dayFieldBloc.value),
         ],
       ),
       'endTimeBloc': InputFieldBloc<TimeOfDay>(

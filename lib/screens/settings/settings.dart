@@ -41,7 +41,7 @@ class _SettingsPageState extends State<SettingsPage> {
         primary: false,
         children: <Widget>[
           buildThemeToggle(),
-          Divider(color: Colors.grey),
+          const Divider(color: Colors.grey),
           const SettingHeader('Page Settings'),
           RouterTile(
             icon: Icons.assignment,

@@ -22,6 +22,9 @@ final ThemeData lightTheme = ThemeData(
     labelStyle: TextStyle(
       color: Colors.black,
       fontWeight: FontWeight.bold,
+      letterSpacing: .5,
+      fontFamily: 'Arial',
+      fontSize: 16.0,
     ),
     border: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.grey[600]),
@@ -39,7 +42,7 @@ final ThemeData lightTheme = ThemeData(
       color: Colors.black,
     ),
   ),
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
+  floatingActionButtonTheme: const FloatingActionButtonThemeData(
     backgroundColor: Colors.black,
     foregroundColor: Colors.white,
     elevation: 2.0,
@@ -112,7 +115,7 @@ final ThemeData darkTheme = ThemeData(
   textSelectionColor: Colors.white12,
   cursorColor: Colors.white,
   dividerColor: Colors.white,
-  primaryIconTheme: IconThemeData(color: Colors.white),
+  primaryIconTheme: const IconThemeData(color: Colors.white),
   buttonColor: Colors.white,
   inputDecorationTheme: InputDecorationTheme(
     focusedErrorBorder: const OutlineInputBorder(
@@ -123,6 +126,8 @@ final ThemeData darkTheme = ThemeData(
       color: Colors.white,
       fontWeight: FontWeight.bold,
       letterSpacing: .5,
+      fontFamily: 'Arial',
+      fontSize: 16.0,
     ),
     focusedBorder: OutlineInputBorder(
       borderSide: BorderSide(color: Colors.white),

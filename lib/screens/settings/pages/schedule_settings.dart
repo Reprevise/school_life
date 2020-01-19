@@ -3,7 +3,7 @@ import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/screens/settings/pages/helpers/schedule_helper.dart';
 import 'package:school_life/screens/settings/pages/widgets/choose_days_school_dialog.dart';
-import 'package:school_life/util/days_from_integer.dart';
+import 'package:school_life/util/days_util.dart';
 
 class ScheduleSettingsPage extends StatefulWidget {
   @override

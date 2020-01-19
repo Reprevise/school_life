@@ -48,8 +48,7 @@ class SubjectsPage extends StatelessWidget {
   }
 
   Future<void> _handleAddSubjectButtonPress(BuildContext context) async {
-    final List<Subject> subjectList =
-        getIt<SubjectsRepository>().getAllSubjects();
+    final List<Subject> subjectList = getIt<SubjectsRepository>().allSubjects;
     if (subjectList.length >= 19) {
       showTooManySubjectsDialog(context);
       return;

@@ -19,7 +19,7 @@ class DateField extends StatelessWidget {
   final DateFormat format;
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime date = DateTime.now().todaysDate;
+    final DateTime date = DateTime.now().onlyDate;
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -60,7 +60,9 @@ class TimeField extends StatelessWidget {
 
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay picked = await showTimePicker(
-        context: context, initialTime: DateTime.now().currentTime);
+      context: context,
+      initialTime: selectedTime ?? TimeOfDay.now(),
+    );
     if (picked != null && picked != selectedTime) {
       onTimeChanged(picked);
     }

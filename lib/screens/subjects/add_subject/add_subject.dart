@@ -1,29 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_colorpicker/block_picker.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
 
-class AddSubjectPage extends StatelessWidget {
+class AddSubjectPage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar('Add Subject'),
-      body: AddSubjectForm(),
-    );
-  }
+  _AddSubjectPageState createState() => _AddSubjectPageState();
 }
 
-class AddSubjectForm extends StatefulWidget {
-  @override
-  _AddSubjectFormState createState() => _AddSubjectFormState();
-}
-
-class _AddSubjectFormState extends State<AddSubjectForm> {
+class _AddSubjectPageState extends State<AddSubjectPage> {
   AddSubjectFormBloc _formBloc;
 
   @override
@@ -34,27 +24,29 @@ class _AddSubjectFormState extends State<AddSubjectForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<AddSubjectFormBloc>(
-      create: (BuildContext context) => AddSubjectFormBloc(),
-      child: Builder(
-        builder: (BuildContext context) {
-          _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
-          return WillPopScope(
-            onWillPop: () => _formBloc.canPop(context),
-            child: FormBlocListener<AddSubjectFormBloc, String, String>(
-              onSuccess: (BuildContext context, dynamic state) {
-                Router.navigator.pushReplacementNamed(Router.subjects);
-              },
-              child: BlocBuilder<AddSubjectFormBloc,
-                  FormBlocState<String, String>>(
-                builder: (BuildContext context,
-                    FormBlocState<String, String> state) {
-                  return AddSubjectFormFields(_formBloc);
+    return Scaffold(
+      appBar: const CustomAppBar('Add Subject'),
+      body: BlocProvider<AddSubjectFormBloc>(
+        create: (BuildContext context) => AddSubjectFormBloc(),
+        child: Builder(
+          builder: (BuildContext context) {
+            _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
+            return WillPopScope(
+              onWillPop: () => _formBloc.canPop(context),
+              child: FormBlocListener<AddSubjectFormBloc, String, String>(
+                onSuccess: (BuildContext context,
+                    FormBlocSuccess<String, String> state) {
+                  Router.navigator.pushReplacementNamed(Router.subjects);
                 },
+                child: BlocBuilder<AddSubjectFormBloc,
+                    FormBlocState<String, String>>(
+                  builder: (BuildContext _, FormBlocState<String, String> __) =>
+                      AddSubjectFormFields(_formBloc),
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }
@@ -75,153 +67,108 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
   final FocusNode _buildingFocus = FocusNode();
   final FocusNode _teacherFocus = FocusNode();
 
-  List<FocusNode> get nodes => <FocusNode>[
-        _subjectFocus,
-        _roomTextFocus,
-        _buildingFocus,
-        _teacherFocus,
-      ];
-
   @override
   void dispose() {
     // dispose of all FocusNode's
-    for (FocusNode node in nodes) {
-      node.dispose();
-    }
+    _subjectFocus.dispose();
+    _roomTextFocus.dispose();
+    _buildingFocus.dispose();
+    _teacherFocus.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    const InputBorder errorBorder = OutlineInputBorder(
+      borderSide: BorderSide(color: Colors.red),
+    );
+    final Color iconColor = Theme.of(context).primaryIconTheme.color;
+
+    return ListView(
       physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 10),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          TextFieldBlocBuilder(
-            autofocus: true,
-            textFieldBloc: widget.formBloc.nameField,
-            focusNode: _subjectFocus,
-            nextFocusNode: _roomTextFocus,
-            textInputAction: TextInputAction.next,
-            decoration: InputDecoration(
-              labelText: 'Subject',
-              prefixIcon: Icon(
-                Icons.subject,
-                color: Theme.of(context).primaryIconTheme.color,
-              ),
-              focusedErrorBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-              ),
+      children: <Widget>[
+        TextFieldBlocBuilder(
+          autofocus: true,
+          textFieldBloc: widget.formBloc.nameField,
+          focusNode: _subjectFocus,
+          nextFocusNode: _roomTextFocus,
+          textInputAction: TextInputAction.next,
+          decoration: InputDecoration(
+            labelText: 'Subject',
+            prefixIcon: Icon(
+              Icons.subject,
+              color: iconColor,
             ),
+            focusedErrorBorder: errorBorder,
           ),
-          TextFieldBlocBuilder(
-            textFieldBloc: widget.formBloc.roomField,
-            focusNode: _roomTextFocus,
-            nextFocusNode: _buildingFocus,
-            textInputAction: TextInputAction.next,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              labelText: 'Room',
-              prefixIcon: Icon(
-                Icons.location_on,
-                color: Theme.of(context).primaryIconTheme.color,
-              ),
-              focusedErrorBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-              ),
+        ),
+        TextFieldBlocBuilder(
+          textFieldBloc: widget.formBloc.roomField,
+          focusNode: _roomTextFocus,
+          nextFocusNode: _buildingFocus,
+          textInputAction: TextInputAction.next,
+          textCapitalization: TextCapitalization.words,
+          decoration: InputDecoration(
+            labelText: 'Room',
+            prefixIcon: Icon(
+              Icons.location_on,
+              color: iconColor,
             ),
+            focusedErrorBorder: errorBorder,
           ),
-          TextFieldBlocBuilder(
-            textFieldBloc: widget.formBloc.buildingField,
-            focusNode: _buildingFocus,
-            nextFocusNode: _teacherFocus,
-            textInputAction: TextInputAction.next,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              labelText: 'Building',
-              prefixIcon: Icon(
-                Icons.business,
-                color: Theme.of(context).primaryIconTheme.color,
-              ),
-              focusedErrorBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-              ),
+        ),
+        TextFieldBlocBuilder(
+          textFieldBloc: widget.formBloc.buildingField,
+          focusNode: _buildingFocus,
+          nextFocusNode: _teacherFocus,
+          textInputAction: TextInputAction.next,
+          textCapitalization: TextCapitalization.words,
+          decoration: InputDecoration(
+            labelText: 'Building',
+            prefixIcon: Icon(
+              Icons.business,
+              color: iconColor,
             ),
+            focusedErrorBorder: errorBorder,
           ),
-          TextFieldBlocBuilder(
-            textFieldBloc: widget.formBloc.teacherField,
-            focusNode: _teacherFocus,
-            textCapitalization: TextCapitalization.words,
-            decoration: InputDecoration(
-              labelText: 'Teacher',
-              prefixIcon: Icon(
-                Icons.person,
-                color: Theme.of(context).primaryIconTheme.color,
+        ),
+        TextFieldBlocBuilder(
+          textFieldBloc: widget.formBloc.teacherField,
+          focusNode: _teacherFocus,
+          textCapitalization: TextCapitalization.words,
+          decoration: InputDecoration(
+            labelText: 'Teacher',
+            prefixIcon: Icon(
+              Icons.person,
+              color: iconColor,
+            ),
+            focusedErrorBorder: errorBorder,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SubjectColorPicker(widget.formBloc),
+              const SizedBox(height: 8),
+              Container(
+                width: 150,
+                child: OutlineButton(
+                  padding: EdgeInsets.zero,
+                  borderSide:
+                      Theme.of(context).inputDecorationTheme.border.borderSide,
+                  textColor: Theme.of(context).textTheme.body1.color,
+                  onPressed: widget.formBloc.submit,
+                  child: const Text('Submit'),
+                ),
               ),
-              focusedErrorBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.red),
-              ),
-            ),
+            ],
           ),
-          SubjectColorPicker(widget.formBloc),
-          Container(
-            padding: const EdgeInsets.only(left: 8.0),
-            child: OutlineButton(
-              padding: EdgeInsets.zero,
-              borderSide:
-                  Theme.of(context).inputDecorationTheme.border.borderSide,
-              textColor: Theme.of(context).textTheme.body1.color,
-              onPressed: widget.formBloc.submit,
-              child: const Text('Submit'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SubjectColorPicker extends StatelessWidget {
-  const SubjectColorPicker(this.formBloc);
-
-  final AddSubjectFormBloc formBloc;
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<InputFieldBloc<Color>, dynamic>(
-      bloc: formBloc.colorField,
-      builder: (BuildContext context, dynamic state) {
-        return Padding(
-          padding: const EdgeInsets.only(left: 8.0),
-          child: FlatButton(
-            color: formBloc.currentColor,
-            textColor: Colors.black,
-            child: const Text('Change color'),
-            onPressed: () => showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Select a color'),
-                  content: SingleChildScrollView(
-                    child: BlockPicker(
-                      availableColors: formBloc.availableColors,
-                      pickerColor: formBloc.currentColor,
-                      onColorChanged: (Color color) {
-                        formBloc.colorField.updateValue(color);
-                        formBloc.currentColor = color;
-                        Router.navigator.pop();
-                      },
-                    ),
-                  ),
-                );
-              },
-            ),
-          ),
-        );
-      },
+        ),
+      ],
     );
   }
 }

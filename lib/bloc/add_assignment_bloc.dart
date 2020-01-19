@@ -37,7 +37,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
         Validators.maxLength(dateString, 15);
         if (date == null || dateString.isEmpty)
           return 'A due date is required!';
-        if (date.isBefore(DateTime.now().todaysDate)) {
+        if (date.isBefore(DateTime.now().onlyDate)) {
           return 'Can\'t be before today!';
         }
         return null;
@@ -110,7 +110,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   }
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    final List<Subject> allSubjects = subjects.getAllSubjects();
+    final List<Subject> allSubjects = subjects.allSubjects;
     for (Subject subject in allSubjects) {
       subjectField.addItem(<String, dynamic>{
         'name': subject.name,
