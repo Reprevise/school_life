@@ -101,11 +101,11 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                               },
                             ),
                           ),
-                          DropdownFieldBlocBuilder<Map<String, String>>(
+                          DropdownFieldBlocBuilder<Map<String, dynamic>>(
                             selectFieldBloc: _formBloc.subjectField,
                             itemBuilder: (BuildContext context,
-                                    Map<String, String> value) =>
-                                value['name'],
+                                    Map<String, dynamic> value) =>
+                                value['name'] as String,
                             showEmptyItem: false,
                             decoration: InputDecoration(
                               labelText: 'Subject',
