@@ -10,7 +10,11 @@
             "group": {
                 "kind": "build",
                 "isDefault": true
-            }
+            },
+            "problemMatcher": [
+                "$dart-pub-build_runner"
+            ],
+            "isBackground": true
         },
         {
             "label": "build_runner watch",
