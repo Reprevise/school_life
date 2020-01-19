@@ -33,12 +33,13 @@ class _ScheduleFieldState extends State<ScheduleField> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: const BorderRadius.all(Radius.circular(16)),
+    return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(16)),
       ),
-      margin: const EdgeInsets.all(8),
+      color: Theme.of(context).scaffoldBackgroundColor,
+      margin: const EdgeInsets.all(12),
+      elevation: 6,
       child: Column(
         children: <Widget>[
           Row(
@@ -69,10 +70,13 @@ class _ScheduleFieldState extends State<ScheduleField> {
                   builder: (BuildContext context,
                       InputFieldBlocState<TimeOfDay> state) {
                     return TimeField(
-                      labelText: '${widget.dayFieldBloc.value} start time',
-                      errorText: state.error,
-                      selectedTime: null,
-                      onTimeChanged: widget.startTimeBloc.updateValue,
+                      labelText: 'Start time',
+                      errorText: state.hasError ? 'Required' : null,
+                      selectedTime: widget.startTimeBloc.value,
+                      onTimeChanged: (TimeOfDay time) {
+                        widget.startTimeBloc.updateValue(time);
+                        setState(() {});
+                      },
                     );
                   },
                 ),
@@ -83,10 +87,13 @@ class _ScheduleFieldState extends State<ScheduleField> {
                   builder: (BuildContext context,
                       InputFieldBlocState<TimeOfDay> state) {
                     return TimeField(
-                      labelText: '${widget.dayFieldBloc.value} end time',
-                      errorText: state.error,
-                      selectedTime: null,
-                      onTimeChanged: widget.endTimeBloc.updateValue,
+                      labelText: 'End time',
+                      errorText: state.hasError ? 'Required' : null,
+                      selectedTime: widget.endTimeBloc.value,
+                      onTimeChanged: (TimeOfDay time) {
+                        widget.endTimeBloc.updateValue(time);
+                        setState(() {});
+                      },
                     );
                   },
                 ),
