@@ -34,19 +34,12 @@ class DateField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextStyle valueStyle = Theme.of(context).textTheme.body1;
-    return Row(
-      children: <Widget>[
-        Expanded(
-          flex: 3,
-          child: _InputDropdown(
-            valueText: format.format(selectedDate),
-            labelText: labelText,
-            errorText: errorText,
-            valueStyle: valueStyle,
-            onPressed: () => _selectDate(context),
-          ),
-        )
-      ],
+    return _InputField(
+      valueText: format.format(selectedDate),
+      labelText: labelText,
+      errorText: errorText,
+      valueStyle: valueStyle,
+      onPressed: () => _selectDate(context),
     );
   }
 }
@@ -77,27 +70,19 @@ class TimeField extends StatelessWidget {
   Widget build(BuildContext context) {
     final TextStyle valueStyle = Theme.of(context).textTheme.body1;
     return Expanded(
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Expanded(
-            child: _InputDropdown(
-              valueText:
-                  selectedTime != null ? selectedTime.format(context) : '',
-              valueStyle: valueStyle,
-              labelText: labelText,
-              errorText: errorText,
-              onPressed: () => _selectTime(context),
-            ),
-          )
-        ],
+      child: _InputField(
+        valueText: selectedTime?.format(context) ?? '',
+        valueStyle: valueStyle,
+        labelText: labelText,
+        errorText: errorText,
+        onPressed: () => _selectTime(context),
       ),
     );
   }
 }
 
-class _InputDropdown extends StatelessWidget {
-  const _InputDropdown({
+class _InputField extends StatelessWidget {
+  const _InputField({
     Key key,
     @required this.labelText,
     @required this.valueText,
@@ -124,14 +109,7 @@ class _InputDropdown extends StatelessWidget {
           errorText: errorText,
         ),
         baseStyle: valueStyle,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Text(valueText, style: valueStyle),
-            Icon(Icons.arrow_drop_down),
-          ],
-        ),
+        child: Text(valueText, style: valueStyle),
       ),
     );
   }
