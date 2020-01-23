@@ -19,7 +19,6 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   SubjectsRepository subjects;
   static List<String> _assignmentNames = <String>[];
 
-  // ignore: close_sinks
   final TextFieldBloc nameField = TextFieldBloc(
     validators: <String Function(String)>[
       FieldBlocValidators.requiredTextFieldBloc,
@@ -29,7 +28,6 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     initialValue: '',
   );
 
-  // ignore: close_sinks
   final InputFieldBloc<DateTime> dueDateField = InputFieldBloc<DateTime>(
     validators: <String Function(DateTime)>[
       (DateTime date) {
@@ -46,7 +44,6 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     initialValue: DateTime.now(),
   );
 
-  // ignore: close_sinks
   final SelectFieldBloc<Map<String, dynamic>> subjectField =
       SelectFieldBloc<Map<String, dynamic>>(
     validators: <String Function(dynamic)>[
@@ -54,7 +51,6 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
     ],
   );
 
-  // ignore: close_sinks
   final TextFieldBloc detailsField = TextFieldBloc(initialValue: '');
 
   @override
