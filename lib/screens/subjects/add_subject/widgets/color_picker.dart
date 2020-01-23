@@ -33,7 +33,6 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
                       pickerColor: widget.formBloc.currentColor,
                       onColorChanged: (Color color) {
                         widget.formBloc.colorField.updateValue(color);
-                        widget.formBloc.currentColor = color;
                         setState(() {});
                         Router.navigator.pop();
                       },

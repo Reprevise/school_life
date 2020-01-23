@@ -103,7 +103,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   }
 
   Future<void> _getAssignmentNames() async {
-    final List<Assignment> allAssignments = assignments.getAllAssignments();
+    final List<Assignment> allAssignments = assignments.allAssignments;
     _assignmentNames = allAssignments
         .map((Assignment assignment) => assignment.name.toLowerCase())
         .toList();

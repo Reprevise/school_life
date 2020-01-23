@@ -8,7 +8,7 @@ class SubjectsRepository {
   }
 
   Box<Subject> _subjectsDB;
-  
+
   int get newID => allSubjects.length;
 
   List<Subject> get allSubjects {
@@ -20,7 +20,7 @@ class SubjectsRepository {
     return _subjectsDB.getAt(id);
   }
 
-  List<Subject> getSubjectsWithoutSchedule() {
+  List<Subject> get subjectsWithoutSchedule {
     return allSubjects
         .where((Subject subject) => subject.schedule == null)
         .toList();
@@ -39,9 +39,5 @@ class SubjectsRepository {
 
   void deleteSubject(Subject subject) {
     _subjectsDB.delete(subject.id);
-  }
-
-  Future<void> updateSubject(Subject subject) async {
-    _subjectsDB.put(subject.id, subject);
   }
 }

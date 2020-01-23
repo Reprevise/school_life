@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/validators.dart';
@@ -64,6 +66,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   ];
   List<Color> availableColors;
   Color currentColor = Colors.yellow;
+  StreamSubscription<InputFieldBlocState<Color>> colorFieldSubscription;
 
   @override
   List<FieldBloc> get fieldBlocs => <FieldBloc>[
@@ -74,20 +77,28 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
         colorField
       ];
 
+  void onColorChanged(InputFieldBlocState<Color> newState) {
+    currentColor = newState.value;
+  }
+
   @override
   Stream<FormBlocState<String, String>> onLoading() async* {
+    colorFieldSubscription = colorField.listen(onColorChanged);
     yield* _getSubjectNames();
     yield* _getAvailableColors();
   }
 
   @override
   Stream<FormBlocState<String, String>> onReload() async* {
+    colorFieldSubscription?.cancel();
+    colorFieldSubscription = colorField.listen(onColorChanged);
     yield* _getSubjectNames();
     yield* _getAvailableColors();
   }
 
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
+    colorFieldSubscription?.cancel();
     // get the number of subjects, returns # of subjects + 1
     final int nextID = subjects.newID;
     // trimmed subject name

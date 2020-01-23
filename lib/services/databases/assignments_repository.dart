@@ -8,21 +8,22 @@ class AssignmentsRepository {
   }
 
   Box<Assignment> _assignmentsDB;
-  int get newID => getAllAssignments().length;
 
-  List<Assignment> getAllAssignments() {
+  int get newID => allAssignments.length;
+
+  List<Assignment> get allAssignments {
     final List<Assignment> data = _assignmentsDB.values.toList();
     return data ?? <Assignment>[];
   }
 
-  List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
-    return getAllAssignments()
-        .where((Assignment assignment) => assignment.subjectID == subjectID)
-        .toList();
+  Future<Assignment> getAssignment(int id) async {
+    return _assignmentsDB.getAt(id);
   }
 
-  Future<Assignment> getAssignmentFromID(int id) async {
-    return _assignmentsDB.getAt(id);
+  List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
+    return allAssignments
+        .where((Assignment assignment) => assignment.subjectID == subjectID)
+        .toList();
   }
 
   void addAssignment(Assignment assignment) {
@@ -31,9 +32,5 @@ class AssignmentsRepository {
 
   void deleteAssignment(Assignment assignment) {
     _assignmentsDB.delete(assignment.id);
-  }
-
-  void updateAssignment(Assignment assignment) {
-    _assignmentsDB.put(assignment.id, assignment);
   }
 }
