@@ -5,9 +5,10 @@ class TimeAdapter extends TypeAdapter<TimeOfDay> {
   @override
   TimeOfDay read(BinaryReader reader) {
     final String string = reader.readString();
-    final int startIndex = string.indexOf('(') + 1;
-    final String hour = string.substring(startIndex, startIndex + 2);
-    final String minute = string.substring(startIndex + 3, startIndex + 4);
+    final List<String> hourMinute =
+        string.substring(string.indexOf('(') + 1, string.length - 1).split(':');
+    final String hour = hourMinute[0];
+    final String minute = hourMinute[1];
     return TimeOfDay(
       hour: int.parse(hour),
       minute: int.parse(minute),
@@ -16,7 +17,6 @@ class TimeAdapter extends TypeAdapter<TimeOfDay> {
 
   @override
   void write(BinaryWriter writer, TimeOfDay obj) {
-    print('TimeOfDay toString: $obj');
     writer.writeString(obj.toString());
   }
 

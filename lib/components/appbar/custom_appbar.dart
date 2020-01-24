@@ -1,6 +1,6 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:school_life/components/theme/theme_switcher.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
@@ -20,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       centerTitle: true,
-      brightness: DynamicTheme.of(context).brightness,
+      brightness: ThemeSwitcher.of(context).brightness,
       backgroundColor: Colors.transparent,
       actions: actions ?? <Widget>[],
       title: Text(

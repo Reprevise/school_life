@@ -1,11 +1,9 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/main.dart';
+import 'package:school_life/components/theme/theme_switcher.dart';
 import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/screens/settings/widgets/index.dart';
-import 'package:school_life/services/theme/theme_service.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -13,23 +11,17 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  Brightness _currentBrightness;
+  Brightness _brightness;
 
   @override
   void initState() {
     super.initState();
-    _currentBrightness = DynamicTheme.of(context).brightness;
+    _brightness = ThemeSwitcher.of(context).brightness;
   }
 
   void _changeTheme(Brightness newBrightness) {
-    if (newBrightness == DynamicTheme.of(context).brightness) {
-      return;
-    }
-    setState(() {
-      _currentBrightness = newBrightness;
-    });
-    getIt<ThemeService>().saveCurrentBrightnessToDisk(newBrightness);
-    DynamicTheme.of(context).setBrightness(newBrightness);
+    _brightness = newBrightness;
+    ThemeSwitcher.of(context).setBrightness(newBrightness);
   }
 
   @override
@@ -67,7 +59,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return ListTile(
       leading: Icon(Icons.color_lens),
       title: const Text('Theme'),
-      subtitle: Text(_currentBrightness == Brightness.light ? 'Light' : 'Dark'),
+      subtitle: Text(_brightness == Brightness.dark ? 'Dark' : 'Light'),
       onTap: () => showDialog<void>(
         context: context,
         builder: (BuildContext context) => buildThemeDialog(),
@@ -91,7 +83,7 @@ class _SettingsPageState extends State<SettingsPage> {
       title: const Text('Light Theme'),
       value: Brightness.light,
       activeColor: Colors.black,
-      groupValue: _currentBrightness,
+      groupValue: _brightness,
       onChanged: (Brightness value) {
         _changeTheme(value);
         Router.navigator.pop();
@@ -104,7 +96,7 @@ class _SettingsPageState extends State<SettingsPage> {
       title: const Text('Dark Theme'),
       value: Brightness.dark,
       activeColor: Colors.black,
-      groupValue: _currentBrightness,
+      groupValue: _brightness,
       onChanged: (Brightness value) {
         _changeTheme(value);
         Router.navigator.pop();

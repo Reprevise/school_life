@@ -72,25 +72,23 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
   @override
   Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    final int _nextID = assignments.newID;
+    final int nextID = assignments.newID;
     // trimmed assignment name
-    final String _assignmentName = nameField.value.trim();
+    final String assignmentName = nameField.value.trim();
     // trimmed due date
-    final DateTime _dueDate = dueDateField.value;
-    final DateTime _newDate =
-        DateTime(_dueDate.year, _dueDate.month, _dueDate.day);
+    final DateTime dueDate = dueDateField.value.onlyDate;
     // subject field value
-    final int _subjectID = subjectField.value['value'] as int;
-    final Color color = subjects.getSubject(_subjectID).color;
+    final int subjectID = subjectField.value['value'] as int;
+    final Color color = subjects.getSubject(subjectID).color;
     // trimmed details text
-    final String _detailsText = detailsField.value.trim();
+    final String detailsText = detailsField.value.trim();
     // create new assignment based on text from form
     final Assignment newAssignment = Assignment(
-      _nextID,
-      _assignmentName,
-      _newDate,
-      _subjectID,
-      _detailsText,
+      nextID,
+      assignmentName,
+      dueDate,
+      subjectID,
+      detailsText,
       color,
       false, // isDeleted value, always false when creating
     );

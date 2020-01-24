@@ -1,11 +1,8 @@
-import 'package:dynamic_theme/dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:school_life/components/theme/theme_switcher.dart';
 import 'package:school_life/custom_route_observer.dart';
-import 'package:school_life/main.dart';
 import 'package:school_life/routing/router.gr.dart';
-import 'package:school_life/services/theme/theme_service.dart';
-import 'package:school_life/theme/style.dart';
 
 class App extends StatelessWidget {
   @override
@@ -16,15 +13,7 @@ class App extends StatelessWidget {
         DeviceOrientation.portraitDown
       ],
     );
-    return DynamicTheme(
-      data: (Brightness brightness) {
-        getIt.get<ThemeService>().updateColorsFromBrightness(brightness);
-        if (brightness == Brightness.dark) {
-          return darkTheme;
-        }
-        return lightTheme;
-      },
-      defaultBrightness: Brightness.light,
+    return ThemeSwitcher(
       themedWidgetBuilder: (BuildContext context, ThemeData theme) {
         return MaterialApp(
           initialRoute: Router.home,
