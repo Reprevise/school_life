@@ -43,7 +43,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
 
   final InputFieldBloc<Color> colorField = InputFieldBloc<Color>();
 
-  final List<Color> _allAvailableColors = <Color>[
+  final List<ColorSwatch<dynamic>> _allAvailableColors = <ColorSwatch<dynamic>>[
     Colors.red,
     Colors.pink,
     Colors.purple,
@@ -62,9 +62,9 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
     Colors.deepOrange,
     Colors.brown,
     Colors.grey,
-    Colors.blueGrey,
+    Colors.blueGrey
   ];
-  List<Color> availableColors;
+  List<ColorSwatch<dynamic>> availableColors;
   Color currentColor = Colors.yellow;
   StreamSubscription<InputFieldBlocState<Color>> colorFieldSubscription;
 
@@ -134,10 +134,8 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
-    final List<Color> subjectColors = subjects
-        .allSubjects
-        .map((Subject subject) => subject.color)
-        .toList();
+    final List<Color> subjectColors =
+        subjects.allSubjects.map((Subject subject) => subject.color).toList();
     availableColors = _allAvailableColors
         .where((Color color) => !subjectColors.contains(color))
         .toList();

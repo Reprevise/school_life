@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_colorpicker/block_picker.dart';
+import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/routing/router.gr.dart';
@@ -28,10 +28,11 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
                 return AlertDialog(
                   title: const Text('Select a color'),
                   content: SingleChildScrollView(
-                    child: BlockPicker(
-                      availableColors: widget.formBloc.availableColors,
-                      pickerColor: widget.formBloc.currentColor,
-                      onColorChanged: (Color color) {
+                    child: MaterialColorPicker(
+                      allowShades: false,
+                      colors: widget.formBloc.availableColors,
+                      selectedColor: widget.formBloc.currentColor,
+                      onColorChange: (Color color) {
                         widget.formBloc.colorField.updateValue(color);
                         setState(() {});
                         Router.navigator.pop();

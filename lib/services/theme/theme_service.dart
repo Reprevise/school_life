@@ -17,7 +17,9 @@ class ThemeService {
   };
 
   void updateColorsFromBrightness(Brightness brightness) {
-    _setStatusBarColor();
+    if (_details.canChangeStatusBarColor())
+      FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+    print("recall");
     if (brightness == Brightness.dark) {
       return _setDarkNavigationColors();
     }
@@ -26,20 +28,16 @@ class ThemeService {
 
   void _setLightNavigationColors() {
     if (_details.canChangeNavbarIconColor()) {
-      // FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
-      // FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
+      print("recall 2");
+      FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     }
   }
 
   void _setDarkNavigationColors() {
     if (_details.canChangeNavbarIconColor()) {
-      // FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
-      // FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
+      FlutterStatusbarcolor.setNavigationBarColor(Colors.grey[900]);
+      FlutterStatusbarcolor.setNavigationBarWhiteForeground(true);
     }
-  }
-
-  void _setStatusBarColor() {
-    if (_details.canChangeStatusBarColor())
-      FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
   }
 }

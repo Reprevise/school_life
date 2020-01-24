@@ -31,6 +31,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   Brightness get brightness => _brightness;
 
   Box<dynamic> _settingsBox;
+  ThemeService _themeService;
 
   final Map<Brightness, ThemeData> brightnessThemes = <Brightness, ThemeData>{
     Brightness.light: lightTheme,
@@ -41,12 +42,14 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   void initState() {
     super.initState();
     _settingsBox = Hive.box(DatabaseHelper.SETTINGS_BOX);
+    _themeService = getIt<ThemeService>();
     _loadThemeData();
   }
 
   void _loadThemeData() {
     _brightness = _settingsBox.get(UserSettingsKeys.THEME,
         defaultValue: Brightness.light) as Brightness;
+    _themeService.updateColorsFromBrightness(_brightness);
     _themeData = brightnessThemes[_brightness];
     if (mounted) {
       setState(() {});
@@ -54,7 +57,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   }
 
   void setBrightness(Brightness newBrightness) {
-    getIt<ThemeService>().updateColorsFromBrightness(newBrightness);
+    _themeService.updateColorsFromBrightness(newBrightness);
     setState(() {
       _brightness = newBrightness;
       _themeData = brightnessThemes[newBrightness];
