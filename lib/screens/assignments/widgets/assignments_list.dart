@@ -13,7 +13,7 @@ class AssignmentsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 20;
     final Box<Assignment> box =
-        Hive.box<Assignment>(DatabaseHelper.ASSIGNMENTS_BOX);
+        Hive.box<Assignment>(Databases.ASSIGNMENTS_BOX);
 
     return ValueListenableBuilder<Box<Assignment>>(
       valueListenable: box.listenable(),

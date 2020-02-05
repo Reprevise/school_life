@@ -9,7 +9,7 @@ class SubjectsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 20;
-    final Box<Subject> box = Hive.box<Subject>(DatabaseHelper.SUBJECTS_BOX);
+    final Box<Subject> box = Hive.box<Subject>(Databases.SUBJECTS_BOX);
 
     return ValueListenableBuilder<Box<Subject>>(
       valueListenable: box.listenable(),

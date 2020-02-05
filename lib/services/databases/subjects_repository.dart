@@ -4,7 +4,7 @@ import 'package:school_life/services/databases/db_helper.dart';
 
 class SubjectsRepository {
   SubjectsRepository() {
-    _subjectsDB = Hive.box(DatabaseHelper.SUBJECTS_BOX);
+    _subjectsDB = Hive.box(Databases.SUBJECTS_BOX);
   }
 
   Box<Subject> _subjectsDB;

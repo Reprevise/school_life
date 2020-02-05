@@ -27,17 +27,16 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
               builder: (BuildContext context) {
                 return AlertDialog(
                   title: const Text('Select a color'),
-                  content: SingleChildScrollView(
-                    child: MaterialColorPicker(
-                      allowShades: false,
-                      colors: widget.formBloc.availableColors,
-                      selectedColor: widget.formBloc.currentColor,
-                      onColorChange: (Color color) {
-                        widget.formBloc.colorField.updateValue(color);
-                        setState(() {});
-                        Router.navigator.pop();
-                      },
-                    ),
+                  scrollable: true,
+                  content: MaterialColorPicker(
+                    allowShades: false,
+                    colors: widget.formBloc.availableColors,
+                    selectedColor: widget.formBloc.currentColor,
+                    onColorChange: (Color color) {
+                      widget.formBloc.colorField.updateValue(color);
+                      setState(() {});
+                      Router.navigator.pop();
+                    },
                   ),
                 );
               },

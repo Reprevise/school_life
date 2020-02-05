@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class MainSettingsDefaults {
+abstract class MainSettingsDefaults {
   static const Brightness DEFAULT_BRIGHTNESS = Brightness.light;
 }
 
-class ScheduleSettingsDefaults {
+abstract class ScheduleSettingsDefaults {
   // 1 is Monday, 7 is Sunday, etc...
   static Map<String, bool> defaultDaysOfSchool = <String, bool>{
     '1': true,

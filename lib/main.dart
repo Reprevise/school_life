@@ -18,20 +18,21 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // initialize all HiveDB databases
   await DatabaseHelper.initializeHiveBoxes();
-  // get all device details (version)
-  getIt.registerSingletonAsync<AndroidDetails>(
-    (Completer<dynamic> completer) => AndroidDetailsImplementation(completer),
-  );
-  getIt.registerSingletonAsync<ThemeService>(
-    (_) => Future<ThemeService>.value(ThemeService()),
-    dependsOn: <Type>[AndroidDetails],
-  );
-  // ! Hive must be initialized
-  // Register repositories
-  getIt.registerSingleton<AssignmentsRepository>(AssignmentsRepository());
-  getIt.registerSingleton<SubjectsRepository>(SubjectsRepository());
-  // Register settings helpers
-  getIt.registerSingleton<ScheduleHelper>(ScheduleHelper());
+  getIt
+    // get all device details (version)
+    ..registerSingletonAsync<AndroidDetails>(
+      (Completer<dynamic> completer) => AndroidDetailsImplementation(completer),
+    )
+    ..registerSingletonAsync<ThemeService>(
+      (_) => Future<ThemeService>.value(ThemeService()),
+      dependsOn: <Type>[AndroidDetails],
+    )
+    // ! Hive must be initialized
+    // Register repositories
+    ..registerSingleton<AssignmentsRepository>(AssignmentsRepository())
+    ..registerSingleton<SubjectsRepository>(SubjectsRepository())
+    // Register settings helpers
+    ..registerSingleton<ScheduleHelper>(ScheduleHelper());
   // await ready
   await getIt.allReady();
   // finally run the app

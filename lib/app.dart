@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:school_life/components/theme/theme_switcher.dart';
-import 'package:school_life/custom_route_observer.dart';
+import 'package:school_life/routing/custom_route_observer.dart';
 import 'package:school_life/routing/router.gr.dart';
 
 class App extends StatelessWidget {

@@ -41,7 +41,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   @override
   void initState() {
     super.initState();
-    _settingsBox = Hive.box(DatabaseHelper.SETTINGS_BOX);
+    _settingsBox = Hive.box(Databases.SETTINGS_BOX);
     _themeService = getIt<ThemeService>();
     _loadThemeData();
   }

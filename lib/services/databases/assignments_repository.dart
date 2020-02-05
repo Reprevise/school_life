@@ -4,7 +4,7 @@ import 'package:school_life/services/databases/db_helper.dart';
 
 class AssignmentsRepository {
   AssignmentsRepository() {
-    _assignmentsDB = Hive.box(DatabaseHelper.ASSIGNMENTS_BOX);
+    _assignmentsDB = Hive.box(Databases.ASSIGNMENTS_BOX);
   }
 
   Box<Assignment> _assignmentsDB;

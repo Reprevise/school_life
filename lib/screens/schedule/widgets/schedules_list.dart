@@ -32,7 +32,7 @@ class SchedulesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Box<Subject> box = Hive.box<Subject>(DatabaseHelper.SUBJECTS_BOX);
+    final Box<Subject> box = Hive.box<Subject>(Databases.SUBJECTS_BOX);
     final double fontSize = MediaQuery.of(context).size.width / 20;
     final String weekdayString = selectedDay.weekday.toString();
     final String selectedDayOfWeek = daysFromIntegerString[weekdayString];

@@ -7,7 +7,7 @@ import 'package:school_life/services/databases/db_helper.dart';
 
 class ScheduleHelper {
   ScheduleHelper() {
-    _settingsBox = Hive.box<dynamic>(DatabaseHelper.SETTINGS_BOX);
+    _settingsBox = Hive.box<dynamic>(Databases.SETTINGS_BOX);
     _getVariables();
   }
 

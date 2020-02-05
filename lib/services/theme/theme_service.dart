@@ -19,7 +19,6 @@ class ThemeService {
   void updateColorsFromBrightness(Brightness brightness) {
     if (_details.canChangeStatusBarColor())
       FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-    print("recall");
     if (brightness == Brightness.dark) {
       return _setDarkNavigationColors();
     }
@@ -28,7 +27,6 @@ class ThemeService {
 
   void _setLightNavigationColors() {
     if (_details.canChangeNavbarIconColor()) {
-      print("recall 2");
       FlutterStatusbarcolor.setNavigationBarColor(Colors.white);
       FlutterStatusbarcolor.setNavigationBarWhiteForeground(false);
     }

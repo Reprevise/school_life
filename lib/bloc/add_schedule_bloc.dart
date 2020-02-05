@@ -106,7 +106,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
   }
 
   void getAvailableDays() {
-    final Box<dynamic> box = Hive.box<dynamic>(DatabaseHelper.SETTINGS_BOX);
+    final Box<dynamic> box = Hive.box<dynamic>(Databases.SETTINGS_BOX);
     final String mapString = box.get(UserSettingsKeys.SCHOOL_DAYS) as String;
     Map<String, bool> map;
     if (mapString == null) {
