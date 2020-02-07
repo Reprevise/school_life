@@ -41,7 +41,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
     final Map<String, bool> copy = Map<String, bool>.from(helper.selectedDays);
     copy.removeWhere((String key, bool value) => value == false);
     final List<String> daysInIntegerString = copy.keys.toList();
-    for (String item in daysInIntegerString) {
+    for (final String item in daysInIntegerString) {
       days.add(daysFromIntegerString[item]);
     }
     return days.join(', ');

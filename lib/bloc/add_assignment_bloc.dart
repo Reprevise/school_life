@@ -105,7 +105,7 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
     final List<Subject> allSubjects = subjects.allSubjects;
-    for (Subject subject in allSubjects) {
+    for (final Subject subject in allSubjects) {
       subjectField.addItem(<String, dynamic>{
         'name': subject.name,
         'value': subject.id,

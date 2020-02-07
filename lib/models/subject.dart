@@ -40,7 +40,7 @@ class Subject extends HiveObject {
   Future<void> delete() {
     final List<Assignment> assignments =
         getIt<AssignmentsRepository>().getAssignmentsFromSubjectID(id);
-    for (Assignment assignment in assignments) {
+    for (final Assignment assignment in assignments) {
       assignment.delete();
     }
     return super.delete();

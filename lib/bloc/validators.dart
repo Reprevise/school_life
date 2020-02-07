@@ -13,7 +13,7 @@ class Validators {
   static String notSameStartTime(TimeOfDay time, String selectedDay) {
     final List<Subject> applicableSubjects =
         getIt<SubjectsRepository>().getSubjectsWithSameDaySchedule(selectedDay);
-    for (Subject subject in applicableSubjects) {
+    for (final Subject subject in applicableSubjects) {
       if (subject.schedule[selectedDay][0] == time) {
         return 'Same start time';
       }

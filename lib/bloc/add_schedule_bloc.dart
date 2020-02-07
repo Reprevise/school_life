@@ -56,7 +56,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
     final int subjectID = subjectField.value['value'] as int;
     final Subject subject = subjects.getSubject(subjectID);
 
-    for (Map<String, FieldBloc> field in scheduleFields) {
+    for (final Map<String, FieldBloc> field in scheduleFields) {
       final SelectFieldBloc<String> dayFieldBloc =
           field['dayFieldBloc'] as SelectFieldBloc<String>;
       final InputFieldBloc<TimeOfDay> startTimeBloc =
@@ -88,7 +88,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
     print('Map Keys: $mapKeys');
     final LinkedHashMap<String, List<TimeOfDay>> resMap =
         LinkedHashMap<String, List<TimeOfDay>>();
-    for (String key in mapKeys) {
+    for (final String key in mapKeys) {
       resMap[key] = map[key];
     }
     return resMap;
@@ -96,7 +96,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
 
   Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
     final List<Subject> allSubjects = subjects.allSubjects;
-    for (Subject subject in allSubjects) {
+    for (final Subject subject in allSubjects) {
       subjectField.addItem(<String, dynamic>{
         'name': subject.name,
         'value': subject.id,
