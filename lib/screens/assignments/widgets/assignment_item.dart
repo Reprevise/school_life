@@ -20,7 +20,7 @@ class AssignmentItem extends StatelessWidget {
     const bool useBorder = true;
     final TextTheme textTheme = Theme.of(context).textTheme;
     final TextStyle textStyle =
-        textTheme.display1.copyWith(color: Colors.black);
+        textTheme.headline4.copyWith(color: Colors.black);
     final DateTime dueDate = assignment.dueDate;
     final String date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
     return Card(
@@ -56,7 +56,7 @@ class AssignmentItem extends StatelessWidget {
               TextOneLine(
                 assignment.name,
                 textAlign: TextAlign.start,
-                style: textTheme.display2.copyWith(color: Colors.black),
+                style: textTheme.headline3.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 8),
               Padding(

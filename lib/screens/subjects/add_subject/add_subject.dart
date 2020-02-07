@@ -160,7 +160,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
                   padding: EdgeInsets.zero,
                   borderSide:
                       Theme.of(context).inputDecorationTheme.border.borderSide,
-                  textColor: Theme.of(context).textTheme.body1.color,
+                  textColor: Theme.of(context).textTheme.bodyText2.color,
                   onPressed: widget.formBloc.submit,
                   child: const Text('Submit'),
                 ),

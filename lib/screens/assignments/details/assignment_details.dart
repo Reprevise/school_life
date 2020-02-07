@@ -51,7 +51,7 @@ class AssignmentDetailsPage extends StatelessWidget {
                             padding: const EdgeInsets.only(left: 16.0),
                             child: Text(
                               'Details',
-                              style: textTheme.display2,
+                              style: textTheme.headline3,
                             ),
                           ),
                           const SizedBox(height: 8),
@@ -64,7 +64,7 @@ class AssignmentDetailsPage extends StatelessWidget {
                             ),
                             child: Text(
                               assignment.details,
-                              style: textTheme.body1.copyWith(
+                              style: textTheme.bodyText2.copyWith(
                                 color: getTextColorFromBackground(darkAccent),
                               ),
                             ),

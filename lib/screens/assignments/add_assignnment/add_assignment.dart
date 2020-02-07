@@ -151,7 +151,7 @@ class _AddAssignmentFormState extends State<AddAssignmentForm> {
                                   .border
                                   .borderSide,
                               textColor:
-                                  Theme.of(context).textTheme.body1.color,
+                                  Theme.of(context).textTheme.bodyText2.color,
                               onPressed: _formBloc.submit,
                               child: const Text('Submit'),
                             ),

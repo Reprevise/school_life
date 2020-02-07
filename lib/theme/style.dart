@@ -52,18 +52,18 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ButtonTextTheme.accent,
   ),
   accentTextTheme: TextTheme(
-    body2: TextStyle(
+    bodyText2: TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.grey[600],
     ),
   ),
   textTheme: TextTheme(
-    body1: GoogleFonts.rubik(
+    bodyText1: GoogleFonts.rubik(
       textStyle: const TextStyle(
         color: Colors.black,
       ),
     ),
-    body2: GoogleFonts.muli(
+    bodyText2: GoogleFonts.muli(
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.black,
@@ -73,7 +73,7 @@ final ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(color: Colors.black),
     ),
-    display1: GoogleFonts.muli(
+    headline4: GoogleFonts.muli(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
@@ -81,21 +81,21 @@ final ThemeData lightTheme = ThemeData(
         color: Colors.black,
       ),
     ),
-    display2: GoogleFonts.muli(
+    headline3: GoogleFonts.muli(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.black,
       ),
     ),
-    display3: GoogleFonts.muli(
+    headline2: GoogleFonts.muli(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.black,
       ),
     ),
-    display4: GoogleFonts.muli(
+    headline1: GoogleFonts.muli(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
@@ -156,18 +156,18 @@ final ThemeData darkTheme = ThemeData(
   ),
   applyElevationOverlayColor: true,
   accentTextTheme: TextTheme(
-    body2: TextStyle(
+    bodyText1: TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.grey[300],
     ),
   ),
   textTheme: TextTheme(
-    body1: GoogleFonts.rubik(
+    bodyText2: GoogleFonts.rubik(
       textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
-    body2: GoogleFonts.muli(
+    bodyText1: GoogleFonts.muli(
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.black,
@@ -177,7 +177,7 @@ final ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(color: Colors.black),
     ),
-    display1: GoogleFonts.muli(
+    headline4: GoogleFonts.muli(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
@@ -185,21 +185,21 @@ final ThemeData darkTheme = ThemeData(
         color: Colors.black,
       ),
     ),
-    display2: GoogleFonts.muli(
+    headline3: GoogleFonts.muli(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
-    display3: GoogleFonts.muli(
+    headline2: GoogleFonts.muli(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
-    display4: GoogleFonts.muli(
+    headline1: GoogleFonts.muli(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(

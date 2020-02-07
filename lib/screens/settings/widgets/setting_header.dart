@@ -12,7 +12,7 @@ class SettingHeader extends StatelessWidget {
           padding: const EdgeInsets.only(left: 16.0, top: 8.0),
           child: Text(
             title,
-            style: Theme.of(context).accentTextTheme.body2,
+            style: Theme.of(context).accentTextTheme.bodyText1,
           ),
         ),
       ],

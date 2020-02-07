@@ -81,7 +81,7 @@ class _FirstPage extends StatelessWidget {
           child: Text(
             'What subject do you want to create a schedule for?',
             textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.display2,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         Expanded(
@@ -139,7 +139,7 @@ class _SecondPageState extends State<_SecondPage> {
           child: Text(
             'Let\'s setup the schedule',
             textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.display2,
+            style: Theme.of(context).textTheme.headline3,
           ),
         ),
         Expanded(

@@ -52,7 +52,7 @@ class CustomDrawer extends StatelessWidget {
     if (itemColor != null) {
       return itemColor;
     }
-    return Theme.of(context).textTheme.body1.color;
+    return Theme.of(context).textTheme.bodyText2.color;
   }
 
   @override
@@ -67,7 +67,7 @@ class CustomDrawer extends StatelessWidget {
       minimum: const EdgeInsets.all(16),
       child: Text(
         'School Life',
-        style: textTheme.display3,
+        style: textTheme.headline2,
       ),
     );
 
@@ -96,8 +96,8 @@ class CustomDrawer extends StatelessWidget {
                     onTap: () => _onSelectItem(i),
                     title: Text(
                       d.title,
-                      style: textTheme.display1.copyWith(
-                        color: _getItemColor(context, i, textTheme.body1.color),
+                      style: textTheme.headline4.copyWith(
+                        color: _getItemColor(context, i, textTheme.bodyText2.color),
                       ),
                     ),
                   ),

@@ -32,7 +32,7 @@ class SubjectsList extends StatelessWidget {
                 'You don\'t have any subjects!',
                 style: Theme.of(context)
                     .textTheme
-                    .display2
+                    .headline3
                     .copyWith(fontSize: fontSize),
                 textAlign: TextAlign.center,
               ),
@@ -41,7 +41,7 @@ class SubjectsList extends StatelessWidget {
                 'Click the button below to add some!',
                 style: Theme.of(context)
                     .textTheme
-                    .display2
+                    .headline3
                     .copyWith(fontSize: fontSize / 1.2),
                 textAlign: TextAlign.center,
               ),
