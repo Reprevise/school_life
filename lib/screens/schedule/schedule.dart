@@ -30,7 +30,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void _doesUserHaveSubjects() {
-    final List<Subject> subjects = getIt<SubjectsRepository>().allSubjects;
+    final List<Subject> subjects = sl<SubjectsRepository>().subjects;
     if (subjects.isNotEmpty) {
       _userHasSubjects = true;
     }
@@ -71,22 +71,20 @@ class _SchedulePageState extends State<SchedulePage> {
         ],
       ),
       drawer: CustomDrawer(),
-      body: SingleChildScrollView(
+      body: ListView(
         primary: false,
         physics: const ClampingScrollPhysics(),
         padding: const EdgeInsets.only(top: 20, bottom: 70),
-        child: Column(
-          children: <Widget>[
-            // TODO: sync days of school in settings with calendar
-            ScheduleHeader(
-              onDaySelected: onDayChanged,
-              controller: controller,
-            ),
-            SchedulesList(
-              selectedDay: selectedCalendarDay,
-            ),
-          ],
-        ),
+        children: <Widget>[
+          // TODO: sync days of school in settings with calendar
+          ScheduleHeader(
+            onDaySelected: onDayChanged,
+            controller: controller,
+          ),
+          SchedulesList(
+            selectedDay: selectedCalendarDay,
+          ),
+        ],
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,

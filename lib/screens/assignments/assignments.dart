@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/routing/router.gr.dart';
-import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/assignments/add_assignnment/add_assignment.dart';
+import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
@@ -21,12 +22,12 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   @override
   void initState() {
     super.initState();
-    subjects = getIt<SubjectsRepository>();
+    subjects = sl<SubjectsRepository>();
     _doesUserHaveSubjects();
   }
 
   void _doesUserHaveSubjects() {
-    final List<Subject> allSubjects = subjects.allSubjects;
+    final List<Subject> allSubjects = subjects.subjects;
     if (allSubjects.isNotEmpty) {
       _userHasSubjects = true;
     }

@@ -6,16 +6,15 @@ class SettingHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 8.0),
-          child: Text(
-            title,
-            style: Theme.of(context).accentTextTheme.bodyText1,
-          ),
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 16.0, top: 8.0),
+      child: Text(
+        title,
+        style: Theme.of(context)
+            .accentTextTheme
+            .bodyText1
+            .copyWith(color: Theme.of(context).accentColor),
+      ),
     );
   }
 }

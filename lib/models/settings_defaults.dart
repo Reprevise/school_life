@@ -6,7 +6,7 @@ abstract class MainSettingsDefaults {
 
 abstract class ScheduleSettingsDefaults {
   // 1 is Monday, 7 is Sunday, etc...
-  static Map<String, bool> defaultDaysOfSchool = <String, bool>{
+  static const Map<String, bool> defaultDaysOfSchool = <String, bool>{
     '1': true,
     '2': true,
     '3': true,

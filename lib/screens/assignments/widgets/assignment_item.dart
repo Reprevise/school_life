@@ -1,4 +1,3 @@
-import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
@@ -53,8 +52,9 @@ class AssignmentItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               const SizedBox(height: 8),
-              TextOneLine(
+              Text(
                 assignment.name,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
                 style: textTheme.headline3.copyWith(color: Colors.black),
               ),

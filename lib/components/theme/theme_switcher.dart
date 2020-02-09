@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
-import 'package:school_life/models/user_settings_keys.dart';
+import 'package:school_life/models/settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/theme/theme_service.dart';
 import 'package:school_life/theme/style.dart';
@@ -42,12 +42,12 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   void initState() {
     super.initState();
     _settingsBox = Hive.box<dynamic>(Databases.SETTINGS_BOX);
-    _themeService = getIt<ThemeService>();
+    _themeService = sl<ThemeService>();
     _loadThemeData();
   }
 
   void _loadThemeData() {
-    _brightness = _settingsBox.get(UserSettingsKeys.THEME,
+    _brightness = _settingsBox.get(SettingsKeys.THEME,
         defaultValue: Brightness.light) as Brightness;
     _themeService.updateColorsFromBrightness(_brightness);
     _themeData = brightnessThemes[_brightness];
@@ -58,6 +58,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
 
   void setBrightness(Brightness newBrightness) {
     _themeService.updateColorsFromBrightness(newBrightness);
+    _settingsBox.put(SettingsKeys.THEME, newBrightness);
     setState(() {
       _brightness = newBrightness;
       _themeData = brightnessThemes[newBrightness];

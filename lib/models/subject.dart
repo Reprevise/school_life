@@ -3,10 +3,11 @@ import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 
 part 'subject.g.dart';
 
-@HiveType(typeId: 2)
+@HiveType(typeId: DatabaseHelper.subjectTypeID)
 class Subject extends HiveObject {
   Subject(
     this.id,
@@ -39,7 +40,7 @@ class Subject extends HiveObject {
   @override
   Future<void> delete() {
     final List<Assignment> assignments =
-        getIt<AssignmentsRepository>().getAssignmentsFromSubjectID(id);
+        sl<AssignmentsRepository>().getAssignmentsFromSubjectID(id);
     for (final Assignment assignment in assignments) {
       assignment.delete();
     }

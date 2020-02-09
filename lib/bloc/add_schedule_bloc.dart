@@ -7,15 +7,15 @@ import 'package:hive/hive.dart';
 import 'package:school_life/bloc/validators.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/settings_defaults.dart';
+import 'package:school_life/models/settings_keys.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/models/user_settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/days_util.dart';
 
-class AddScheduleFormBloc extends FormBloc<String, dynamic> {
+class AddScheduleFormBloc extends FormBloc<String, String> {
   AddScheduleFormBloc() : super(isLoading: true) {
-    subjects = getIt<SubjectsRepository>();
+    subjects = sl<SubjectsRepository>();
   }
 
   SubjectsRepository subjects;
@@ -39,20 +39,24 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
       ];
 
   @override
-  Stream<FormBlocState<String, dynamic>> onLoading() async* {
+  Stream<FormBlocState<String, String>> onLoading() async* {
     getAvailableDays();
     availableDays.forEach(addScheduleField);
-    yield* _setSubjectFieldValues();
+    _setSubjectFieldValues();
+    yield state.toLoaded();
   }
 
   @override
-  Stream<FormBlocState<String, dynamic>> onReload() async* {
+  Stream<FormBlocState<String, String>> onReload() async* {
     getAvailableDays();
-    yield* _setSubjectFieldValues();
+    availableDays.clear();
+    availableDays.forEach(addScheduleField);
+    _setSubjectFieldValues();
+    yield state.toLoaded();
   }
 
   @override
-  Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
+  Stream<FormBlocState<String, String>> onSubmitting() async* {
     final int subjectID = subjectField.value['value'] as int;
     final Subject subject = subjects.getSubject(subjectID);
 
@@ -72,8 +76,7 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
     subject.schedule = sortMap(
       LinkedHashMap<String, List<TimeOfDay>>.from(subject.schedule),
     );
-    print('Schedule: ${subject.schedule}');
-    subject.save();
+    await subject.save();
     yield state.toSuccess();
   }
 
@@ -94,30 +97,29 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
     return resMap;
   }
 
-  Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    final List<Subject> allSubjects = subjects.allSubjects;
-    for (final Subject subject in allSubjects) {
+  void _setSubjectFieldValues() {
+    final List<Subject> subjectsWithoutASchedule =
+        subjects.subjectsWithoutSchedule;
+    for (final Subject subject in subjectsWithoutASchedule) {
       subjectField.addItem(<String, dynamic>{
         'name': subject.name,
         'value': subject.id,
       });
     }
-    yield state.toLoaded();
   }
 
   void getAvailableDays() {
     final Box<dynamic> box = Hive.box<dynamic>(Databases.SETTINGS_BOX);
-    final String mapString = box.get(UserSettingsKeys.SCHOOL_DAYS) as String;
+    final String mapString = box.get(SettingsKeys.SCHOOL_DAYS) as String;
     Map<String, bool> map;
     if (mapString == null) {
       map = ScheduleSettingsDefaults.defaultDaysOfSchool;
     } else {
-      map = jsonDecode(mapString).cast<String, bool>() as Map<String, bool>;
+      map = jsonDecode(mapString) as Map<String, bool>;
     }
-    map.removeWhere((String key, bool value) => value == false);
+    map.removeWhere((_, bool value) => value == false);
     final List<String> days = map.keys
-        .map<String>(
-            (String dayStringInts) => daysFromIntegerString[dayStringInts])
+        .map((String dayStringInts) => daysFromIntegerString[dayStringInts])
         .toList();
     days.forEach(availableDays.add);
   }
@@ -132,7 +134,8 @@ class AddScheduleFormBloc extends FormBloc<String, dynamic> {
       'startTimeBloc': InputFieldBloc<TimeOfDay>(
         validators: <String Function(TimeOfDay)>[
           FieldBlocValidators.requiredInputFieldBloc,
-          (TimeOfDay time) => Validators.notSameStartTime(time, dayFieldBloc.value),
+          (TimeOfDay time) =>
+              Validators.notSameStartTime(time, dayFieldBloc.value),
         ],
       ),
       'endTimeBloc': InputFieldBloc<TimeOfDay>(

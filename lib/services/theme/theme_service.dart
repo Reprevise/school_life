@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:school_life/main.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
+import 'package:injectable/injectable.dart';
 import 'package:school_life/services/device/android_details.dart';
 
+@singleton
+@injectable
 class ThemeService {
   ThemeService() {
-    _details = getIt.get<AndroidDetails>();
+    _details = sl<AndroidDetails>();
   }
 
   AndroidDetails _details;
@@ -17,8 +20,12 @@ class ThemeService {
   };
 
   void updateColorsFromBrightness(Brightness brightness) {
-    if (_details.canChangeStatusBarColor())
+    if (_details.canChangeStatusBarColor()) {
       FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
+      brightness == Brightness.light
+          ? FlutterStatusbarcolor.setStatusBarWhiteForeground(false)
+          : FlutterStatusbarcolor.setStatusBarWhiteForeground(true);
+    }
     if (brightness == Brightness.dark) {
       return _setDarkNavigationColors();
     }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/schedule/widgets/schedule_item.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
-import 'package:school_life/util/days_util.dart';
 import 'package:school_life/util/date_utils.dart';
+import 'package:school_life/util/days_util.dart';
 
 class SchedulesList extends StatelessWidget {
   const SchedulesList({Key key, @required this.selectedDay}) : super(key: key);
@@ -40,7 +40,7 @@ class SchedulesList extends StatelessWidget {
     return ValueListenableBuilder<Box<Subject>>(
       valueListenable: box.listenable(),
       builder: (BuildContext context, Box<Subject> box, Widget child) {
-        final List<Subject> values = getIt<SubjectsRepository>()
+        final List<Subject> values = sl<SubjectsRepository>()
             .getSubjectsWithSameDaySchedule(selectedDayOfWeek);
         sortSchedule(values, selectedDayOfWeek);
 

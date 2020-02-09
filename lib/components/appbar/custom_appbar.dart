@@ -26,10 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(
         title,
         style: GoogleFonts.openSans(
-          fontWeight: FontWeight.w600,
-          textStyle: TextStyle(
-            color: Theme.of(context).textTheme.bodyText2.color,
-          ),
+          fontWeight: FontWeight.bold,
         ),
       ),
       leading: leading,

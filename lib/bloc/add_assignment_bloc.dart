@@ -9,10 +9,10 @@ import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/date_utils.dart';
 
-class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
+class AddAssignmentFormBloc extends FormBloc<String, String> {
   AddAssignmentFormBloc() : super(isLoading: true) {
-    assignments = getIt<AssignmentsRepository>();
-    subjects = getIt<SubjectsRepository>();
+    assignments = sl<AssignmentsRepository>();
+    subjects = sl<SubjectsRepository>();
   }
 
   AssignmentsRepository assignments;
@@ -58,21 +58,23 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
       <FieldBloc>[nameField, dueDateField, subjectField, detailsField];
 
   @override
-  Stream<FormBlocState<String, dynamic>> onLoading() async* {
-    await _getAssignmentNames();
-    yield* _setSubjectFieldValues();
+  Stream<FormBlocState<String, String>> onLoading() async* {
+    _getAssignmentNames();
+    _setSubjectFieldValues();
+    yield state.toLoaded();
   }
 
   @override
-  Stream<FormBlocState<String, dynamic>> onReload() async* {
-    await _getAssignmentNames();
-    yield* _setSubjectFieldValues();
+  Stream<FormBlocState<String, String>> onReload() async* {
+    _getAssignmentNames();
+    _setSubjectFieldValues();
+    yield state.toLoaded();
   }
 
   @override
-  Stream<FormBlocState<String, dynamic>> onSubmitting() async* {
+  Stream<FormBlocState<String, String>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    final int nextID = assignments.newID;
+    final int nextID = assignments.nextID;
     // trimmed assignment name
     final String assignmentName = nameField.value.trim();
     // trimmed due date
@@ -90,28 +92,26 @@ class AddAssignmentFormBloc extends FormBloc<String, dynamic> {
       subjectID,
       detailsText,
       color,
-      false, // isDeleted value, always false when creating
     );
-    assignments.addAssignment(newAssignment);
+    await assignments.addAssignment(newAssignment);
     yield state.toSuccess();
   }
 
-  Future<void> _getAssignmentNames() async {
-    final List<Assignment> allAssignments = assignments.allAssignments;
+  void _getAssignmentNames() {
+    final List<Assignment> allAssignments = assignments.assignments;
     _assignmentNames = allAssignments
         .map((Assignment assignment) => assignment.name.toLowerCase())
         .toList();
   }
 
-  Stream<FormBlocState<String, dynamic>> _setSubjectFieldValues() async* {
-    final List<Subject> allSubjects = subjects.allSubjects;
+  void _setSubjectFieldValues() {
+    final List<Subject> allSubjects = subjects.subjects;
     for (final Subject subject in allSubjects) {
       subjectField.addItem(<String, dynamic>{
         'name': subject.name,
         'value': subject.id,
       });
     }
-    yield state.toLoaded();
   }
 
   static String validateAssignmentName(String name) {

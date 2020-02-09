@@ -1,46 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'assignment.dart';
+part of 'holiday.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class AssignmentAdapter extends TypeAdapter<Assignment> {
+class HolidayAdapter extends TypeAdapter<Holiday> {
   @override
-  final typeId = 1;
+  final typeId = 3;
 
   @override
-  Assignment read(BinaryReader reader) {
+  Holiday read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Assignment(
+    return Holiday(
       fields[0] as int,
       fields[1] as String,
       fields[2] as DateTime,
-      fields[3] as int,
-      fields[4] as String,
-      fields[5] as Color,
+      fields[3] as DateTime,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Assignment obj) {
+  void write(BinaryWriter writer, Holiday obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
       ..write(obj.name)
       ..writeByte(2)
-      ..write(obj.dueDate)
+      ..write(obj.startDate)
       ..writeByte(3)
-      ..write(obj.subjectID)
-      ..writeByte(4)
-      ..write(obj.details)
-      ..writeByte(5)
-      ..write(obj.color);
+      ..write(obj.endDate);
   }
 }

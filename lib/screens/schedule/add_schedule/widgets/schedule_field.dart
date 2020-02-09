@@ -42,14 +42,12 @@ class _ScheduleFieldState extends State<ScheduleField> {
       elevation: 6,
       child: Column(
         children: <Widget>[
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: <Widget>[
-              IconButton(
-                icon: Icon(Icons.remove_circle),
-                onPressed: widget.onRemove,
-              )
-            ],
+          Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: Icon(Icons.remove_circle),
+              onPressed: widget.onRemove,
+            ),
           ),
           DropdownFieldBlocBuilder<String>(
             selectFieldBloc: widget.dayFieldBloc,
@@ -72,6 +70,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
                     return TimeField(
                       labelText: 'Start time',
                       errorText: state.error,
+                      isRequired: true,
                       selectedTime: widget.startTimeBloc.value,
                       onTimeChanged: (TimeOfDay time) {
                         widget.startTimeBloc.updateValue(time);
@@ -89,6 +88,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
                     return TimeField(
                       labelText: 'End time',
                       errorText: state.error,
+                      isRequired: true,
                       selectedTime: widget.endTimeBloc.value,
                       onTimeChanged: (TimeOfDay time) {
                         widget.endTimeBloc.updateValue(time);

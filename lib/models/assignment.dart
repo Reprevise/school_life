@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 
 part 'assignment.g.dart';
 
-@HiveType(typeId: 1)
+@HiveType(typeId: DatabaseHelper.assignmentTypeID)
 class Assignment extends HiveObject {
   Assignment(
     this.id,
@@ -12,7 +13,6 @@ class Assignment extends HiveObject {
     this.subjectID,
     this.details,
     this.color,
-    this.isDeleted,
   );
 
   @HiveField(0)
@@ -27,6 +27,4 @@ class Assignment extends HiveObject {
   String details;
   @HiveField(5)
   Color color;
-  @HiveField(6)
-  bool isDeleted;
 }

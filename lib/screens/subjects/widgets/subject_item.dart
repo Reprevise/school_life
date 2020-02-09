@@ -1,4 +1,3 @@
-import 'package:assorted_layout_widgets/assorted_layout_widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/models/subject.dart';
@@ -11,11 +10,12 @@ class SubjectItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final TextStyle bodyStyle = textTheme.bodyText2.copyWith(color: Colors.black);
+    final TextStyle bodyStyle =
+        textTheme.bodyText2.copyWith(color: Colors.black);
 
     final Widget subjectName = Padding(
       padding: const EdgeInsets.only(left: 8.0),
-      child: TextOneLine(
+      child: Text(
         subject.name,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.left,

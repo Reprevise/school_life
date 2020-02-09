@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:school_life/services/databases/db_helper.dart';
 
 class TimeAdapter extends TypeAdapter<TimeOfDay> {
   @override
@@ -21,5 +22,5 @@ class TimeAdapter extends TypeAdapter<TimeOfDay> {
   }
 
   @override
-  int get typeId => 201;
+  int get typeId => DatabaseHelper.timeTypeID;
 }

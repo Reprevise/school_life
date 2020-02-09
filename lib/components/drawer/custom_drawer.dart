@@ -45,21 +45,17 @@ class CustomDrawer extends StatelessWidget {
     Router.navigator.pushNamed(Router.routes[index]);
   }
 
-  Color _getItemColor(BuildContext context, int currentIndex, Color itemColor) {
+  Color _getItemColor(BuildContext context, int currentIndex) {
     if (_selectedIndex == currentIndex) {
       return const Color(0xff1967d2);
     }
-    if (itemColor != null) {
-      return itemColor;
-    }
-    return Theme.of(context).textTheme.bodyText2.color;
+    return Theme.of(context).textTheme.bodyText1.color;
   }
 
   @override
   Widget build(BuildContext context) {
     const Color containerColor = Color(0xffe8f0fe);
     final TextTheme textTheme = Theme.of(context).textTheme;
-    final Color iconColor = Theme.of(context).primaryIconTheme.color;
 
     final Widget drawerHeader = SafeArea(
       top: true,
@@ -91,13 +87,13 @@ class CustomDrawer extends StatelessWidget {
                     dense: true,
                     leading: Icon(
                       d.icon,
-                      color: _getItemColor(context, i, iconColor),
+                      color: _getItemColor(context, i),
                     ),
                     onTap: () => _onSelectItem(i),
                     title: Text(
                       d.title,
                       style: textTheme.headline4.copyWith(
-                        color: _getItemColor(context, i, textTheme.bodyText2.color),
+                        color: _getItemColor(context, i),
                       ),
                     ),
                   ),

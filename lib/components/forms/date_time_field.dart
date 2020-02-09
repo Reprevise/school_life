@@ -10,11 +10,13 @@ class DateField extends StatelessWidget {
     @required this.selectedDate,
     @required this.onDateChanged,
     @required this.format,
+    @required this.isRequired,
   }) : super(key: key);
 
   final String labelText;
   final String errorText;
   final DateTime selectedDate;
+  final bool isRequired;
   final ValueChanged<DateTime> onDateChanged;
   final DateFormat format;
 
@@ -39,6 +41,7 @@ class DateField extends StatelessWidget {
       labelText: labelText,
       errorText: errorText,
       valueStyle: valueStyle,
+      isRequired: isRequired,
       onPressed: () => _selectDate(context),
     );
   }
@@ -51,11 +54,13 @@ class TimeField extends StatelessWidget {
     @required this.errorText,
     @required this.selectedTime,
     @required this.onTimeChanged,
+    @required this.isRequired,
   }) : super(key: key);
 
   final String errorText;
   final String labelText;
   final TimeOfDay selectedTime;
+  final bool isRequired;
   final ValueChanged<TimeOfDay> onTimeChanged;
 
   Future<void> _selectTime(BuildContext context) async {
@@ -77,6 +82,7 @@ class TimeField extends StatelessWidget {
         valueStyle: valueStyle,
         labelText: labelText,
         errorText: errorText,
+        isRequired: isRequired,
         onPressed: () => _selectTime(context),
       ),
     );
@@ -90,6 +96,7 @@ class _InputField extends StatelessWidget {
     @required this.valueText,
     @required this.errorText,
     @required this.onPressed,
+    @required this.isRequired,
     this.valueStyle,
     this.decoration = const InputDecoration(),
   }) : super(key: key);
@@ -98,6 +105,7 @@ class _InputField extends StatelessWidget {
   final String valueText;
   final String errorText;
   final TextStyle valueStyle;
+  final bool isRequired;
   final VoidCallback onPressed;
   final InputDecoration decoration;
 
@@ -107,7 +115,7 @@ class _InputField extends StatelessWidget {
       onTap: onPressed,
       child: InputDecorator(
         decoration: decoration.copyWith(
-          labelText: labelText,
+          labelText: isRequired ? '$labelText*' : labelText,
           errorText: errorText,
         ),
         baseStyle: valueStyle,

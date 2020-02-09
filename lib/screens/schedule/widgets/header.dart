@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/components/theme/theme_switcher.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleHeader extends StatelessWidget {
@@ -40,9 +41,14 @@ class ScheduleHeader extends StatelessWidget {
           },
           availableGestures: AvailableGestures.horizontalSwipe,
           initialCalendarFormat: CalendarFormat.week,
-          calendarStyle: const CalendarStyle(
-            todayColor: Color(0xFF5459E0),
+          calendarStyle: CalendarStyle(
+            todayColor: const Color(0xFF5459E0),
             contentPadding: EdgeInsets.zero,
+            weekdayStyle: TextStyle(
+              color: ThemeSwitcher.of(context).brightness == Brightness.light
+                  ? Colors.black
+                  : Colors.white,
+            ),
           ),
           startingDayOfWeek: StartingDayOfWeek.monday,
           headerVisible: false,

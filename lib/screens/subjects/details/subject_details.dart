@@ -44,24 +44,19 @@ class SubjectDetailsPage extends StatelessWidget {
                   topRight: Radius.circular(36),
                 ),
               ),
-              child: Padding(
+              child: ListView(
                 padding: const EdgeInsets.all(16),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0),
-                        child: Text(
-                          'Schedule',
-                          style: textTheme.headline3,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      // TODO: implement schedule section
-                    ],
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 16.0),
+                    child: Text(
+                      'Schedule',
+                      style: textTheme.headline3,
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 8),
+                  // TODO: implement schedule section
+                ],
               ),
             ),
           ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:school_life/main.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
@@ -12,8 +13,7 @@ class AssignmentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double fontSize = MediaQuery.of(context).size.width / 20;
-    final Box<Assignment> box =
-        Hive.box<Assignment>(Databases.ASSIGNMENTS_BOX);
+    final Box<Assignment> box = Hive.box<Assignment>(Databases.ASSIGNMENTS_BOX);
 
     return ValueListenableBuilder<Box<Assignment>>(
       valueListenable: box.listenable(),
@@ -23,8 +23,8 @@ class AssignmentsList extends StatelessWidget {
           child: Column(
             children: box.values.map(
               (Assignment assignment) {
-                final Subject currentSubject = getIt<SubjectsRepository>()
-                    .getSubject(assignment.subjectID);
+                final Subject currentSubject =
+                    sl<SubjectsRepository>().getSubject(assignment.subjectID);
                 return AssignmentItem(
                   assignment,
                   currentSubject,

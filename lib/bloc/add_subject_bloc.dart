@@ -10,7 +10,7 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AddSubjectFormBloc extends FormBloc<String, String> {
   AddSubjectFormBloc() : super(isLoading: true) {
-    subjects = getIt<SubjectsRepository>();
+    subjects = sl<SubjectsRepository>();
   }
 
   SubjectsRepository subjects;
@@ -100,7 +100,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   Stream<FormBlocState<String, String>> onSubmitting() async* {
     colorFieldSubscription?.cancel();
     // get the number of subjects, returns # of subjects + 1
-    final int nextID = subjects.newID;
+    final int nextID = subjects.nextID;
     // trimmed subject name
     final String subjectName = nameField.value.trim();
     // get room field text
@@ -127,7 +127,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
   }
 
   Stream<FormBlocState<String, String>> _getSubjectNames() async* {
-    final List<Subject> allSubjects = subjects.allSubjects;
+    final List<Subject> allSubjects = subjects.subjects;
     _subjectNames = allSubjects
         .map((Subject subject) => subject.name.toLowerCase())
         .toList();
@@ -135,7 +135,7 @@ class AddSubjectFormBloc extends FormBloc<String, String> {
 
   Stream<FormBlocState<String, String>> _getAvailableColors() async* {
     final List<Color> subjectColors =
-        subjects.allSubjects.map((Subject subject) => subject.color).toList();
+        subjects.subjects.map((Subject subject) => subject.color).toList();
     availableColors = _allAvailableColors
         .where((Color color) => !subjectColors.contains(color))
         .toList();

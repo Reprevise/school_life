@@ -162,12 +162,12 @@ final ThemeData darkTheme = ThemeData(
     ),
   ),
   textTheme: TextTheme(
-    bodyText2: GoogleFonts.rubik(
+    bodyText1: GoogleFonts.rubik(
       textStyle: const TextStyle(
         color: Colors.white,
       ),
     ),
-    bodyText1: GoogleFonts.muli(
+    bodyText2: GoogleFonts.muli(
       fontWeight: FontWeight.bold,
       textStyle: const TextStyle(
         color: Colors.black,

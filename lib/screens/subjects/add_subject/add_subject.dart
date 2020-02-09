@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/blocs.dart';
+import 'package:school_life/components/easy_bloc/easy_bloc.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
@@ -26,27 +27,19 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar('Add Subject'),
-      body: BlocProvider<AddSubjectFormBloc>(
-        create: (BuildContext context) => AddSubjectFormBloc(),
-        child: Builder(
-          builder: (BuildContext context) {
+      body: BlocHelper<AddSubjectFormBloc>(
+        create: (_) => AddSubjectFormBloc(),
+        onSuccess: (_, __) {
+          Router.navigator.pushNamed(Router.subjects);
+        },
+        builder: (BuildContext context, FormBlocState<String, String> state) {
+          if (state is FormBlocLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
             _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
-            return WillPopScope(
-              onWillPop: () => _formBloc.canPop(context),
-              child: FormBlocListener<AddSubjectFormBloc, String, String>(
-                onSuccess: (BuildContext context,
-                    FormBlocSuccess<String, String> state) {
-                  Router.navigator.pushReplacementNamed(Router.subjects);
-                },
-                child: BlocBuilder<AddSubjectFormBloc,
-                    FormBlocState<String, String>>(
-                  builder: (BuildContext _, FormBlocState<String, String> __) =>
-                      AddSubjectFormFields(_formBloc),
-                ),
-              ),
-            );
-          },
-        ),
+            return AddSubjectFormFields(_formBloc);
+          }
+        },
       ),
     );
   }
