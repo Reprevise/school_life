@@ -1,19 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/services/databases/subjects_repository.dart';
-import 'package:school_life/main.dart';
 
 class Validators {
+  /// Verify a field's trimmed val. is less than the set max
   static String maxLength(String value, int maxLength) {
     if (value.trim().length > maxLength)
       return 'Shorten to $maxLength characters please.';
     return null;
   }
 
-  static String notSameStartTime(TimeOfDay time, String selectedDay) {
-    final List<Subject> applicableSubjects =
-        sl<SubjectsRepository>().getSubjectsWithSameDaySchedule(selectedDay);
-    for (final Subject subject in applicableSubjects) {
+  /// Ensure field doesn't have the same start time as another subject
+  static String notSameStartTime(
+    TimeOfDay time,
+    String selectedDay,
+    List<Subject> subjects,
+  ) {
+    for (final Subject subject in subjects) {
       if (subject.schedule[selectedDay][0] == time) {
         return 'Same start time';
       }

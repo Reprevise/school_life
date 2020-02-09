@@ -4,9 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/blocs.dart';
-import 'package:school_life/components/easy_bloc/easy_bloc.dart';
+import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
 import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
 
 class AddSubjectPage extends StatefulWidget {
@@ -27,17 +28,51 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar('Add Subject'),
-      body: BlocHelper<AddSubjectFormBloc>(
+      body: FormBlocHelper<AddSubjectFormBloc>(
         create: (_) => AddSubjectFormBloc(),
-        onSuccess: (_, __) {
-          Router.navigator.pushNamed(Router.subjects);
+        onSuccess: (BuildContext context, _) {
+          showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: const Text('Add a schedule?'),
+                actions: <Widget>[
+                  FlatButton(
+                    onPressed: () {
+                      Router.navigator.pop();
+                      Router.navigator.pushNamed(Router.subjects);
+                    },
+                    child: const Text('NO'),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      Router.navigator.pop();
+                      Router.navigator.push(
+                        MaterialPageRoute<AddSchedulePage>(
+                          builder: (_) => AddSchedulePage(
+                            subject: _formBloc.subject,
+                          ),
+                        ),
+                      );
+                    },
+                    child: const Text('YES'),
+                  ),
+                ],
+              );
+            },
+          );
+          // Router.navigator.pushNamed(Router.subjects);
         },
         builder: (BuildContext context, FormBlocState<String, String> state) {
-          if (state is FormBlocLoading) {
+          if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
           } else {
             _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
-            return AddSubjectFormFields(_formBloc);
+            return WillPopScope(
+              onWillPop: () => _formBloc.canPop(context),
+              child: AddSubjectFormFields(_formBloc),
+            );
           }
         },
       ),
@@ -79,8 +114,16 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
 
     return ListView(
       physics: const ClampingScrollPhysics(),
-      padding: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.only(bottom: 8),
       children: <Widget>[
+        const Padding(
+          padding: EdgeInsets.only(right: 8),
+          child: Text(
+            '* Required',
+            textAlign: TextAlign.right,
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
         TextFieldBlocBuilder(
           autofocus: true,
           textFieldBloc: widget.formBloc.nameField,
@@ -88,7 +131,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
           nextFocusNode: _roomTextFocus,
           textInputAction: TextInputAction.next,
           decoration: InputDecoration(
-            labelText: 'Subject',
+            labelText: 'Subject*',
             prefixIcon: Icon(
               Icons.subject,
               color: iconColor,
@@ -103,7 +146,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
           textInputAction: TextInputAction.next,
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
-            labelText: 'Room',
+            labelText: 'Room*',
             prefixIcon: Icon(
               Icons.location_on,
               color: iconColor,
@@ -131,7 +174,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
           focusNode: _teacherFocus,
           textCapitalization: TextCapitalization.words,
           decoration: InputDecoration(
-            labelText: 'Teacher',
+            labelText: 'Teacher*',
             prefixIcon: Icon(
               Icons.person,
               color: iconColor,

@@ -52,6 +52,8 @@ class ScheduleSettingsHelper {
   void _getDates() {
     _startDate = _settingsBox.get(SettingsKeys.START_DATE) as DateTime;
     _endDate = _settingsBox.get(SettingsKeys.END_DATE) as DateTime;
+    _startDate ??= DateTime(DateTime.now().year);
+    _endDate ??= DateTime(DateTime.now().year);
   }
 
   void _getTimes() {
@@ -69,7 +71,7 @@ class ScheduleSettingsHelper {
 
   String getDisplayableDays() {
     final List<String> days = <String>[];
-    final Map<String, bool> dayValuesCopy = _dayValues;
+    final Map<String, bool> dayValuesCopy = Map<String, bool>.from(_dayValues);
     dayValuesCopy.removeWhere((String key, bool value) => value == false);
     final List<String> daysInIntegerString = dayValuesCopy.keys.toList();
     for (final String item in daysInIntegerString) {

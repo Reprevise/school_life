@@ -7,8 +7,8 @@ typedef Create<C> = C Function(BuildContext);
 typedef Success = void Function(BuildContext, FormBlocSuccess<String, String>);
 typedef BBuilder = Widget Function(BuildContext, FormBlocState<String, String>);
 
-class BlocHelper<T extends FormBloc<String, String>> extends StatelessWidget {
-  const BlocHelper({
+class FormBlocHelper<T extends FormBloc<String, String>> extends StatelessWidget {
+  const FormBlocHelper({
     @required this.create,
     @required this.onSuccess,
     @required this.builder,

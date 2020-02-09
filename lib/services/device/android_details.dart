@@ -8,9 +8,13 @@ import 'package:injectable/injectable.dart';
 @Singleton(signalsReady: true)
 @injectable
 class AndroidDetails {
+  AndroidDetails() {
+    _init();
+  }
+
   Map<String, dynamic> _deviceData = <String, dynamic>{};
 
-  Future<void> init() async {
+  Future<void> _init() async {
     try {
       final AndroidDeviceInfo _deviceInfo =
           await DeviceInfoPlugin().androidInfo;

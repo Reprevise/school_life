@@ -75,30 +75,6 @@ void showDeleteAssignmentDialog(
   );
 }
 
-void showTooManySubjectsDialog(BuildContext context) {
-  showDialog<void>(
-    context: context,
-    barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          'Too many subjects',
-          style: Theme.of(context).textTheme.headline3,
-        ),
-        content: const Text(
-          'You have 19 subjects, that\'s a lot! \nUnfortunately, we don\'t support more than 19 subjects. :( \nHowever, we will in the future, stay tuned!',
-        ),
-        actions: <Widget>[
-          MaterialButton(
-            child: const Text('OK'),
-            onPressed: Router.navigator.pop,
-          )
-        ],
-      );
-    },
-  );
-}
-
 void showDeleteSubjectDialog(BuildContext context, Subject subject) {
   showDialog<void>(
     context: context,

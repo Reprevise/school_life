@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
+import 'package:school_life/bloc/popper.dart';
 import 'package:school_life/bloc/validators.dart';
-import 'package:school_life/components/dialog/dialogs.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
@@ -9,7 +9,7 @@ import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/date_utils.dart';
 
-class AddAssignmentFormBloc extends FormBloc<String, String> {
+class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   AddAssignmentFormBloc() : super(isLoading: true) {
     assignments = sl<AssignmentsRepository>();
     subjects = sl<SubjectsRepository>();
@@ -65,13 +65,6 @@ class AddAssignmentFormBloc extends FormBloc<String, String> {
   }
 
   @override
-  Stream<FormBlocState<String, String>> onReload() async* {
-    _getAssignmentNames();
-    _setSubjectFieldValues();
-    yield state.toLoaded();
-  }
-
-  @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
     final int nextID = assignments.nextID;
@@ -120,7 +113,8 @@ class AddAssignmentFormBloc extends FormBloc<String, String> {
     return null;
   }
 
-  bool _fieldsAreEmpty() {
+  @override
+  bool fieldsAreEmpty() {
     // get all controllers' text and trim them
     final String _nameField = nameField.value.trim();
     final Map<String, dynamic> _subjectField = subjectField.value;
@@ -129,17 +123,6 @@ class AddAssignmentFormBloc extends FormBloc<String, String> {
     if (_nameField.isEmpty && _subjectField == null && _detailsField.isEmpty)
       return true;
     // otherwise, return false
-    return false;
-  }
-
-  Future<bool> requestPop(BuildContext context) async {
-    // if the text fields are empty, user can exit
-    if (_fieldsAreEmpty()) {
-      return true;
-    }
-    // otherwise, show a popup dialog
-    showOnPopDialog(context);
-    // default, return false
     return false;
   }
 }

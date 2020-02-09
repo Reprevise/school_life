@@ -3,20 +3,48 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/blocs.dart';
-import 'package:school_life/components/easy_bloc/easy_bloc.dart';
+import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/models/subject.dart';
 import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
 
 class AddSchedulePage extends StatefulWidget {
+  const AddSchedulePage({
+    Key key,
+    this.subject,
+  }) : super(key: key);
+
+  final Subject subject;
+
   @override
   _AddSchedulePageState createState() => _AddSchedulePageState();
 }
 
 class _AddSchedulePageState extends State<AddSchedulePage> {
-  AddScheduleFormBloc _formBloc;
   final PageController _controller = PageController();
+
+  AddScheduleFormBloc _formBloc;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (widget.subject != null) {
+        _formBloc.subjectField.updateValue(
+          <String, dynamic>{
+            'display': widget.subject.name,
+            'value': widget.subject.id,
+          },
+        );
+        _controller.nextPage(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -29,23 +57,26 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar('Add Schedule'),
-      body: BlocHelper<AddScheduleFormBloc>(
+      body: FormBlocHelper<AddScheduleFormBloc>(
         create: (_) => AddScheduleFormBloc(),
         onSuccess: (_, __) {
           Router.navigator.pushNamed(Router.schedule);
         },
         builder: (BuildContext context, FormBlocState<String, String> state) {
-          if (state is FormBlocLoading) {
+          if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
           } else {
             _formBloc = BlocProvider.of<AddScheduleFormBloc>(context);
-            return PageView(
-              controller: _controller,
-              physics: const NeverScrollableScrollPhysics(),
-              children: <Widget>[
-                _FirstPage(_formBloc, _controller),
-                _SecondPage(_formBloc, _controller),
-              ],
+            return WillPopScope(
+              onWillPop: () => _formBloc.canPop(context),
+              child: PageView(
+                controller: _controller,
+                physics: const NeverScrollableScrollPhysics(),
+                children: <Widget>[
+                  _FirstPage(_formBloc, _controller),
+                  _SecondPage(_formBloc, _controller),
+                ],
+              ),
             );
           }
         },

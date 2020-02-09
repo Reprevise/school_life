@@ -102,7 +102,7 @@ class _SchedulePageState extends State<SchedulePage> {
     }
     Router.navigator.push(
       MaterialPageRoute<AddSchedulePage>(
-        builder: (BuildContext context) => AddSchedulePage(),
+        builder: (BuildContext context) => const AddSchedulePage(),
       ),
     );
   }

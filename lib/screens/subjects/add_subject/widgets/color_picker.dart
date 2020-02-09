@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_material_color_picker/flutter_material_color_picker.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/add_subject_bloc.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/util/random_color.dart';
+import 'package:school_life/util/color_utils.dart';
 
 class SubjectColorPicker extends StatefulWidget {
   const SubjectColorPicker(this.formBloc);
@@ -20,45 +20,29 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
     return BlocBuilder<InputFieldBloc<Color>, InputFieldBlocState<Color>>(
       bloc: widget.formBloc.colorField,
       builder: (BuildContext context, InputFieldBlocState<Color> state) {
-        return InkWell(
-          onTap: () {
-            showDialog<void>(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Select a color'),
-                  scrollable: true,
-                  content: MaterialColorPicker(
-                    allowShades: false,
-                    colors: widget.formBloc.availableColors,
-                    selectedColor: widget.formBloc.currentColor,
-                    onColorChange: (Color color) {
-                      widget.formBloc.colorField.updateValue(color);
-                      setState(() {});
-                      Router.navigator.pop();
-                    },
-                  ),
-                );
-              },
-            );
-          },
-          child: InputDecorator(
-            decoration: InputDecoration(
-              fillColor: state.value ?? Colors.transparent,
-              filled: true,
-              prefixIcon: Icon(
-                Icons.color_lens,
-                color: Theme.of(context).primaryIconTheme.color,
-              ),
+        return InputDecorator(
+          decoration: InputDecoration(
+            fillColor: state.value ?? Colors.transparent,
+            filled: true,
+            prefixIcon: Icon(
+              Icons.color_lens,
+              color: Theme.of(context).primaryIconTheme.color,
             ),
-            child: Text(
-              'Change color',
-              style: TextStyle(
-                color: Theme.of(context).inputDecorationTheme.labelStyle.color,
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-                fontFamily: 'Arial',
-              ),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.refresh),
+              onPressed: () {
+                widget.formBloc.colorField.updateValue(RandomColor.next());
+                setState(() {});
+              },
+            ),
+          ),
+          child: Text(
+            state.value?.toHex()?.toUpperCase() ?? 'Change color*',
+            style: TextStyle(
+              color: Theme.of(context).inputDecorationTheme.labelStyle.color,
+              fontWeight: FontWeight.bold,
+              fontSize: 16.0,
+              fontFamily: 'Arial',
             ),
           ),
         );
