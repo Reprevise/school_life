@@ -19,6 +19,7 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   bool _userHasSubjects = false;
+  bool _userHasSubjectsWithoutSchedule = false;
   DateTime selectedCalendarDay;
   final CalendarController controller = CalendarController();
 
@@ -26,13 +27,16 @@ class _SchedulePageState extends State<SchedulePage> {
   void initState() {
     super.initState();
     selectedCalendarDay = DateTime.now().onlyDate;
-    _doesUserHaveSubjects();
+    _getSubjectInfo();
   }
 
-  void _doesUserHaveSubjects() {
-    final List<Subject> subjects = sl<SubjectsRepository>().subjects;
-    if (subjects.isNotEmpty) {
+  void _getSubjectInfo() {
+    final SubjectsRepository subjects = sl<SubjectsRepository>();
+    if (subjects.subjects.isNotEmpty) {
       _userHasSubjects = true;
+    }
+    if (subjects.subjectsWithoutSchedule.isNotEmpty) {
+      _userHasSubjectsWithoutSchedule = true;
     }
   }
 
@@ -98,6 +102,10 @@ class _SchedulePageState extends State<SchedulePage> {
   void _handleAddScheduleButtonPress() {
     if (!_userHasSubjects) {
       showNoSubjectsDialog(context);
+      return;
+    }
+    if (!_userHasSubjectsWithoutSchedule) {
+      showNoSubjectsWithoutScheduleDialog(context);
       return;
     }
     Router.navigator.push(

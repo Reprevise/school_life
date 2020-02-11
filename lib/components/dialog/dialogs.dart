@@ -23,6 +23,26 @@ void showNoSubjectsDialog(BuildContext context) {
   );
 }
 
+void showNoSubjectsWithoutScheduleDialog(BuildContext context) {
+  showDialog<void>(
+    barrierDismissible: false,
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('No subjects without a schedule found'),
+        actions: <Widget>[
+          FlatButton(
+            child: const Text('OK'),
+            onPressed: () {
+              Router.navigator.pop();
+            },
+          )
+        ],
+      );
+    },
+  );
+}
+
 void showDeleteAssignmentDialog(
   BuildContext context,
   Assignment assignment,

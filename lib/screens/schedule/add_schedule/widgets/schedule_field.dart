@@ -26,9 +26,9 @@ class _ScheduleFieldState extends State<ScheduleField> {
   @override
   void initState() {
     super.initState();
-    widget.dayFieldBloc.listen((SelectFieldBlocState<String> state) {
-      setState(() {});
-    });
+    // widget.dayFieldBloc.listen((SelectFieldBlocState<String> state) {
+    //   setState(() {});
+    // });
   }
 
   @override

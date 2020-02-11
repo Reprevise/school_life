@@ -30,7 +30,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Room: ',
-            style: Theme.of(context).textTheme.bodyText1,
+            style: textTheme.bodyText2,
           ),
           TextSpan(text: subject.room, style: bodyStyle)
         ],
@@ -44,7 +44,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Building: ',
-            style: Theme.of(context).textTheme.bodyText1,
+            style: textTheme.bodyText2,
           ),
           TextSpan(text: subject.building, style: bodyStyle)
         ],
@@ -58,7 +58,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Teacher: ',
-            style: Theme.of(context).textTheme.bodyText1,
+            style: textTheme.bodyText2,
           ),
           TextSpan(text: subject.teacher, style: bodyStyle)
         ],

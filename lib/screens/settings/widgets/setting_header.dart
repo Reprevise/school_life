@@ -12,8 +12,7 @@ class SettingHeader extends StatelessWidget {
         title,
         style: Theme.of(context)
             .accentTextTheme
-            .bodyText1
-            .copyWith(color: Theme.of(context).accentColor),
+            .bodyText1,
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/index.dart';
+import 'package:school_life/components/required/form_required.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
@@ -117,7 +118,6 @@ class _FirstPage extends StatelessWidget {
                 showEmptyItem: false,
                 decoration: InputDecoration(
                   labelText: 'Subject*',
-                  hintText: '* Required',
                   prefixIcon: Icon(
                     Icons.subject,
                     color: Theme.of(context).primaryIconTheme.color,
@@ -197,32 +197,28 @@ class _ScheduleFieldsState extends State<ScheduleFields> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        const Text(
-          '* Required',
-          textAlign: TextAlign.right,
-          style: TextStyle(
-            color: Colors.red,
+        const FormRequired(),
+        Expanded(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: widget.formBloc.scheduleFields.length,
+            itemBuilder: (BuildContext context, int i) {
+              final Map<String, FieldBloc> currentMap =
+                  widget.formBloc.scheduleFields[i];
+              return ScheduleField(
+                dayFieldBloc:
+                    currentMap['dayFieldBloc'] as SelectFieldBloc<String>,
+                startTimeBloc:
+                    currentMap['startTimeBloc'] as InputFieldBloc<TimeOfDay>,
+                endTimeBloc:
+                    currentMap['endTimeBloc'] as InputFieldBloc<TimeOfDay>,
+                onRemove: () {
+                  widget.formBloc.scheduleFields.removeAt(i);
+                  setState(() {});
+                },
+              );
+            },
           ),
-        ),
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: widget.formBloc.scheduleFields.length,
-          itemBuilder: (BuildContext context, int i) {
-            final Map<String, FieldBloc> currentMap =
-                widget.formBloc.scheduleFields[i];
-            return ScheduleField(
-              dayFieldBloc:
-                  currentMap['dayFieldBloc'] as SelectFieldBloc<String>,
-              startTimeBloc:
-                  currentMap['startTimeBloc'] as InputFieldBloc<TimeOfDay>,
-              endTimeBloc:
-                  currentMap['endTimeBloc'] as InputFieldBloc<TimeOfDay>,
-              onRemove: () {
-                widget.formBloc.scheduleFields.removeAt(i);
-                setState(() {});
-              },
-            );
-          },
         ),
       ],
     );

@@ -68,6 +68,7 @@ class CustomDrawer extends StatelessWidget {
     );
 
     return Drawer(
+      elevation: 8,
       child: Container(
         color: Theme.of(context).primaryColor,
         child: Column(

@@ -52,7 +52,7 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ButtonTextTheme.accent,
   ),
   accentTextTheme: TextTheme(
-    bodyText2: TextStyle(
+    bodyText1: TextStyle(
       fontWeight: FontWeight.bold,
       color: Colors.grey[600],
     ),
@@ -108,7 +108,7 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.grey[900],
-  accentColor: Colors.grey[300],
+  accentColor: const Color(0xFF3f3f3f),
   scaffoldBackgroundColor: Colors.grey[900],
   backgroundColor: Colors.grey[900],
   textSelectionHandleColor: Colors.white,

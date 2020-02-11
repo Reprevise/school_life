@@ -109,9 +109,9 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
     final String mapString = box.get(SettingsKeys.SCHOOL_DAYS) as String;
     Map<String, bool> map;
     if (mapString == null) {
-      map = ScheduleSettingsDefaults.defaultDaysOfSchool;
+      map = Map<String, bool>.from(ScheduleSettingsDefaults.defaultDaysOfSchool);
     } else {
-      map = jsonDecode(mapString) as Map<String, bool>;
+      map = Map<String, bool>.from(jsonDecode(mapString) as Map<dynamic, dynamic>);
     }
     map.removeWhere((_, bool value) => value == false);
     final List<String> days = map.keys

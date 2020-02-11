@@ -35,7 +35,7 @@ class DateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.bodyText2;
+    final TextStyle valueStyle = Theme.of(context).textTheme.bodyText1;
     return _InputField(
       valueText: format.format(selectedDate),
       labelText: labelText,
@@ -75,7 +75,7 @@ class TimeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.bodyText2;
+    final TextStyle valueStyle = Theme.of(context).textTheme.bodyText1;
     return Expanded(
       child: _InputField(
         valueText: selectedTime?.format(context) ?? '',

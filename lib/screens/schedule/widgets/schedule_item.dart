@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/util/days_util.dart';
 
@@ -61,7 +62,7 @@ class ScheduleItem extends StatelessWidget {
     return Container(
       height: 75,
       decoration: BoxDecoration(
-        color: Colors.grey[300],
+        color: Theme.of(context).accentColor,
         borderRadius: borderRadius,
       ),
       child: Row(
@@ -70,13 +71,13 @@ class ScheduleItem extends StatelessWidget {
             width: 80,
             decoration: BoxDecoration(
               borderRadius: leftBorderRadius,
-              gradient: const LinearGradient(
+              gradient: LinearGradient(
                 colors: <Color>[
-                  Color(0xFFff8878),
-                  Color(0xFFffb187),
+                  const Color(0xFF005ab5),
+                  const Color(0xFF5a00b5).withOpacity(0.65),
                 ],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
               ),
             ),
             child: Column(
@@ -108,7 +109,12 @@ class ScheduleItem extends StatelessWidget {
                 ),
                 child: Text(
                   subject.name,
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: useWhiteForeground(Theme.of(context).accentColor)
+                        ? Colors.white
+                        : Colors.black,
+                  ),
                 ),
               ),
             ),

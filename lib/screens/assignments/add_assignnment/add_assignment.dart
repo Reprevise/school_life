@@ -62,7 +62,7 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
                   textInputAction: TextInputAction.next,
                   textCapitalization: TextCapitalization.words,
                   decoration: InputDecoration(
-                    labelText: 'Assignment Name',
+                    labelText: 'Assignment Name*',
                     prefixIcon: Icon(
                       Icons.assignment,
                       color: Theme.of(context).primaryIconTheme.color,
@@ -97,8 +97,7 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
                           value['name'] as String,
                   showEmptyItem: false,
                   decoration: InputDecoration(
-                    labelText: 'Subject',
-                    helperText: '* Required',
+                    labelText: 'Subject*',
                     prefixIcon: Icon(
                       Icons.school,
                       color: Theme.of(context).primaryIconTheme.color,
@@ -108,39 +107,46 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 100,
-                  child: TextFieldBlocBuilder(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    textFieldBloc: _formBloc.detailsField,
-                    expands: true,
-                    minLines: null,
-                    maxLines: null,
-                    keyboardType: TextInputType.multiline,
-                    textAlignVertical: TextAlignVertical.top,
-                    decoration: InputDecoration(
-                      labelText: 'Details',
-                      prefixIcon: Icon(
-                        Icons.subject,
-                        color: Theme.of(context).primaryIconTheme.color,
-                      ),
-                      focusedErrorBorder: const OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.red),
-                      ),
+                TextFieldBlocBuilder(
+                  padding: const EdgeInsets.symmetric(horizontal: 8),
+                  textFieldBloc: _formBloc.detailsField,
+                  expands: true,
+                  minLines: null,
+                  maxLines: null,
+                  keyboardType: TextInputType.multiline,
+                  textAlignVertical: TextAlignVertical.top,
+                  decoration: InputDecoration(
+                    labelText: 'Details',
+                    prefixIcon: Icon(
+                      Icons.subject,
+                      color: Theme.of(context).primaryIconTheme.color,
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
                     ),
                   ),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(left: 8.0),
-                  child: OutlineButton(
-                    padding: EdgeInsets.zero,
-                    borderSide: Theme.of(context)
-                        .inputDecorationTheme
-                        .border
-                        .borderSide,
-                    textColor: Theme.of(context).textTheme.bodyText2.color,
-                    onPressed: _formBloc.submit,
-                    child: const Text('Submit'),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Container(
+                        width: 150,
+                        child: OutlineButton(
+                          padding: EdgeInsets.zero,
+                          borderSide: Theme.of(context)
+                              .inputDecorationTheme
+                              .border
+                              .borderSide,
+                          textColor:
+                              Theme.of(context).textTheme.bodyText2.color,
+                          onPressed: _formBloc.submit,
+                          child: const Text('Submit'),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
