@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
-import 'package:school_life/services/theme/theme_service.dart';
-import 'package:school_life/theme/style.dart';
+import 'package:school_life/services/device/android_details.dart';
+import 'package:school_life/components/theme/style.dart';
 
 typedef ThemedWidgetBuilder = Widget Function(
     BuildContext context, ThemeData data);
@@ -32,7 +33,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   Brightness get brightness => _brightness;
 
   Box<dynamic> _settingsBox;
-  ThemeService _themeService;
+  AndroidDetails _details;
 
   final Map<Brightness, ThemeData> brightnessThemes = <Brightness, ThemeData>{
     Brightness.light: lightTheme,
@@ -43,14 +44,14 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   void initState() {
     super.initState();
     _settingsBox = Hive.box<dynamic>(Databases.settingsBox);
-    _themeService = sl<ThemeService>();
+    _details = sl<AndroidDetails>();
     _loadThemeData();
   }
 
   void _loadThemeData() {
     _brightness = _settingsBox.get(BasicSettingsKeys.theme,
         defaultValue: BasicSettingsDefaults.theme) as Brightness;
-    _themeService.updateColorsFromBrightness(_brightness);
+    updateColorsFromBrightness(_brightness);
     _themeData = brightnessThemes[_brightness];
     if (mounted) {
       setState(() {});
@@ -58,12 +59,45 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
   }
 
   void setBrightness(Brightness newBrightness) {
-    _themeService.updateColorsFromBrightness(newBrightness);
+    updateColorsFromBrightness(newBrightness);
     _settingsBox.put(BasicSettingsKeys.theme, newBrightness);
     setState(() {
       _brightness = newBrightness;
       _themeData = brightnessThemes[newBrightness];
     });
+  }
+
+  void updateColorsFromBrightness(Brightness brightness) {
+    var style = SystemUiOverlayStyle();
+    if (_details.canChangeStatusBarColor()) {
+      style = style.copyWith(
+        statusBarColor: Colors.transparent,
+        statusBarBrightness: brightness,
+      );
+      if (brightness == Brightness.light) {
+        style = style.copyWith(
+          statusBarIconBrightness: Brightness.dark,
+        );
+      } else {
+        style = style.copyWith(
+          statusBarIconBrightness: Brightness.light,
+        );
+      }
+    }
+    if (_details.canChangeNavbarIconColor()) {
+      if (brightness == Brightness.dark) {
+        style.copyWith(
+          systemNavigationBarColor: Colors.white,
+          systemNavigationBarIconBrightness: Brightness.dark,
+        );
+        return;
+      }
+      style.copyWith(
+        systemNavigationBarColor: Colors.grey.shade900,
+        systemNavigationBarIconBrightness: Brightness.light,
+      );
+    }
+    SystemChrome.setSystemUIOverlayStyle(style);
   }
 
   @override

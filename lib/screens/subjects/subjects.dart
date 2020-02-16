@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/components/theme/theme_switcher.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
@@ -10,10 +8,6 @@ import 'package:school_life/screens/subjects/widgets/subjects_list.dart';
 class SubjectsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(
-      ThemeSwitcher.of(context).brightness == Brightness.dark,
-    );
-
     return Scaffold(
       appBar: CustomAppBar(
         'Subjects',

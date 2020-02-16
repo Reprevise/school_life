@@ -10,18 +10,19 @@ class HolidayItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: const EdgeInsets.symmetric(vertical: 8),
       width: MediaQuery.of(context).size.width * 0.9,
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.horizontal(
-          left: Radius.circular(30),
-          right: Radius.circular(30),
+          left: Radius.circular(15),
+          right: Radius.circular(15),
         ),
         color: Theme.of(context).brightness == Brightness.light
             ? const Color(0xFFE7E7E7)
             : const Color(0xFF474747),
       ),
       child: Padding(
-        padding: const EdgeInsets.only(left: 24.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -29,13 +30,24 @@ class HolidayItem extends StatelessWidget {
               holiday.name,
               style: Theme.of(context).textTheme.headline2,
             ),
-            _HolidayIndicator(
-              start: true,
-              date: holiday.startDate,
-            ),
-            _HolidayIndicator(
-              start: false,
-              date: holiday.endDate,
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                _HolidayIndicator(
+                  start: true,
+                  date: holiday.startDate,
+                ),
+                Container(
+                  width: 25,
+                  height: 2,
+                  color: Colors.grey,
+                ),
+                _HolidayIndicator(
+                  start: false,
+                  date: holiday.endDate,
+                ),
+              ],
             ),
           ],
         ),
@@ -60,8 +72,9 @@ class _HolidayIndicator extends StatelessWidget {
             ? const Color(0xFF5EC999).withOpacity(0.25)
             : const Color(0xFFEF7198).withOpacity(0.25),
         elevation: 0,
+        margin: EdgeInsets.symmetric(vertical: 4),
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(50),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,

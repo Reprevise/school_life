@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/util/color_utils.dart';
 import 'package:school_life/util/days_util.dart';
 
 class ScheduleItem extends StatelessWidget {
@@ -111,7 +111,8 @@ class ScheduleItem extends StatelessWidget {
                   subject.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: useWhiteForeground(Theme.of(context).accentColor)
+                    color: ColorUtils()
+                            .useWhiteForeground(Theme.of(context).accentColor)
                         ? Colors.white
                         : Colors.black,
                   ),

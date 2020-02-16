@@ -11,7 +11,7 @@ class SubjectDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final lightAccent = subject.color.getLighterAccent();
+    final lightAccent = ColorUtils().getLighterAccent(subject.color);
     //! will be used later
     // final Color darkAccent = subject.color.getDarkerAccent();
 

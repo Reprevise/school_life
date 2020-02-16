@@ -37,7 +37,7 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
             ),
           ),
           child: Text(
-            state.value?.toHex()?.toUpperCase() ?? 'Change color*',
+            ColorUtils().toHex(state.value)?.toUpperCase() ?? 'Change color*',
             style: TextStyle(
               color: Theme.of(context).inputDecorationTheme.labelStyle.color,
               fontWeight: FontWeight.bold,

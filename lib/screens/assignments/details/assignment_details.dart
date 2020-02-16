@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/components/scroll_behavior/no_glow.dart';
 import 'package:school_life/models/assignment.dart';
@@ -11,14 +10,16 @@ class AssignmentDetailsPage extends StatelessWidget {
   final Assignment assignment;
 
   Color getTextColorFromBackground(Color backgroundColor) {
-    return useWhiteForeground(backgroundColor) ? Colors.white : Colors.black;
+    return ColorUtils().useWhiteForeground(backgroundColor)
+        ? Colors.white
+        : Colors.black;
   }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final lightAccent = assignment.color.getLighterAccent();
-    final darkAccent = assignment.color.getDarkerAccent();
+    final lightAccent = ColorUtils().getLighterAccent(assignment.color);
+    final darkAccent = ColorUtils().getDarkerAccent(assignment.color);
 
     return Scaffold(
       backgroundColor: lightAccent,

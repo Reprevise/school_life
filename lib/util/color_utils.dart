@@ -4,9 +4,9 @@ const double _offset = 0.2;
 const double _maxLightness = 0.9;
 const double _minLightness = 0.15;
 
-extension ColorUtils on Color {
-  Color getLighterAccent() {
-    var hsl = HSLColor.fromColor(this);
+class ColorUtils {
+  Color getLighterAccent(Color color) {
+    var hsl = HSLColor.fromColor(color);
     if (hsl.saturation + _offset > 1) {
       hsl = hsl.withSaturation(1);
     } else {
@@ -20,8 +20,8 @@ extension ColorUtils on Color {
     return hsl.toColor();
   }
 
-  Color getDarkerAccent() {
-    var hsl = HSLColor.fromColor(this);
+  Color getDarkerAccent(Color color) {
+    var hsl = HSLColor.fromColor(color);
     if (hsl.lightness - _offset < _minLightness) {
       hsl = hsl.withLightness(_minLightness);
     } else {
@@ -30,11 +30,19 @@ extension ColorUtils on Color {
     return hsl.toColor();
   }
 
-  String toHex({bool leadingHashSign = true}) {
+  String toHex(Color color, {bool leadingHashSign = true}) {
+    var alpha = color.alpha;
+    var red = color.red;
+    var green = color.green;
+    var blue = color.blue;
     return '${leadingHashSign ? '#' : ''}'
         '${alpha.toRadixString(16).padLeft(2, '0')}'
         '${red.toRadixString(16).padLeft(2, '0')}'
         '${green.toRadixString(16).padLeft(2, '0')}'
         '${blue.toRadixString(16).padLeft(2, '0')}';
+  }
+
+  bool useWhiteForeground(Color background) {
+    return 1.05 / (background.computeLuminance() + 0.05) > 4.5;
   }
 }

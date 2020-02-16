@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:school_life/util/color_utils.dart';
 
 class DetailsPageAppbar extends StatelessWidget {
   const DetailsPageAppbar(this.title, this.backgroundColor, {Key key})
@@ -10,14 +10,14 @@ class DetailsPageAppbar extends StatelessWidget {
   final Color backgroundColor;
 
   Brightness getForegroundBrightness() {
-    if (useWhiteForeground(backgroundColor)) {
+    if (ColorUtils().useWhiteForeground(backgroundColor)) {
       return Brightness.dark;
     }
     return Brightness.light;
   }
 
   Color getIconThemeColor() {
-    if (!useWhiteForeground(backgroundColor)) {
+    if (!ColorUtils().useWhiteForeground(backgroundColor)) {
       return Colors.black;
     }
     return Colors.white;
