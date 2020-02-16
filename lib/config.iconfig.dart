@@ -10,7 +10,6 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/services/device/android_details.dart';
 import 'package:school_life/services/settings/schedule.dart';
 import 'package:school_life/services/settings/basic.dart';
-import 'package:school_life/services/theme/theme_service.dart';
 import 'package:get_it/get_it.dart';
 
 void $initGetIt(GetIt g, {String environment}) {
@@ -26,7 +25,4 @@ void $initGetIt(GetIt g, {String environment}) {
 void _registerEagerSingletons(GetIt g, String environment) {
   g.registerSingleton<ScheduleSettingsHelper>(ScheduleSettingsHelper());
   g.registerSingleton<BasicSettingsHelper>(BasicSettingsHelper());
-  g.registerSingleton<ThemeService>(ThemeService(
-    g<AndroidDetails>(),
-  ));
 }
