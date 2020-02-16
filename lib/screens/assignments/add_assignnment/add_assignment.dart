@@ -52,7 +52,6 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
           return WillPopScope(
             onWillPop: () => _formBloc.canPop(context),
             child: ListView(
-              physics: const ClampingScrollPhysics(),
               padding: const EdgeInsets.only(bottom: 8),
               children: <Widget>[
                 const FormRequired(),

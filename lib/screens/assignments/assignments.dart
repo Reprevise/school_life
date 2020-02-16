@@ -57,7 +57,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       ),
       body: SingleChildScrollView(
         primary: false,
-        physics: const ClampingScrollPhysics(),
         padding: const EdgeInsets.only(top: 20, bottom: 70),
         child: Center(
           child: AssignmentsList(),

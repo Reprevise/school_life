@@ -76,7 +76,6 @@ class _SchedulePageState extends State<SchedulePage> {
       drawer: CustomDrawer(),
       body: ListView(
         primary: false,
-        physics: const ClampingScrollPhysics(),
         padding: const EdgeInsets.only(top: 20, bottom: 70),
         children: <Widget>[
           // TODO: sync days of school in settings with calendar

@@ -113,7 +113,6 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
     final iconColor = Theme.of(context).primaryIconTheme.color;
 
     return ListView(
-      physics: const ClampingScrollPhysics(),
       padding: const EdgeInsets.only(bottom: 8),
       children: <Widget>[
         const Padding(
