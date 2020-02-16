@@ -7,7 +7,7 @@ import 'package:school_life/enums/schedule_date_type.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
-import 'package:school_life/util/days_util.dart';
+import 'package:school_life/util/day_utils.dart';
 import 'package:school_life/util/date_utils.dart';
 
 @singleton

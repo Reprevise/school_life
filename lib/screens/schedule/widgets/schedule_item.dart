@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/util/color_utils.dart';
-import 'package:school_life/util/days_util.dart';
+import 'package:school_life/util/day_utils.dart';
 
 class ScheduleItem extends StatelessWidget {
   const ScheduleItem(

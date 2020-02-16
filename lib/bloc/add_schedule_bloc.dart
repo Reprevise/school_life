@@ -11,7 +11,7 @@ import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
-import 'package:school_life/util/days_util.dart';
+import 'package:school_life/util/day_utils.dart';
 
 class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   AddScheduleFormBloc() : super(isLoading: true) {
