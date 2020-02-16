@@ -8,17 +8,17 @@ import 'package:school_life/services/databases/db_helper.dart';
 class SubjectsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final double fontSize = MediaQuery.of(context).size.width / 20;
-    final Box<Subject> box = Hive.box<Subject>(Databases.SUBJECTS_BOX);
+    final fontSize = MediaQuery.of(context).size.width / 22;
+    final box = Hive.box<Subject>(Databases.subjectsBox);
 
     return ValueListenableBuilder<Box<Subject>>(
       valueListenable: box.listenable(),
-      builder: (BuildContext context, Box<Subject> box, Widget child) {
+      builder: (context, box, _) {
         return Visibility(
           visible: box.isNotEmpty,
           child: Column(
             children: box.values
-                .map((Subject subject) => SubjectItem(subject))
+                .map((subject) => SubjectItem(subject))
                 .toList(),
           ),
           replacement: Column(

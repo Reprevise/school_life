@@ -5,20 +5,13 @@ import 'package:school_life/services/databases/db_helper.dart';
 class TimeAdapter extends TypeAdapter<TimeOfDay> {
   @override
   TimeOfDay read(BinaryReader reader) {
-    final String string = reader.readString();
-    final List<String> hourMinute =
-        string.substring(string.indexOf('(') + 1, string.length - 1).split(':');
-    final String hour = hourMinute[0];
-    final String minute = hourMinute[1];
-    return TimeOfDay(
-      hour: int.parse(hour),
-      minute: int.parse(minute),
-    );
+    final time = reader.read() as TimeOfDay;
+    return time;
   }
 
   @override
   void write(BinaryWriter writer, TimeOfDay obj) {
-    writer.writeString(obj.toString());
+    writer.write(obj);
   }
 
   @override

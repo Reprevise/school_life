@@ -5,13 +5,14 @@ import 'package:google_fonts/google_fonts.dart';
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
   primaryColor: Colors.white,
-  accentColor: Colors.grey[600],
+  accentColor: const Color(0xFF494949),
   backgroundColor: Colors.white,
   scaffoldBackgroundColor: Colors.white,
   textSelectionHandleColor: Colors.black,
   textSelectionColor: Colors.black12,
   cursorColor: Colors.black,
   dividerColor: Colors.black,
+  disabledColor: Colors.grey[600],
   primaryIconTheme: const IconThemeData(color: Colors.black),
   buttonColor: Colors.grey[600],
   inputDecorationTheme: InputDecorationTheme(
@@ -52,55 +53,50 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ButtonTextTheme.accent,
   ),
   accentTextTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontWeight: FontWeight.bold,
-      color: Colors.grey[600],
-    ),
-  ),
-  textTheme: TextTheme(
     bodyText1: GoogleFonts.rubik(
-      textStyle: const TextStyle(
-        color: Colors.black,
-      ),
+      color: Colors.white,
     ),
     bodyText2: GoogleFonts.muli(
-      fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.black,
-      ),
-    ),
-    button: GoogleFonts.openSans(
-      fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(color: Colors.black),
+      color: Colors.black,
     ),
     headline4: GoogleFonts.muli(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        letterSpacing: 0.3,
-        color: Colors.black,
-      ),
+      letterSpacing: 0.3,
+      color: Colors.black,
+    ),
+  ),
+  textTheme: TextTheme(
+    bodyText1: GoogleFonts.rubik(
+      color: Colors.black,
+    ),
+    bodyText2: GoogleFonts.muli(
+      color: Colors.black,
+    ),
+    button: GoogleFonts.openSans(
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+    headline4: GoogleFonts.muli(
+      fontSize: 15.0,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 0.3,
+      color: Colors.black,
     ),
     headline3: GoogleFonts.muli(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.black,
-      ),
+      color: Colors.black,
     ),
     headline2: GoogleFonts.muli(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.black,
-      ),
+      color: Colors.black,
     ),
     headline1: GoogleFonts.muli(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.black,
-      ),
+      color: Colors.black,
     ),
   ),
 );
@@ -108,8 +104,9 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
   primaryColor: Colors.grey[900],
-  accentColor: const Color(0xFF3f3f3f),
+  accentColor: Colors.white,
   scaffoldBackgroundColor: Colors.grey[900],
+  disabledColor: Colors.black,
   backgroundColor: Colors.grey[900],
   textSelectionHandleColor: Colors.white,
   textSelectionColor: Colors.white12,
@@ -156,55 +153,50 @@ final ThemeData darkTheme = ThemeData(
   ),
   applyElevationOverlayColor: true,
   accentTextTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontWeight: FontWeight.bold,
-      color: Colors.grey[300],
-    ),
-  ),
-  textTheme: TextTheme(
     bodyText1: GoogleFonts.rubik(
-      textStyle: const TextStyle(
-        color: Colors.white,
-      ),
+      color: Colors.grey[800],
     ),
     bodyText2: GoogleFonts.muli(
-      fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.black,
-      ),
-    ),
-    button: GoogleFonts.openSans(
-      fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(color: Colors.black),
+      color: Colors.white,
     ),
     headline4: GoogleFonts.muli(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        letterSpacing: 0.3,
-        color: Colors.black,
-      ),
+      letterSpacing: 0.3,
+      color: Colors.white,
+    ),
+  ),
+  textTheme: TextTheme(
+    bodyText1: GoogleFonts.rubik(
+      color: Colors.black,
+    ),
+    bodyText2: GoogleFonts.muli(
+      color: Colors.grey[400],
+    ),
+    button: GoogleFonts.openSans(
+      fontWeight: FontWeight.bold,
+      color: Colors.black,
+    ),
+    headline4: GoogleFonts.muli(
+      fontSize: 15.0,
+      fontWeight: FontWeight.bold,
+      letterSpacing: 0.3,
+      color: Colors.black,
     ),
     headline3: GoogleFonts.muli(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.white,
-      ),
+      color: Colors.white,
     ),
     headline2: GoogleFonts.muli(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.white,
-      ),
+      color: Colors.white,
     ),
     headline1: GoogleFonts.muli(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
-      textStyle: const TextStyle(
-        color: Colors.white,
-      ),
+      color: Colors.white,
     ),
   ),
 );

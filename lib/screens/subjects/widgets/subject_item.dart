@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/models/subject.dart';
 
 class SubjectItem extends StatelessWidget {
@@ -9,9 +9,8 @@ class SubjectItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final TextStyle bodyStyle =
-        textTheme.bodyText2.copyWith(color: Colors.black);
+    final textTheme = Theme.of(context).textTheme;
+    final bodyStyle = textTheme.bodyText2.copyWith(color: Colors.black);
 
     final Widget subjectName = Padding(
       padding: const EdgeInsets.only(left: 8.0),
@@ -30,7 +29,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Room: ',
-            style: textTheme.bodyText2,
+            style: textTheme.headline4,
           ),
           TextSpan(text: subject.room, style: bodyStyle)
         ],
@@ -44,7 +43,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Building: ',
-            style: textTheme.bodyText2,
+            style: textTheme.headline4,
           ),
           TextSpan(text: subject.building, style: bodyStyle)
         ],
@@ -58,7 +57,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Teacher: ',
-            style: textTheme.bodyText2,
+            style: textTheme.headline4,
           ),
           TextSpan(text: subject.teacher, style: bodyStyle)
         ],

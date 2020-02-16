@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 
 class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   final CustomDrawer drawer = CustomDrawer();

@@ -3,6 +3,7 @@ import 'package:school_life/bloc/popper.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/holiday.dart';
 import 'package:school_life/services/databases/holidays_repository.dart';
+import 'package:school_life/util/date_utils.dart';
 
 class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
   AddHolidayFormBloc() : super(isLoading: true) {
@@ -11,12 +12,13 @@ class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
 
   HolidaysRepository _holidaysRepo;
   // TODO: make a validator that ensures a unique holiday name
-  List<String> _holidayNames = <String>[];
+  static List<String> _holidayNames = <String>[];
 
   final TextFieldBloc _holidayName = TextFieldBloc(
     initialValue: '',
     validators: <String Function(String)>[
       FieldBlocValidators.requiredTextFieldBloc,
+      validateHolidayName,
     ],
   );
   TextFieldBloc get holidayName => _holidayName;
@@ -25,6 +27,7 @@ class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
     validators: <String Function(DateTime)>[
       FieldBlocValidators.requiredInputFieldBloc,
     ],
+    initialValue: DateTime.now().onlyDate,
   );
   InputFieldBloc<DateTime> get startDate => _startDate;
 
@@ -32,6 +35,7 @@ class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
     validators: <String Function(DateTime)>[
       FieldBlocValidators.requiredInputFieldBloc,
     ],
+    initialValue: DateTime.now().onlyDate,
   );
   InputFieldBloc<DateTime> get endDate => _endDate;
 
@@ -49,22 +53,33 @@ class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
   }
 
   void _getHolidayNames() {
-    _holidayNames = _holidaysRepo.holidays.map((Holiday e) => e.name).toList();
+    _holidayNames =
+        _holidaysRepo.holidays.map((e) => e.name.toLowerCase()).toList();
+  }
+
+  static String validateHolidayName(String name) {
+    if (_holidayNames.contains(name.toLowerCase())) {
+      return 'Holiday name already exists!';
+    }
+    return null;
   }
 
   @override
-  Stream<FormBlocState<String, String>> onSubmitting() {
-    // TODO: implement onSubmitting
-    throw UnimplementedError();
+  Stream<FormBlocState<String, String>> onSubmitting() async* {
+    final name = _holidayName.value.trim();
+    final nextID = _holidaysRepo.nextID;
+    final holiday = Holiday(nextID, name, _startDate.value, _endDate.value);
+    await _holidaysRepo.addHoliday(holiday);
+    yield state.toSuccess();
   }
 
   @override
   bool fieldsAreEmpty() {
-    final String name = _holidayName.value.trim();
-    final DateTime start = _startDate.value;
-    final DateTime end = _endDate.value;
+    final name = _holidayName.value.trim();
+    final startEmpty = _startDate.state.isInitial || _startDate.value == null;
+    final endEmpty = _endDate.state.isInitial || _endDate.value == null;
 
-    if (name.isEmpty && start == null && end == null) {
+    if (name.isEmpty && startEmpty && endEmpty) {
       return true;
     }
     return false;

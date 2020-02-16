@@ -14,7 +14,7 @@ import 'package:school_life/util/date_utils.dart';
 @injectable
 class ScheduleSettingsHelper {
   ScheduleSettingsHelper() {
-    _settingsBox = Hive.box<dynamic>(Databases.SETTINGS_BOX);
+    _settingsBox = Hive.box<dynamic>(Databases.settingsBox);
     _getVariables();
   }
 
@@ -38,43 +38,43 @@ class ScheduleSettingsHelper {
   }
 
   void _getDayValues() {
-    final String mapString =
-        _settingsBox.get(SettingsKeys.SCHOOL_DAYS) as String;
+    final mapString =
+        _settingsBox.get(SettingsKeys.schoolDays) as String;
     if (mapString == null) {
-      _dayValues = ScheduleSettingsDefaults.defaultDaysOfSchool;
+      _dayValues = ScheduleSettingsDefaults.daysOfSchool;
       return;
     }
-    final Map<String, dynamic> map =
+    final map =
         jsonDecode(mapString) as Map<String, dynamic>;
     _dayValues = map.cast<String, bool>();
   }
 
   void _getDates() {
-    _startDate = _settingsBox.get(SettingsKeys.START_DATE) as DateTime;
-    _endDate = _settingsBox.get(SettingsKeys.END_DATE) as DateTime;
+    _startDate = _settingsBox.get(SettingsKeys.startDate) as DateTime;
+    _endDate = _settingsBox.get(SettingsKeys.endDate) as DateTime;
     _startDate ??= DateTime(DateTime.now().year);
     _endDate ??= DateTime(DateTime.now().year);
   }
 
   void _getTimes() {
-    _startTime = _settingsBox.get(SettingsKeys.START_TIME) as TimeOfDay;
-    _endTime = _settingsBox.get(SettingsKeys.END_TIME) as TimeOfDay;
+    _startTime = _settingsBox.get(SettingsKeys.startTime) as TimeOfDay;
+    _endTime = _settingsBox.get(SettingsKeys.endTime) as TimeOfDay;
     _startTime ??= const TimeOfDay(hour: 8, minute: 0);
     _endTime ??= const TimeOfDay(hour: 14, minute: 30);
   }
 
   void saveDayValues(Map<String, bool> input) {
-    final String mapString = jsonEncode(input);
-    _settingsBox.put(SettingsKeys.SCHOOL_DAYS, mapString);
+    final mapString = jsonEncode(input);
+    _settingsBox.put(SettingsKeys.schoolDays, mapString);
     _dayValues = input;
   }
 
   String getDisplayableDays() {
-    final List<String> days = <String>[];
-    final Map<String, bool> dayValuesCopy = Map<String, bool>.from(_dayValues);
-    dayValuesCopy.removeWhere((String key, bool value) => value == false);
-    final List<String> daysInIntegerString = dayValuesCopy.keys.toList();
-    for (final String item in daysInIntegerString) {
+    final days = <String>[];
+    final dayValuesCopy = Map<String, bool>.from(_dayValues);
+    dayValuesCopy.removeWhere((key, value) => value == false);
+    final daysInIntegerString = dayValuesCopy.keys.toList();
+    for (final item in daysInIntegerString) {
       days.add(daysFromIntegerString[item]);
     }
     return days.join(', ');
@@ -82,26 +82,26 @@ class ScheduleSettingsHelper {
 
   void saveDate(ScheduleDateType type, DateTime date) {
     switch (type) {
-      case ScheduleDateType.START:
+      case ScheduleDateType.start:
         _startDate = date.onlyDate;
-        _settingsBox.put(SettingsKeys.START_DATE, date);
+        _settingsBox.put(SettingsKeys.startDate, date);
         break;
-      case ScheduleDateType.END:
+      case ScheduleDateType.end:
         _endDate = date.onlyDate;
-        _settingsBox.put(SettingsKeys.END_DATE, date);
+        _settingsBox.put(SettingsKeys.endDate, date);
         break;
     }
   }
 
   void saveTime(ScheduleDateType type, TimeOfDay time) {
     switch (type) {
-      case ScheduleDateType.START:
+      case ScheduleDateType.start:
         _startTime = time;
-        _settingsBox.put(SettingsKeys.START_TIME, time);
+        _settingsBox.put(SettingsKeys.startTime, time);
         break;
-      case ScheduleDateType.END:
+      case ScheduleDateType.end:
         _endTime = time;
-        _settingsBox.put(SettingsKeys.END_TIME, time);
+        _settingsBox.put(SettingsKeys.endTime, time);
         break;
     }
   }

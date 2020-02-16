@@ -5,7 +5,7 @@ import 'package:school_life/services/databases/db_helper.dart';
 class ColorAdapter extends TypeAdapter<Color> {
   @override
   Color read(BinaryReader reader) {
-    final int colorValue = reader.readInt();
+    final colorValue = reader.readInt();
     return Color(colorValue);
   }
 

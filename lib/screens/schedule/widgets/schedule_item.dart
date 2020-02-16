@@ -17,47 +17,47 @@ class ScheduleItem extends StatelessWidget {
   final bool isLast;
   final DateTime selectedDay;
 
-  static const Radius RADIUS = Radius.circular(10);
+  static const Radius radius = Radius.circular(10);
 
   BorderRadius get leftBorderRadius {
     if (isFirst & isLast) {
-      return const BorderRadius.horizontal(left: RADIUS);
+      return const BorderRadius.horizontal(left: radius);
     } else if (isFirst) {
-      return const BorderRadius.only(topLeft: RADIUS);
+      return const BorderRadius.only(topLeft: radius);
     } else if (isLast) {
-      return const BorderRadius.only(bottomLeft: RADIUS);
+      return const BorderRadius.only(bottomLeft: radius);
     }
     return null;
   }
 
   BorderRadius get rightBorderRadius {
     if (isFirst & isLast) {
-      return const BorderRadius.horizontal(right: RADIUS);
+      return const BorderRadius.horizontal(right: radius);
     } else if (isFirst) {
-      return const BorderRadius.only(topRight: RADIUS);
+      return const BorderRadius.only(topRight: radius);
     } else if (isLast) {
-      return const BorderRadius.only(bottomRight: RADIUS);
+      return const BorderRadius.only(bottomRight: radius);
     }
     return null;
   }
 
   BorderRadius get borderRadius {
     if (isFirst & isLast) {
-      return const BorderRadius.all(RADIUS);
+      return const BorderRadius.all(radius);
     } else if (isFirst) {
-      return const BorderRadius.vertical(top: RADIUS);
+      return const BorderRadius.vertical(top: radius);
     } else if (isLast) {
-      return const BorderRadius.vertical(bottom: RADIUS);
+      return const BorderRadius.vertical(bottom: radius);
     }
     return null;
   }
 
   @override
   Widget build(BuildContext context) {
-    final String weekdayString = selectedDay.weekday.toString();
-    final String dayOfWeek = daysFromIntegerString[weekdayString];
-    final String startTime = subject.schedule[dayOfWeek][0].format(context);
-    final String endTime = subject.schedule[dayOfWeek][1].format(context);
+    final weekdayString = selectedDay.weekday.toString();
+    final dayOfWeek = daysFromIntegerString[weekdayString];
+    final startTime = subject.schedule[dayOfWeek][0].format(context);
+    final endTime = subject.schedule[dayOfWeek][1].format(context);
 
     return Container(
       height: 75,

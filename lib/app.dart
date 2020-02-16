@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:school_life/components/theme/theme_switcher.dart';
-import 'package:school_life/routing/custom_route_observer.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/custom_route_observer.dart';
+import 'package:school_life/router/router.gr.dart';
 
 class App extends StatelessWidget {
   @override
@@ -14,7 +14,7 @@ class App extends StatelessWidget {
       ],
     );
     return ThemeSwitcher(
-      themedWidgetBuilder: (BuildContext context, ThemeData theme) {
+      themedWidgetBuilder: (context, theme) {
         return MaterialApp(
           initialRoute: Router.home,
           navigatorKey: Router.navigatorKey,

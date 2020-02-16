@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 
 class ChooseDaysOfSchoolDialog extends StatefulWidget {
   const ChooseDaysOfSchoolDialog({
@@ -23,8 +23,8 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final DialogTheme _dialogTheme = Theme.of(context).dialogTheme;
-    final Color _contentStyleColor = _dialogTheme.contentTextStyle.color;
+    final _dialogTheme = Theme.of(context).dialogTheme;
+    final _contentStyleColor = _dialogTheme.contentTextStyle.color;
     return AlertDialog(
       title: const Text('What days do you have school?'),
       scrollable: true,
@@ -45,7 +45,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           CheckboxListTile(
             title: const Text('Monday'),
             value: _selectedDays['1'],
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() {
                 _selectedDays['1'] = value;
               });
@@ -54,7 +54,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           CheckboxListTile(
             title: const Text('Tuesday'),
             value: _selectedDays['2'],
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() {
                 _selectedDays['2'] = value;
               });
@@ -63,7 +63,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           CheckboxListTile(
             title: const Text('Wednesday'),
             value: _selectedDays['3'],
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() {
                 _selectedDays['3'] = value;
               });
@@ -72,7 +72,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           CheckboxListTile(
             title: const Text('Thursday'),
             value: _selectedDays['4'],
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() {
                 _selectedDays['4'] = value;
               });
@@ -81,7 +81,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           CheckboxListTile(
             title: const Text('Friday'),
             value: _selectedDays['5'],
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() {
                 _selectedDays['5'] = value;
               });
@@ -90,7 +90,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           CheckboxListTile(
             title: const Text('Saturday'),
             value: _selectedDays['6'],
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() {
                 _selectedDays['6'] = value;
               });
@@ -99,7 +99,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           CheckboxListTile(
             title: const Text('Sunday'),
             value: _selectedDays['7'],
-            onChanged: (bool value) {
+            onChanged: (value) {
               setState(() {
                 _selectedDays['7'] = value;
               });

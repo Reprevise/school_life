@@ -25,7 +25,7 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       fields[5] as Color,
       (fields[7] as Map)?.map((dynamic k, dynamic v) =>
           MapEntry(k as String, (v as List)?.cast<TimeOfDay>())),
-      fields[6] as bool,
+      isDeleted: fields[6] as bool,
     );
   }
 

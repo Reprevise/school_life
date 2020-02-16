@@ -7,7 +7,11 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar('Home'),
       drawer: CustomDrawer(),
-      body: Container(),
+      body: Column(
+        children: <Widget>[
+          
+        ],
+      ),
     );
   }
 }

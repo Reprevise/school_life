@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
 import 'package:school_life/screens/schedule/widgets/header.dart';
 import 'package:school_life/screens/schedule/widgets/schedules_list.dart';
@@ -31,7 +30,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void _getSubjectInfo() {
-    final SubjectsRepository subjects = sl<SubjectsRepository>();
+    final subjects = sl<SubjectsRepository>();
     if (subjects.subjects.isNotEmpty) {
       _userHasSubjects = true;
     }
@@ -57,14 +56,14 @@ class _SchedulePageState extends State<SchedulePage> {
             icon: Icon(Icons.settings),
             onPressed: () => Router.navigator.push(
               MaterialPageRoute<ScheduleSettingsPage>(
-                builder: (BuildContext context) => ScheduleSettingsPage(),
+                builder: (context) => ScheduleSettingsPage(),
               ),
             ),
           ),
           IconButton(
             icon: Icon(Icons.today),
             onPressed: () {
-              final DateTime now = DateTime.now().onlyDate;
+              final now = DateTime.now().onlyDate;
               setState(() {
                 selectedCalendarDay = now;
                 controller.setSelectedDay(now);
@@ -110,7 +109,7 @@ class _SchedulePageState extends State<SchedulePage> {
     }
     Router.navigator.push(
       MaterialPageRoute<AddSchedulePage>(
-        builder: (BuildContext context) => const AddSchedulePage(),
+        builder: (context) => const AddSchedulePage(),
       ),
     );
   }

@@ -4,8 +4,9 @@ import 'package:school_life/models/subject.dart';
 class Validators {
   /// Verify a field's trimmed val. is less than the set max
   static String maxLength(String value, int maxLength) {
-    if (value.trim().length > maxLength)
-      return 'Shorten to $maxLength characters please.';
+    if (value.trim().length > maxLength) {
+      return 'Shorten to $maxLength charactersa';
+    }
     return null;
   }
 
@@ -15,7 +16,7 @@ class Validators {
     String selectedDay,
     List<Subject> subjects,
   ) {
-    for (final Subject subject in subjects) {
+    for (final subject in subjects) {
       if (subject.schedule[selectedDay][0] == time) {
         return 'Same start time';
       }

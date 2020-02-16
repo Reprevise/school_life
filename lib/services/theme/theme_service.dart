@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/main.dart';
 import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:injectable/injectable.dart';
 import 'package:school_life/services/device/android_details.dart';
@@ -7,13 +6,13 @@ import 'package:school_life/services/device/android_details.dart';
 @singleton
 @injectable
 class ThemeService {
-  ThemeService() {
-    _details = sl<AndroidDetails>();
+  ThemeService(AndroidDetails details) {
+    _details = details;
   }
 
   AndroidDetails _details;
 
-  static const Map<Brightness, String> BRIGHTNESS_TO_STRING =
+  static const Map<Brightness, String> brightnessLevels =
       <Brightness, String>{
     Brightness.light: 'light',
     Brightness.dark: 'dark',

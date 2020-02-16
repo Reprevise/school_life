@@ -24,14 +24,6 @@ class ScheduleField extends StatefulWidget {
 
 class _ScheduleFieldState extends State<ScheduleField> {
   @override
-  void initState() {
-    super.initState();
-    // widget.dayFieldBloc.listen((SelectFieldBlocState<String> state) {
-    //   setState(() {});
-    // });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Card(
       shape: const RoundedRectangleBorder(
@@ -52,7 +44,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
           DropdownFieldBlocBuilder<String>(
             selectFieldBloc: widget.dayFieldBloc,
             decoration: const InputDecoration(labelText: 'Day'),
-            itemBuilder: (BuildContext context, String value) => value,
+            itemBuilder: (context, value) => value,
             showEmptyItem: false,
           ),
           Container(
@@ -65,14 +57,13 @@ class _ScheduleFieldState extends State<ScheduleField> {
                 BlocBuilder<InputFieldBloc<TimeOfDay>,
                     InputFieldBlocState<TimeOfDay>>(
                   bloc: widget.startTimeBloc,
-                  builder: (BuildContext context,
-                      InputFieldBlocState<TimeOfDay> state) {
+                  builder: (context, state) {
                     return TimeField(
                       labelText: 'Start time',
                       errorText: state.error,
                       isRequired: true,
                       selectedTime: widget.startTimeBloc.value,
-                      onTimeChanged: (TimeOfDay time) {
+                      onTimeChanged: (time) {
                         widget.startTimeBloc.updateValue(time);
                         setState(() {});
                       },
@@ -83,14 +74,13 @@ class _ScheduleFieldState extends State<ScheduleField> {
                 BlocBuilder<InputFieldBloc<TimeOfDay>,
                     InputFieldBlocState<TimeOfDay>>(
                   bloc: widget.endTimeBloc,
-                  builder: (BuildContext context,
-                      InputFieldBlocState<TimeOfDay> state) {
+                  builder: (context, state) {
                     return TimeField(
                       labelText: 'End time',
                       errorText: state.error,
                       isRequired: true,
                       selectedTime: widget.endTimeBloc.value,
-                      onTimeChanged: (TimeOfDay time) {
+                      onTimeChanged: (time) {
                         widget.endTimeBloc.updateValue(time);
                         setState(() {});
                       },

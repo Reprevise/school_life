@@ -16,14 +16,14 @@ class AssignmentDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final Color lightAccent = assignment.color.getLighterAccent();
-    final Color darkAccent = assignment.color.getDarkerAccent();
+    final textTheme = Theme.of(context).textTheme;
+    final lightAccent = assignment.color.getLighterAccent();
+    final darkAccent = assignment.color.getDarkerAccent();
 
     return Scaffold(
       backgroundColor: lightAccent,
       body: NestedScrollView(
-        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+        headerSliverBuilder: (context, innerBoxIsScrolled) {
           return <Widget>[DetailsPageAppbar(assignment.name, lightAccent)];
         },
         body: Container(

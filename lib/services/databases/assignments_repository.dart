@@ -3,11 +3,10 @@ import 'package:injectable/injectable.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
-@singleton
 @injectable
 class AssignmentsRepository {
   AssignmentsRepository() {
-    _assignmentsDB = Hive.box(Databases.ASSIGNMENTS_BOX);
+    _assignmentsDB = Hive.box(Databases.assignmentsBox);
   }
 
   Box<Assignment> _assignmentsDB;
@@ -16,10 +15,9 @@ class AssignmentsRepository {
     if (assignments.isEmpty) {
       return 0;
     }
-    final List<int> takenIDs =
-        assignments.map((Assignment assignment) => assignment.id).toList();
+    final takenIDs = assignments.map((assignment) => assignment.id).toList();
 
-    int id = 0;
+    var id = 0;
     do {
       id++;
     } while (takenIDs.contains(id));
@@ -27,7 +25,7 @@ class AssignmentsRepository {
   }
 
   List<Assignment> get assignments {
-    final List<Assignment> data = _assignmentsDB.values.toList();
+    final data = _assignmentsDB.values.toList();
     return data ?? <Assignment>[];
   }
 
@@ -37,7 +35,7 @@ class AssignmentsRepository {
 
   List<Assignment> getAssignmentsFromSubjectID(int subjectID) {
     return assignments
-        .where((Assignment assignment) => assignment.subjectID == subjectID)
+        .where((assignment) => assignment.subjectID == subjectID)
         .toList();
   }
 

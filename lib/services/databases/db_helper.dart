@@ -22,10 +22,10 @@ class DatabaseHelper {
     await Hive.initFlutter();
     _registerHiveAdapters();
     await Future.wait(<Future<Box<dynamic>>>[
-      Hive.openBox<Subject>(Databases.SUBJECTS_BOX),
-      Hive.openBox<Assignment>(Databases.ASSIGNMENTS_BOX),
-      Hive.openBox<dynamic>(Databases.SETTINGS_BOX),
-      Hive.openBox<Holiday>(Databases.HOLIDAYS_BOX),
+      Hive.openBox<Subject>(Databases.subjectsBox),
+      Hive.openBox<Assignment>(Databases.assignmentsBox),
+      Hive.openBox<dynamic>(Databases.settingsBox),
+      Hive.openBox<Holiday>(Databases.holidaysBox),
     ]);
   }
 
@@ -35,12 +35,13 @@ class DatabaseHelper {
     Hive.registerAdapter<Brightness>(BrightnessAdapter());
     Hive.registerAdapter<Assignment>(AssignmentAdapter());
     Hive.registerAdapter<Subject>(SubjectAdapter());
+    Hive.registerAdapter<Holiday>(HolidayAdapter());
   }
 }
 
 abstract class Databases {
-  static const String ASSIGNMENTS_BOX = 'assignments_db';
-  static const String SUBJECTS_BOX = 'subjects_db';
-  static const String SETTINGS_BOX = 'settings_db';
-  static const String HOLIDAYS_BOX = 'holidays_db';
+  static const String assignmentsBox = 'assignments_db';
+  static const String subjectsBox = 'subjects_db';
+  static const String settingsBox = 'settings_db';
+  static const String holidaysBox = 'holidays_db';
 }

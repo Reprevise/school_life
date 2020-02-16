@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
 import 'package:school_life/main.dart';
 import 'package:school_life/models/assignment.dart';
-import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/widgets/assignment_item.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
@@ -12,18 +10,18 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 class AssignmentsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final double fontSize = MediaQuery.of(context).size.width / 20;
-    final Box<Assignment> box = Hive.box<Assignment>(Databases.ASSIGNMENTS_BOX);
+    final fontSize = MediaQuery.of(context).size.width / 22;
+    final box = Hive.box<Assignment>(Databases.assignmentsBox);
 
     return ValueListenableBuilder<Box<Assignment>>(
       valueListenable: box.listenable(),
-      builder: (BuildContext context, Box<Assignment> box, Widget child) {
+      builder: (context, box, _) {
         return Visibility(
           visible: box.isNotEmpty,
           child: Column(
             children: box.values.map(
-              (Assignment assignment) {
-                final Subject currentSubject =
+              (assignment) {
+                final currentSubject =
                     sl<SubjectsRepository>().getSubject(assignment.subjectID);
                 return AssignmentItem(
                   assignment,

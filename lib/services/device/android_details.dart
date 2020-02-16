@@ -5,7 +5,7 @@ import 'package:school_life/main.dart';
 import 'package:flutter/services.dart';
 import 'package:injectable/injectable.dart';
 
-@Singleton(signalsReady: true)
+@Singleton.lazy(signalsReady: true)
 @injectable
 class AndroidDetails {
   AndroidDetails() {
@@ -16,15 +16,14 @@ class AndroidDetails {
 
   Future<void> _init() async {
     try {
-      final AndroidDeviceInfo _deviceInfo =
-          await DeviceInfoPlugin().androidInfo;
+      final _deviceInfo = await DeviceInfoPlugin().androidInfo;
       _deviceData = getDeviceData(_deviceInfo);
-      sl.signalReady(this);
     } on PlatformException {
       _deviceData = <String, dynamic>{
         'Error:': 'Failed to get platform version.',
       };
     }
+    sl.signalReady(this);
   }
 
   Map<String, dynamic> getDeviceData(AndroidDeviceInfo build) {
@@ -38,13 +37,13 @@ class AndroidDetails {
     if (_deviceData.isNotEmpty) {
       return _deviceData['version.sdkInt'] >= 21 as bool;
     }
-    return null;
+    return false;
   }
 
   bool canChangeNavbarIconColor() {
     if (_deviceData.isNotEmpty) {
       return _deviceData['version.sdkInt'] >= 27 as bool;
     }
-    return null;
+    return false;
   }
 }

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/assignments/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/screens/settings/pages/index.dart';
@@ -27,7 +26,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   }
 
   void _doesUserHaveSubjects() {
-    final List<Subject> allSubjects = subjects.subjects;
+    final allSubjects = subjects.subjects;
     if (allSubjects.isNotEmpty) {
       _userHasSubjects = true;
     }
@@ -43,7 +42,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
             icon: Icon(Icons.settings),
             onPressed: () => Router.navigator.push(
               MaterialPageRoute<AssignmentsSettingsPage>(
-                builder: (BuildContext context) => AssignmentsSettingsPage(),
+                builder: (context) => AssignmentsSettingsPage(),
               ),
             ),
           ),
@@ -74,7 +73,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
     }
     Router.navigator.push<AddAssignmentPage>(
       MaterialPageRoute<AddAssignmentPage>(
-        builder: (BuildContext context) => AddAssignmentPage(),
+        builder: (context) => AddAssignmentPage(),
       ),
     );
   }

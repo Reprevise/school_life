@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 
 class RouterTile extends StatelessWidget {
   const RouterTile({
@@ -19,12 +19,15 @@ class RouterTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: Icon(icon),
-      title: Text(title),
+      title: Text(
+        title,
+        style: Theme.of(context).accentTextTheme.bodyText2,
+      ),
       subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: Icon(Icons.arrow_right),
       onTap: () => Router.navigator.push(
         MaterialPageRoute<Widget>(
-          builder: (BuildContext context) => route,
+          builder: (context) => route,
         ),
       ),
     );

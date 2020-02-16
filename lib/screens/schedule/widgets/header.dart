@@ -14,7 +14,7 @@ class ScheduleHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const BorderRadius borderRadius = BorderRadius.only(
+    const borderRadius = BorderRadius.only(
       bottomLeft: Radius.circular(30),
       bottomRight: Radius.circular(30),
     );

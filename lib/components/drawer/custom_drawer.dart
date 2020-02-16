@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 import 'package:school_life/models/drawer_item.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 
 int _selectedIndex = 0;
 
@@ -49,13 +49,13 @@ class CustomDrawer extends StatelessWidget {
     if (_selectedIndex == currentIndex) {
       return const Color(0xff1967d2);
     }
-    return Theme.of(context).textTheme.bodyText1.color;
+    return Theme.of(context).accentTextTheme.bodyText2.color;
   }
 
   @override
   Widget build(BuildContext context) {
-    const Color containerColor = Color(0xffe8f0fe);
-    final TextTheme textTheme = Theme.of(context).textTheme;
+    const containerColor = Color(0xffe8f0fe);
+    final textTheme = Theme.of(context).textTheme;
 
     final Widget drawerHeader = SafeArea(
       top: true,
@@ -79,8 +79,8 @@ class CustomDrawer extends StatelessWidget {
               itemCount: _drawerItems.length,
               padding: const EdgeInsets.only(top: 10),
               shrinkWrap: true,
-              itemBuilder: (BuildContext context, int i) {
-                final DrawerItem d = _drawerItems[i];
+              itemBuilder: (context, i) {
+                final d = _drawerItems[i];
                 return Container(
                   color:
                       _selectedIndex == i ? containerColor : Colors.transparent,

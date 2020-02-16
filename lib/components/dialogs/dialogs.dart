@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 
 void showNoSubjectsDialog(BuildContext context) {
   showDialog<void>(
     barrierDismissible: false,
     context: context,
-    builder: (BuildContext context) {
+    builder: (context) {
       return AlertDialog(
         title: const Text('No subjects found'),
         actions: <Widget>[
@@ -27,7 +27,7 @@ void showNoSubjectsWithoutScheduleDialog(BuildContext context) {
   showDialog<void>(
     barrierDismissible: false,
     context: context,
-    builder: (BuildContext context) {
+    builder: (context) {
       return AlertDialog(
         title: const Text('No subjects without a schedule found'),
         actions: <Widget>[
@@ -50,9 +50,9 @@ void showDeleteAssignmentDialog(
   showDialog<void>(
     context: context,
     barrierDismissible: true,
-    builder: (BuildContext context) {
-      final DialogTheme _dialogTheme = Theme.of(context).dialogTheme;
-      final Color _contentStyleColor = _dialogTheme.contentTextStyle.color;
+    builder: (context) {
+      final _dialogTheme = Theme.of(context).dialogTheme;
+      final _contentStyleColor = _dialogTheme.contentTextStyle.color;
       return AlertDialog(
         title: RichText(
           text: TextSpan(
@@ -99,7 +99,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
   showDialog<void>(
     context: context,
     barrierDismissible: true,
-    builder: (BuildContext context) {
+    builder: (context) {
       return AlertDialog(
         title: RichText(
           text: TextSpan(
@@ -147,12 +147,12 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
 }
 
 void showOnPopDialog(BuildContext context) {
-  final DialogTheme _dialogTheme = Theme.of(context).dialogTheme;
-  final Color _contentStyleColor = _dialogTheme.contentTextStyle.color;
+  final _dialogTheme = Theme.of(context).dialogTheme;
+  final _contentStyleColor = _dialogTheme.contentTextStyle.color;
   showDialog<void>(
     context: context,
     barrierDismissible: false,
-    builder: (BuildContext context) {
+    builder: (context) {
       return AlertDialog(
         title: Text(
           'Discard your changes?',

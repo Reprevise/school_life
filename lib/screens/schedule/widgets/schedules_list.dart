@@ -15,16 +15,16 @@ class SchedulesList extends StatelessWidget {
   final DateTime selectedDay;
 
   void sortSchedule(List<Subject> values, String selectedDayOfWeek) {
-    values.sort((Subject subjectOne, Subject subjectTwo) {
-      final Map<String, List<TimeOfDay>> oneSchedule = subjectOne.schedule,
+    values.sort((subjectOne, subjectTwo) {
+      final oneSchedule = subjectOne.schedule,
           twoSchedule = subjectTwo.schedule;
-      final TimeOfDay one = oneSchedule[selectedDayOfWeek][0],
+      final one = oneSchedule[selectedDayOfWeek][0],
           two = twoSchedule[selectedDayOfWeek][0];
-      final DateTime oneDate = selectedDay.onlyDate
+      final oneDate = selectedDay.onlyDate
               .add(Duration(hours: one.hour, minutes: one.minute)),
           twoDate = selectedDay.onlyDate
               .add(Duration(hours: two.hour, minutes: two.minute));
-      final int oneDateMilli = oneDate.millisecondsSinceEpoch,
+      final oneDateMilli = oneDate.millisecondsSinceEpoch,
           twoDateMilli = twoDate.millisecondsSinceEpoch;
       return oneDateMilli.compareTo(twoDateMilli);
     });
@@ -32,15 +32,15 @@ class SchedulesList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Box<Subject> box = Hive.box<Subject>(Databases.SUBJECTS_BOX);
-    final double fontSize = MediaQuery.of(context).size.width / 20;
-    final String weekdayString = selectedDay.weekday.toString();
-    final String selectedDayOfWeek = daysFromIntegerString[weekdayString];
+    final box = Hive.box<Subject>(Databases.subjectsBox);
+    final fontSize = MediaQuery.of(context).size.width / 20;
+    final weekdayString = selectedDay.weekday.toString();
+    final selectedDayOfWeek = daysFromIntegerString[weekdayString];
 
     return ValueListenableBuilder<Box<Subject>>(
       valueListenable: box.listenable(),
-      builder: (BuildContext context, Box<Subject> box, Widget child) {
-        final List<Subject> values = sl<SubjectsRepository>()
+      builder: (context, box, child) {
+        final values = sl<SubjectsRepository>()
             .getSubjectsWithSameDaySchedule(selectedDayOfWeek);
         sortSchedule(values, selectedDayOfWeek);
 
@@ -51,10 +51,10 @@ class SchedulesList extends StatelessWidget {
             shrinkWrap: true,
             padding: const EdgeInsets.all(15),
             itemCount: values.length,
-            itemBuilder: (BuildContext context, int index) {
-              final Subject subject = values[index];
-              final bool isFirst = subject == values.first;
-              final bool isLast = subject == values.last;
+            itemBuilder: (context, index) {
+              final subject = values[index];
+              final isFirst = subject == values.first;
+              final isLast = subject == values.last;
               return ScheduleItem(
                 subject,
                 isFirst: isFirst,
@@ -62,7 +62,7 @@ class SchedulesList extends StatelessWidget {
                 selectedDay: selectedDay,
               );
             },
-            separatorBuilder: (BuildContext context, int index) {
+            separatorBuilder: (context, index) {
               return const Divider(
                 color: Colors.white,
                 height: 1,

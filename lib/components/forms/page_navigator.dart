@@ -15,7 +15,7 @@ class PageNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const RoundedRectangleBorder buttonShape = RoundedRectangleBorder(
+    const buttonShape = RoundedRectangleBorder(
       borderRadius: BorderRadius.horizontal(
         left: Radius.circular(15),
         right: Radius.circular(15),

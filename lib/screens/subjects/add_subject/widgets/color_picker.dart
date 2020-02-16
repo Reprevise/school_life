@@ -19,7 +19,7 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
   Widget build(BuildContext context) {
     return BlocBuilder<InputFieldBloc<Color>, InputFieldBlocState<Color>>(
       bloc: widget.formBloc.colorField,
-      builder: (BuildContext context, InputFieldBlocState<Color> state) {
+      builder: (context, state) {
         return InputDecorator(
           decoration: InputDecoration(
             fillColor: state.value ?? Colors.transparent,
@@ -31,7 +31,7 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
             suffixIcon: IconButton(
               icon: Icon(Icons.refresh),
               onPressed: () {
-                widget.formBloc.colorField.updateValue(RandomColor.next());
+                widget.formBloc.colorField.updateValue(RandomColor().next());
                 setState(() {});
               },
             ),

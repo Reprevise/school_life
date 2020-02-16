@@ -22,25 +22,25 @@ class AddSubjectFormBloc extends FormBloc<String, String> with Popper {
     validators: <String Function(String)>[
       FieldBlocValidators.requiredTextFieldBloc,
       validateSubjectName,
-      (String val) => Validators.maxLength(val, 50),
+      (val) => Validators.maxLength(val, 50),
     ],
   );
 
   final TextFieldBloc roomField =
       TextFieldBloc(validators: <String Function(String)>[
     FieldBlocValidators.requiredTextFieldBloc,
-    (String val) => Validators.maxLength(val, 35),
+    (val) => Validators.maxLength(val, 35),
   ]);
 
   final TextFieldBloc buildingField =
       TextFieldBloc(validators: <String Function(String)>[
-    (String val) => Validators.maxLength(val, 35),
+    (val) => Validators.maxLength(val, 35),
   ]);
 
   final TextFieldBloc teacherField =
       TextFieldBloc(validators: <String Function(String)>[
     FieldBlocValidators.requiredTextFieldBloc,
-    (String val) => Validators.maxLength(val, 40),
+    (val) => Validators.maxLength(val, 40),
   ]);
 
   final InputFieldBloc<Color> colorField = InputFieldBloc<Color>(
@@ -75,15 +75,15 @@ class AddSubjectFormBloc extends FormBloc<String, String> with Popper {
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    final int nextID = subjects.nextID;
+    final nextID = subjects.nextID;
     // trimmed subject name
-    final String subjectName = nameField.value.trim();
+    final subjectName = nameField.value.trim();
     // get room field text
-    final String roomText = roomField.value.trim();
+    final roomText = roomField.value.trim();
     // get building field text
-    final String building = buildingField.value.trim();
+    final building = buildingField.value.trim();
     // get teacher field text
-    final String teacher = teacherField.value.trim();
+    final teacher = teacherField.value.trim();
     // create new subject based on text from form
     subject = Subject(
       nextID,
@@ -93,39 +93,38 @@ class AddSubjectFormBloc extends FormBloc<String, String> with Popper {
       teacher,
       colorField.value,
       null, // initial schedule
-      false, // isDeleted value
     );
     subjects.addSubject(subject);
     yield state.toSuccess();
   }
 
   void _getSubjectNames() {
-    final List<Subject> allSubjects = subjects.subjects;
-    _subjectNames = allSubjects
-        .map((Subject subject) => subject.name.toLowerCase())
-        .toList();
+    final allSubjects = subjects.subjects;
+    _subjectNames =
+        allSubjects.map((subject) => subject.name.toLowerCase()).toList();
   }
 
   void _getTakenColors() {
-    final List<Color> subjectColors =
-        subjects.subjects.map((Subject subject) => subject.color).toList();
+    final subjectColors =
+        subjects.subjects.map((subject) => subject.color).toList();
     _takenColors = subjectColors;
   }
 
   static String validateSubjectName(String name) {
-    if (_subjectNames.contains(name.toLowerCase()))
+    if (_subjectNames.contains(name.toLowerCase())) {
       return 'That subject already exists';
+    }
     return null;
   }
 
   @override
   bool fieldsAreEmpty() {
     // get all controllers' text and trim them
-    final String name = nameField.value.trim();
-    final String room = roomField.value.trim();
-    final String building = buildingField.value.trim();
-    final String teacher = teacherField.value.trim();
-    final Color color = colorField.value;
+    final name = nameField.value.trim();
+    final room = roomField.value.trim();
+    final building = buildingField.value.trim();
+    final teacher = teacherField.value.trim();
+    final color = colorField.value;
     // if they're all empty, return true
     if (name.isEmpty &&
         room.isEmpty &&

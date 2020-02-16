@@ -6,7 +6,7 @@ import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
 import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
 
@@ -30,11 +30,11 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
       appBar: const CustomAppBar('Add Subject'),
       body: FormBlocHelper<AddSubjectFormBloc>(
         create: (_) => AddSubjectFormBloc(),
-        onSuccess: (BuildContext context, _) {
+        onSuccess: (context, _) {
           showDialog<void>(
             context: context,
             barrierDismissible: false,
-            builder: (BuildContext context) {
+            builder: (context) {
               return AlertDialog(
                 title: const Text('Add a schedule?'),
                 actions: <Widget>[
@@ -64,7 +64,7 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
           );
           // Router.navigator.pushNamed(Router.subjects);
         },
-        builder: (BuildContext context, FormBlocState<String, String> state) {
+        builder: (context, state) {
           if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
           } else {
@@ -110,7 +110,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
     const InputBorder errorBorder = OutlineInputBorder(
       borderSide: BorderSide(color: Colors.red),
     );
-    final Color iconColor = Theme.of(context).primaryIconTheme.color;
+    final iconColor = Theme.of(context).primaryIconTheme.color;
 
     return ListView(
       physics: const ClampingScrollPhysics(),

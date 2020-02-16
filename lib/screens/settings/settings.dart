@@ -1,9 +1,10 @@
+import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/components/theme/theme_switcher.dart';
-import 'package:school_life/routing/router.gr.dart';
 import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/screens/settings/widgets/index.dart';
+import 'package:school_life/screens/settings/widgets/theme_switch_controller.dart';
 
 class SettingsPage extends StatefulWidget {
   @override
@@ -11,17 +12,27 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  Brightness _brightness;
+  bool _isDark;
+
+  ThemeSwitchController _controller;
 
   @override
   void initState() {
     super.initState();
-    _brightness = ThemeSwitcher.of(context).brightness;
+    _controller = ThemeSwitchController();
+    ThemeSwitcher.of(context).brightness == Brightness.light
+        ? _isDark = false
+        : _isDark = true;
+    _controller.setDarkness(_isDark);
   }
 
-  void _changeTheme(Brightness newBrightness) {
-    _brightness = newBrightness;
-    ThemeSwitcher.of(context).setBrightness(newBrightness);
+  void _toggleTheme() {
+    _isDark = !_isDark;
+    ThemeSwitcher.of(context).setBrightness(
+      _isDark == true ? Brightness.dark : Brightness.light,
+    );
+    _controller.setDarkness(_isDark);
+    setState(() {});
   }
 
   @override
@@ -56,51 +67,43 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Widget buildThemeToggle() {
-    return ListTile(
-      leading: Icon(Icons.color_lens),
-      title: const Text('Theme'),
-      subtitle: Text(_brightness == Brightness.dark ? 'Dark' : 'Light'),
-      onTap: () => showDialog<void>(
-        context: context,
-        builder: (BuildContext context) => buildThemeDialog(),
+    return GestureDetector(
+      onTap: _toggleTheme,
+      child: Container(
+        height: 100,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    'Theme',
+                    style: Theme.of(context).accentTextTheme.headline4,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    _isDark == false ? 'Light' : 'Dark',
+                    style: Theme.of(context).accentTextTheme.bodyText2,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: 100,
+              height: 50,
+              child: FlareActor(
+                'assets/animations/switch_daytime.flr',
+                // animation: _isDark ? switchToNight : switchToDay,
+                controller: _controller,
+              ),
+            ),
+          ],
+        ),
       ),
-    );
-  }
-
-  Widget buildThemeDialog() {
-    return SimpleDialog(
-      elevation: 1,
-      title: const Text('Change theme'),
-      children: <Widget>[
-        buildSelectLightTheme(),
-        buildSelectDarkTheme(),
-      ],
-    );
-  }
-
-  Widget buildSelectLightTheme() {
-    return RadioListTile<Brightness>(
-      title: const Text('Light Theme'),
-      value: Brightness.light,
-      activeColor: Colors.black,
-      groupValue: _brightness,
-      onChanged: (Brightness value) {
-        _changeTheme(value);
-        Router.navigator.pop();
-      },
-    );
-  }
-
-  Widget buildSelectDarkTheme() {
-    return RadioListTile<Brightness>(
-      title: const Text('Dark Theme'),
-      value: Brightness.dark,
-      activeColor: Colors.black,
-      groupValue: _brightness,
-      onChanged: (Brightness value) {
-        _changeTheme(value);
-        Router.navigator.pop();
-      },
     );
   }
 }

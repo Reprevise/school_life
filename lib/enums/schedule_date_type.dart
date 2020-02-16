@@ -1,1 +1,1 @@
-enum ScheduleDateType { START, END }
+enum ScheduleDateType { start, end }

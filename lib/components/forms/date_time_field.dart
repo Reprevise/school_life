@@ -21,8 +21,8 @@ class DateField extends StatelessWidget {
   final DateFormat format;
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime date = DateTime.now().onlyDate;
-    final DateTime picked = await showDatePicker(
+    final date = DateTime.now().onlyDate;
+    final picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
       firstDate: date,
@@ -35,7 +35,7 @@ class DateField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.bodyText1;
+    final valueStyle = Theme.of(context).accentTextTheme.bodyText2;
     return _InputField(
       valueText: format.format(selectedDate),
       labelText: labelText,
@@ -64,7 +64,7 @@ class TimeField extends StatelessWidget {
   final ValueChanged<TimeOfDay> onTimeChanged;
 
   Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay picked = await showTimePicker(
+    final picked = await showTimePicker(
       context: context,
       initialTime: selectedTime ?? TimeOfDay.now(),
     );
@@ -75,7 +75,7 @@ class TimeField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle valueStyle = Theme.of(context).textTheme.bodyText1;
+    final valueStyle = Theme.of(context).textTheme.bodyText1;
     return Expanded(
       child: _InputField(
         valueText: selectedTime?.format(context) ?? '',

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/assignments/details/assignment_details.dart';
 
 class AssignmentItem extends StatelessWidget {
@@ -16,12 +16,10 @@ class AssignmentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const bool useBorder = true;
-    final TextTheme textTheme = Theme.of(context).textTheme;
-    final TextStyle textStyle =
-        textTheme.headline4.copyWith(color: Colors.black);
-    final DateTime dueDate = assignment.dueDate;
-    final String date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
+    final textTheme = Theme.of(context).textTheme;
+    final textStyle = textTheme.headline4.copyWith(color: Colors.black);
+    final dueDate = assignment.dueDate;
+    final date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
     return Card(
       color: assignment.color,
       elevation: 3.0,
@@ -29,8 +27,7 @@ class AssignmentItem extends StatelessWidget {
         onTap: () {
           Router.navigator.push(
             MaterialPageRoute<AssignmentDetailsPage>(
-              builder: (BuildContext context) =>
-                  AssignmentDetailsPage(assignment),
+              builder: (context) => AssignmentDetailsPage(assignment),
             ),
           );
         },
@@ -41,12 +38,6 @@ class AssignmentItem extends StatelessWidget {
         child: Container(
           height: 100,
           width: 375,
-          decoration: BoxDecoration(
-            border: useBorder
-                ? Border.all(
-                    style: BorderStyle.solid, width: 2, color: Colors.grey)
-                : null,
-          ),
           padding: const EdgeInsets.only(left: 8),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

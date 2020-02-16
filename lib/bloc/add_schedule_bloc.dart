@@ -9,7 +9,6 @@ import 'package:school_life/bloc/validators.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/settings_keys.dart';
-import 'package:school_life/models/subject.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/days_util.dart';
@@ -39,9 +38,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   @override
   List<FieldBloc> get fieldBlocs => <FieldBloc>[
         _subjectField,
-        ..._scheduleFields
-            .expand((Map<String, FieldBloc> map) => map.values)
-            .toList(),
+        ..._scheduleFields.expand((map) => map.values).toList(),
       ];
 
   @override
@@ -54,19 +51,16 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
 
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
-    final int subjectID = _subjectField.value['value'] as int;
-    final Subject subject = _subjectsRepo.getSubject(subjectID);
+    final subjectID = _subjectField.value['value'] as int;
+    final subject = _subjectsRepo.getSubject(subjectID);
 
-    for (final Map<String, FieldBloc> field in scheduleFields) {
-      final SelectFieldBloc<String> dayFieldBloc =
-          field['dayFieldBloc'] as SelectFieldBloc<String>;
-      final InputFieldBloc<TimeOfDay> startTimeBloc =
-          field['startTimeBloc'] as InputFieldBloc<TimeOfDay>;
-      final InputFieldBloc<TimeOfDay> endTimeBloc =
-          field['endTimeBloc'] as InputFieldBloc<TimeOfDay>;
-      final String day = dayFieldBloc.value;
-      final TimeOfDay startTime = startTimeBloc.value;
-      final TimeOfDay endTime = endTimeBloc.value;
+    for (final field in scheduleFields) {
+      final dayFieldBloc = field['dayFieldBloc'] as SelectFieldBloc<String>;
+      final startTimeBloc = field['startTimeBloc'] as InputFieldBloc<TimeOfDay>;
+      final endTimeBloc = field['endTimeBloc'] as InputFieldBloc<TimeOfDay>;
+      final day = dayFieldBloc.value;
+      final startTime = startTimeBloc.value;
+      final endTime = endTimeBloc.value;
       subject.schedule ??= <String, List<TimeOfDay>>{};
       subject.schedule[day] = <TimeOfDay>[startTime, endTime];
     }
@@ -79,24 +73,22 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
 
   LinkedHashMap<String, List<TimeOfDay>> sortMap(
       LinkedHashMap<String, List<TimeOfDay>> map) {
-    final List<String> mapKeys = map.keys.toList()
-      ..sort((String stringOne, String stringTwo) {
-        final int numberOne = daysToInteger[stringOne];
-        final int numberTwo = daysToInteger[stringTwo];
+    final mapKeys = map.keys.toList()
+      ..sort((stringOne, stringTwo) {
+        final numberOne = daysToInteger[stringOne];
+        final numberTwo = daysToInteger[stringTwo];
         return numberOne.compareTo(numberTwo);
       });
-    final LinkedHashMap<String, List<TimeOfDay>> resMap =
-        LinkedHashMap<String, List<TimeOfDay>>();
-    for (final String key in mapKeys) {
+    final resMap = <String, List<TimeOfDay>>{};
+    for (final key in mapKeys) {
       resMap[key] = map[key];
     }
     return resMap;
   }
 
   void _setSubjectFieldValues() {
-    final List<Subject> subjectsWithoutASchedule =
-        _subjectsRepo.subjectsWithoutSchedule;
-    for (final Subject subject in subjectsWithoutASchedule) {
+    final subjectsWithoutASchedule = _subjectsRepo.subjectsWithoutSchedule;
+    for (final subject in subjectsWithoutASchedule) {
       _subjectField.addItem(<String, dynamic>{
         'name': subject.name,
         'value': subject.id,
@@ -105,40 +97,40 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   }
 
   void getAvailableDays() {
-    final Box<dynamic> box = Hive.box<dynamic>(Databases.SETTINGS_BOX);
-    final String mapString = box.get(SettingsKeys.SCHOOL_DAYS) as String;
+    final box = Hive.box<dynamic>(Databases.settingsBox);
+    final mapString = box.get(SettingsKeys.schoolDays) as String;
     Map<String, bool> map;
     if (mapString == null) {
-      map = Map<String, bool>.from(ScheduleSettingsDefaults.defaultDaysOfSchool);
+      map = Map<String, bool>.from(ScheduleSettingsDefaults.daysOfSchool);
     } else {
-      map = Map<String, bool>.from(jsonDecode(mapString) as Map<dynamic, dynamic>);
+      map = Map<String, bool>.from(
+          jsonDecode(mapString) as Map<dynamic, dynamic>);
     }
-    map.removeWhere((_, bool value) => value == false);
-    final List<String> days = map.keys
-        .map((String dayStringInts) => daysFromIntegerString[dayStringInts])
+    map.removeWhere((_, value) => value == false);
+    final days = map.keys
+        .map((dayStringInts) => daysFromIntegerString[dayStringInts])
         .toList();
     days.forEach(_availableDays.add);
   }
 
   void addScheduleField(String day) {
-    final List<Subject> subjects =
-        _subjectsRepo.getSubjectsWithSameDaySchedule(day);
-    final SelectFieldBloc<String> dayFieldBloc = SelectFieldBloc<String>(
+    final subjects = _subjectsRepo.getSubjectsWithSameDaySchedule(day);
+    final dayFieldBloc = SelectFieldBloc<String>(
       items: _availableDays,
       initialValue: day ?? _availableDays.first,
     );
-    final InputFieldBloc<TimeOfDay> startTimeBloc = InputFieldBloc<TimeOfDay>(
+    final startTimeBloc = InputFieldBloc<TimeOfDay>(
       validators: <String Function(TimeOfDay)>[
         FieldBlocValidators.requiredInputFieldBloc,
-        (TimeOfDay time) => Validators.notSameStartTime(time, day, subjects),
+        (time) => Validators.notSameStartTime(time, day, subjects),
       ],
     );
-    final InputFieldBloc<TimeOfDay> endTimeBloc = InputFieldBloc<TimeOfDay>(
+    final endTimeBloc = InputFieldBloc<TimeOfDay>(
       validators: <String Function(TimeOfDay)>[
         FieldBlocValidators.requiredInputFieldBloc,
       ],
     );
-    final Map<String, FieldBloc> value = <String, FieldBloc>{
+    final value = <String, FieldBloc>{
       'dayFieldBloc': dayFieldBloc,
       'startTimeBloc': startTimeBloc,
       'endTimeBloc': endTimeBloc,
@@ -150,7 +142,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   bool fieldsAreEmpty() {
     if (subjectField.value == null) {
       if (_scheduleFields
-          .expand((Map<String, FieldBloc> map) => map.values)
+          .expand((map) => map.values)
           .toList()
           .isEmpty) {
         return true;

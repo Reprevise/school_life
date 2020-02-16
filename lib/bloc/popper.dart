@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
-import 'package:school_life/components/dialog/dialogs.dart';
+import 'package:school_life/components/dialogs/dialogs.dart';
 
-abstract class Popper {
+mixin Popper {
   Future<bool> canPop(BuildContext context) async {
     if (fieldsAreEmpty()) {
       return true;

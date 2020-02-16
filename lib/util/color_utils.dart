@@ -6,7 +6,7 @@ const double _minLightness = 0.15;
 
 extension ColorUtils on Color {
   Color getLighterAccent() {
-    HSLColor hsl = HSLColor.fromColor(this);
+    var hsl = HSLColor.fromColor(this);
     if (hsl.saturation + _offset > 1) {
       hsl = hsl.withSaturation(1);
     } else {
@@ -21,7 +21,7 @@ extension ColorUtils on Color {
   }
 
   Color getDarkerAccent() {
-    HSLColor hsl = HSLColor.fromColor(this);
+    var hsl = HSLColor.fromColor(this);
     if (hsl.lightness - _offset < _minLightness) {
       hsl = hsl.withLightness(_minLightness);
     } else {

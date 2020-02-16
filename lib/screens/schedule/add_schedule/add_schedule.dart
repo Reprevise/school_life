@@ -6,9 +6,9 @@ import 'package:school_life/bloc/blocs.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/index.dart';
-import 'package:school_life/components/required/form_required.dart';
+import 'package:school_life/components/forms/required/form_required.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/routing/router.gr.dart';
+import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
 
 class AddSchedulePage extends StatefulWidget {
@@ -63,7 +63,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
         onSuccess: (_, __) {
           Router.navigator.pushNamed(Router.schedule);
         },
-        builder: (BuildContext context, FormBlocState<String, String> state) {
+        builder: (context, state) {
           if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
           } else {
@@ -94,7 +94,7 @@ class _FirstPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double cWidth = MediaQuery.of(context).size.width * 0.8;
+    final cWidth = MediaQuery.of(context).size.width * 0.8;
 
     return Column(
       children: <Widget>[
@@ -112,9 +112,7 @@ class _FirstPage extends StatelessWidget {
               child: DropdownFieldBlocBuilder<Map<String, dynamic>>(
                 selectFieldBloc: formBloc.subjectField,
                 millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
-                itemBuilder:
-                    (BuildContext context, Map<String, dynamic> value) =>
-                        value['name'] as String,
+                itemBuilder: (context, value) => value['name'] as String,
                 showEmptyItem: false,
                 decoration: InputDecoration(
                   labelText: 'Subject*',
@@ -152,7 +150,7 @@ class _SecondPage extends StatefulWidget {
 class _SecondPageState extends State<_SecondPage> {
   @override
   Widget build(BuildContext context) {
-    final double cWidth = MediaQuery.of(context).size.width * 0.8;
+    final cWidth = MediaQuery.of(context).size.width * 0.8;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
@@ -202,9 +200,8 @@ class _ScheduleFieldsState extends State<ScheduleFields> {
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: widget.formBloc.scheduleFields.length,
-            itemBuilder: (BuildContext context, int i) {
-              final Map<String, FieldBloc> currentMap =
-                  widget.formBloc.scheduleFields[i];
+            itemBuilder: (context, i) {
+              final currentMap = widget.formBloc.scheduleFields[i];
               return ScheduleField(
                 dayFieldBloc:
                     currentMap['dayFieldBloc'] as SelectFieldBloc<String>,

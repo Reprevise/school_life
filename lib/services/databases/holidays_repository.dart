@@ -3,11 +3,10 @@ import 'package:injectable/injectable.dart';
 import 'package:school_life/models/holiday.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
-@singleton
 @injectable
 class HolidaysRepository {
   HolidaysRepository() {
-    _holidaysDB = Hive.box(Databases.HOLIDAYS_BOX);
+    _holidaysDB = Hive.box(Databases.holidaysBox);
   }
 
   Box<Holiday> _holidaysDB;
@@ -16,10 +15,10 @@ class HolidaysRepository {
     if (holidays.isEmpty) {
       return 0;
     }
-    final List<int> takenIDs =
-        holidays.map((Holiday holiday) => holiday.id).toList();
+    final takenIDs =
+        holidays.map((holiday) => holiday.id).toList();
 
-    int id = 0;
+    var id = 0;
     do {
       id++;
     } while (takenIDs.contains(id));
