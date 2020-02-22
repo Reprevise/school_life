@@ -10,9 +10,12 @@ class AssignmentDetailsPage extends StatelessWidget {
   final Assignment assignment;
 
   Color getTextColorFromBackground(Color backgroundColor) {
-    return ColorUtils().useWhiteForeground(backgroundColor)
-        ? Colors.white
-        : Colors.black;
+    if (ThemeData.estimateBrightnessForColor(backgroundColor) ==
+        Brightness.light) {
+      return Colors.black;
+    } else {
+      return Colors.white;
+    }
   }
 
   @override

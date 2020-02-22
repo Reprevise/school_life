@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/models/subject.dart';
-import 'package:school_life/util/color_utils.dart';
 import 'package:school_life/util/day_utils.dart';
 
 class ScheduleItem extends StatelessWidget {
@@ -50,6 +49,14 @@ class ScheduleItem extends StatelessWidget {
       return const BorderRadius.vertical(bottom: radius);
     }
     return null;
+  }
+
+  bool useWhiteForeground(Color background) {
+    final brightness = ThemeData.estimateBrightnessForColor(background);
+    if (brightness == Brightness.dark) {
+      return true;
+    }
+    return false;
   }
 
   @override
@@ -111,8 +118,7 @@ class ScheduleItem extends StatelessWidget {
                   subject.name,
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: ColorUtils()
-                            .useWhiteForeground(Theme.of(context).accentColor)
+                    color: useWhiteForeground(Theme.of(context).accentColor)
                         ? Colors.white
                         : Colors.black,
                   ),

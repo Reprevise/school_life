@@ -9,15 +9,20 @@ import 'package:school_life/util/date_utils.dart';
 
 class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   AddAssignmentFormBloc() : super(isLoading: true) {
-    assignments = sl<AssignmentsRepository>();
-    subjects = sl<SubjectsRepository>();
+    _assignments = sl<AssignmentsRepository>();
+    _subjects = sl<SubjectsRepository>();
+    addFieldBloc(fieldBloc: nameField);
+    addFieldBloc(fieldBloc: dueDateField);
+    addFieldBloc(fieldBloc: subjectField);
+    addFieldBloc(fieldBloc: detailsField);
   }
 
-  AssignmentsRepository assignments;
-  SubjectsRepository subjects;
+  AssignmentsRepository _assignments;
+  SubjectsRepository _subjects;
   static List<String> _assignmentNames = <String>[];
 
   final TextFieldBloc nameField = TextFieldBloc(
+    name: 'assignment-name',
     validators: <String Function(String)>[
       FieldBlocValidators.requiredTextFieldBloc,
       validateAssignmentName,
@@ -27,6 +32,7 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   );
 
   final InputFieldBloc<DateTime> dueDateField = InputFieldBloc<DateTime>(
+    name: 'assignment-due_date',
     validators: <String Function(DateTime)>[
       (date) {
         final dateString = date.toString();
@@ -45,16 +51,16 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
 
   final SelectFieldBloc<Map<String, dynamic>> subjectField =
       SelectFieldBloc<Map<String, dynamic>>(
+    name: 'assignment-subject',
     validators: <String Function(dynamic)>[
       FieldBlocValidators.requiredSelectFieldBloc
     ],
   );
 
-  final TextFieldBloc detailsField = TextFieldBloc(initialValue: '');
-
-  @override
-  List<FieldBloc> get fieldBlocs =>
-      <FieldBloc>[nameField, dueDateField, subjectField, detailsField];
+  final TextFieldBloc detailsField = TextFieldBloc(
+    name: 'assignment-details',
+    initialValue: '',
+  );
 
   @override
   Stream<FormBlocState<String, String>> onLoading() async* {
@@ -63,17 +69,34 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
     yield state.toLoaded();
   }
 
+  void _getAssignmentNames() {
+    final allAssignments = _assignments.assignments;
+    _assignmentNames = allAssignments
+        .map((assignment) => assignment.name.toLowerCase())
+        .toList();
+  }
+
+  void _setSubjectFieldValues() {
+    final allSubjects = _subjects.subjects;
+    for (final subject in allSubjects) {
+      subjectField.addItem(<String, dynamic>{
+        'name': subject.name,
+        'value': subject.id,
+      });
+    }
+  }
+
   @override
   Stream<FormBlocState<String, String>> onSubmitting() async* {
     // get the number of subjects, returns # of subjects + 1
-    final nextID = assignments.nextID;
+    final nextID = _assignments.nextID;
     // trimmed assignment name
     final assignmentName = nameField.value.trim();
     // trimmed due date
     final dueDate = dueDateField.value.onlyDate;
     // subject field value
     final subjectID = subjectField.value['value'] as int;
-    final color = subjects.getSubject(subjectID).color;
+    final color = _subjects.getSubject(subjectID).color;
     // trimmed details text
     final detailsText = detailsField.value.trim();
     // create new assignment based on text from form
@@ -85,25 +108,8 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
       detailsText,
       color,
     );
-    await assignments.addAssignment(newAssignment);
+    await _assignments.addAssignment(newAssignment);
     yield state.toSuccess();
-  }
-
-  void _getAssignmentNames() {
-    final allAssignments = assignments.assignments;
-    _assignmentNames = allAssignments
-        .map((assignment) => assignment.name.toLowerCase())
-        .toList();
-  }
-
-  void _setSubjectFieldValues() {
-    final allSubjects = subjects.subjects;
-    for (final subject in allSubjects) {
-      subjectField.addItem(<String, dynamic>{
-        'name': subject.name,
-        'value': subject.id,
-      });
-    }
   }
 
   static String validateAssignmentName(String name) {

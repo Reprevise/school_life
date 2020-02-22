@@ -11,7 +11,7 @@ import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart'
 import 'package:school_life/components/forms/required/form_required.dart';
 import 'package:school_life/models/holiday.dart';
 import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/settings/pages/widgets/holiday_item.dart';
+import 'package:school_life/screens/settings/pages/schedule/widgets/holiday_item.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
@@ -116,7 +116,7 @@ class _AddHolidayState extends State<AddHoliday> {
           if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            _formBloc = BlocProvider.of<AddHolidayFormBloc>(context);
+            _formBloc = context.bloc<AddHolidayFormBloc>();
             return WillPopScope(
               onWillPop: () => _formBloc.canPop(context),
               child: ListView(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:school_life/util/color_utils.dart';
 
 class DetailsPageAppbar extends StatelessWidget {
   const DetailsPageAppbar(this.title, this.backgroundColor, {Key key})
@@ -10,17 +9,16 @@ class DetailsPageAppbar extends StatelessWidget {
   final Color backgroundColor;
 
   Brightness getForegroundBrightness() {
-    if (ColorUtils().useWhiteForeground(backgroundColor)) {
-      return Brightness.dark;
-    }
-    return Brightness.light;
+    return ThemeData.estimateBrightnessForColor(backgroundColor);
   }
 
   Color getIconThemeColor() {
-    if (!ColorUtils().useWhiteForeground(backgroundColor)) {
+    if (ThemeData.estimateBrightnessForColor(backgroundColor) ==
+        Brightness.dark) {
+      return Colors.white;
+    } else {
       return Colors.black;
     }
-    return Colors.white;
   }
 
   @override
@@ -36,14 +34,12 @@ class DetailsPageAppbar extends StatelessWidget {
       iconTheme: IconThemeData(
         color: getIconThemeColor(),
       ),
-      flexibleSpace: FlexibleSpaceBar(
-        title: Text(
-          title,
-          style: GoogleFonts.openSans(
-            fontWeight: FontWeight.w600,
-            textStyle: TextStyle(
-              color: getIconThemeColor(),
-            ),
+      title: Text(
+        title,
+        style: GoogleFonts.openSans(
+          fontWeight: FontWeight.w600,
+          textStyle: TextStyle(
+            color: getIconThemeColor(),
           ),
         ),
       ),

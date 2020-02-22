@@ -31,6 +31,7 @@ class ColorUtils {
   }
 
   String toHex(Color color, {bool leadingHashSign = true}) {
+    if (color == null) return null;
     var alpha = color.alpha;
     var red = color.red;
     var green = color.green;
@@ -40,9 +41,5 @@ class ColorUtils {
         '${red.toRadixString(16).padLeft(2, '0')}'
         '${green.toRadixString(16).padLeft(2, '0')}'
         '${blue.toRadixString(16).padLeft(2, '0')}';
-  }
-
-  bool useWhiteForeground(Color background) {
-    return 1.05 / (background.computeLuminance() + 0.05) > 4.5;
   }
 }

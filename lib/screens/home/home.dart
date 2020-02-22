@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
       drawer: CustomDrawer(),
       body: Column(
         children: <Widget>[
-          
+          Container(),
         ],
       ),
     );

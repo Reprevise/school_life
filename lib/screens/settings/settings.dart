@@ -20,7 +20,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void initState() {
     super.initState();
     _controller = ThemeSwitchController();
-    ThemeSwitcher.of(context).brightness == Brightness.light
+    ThemeSwitcher.of(context).mode == ThemeMode.light
         ? _isDark = false
         : _isDark = true;
     _controller.setDarkness(_isDark);
@@ -28,8 +28,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _toggleTheme() {
     _isDark = !_isDark;
-    ThemeSwitcher.of(context).setBrightness(
-      _isDark == true ? Brightness.dark : Brightness.light,
+    ThemeSwitcher.of(context).setThemeMode(
+      _isDark == true ? ThemeMode.dark : ThemeMode.light,
+      context,
     );
     _controller.setDarkness(_isDark);
     setState(() {});
@@ -97,7 +98,6 @@ class _SettingsPageState extends State<SettingsPage> {
               height: 50,
               child: FlareActor(
                 'assets/animations/switch_daytime.flr',
-                // animation: _isDark ? switchToNight : switchToDay,
                 controller: _controller,
               ),
             ),

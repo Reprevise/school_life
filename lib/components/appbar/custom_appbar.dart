@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:school_life/components/theme/theme_switcher.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar(
     this.title, {
-    this.actions,
+    this.actions = const <Widget>[],
     this.leading,
     this.elevation = 0,
   });
@@ -20,9 +19,9 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       elevation: 0,
       centerTitle: true,
-      brightness: ThemeSwitcher.of(context).brightness,
+      brightness: Theme.of(context).brightness,
       backgroundColor: Colors.transparent,
-      actions: actions ?? <Widget>[],
+      actions: actions,
       title: Text(
         title,
         style: GoogleFonts.openSans(
@@ -34,5 +33,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(50.0);
+  Size get preferredSize => const Size.fromHeight(56.0);
 }

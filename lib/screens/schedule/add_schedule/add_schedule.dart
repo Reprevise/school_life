@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/bloc/blocs.dart';
+import 'package:school_life/bloc/add_schedule_bloc.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
+import 'package:school_life/components/forms/field_bloc_list_builder/field_bloc_list_builder.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/components/forms/required/form_required.dart';
@@ -33,7 +34,10 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (widget.subject != null) {
-        _formBloc.subjectField.updateValue(
+        _formBloc.state
+            .fieldBlocFromPath('schedule-subject')
+            .asSelectFieldBloc()
+            .updateValue(
           <String, dynamic>{
             'display': widget.subject.name,
             'value': widget.subject.id,
@@ -67,15 +71,22 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
           if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            _formBloc = BlocProvider.of<AddScheduleFormBloc>(context);
+            _formBloc = context.bloc<AddScheduleFormBloc>();
             return WillPopScope(
               onWillPop: () => _formBloc.canPop(context),
               child: PageView(
                 controller: _controller,
                 physics: const NeverScrollableScrollPhysics(),
                 children: <Widget>[
-                  _FirstPage(_formBloc, _controller),
-                  _SecondPage(_formBloc, _controller),
+                  _FirstPage(state, _controller),
+                  _SecondPage(
+                    state: state,
+                    controller: _controller,
+                    onFieldRemove: (indx) {
+                      _formBloc.removeScheduleField(indx);
+                    },
+                    onSubmit: _formBloc.submit,
+                  ),
                 ],
               ),
             );
@@ -87,9 +98,9 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
 }
 
 class _FirstPage extends StatelessWidget {
-  const _FirstPage(this.formBloc, this.controller);
+  const _FirstPage(this.state, this.controller);
 
-  final AddScheduleFormBloc formBloc;
+  final FormBlocState state;
   final PageController controller;
 
   @override
@@ -110,7 +121,9 @@ class _FirstPage extends StatelessWidget {
           child: Container(
             child: Center(
               child: DropdownFieldBlocBuilder<Map<String, dynamic>>(
-                selectFieldBloc: formBloc.subjectField,
+                selectFieldBloc: state
+                    .fieldBlocFromPath('schedule-subject')
+                    .asSelectFieldBloc(),
                 millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
                 itemBuilder: (context, value) => value['name'] as String,
                 showEmptyItem: false,
@@ -138,10 +151,17 @@ class _FirstPage extends StatelessWidget {
 }
 
 class _SecondPage extends StatefulWidget {
-  const _SecondPage(this.formBloc, this.controller);
+  const _SecondPage({
+    @required this.state,
+    @required this.controller,
+    @required this.onSubmit,
+    @required this.onFieldRemove,
+  });
 
-  final AddScheduleFormBloc formBloc;
+  final FormBlocState state;
   final PageController controller;
+  final VoidCallback onSubmit;
+  final Function(int) onFieldRemove;
 
   @override
   _SecondPageState createState() => _SecondPageState();
@@ -163,55 +183,52 @@ class _SecondPageState extends State<_SecondPage> {
           ),
         ),
         Expanded(
-          child: Visibility(
-            visible: widget.formBloc.scheduleFields.isNotEmpty,
-            child: ScheduleFields(widget.formBloc),
+          child: ScheduleFields(
+            widget.state,
+            onRemove: (index) {
+              widget.onFieldRemove(index);
+              setState(() {});
+            },
           ),
         ),
         PageNavigator(
           widget.controller,
           isFinalPage: true,
-          onSubmit: widget.formBloc.submit,
+          onSubmit: widget.onSubmit,
         ),
       ],
     );
   }
 }
 
-class ScheduleFields extends StatefulWidget {
+class ScheduleFields extends StatelessWidget {
   const ScheduleFields(
-    this.formBloc, {
+    this.state, {
     Key key,
+    @required this.onRemove,
   }) : super(key: key);
 
-  final AddScheduleFormBloc formBloc;
+  final FormBlocState state;
+  final void Function(int) onRemove;
 
-  @override
-  _ScheduleFieldsState createState() => _ScheduleFieldsState();
-}
-
-class _ScheduleFieldsState extends State<ScheduleFields> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         const FormRequired(),
         Expanded(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: widget.formBloc.scheduleFields.length,
-            itemBuilder: (context, i) {
-              final currentMap = widget.formBloc.scheduleFields[i];
+          child: FieldBlocListBuilder(
+            fieldBlocList: state.fieldBlocFromPath('schedules'),
+            itemBuilder: (context, list, i) {
+              final group = list[i].asGroupFieldBloc;
               return ScheduleField(
-                dayFieldBloc:
-                    currentMap['dayFieldBloc'] as SelectFieldBloc<String>,
+                dayFieldBloc: group['schedule-day'].asSelectFieldBloc<String>(),
                 startTimeBloc:
-                    currentMap['startTimeBloc'] as InputFieldBloc<TimeOfDay>,
+                    group['schedule-start_time'].asInputFieldBloc<TimeOfDay>(),
                 endTimeBloc:
-                    currentMap['endTimeBloc'] as InputFieldBloc<TimeOfDay>,
+                    group['schedule-end_time'].asInputFieldBloc<TimeOfDay>(),
                 onRemove: () {
-                  widget.formBloc.scheduleFields.removeAt(i);
-                  setState(() {});
+                  onRemove(i);
                 },
               );
             },

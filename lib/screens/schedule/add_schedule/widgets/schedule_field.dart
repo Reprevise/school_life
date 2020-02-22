@@ -34,18 +34,25 @@ class _ScheduleFieldState extends State<ScheduleField> {
       elevation: 6,
       child: Column(
         children: <Widget>[
-          Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: Icon(Icons.remove_circle),
-              onPressed: widget.onRemove,
-            ),
-          ),
-          DropdownFieldBlocBuilder<String>(
-            selectFieldBloc: widget.dayFieldBloc,
-            decoration: const InputDecoration(labelText: 'Day'),
-            itemBuilder: (context, value) => value,
-            showEmptyItem: false,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Expanded(
+                child: DropdownFieldBlocBuilder<String>(
+                  selectFieldBloc: widget.dayFieldBloc,
+                  decoration: const InputDecoration(labelText: 'Day'),
+                  itemBuilder: (context, value) => value,
+                  showEmptyItem: false,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: IconButton(
+                  icon: Icon(Icons.remove_circle),
+                  onPressed: widget.onRemove,
+                ),
+              ),
+            ],
           ),
           Container(
             height: 100,

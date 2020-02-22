@@ -45,7 +45,7 @@ class ScheduleHeader extends StatelessWidget {
             todayColor: const Color(0xFF5459E0),
             contentPadding: EdgeInsets.zero,
             weekdayStyle: TextStyle(
-              color: ThemeSwitcher.of(context).brightness == Brightness.light
+              color: ThemeSwitcher.of(context).mode == ThemeMode.light
                   ? Colors.black
                   : Colors.white,
             ),

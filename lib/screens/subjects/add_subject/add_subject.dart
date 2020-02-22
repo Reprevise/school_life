@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/bloc/blocs.dart';
+import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/router/router.gr.dart';
@@ -68,7 +68,7 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
           if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            _formBloc = BlocProvider.of<AddSubjectFormBloc>(context);
+            _formBloc = context.bloc<AddSubjectFormBloc>();
             return WillPopScope(
               onWillPop: () => _formBloc.canPop(context),
               child: AddSubjectFormFields(_formBloc),

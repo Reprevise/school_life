@@ -21,7 +21,7 @@ class DatabaseHelper {
   static Future<void> initializeHiveBoxes() async {
     await Hive.initFlutter();
     _registerHiveAdapters();
-    await Future.wait(<Future<Box<dynamic>>>[
+    await Future.wait([
       Hive.openBox<Subject>(Databases.subjectsBox),
       Hive.openBox<Assignment>(Databases.assignmentsBox),
       Hive.openBox<dynamic>(Databases.settingsBox),

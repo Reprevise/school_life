@@ -11,8 +11,8 @@ dependencies:
     sdk: flutter
   intl: any
   outline_material_icons: any
-  form_bloc: ^0.8.0
-  flutter_form_bloc: ^0.7.0
+  form_bloc: ^0.10.0
+  flutter_form_bloc: ^0.10.0
   flutter_bloc: ^3.2.0
   device_info: ^0.4.1+4
   google_fonts: ^0.3.7
@@ -23,6 +23,8 @@ dependencies:
   table_calendar: ^2.2.2
   injectable: ^0.2.1
   flare_flutter: ^2.0.1
+  flutter_statusbarcolor: ^0.2.3
+  animations: ^1.0.0+5
 
 dev_dependencies:
   hive_generator: ^0.7.0
