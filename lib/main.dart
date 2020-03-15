@@ -35,7 +35,7 @@ class SchoolLife extends StatelessWidget {
       themedWidgetBuilder: (context, mode) {
         return MaterialApp(
           initialRoute: Router.home,
-          navigatorKey: Router.navigatorKey,
+          navigatorKey: Router.navigator.key,
           onGenerateRoute: Router.onGenerateRoute,
           debugShowCheckedModeBanner: false,
           theme: lightTheme,

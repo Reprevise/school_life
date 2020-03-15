@@ -3,10 +3,8 @@ import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
 import 'package:school_life/screens/schedule/widgets/header.dart';
 import 'package:school_life/screens/schedule/widgets/schedules_list.dart';
-import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/date_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -54,11 +52,8 @@ class _SchedulePageState extends State<SchedulePage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Router.navigator.push(
-              MaterialPageRoute<ScheduleSettingsPage>(
-                builder: (context) => ScheduleSettingsPage(),
-              ),
-            ),
+            onPressed: () =>
+                Router.navigator.pushNamed(Router.scheduleSettings),
           ),
           IconButton(
             icon: Icon(Icons.today),
@@ -106,10 +101,6 @@ class _SchedulePageState extends State<SchedulePage> {
       showNoSubjectsWithoutScheduleDialog(context);
       return;
     }
-    Router.navigator.push(
-      MaterialPageRoute<AddSchedulePage>(
-        builder: (context) => const AddSchedulePage(),
-      ),
-    );
+    Router.navigator.pushNamed(Router.addSchedule);
   }
 }

@@ -24,11 +24,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar('Configure Holidays'),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Router.navigator.push(
-          MaterialPageRoute<AddHoliday>(
-            builder: (_) => const AddHoliday(),
-          ),
-        ),
+        onPressed: () => Router.navigator.pushNamed(Router.addHoliday),
         label: const Text('ADD HOLIDAY'),
         icon: Icon(Icons.add),
       ),
@@ -87,14 +83,14 @@ class ScheduleHolidaysPage extends StatelessWidget {
   }
 }
 
-class AddHoliday extends StatefulWidget {
-  const AddHoliday({Key key}) : super(key: key);
+class AddHolidayPage extends StatefulWidget {
+  const AddHolidayPage({Key key}) : super(key: key);
 
   @override
-  _AddHolidayState createState() => _AddHolidayState();
+  _AddHolidayPageState createState() => _AddHolidayPageState();
 }
 
-class _AddHolidayState extends State<AddHoliday> {
+class _AddHolidayPageState extends State<AddHolidayPage> {
   AddHolidayFormBloc _formBloc;
 
   @override

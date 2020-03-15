@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/enums/schedule_date_type.dart';
 import 'package:school_life/main.dart';
-import 'package:school_life/screens/settings/pages/schedule/widgets/holidays.dart';
+import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/settings/pages/widgets/choose_days_school_dialog.dart';
 import 'package:school_life/screens/settings/widgets/index.dart';
 import 'package:school_life/services/settings/schedule.dart';
@@ -111,7 +111,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
           RouterTile(
             title: 'Holidays',
             icon: Icons.event,
-            route: const ScheduleHolidaysPage(),
+            route: Router.holidays,
           ),
         ],
       ),

@@ -21,9 +21,9 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   SubjectsRepository _subjects;
   static List<String> _assignmentNames = <String>[];
 
-  final TextFieldBloc nameField = TextFieldBloc(
+  final nameField = TextFieldBloc(
     name: 'assignment-name',
-    validators: <String Function(String)>[
+    validators: [
       FieldBlocValidators.requiredTextFieldBloc,
       validateAssignmentName,
       (val) => Validators.maxLength(val, 50),
@@ -31,9 +31,9 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
     initialValue: '',
   );
 
-  final InputFieldBloc<DateTime> dueDateField = InputFieldBloc<DateTime>(
+  final dueDateField = InputFieldBloc<DateTime>(
     name: 'assignment-due_date',
-    validators: <String Function(DateTime)>[
+    validators: [
       (date) {
         final dateString = date.toString();
         Validators.maxLength(dateString, 15);
@@ -49,10 +49,9 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
     initialValue: DateTime.now(),
   );
 
-  final SelectFieldBloc<Map<String, dynamic>> subjectField =
-      SelectFieldBloc<Map<String, dynamic>>(
+  final subjectField = SelectFieldBloc<Map<String, dynamic>>(
     name: 'assignment-subject',
-    validators: <String Function(dynamic)>[
+    validators: [
       FieldBlocValidators.requiredSelectFieldBloc
     ],
   );

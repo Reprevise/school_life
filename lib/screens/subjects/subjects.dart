@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/settings/pages/index.dart';
-import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
 import 'package:school_life/screens/subjects/widgets/subjects_list.dart';
 
 class SubjectsPage extends StatelessWidget {
@@ -14,11 +12,8 @@ class SubjectsPage extends StatelessWidget {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Router.navigator.push(
-              MaterialPageRoute<SubjectsSettingsPage>(
-                builder: (context) => SubjectsSettingsPage(),
-              ),
-            ),
+            onPressed: () =>
+                Router.navigator.pushNamed(Router.subjectsSettings),
           ),
         ],
       ),
@@ -39,10 +34,6 @@ class SubjectsPage extends StatelessWidget {
   }
 
   void _handleAddSubjectButtonPress(BuildContext context) {
-    Router.navigator.push(
-      MaterialPageRoute<AddSubjectPage>(
-        builder: (context) => AddSubjectPage(),
-      ),
-    );
+    Router.navigator.pushNamed(Router.addSubject);
   }
 }

@@ -13,7 +13,7 @@ class RouterTile extends StatelessWidget {
   final IconData icon;
   final String title;
   final String subtitle;
-  final Widget route;
+  final String route;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,7 @@ class RouterTile extends StatelessWidget {
       ),
       subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: Icon(Icons.arrow_right),
-      onTap: () => Router.navigator.push(
-        MaterialPageRoute<Widget>(
-          builder: (context) => route,
-        ),
-      ),
+      onTap: () => Router.navigator.pushNamed(route),
     );
   }
 }

@@ -7,7 +7,6 @@ import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
 import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
 
 class AddSubjectPage extends StatefulWidget {
@@ -40,19 +39,16 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
                 actions: <Widget>[
                   FlatButton(
                     onPressed: () {
-                      Router.navigator.pop();
-                      Router.navigator.pushNamed(Router.subjects);
+                      Router.navigator.popAndPushNamed(Router.subjects);
                     },
                     child: const Text('NO'),
                   ),
                   FlatButton(
                     onPressed: () {
-                      Router.navigator.pop();
-                      Router.navigator.push(
-                        MaterialPageRoute<AddSchedulePage>(
-                          builder: (_) => AddSchedulePage(
-                            subject: _formBloc.subject,
-                          ),
+                      Router.navigator.popAndPushNamed(
+                        Router.addSchedule,
+                        arguments: AddSchedulePageArguments(
+                          subject: _formBloc.subject,
                         ),
                       );
                     },

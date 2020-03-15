@@ -3,7 +3,6 @@ import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/assignments/details/assignment_details.dart';
 
 class AssignmentItem extends StatelessWidget {
   const AssignmentItem(
@@ -25,11 +24,8 @@ class AssignmentItem extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          Router.navigator.push(
-            MaterialPageRoute<AssignmentDetailsPage>(
-              builder: (context) => AssignmentDetailsPage(assignment),
-            ),
-          );
+          Router.navigator
+              .pushNamed(Router.assignmentDetails, arguments: assignment);
         },
         onLongPress: () => showDeleteAssignmentDialog(
           context,

@@ -13,9 +13,7 @@ void showNoSubjectsDialog(BuildContext context) {
         actions: <Widget>[
           FlatButton(
             child: const Text('OK'),
-            onPressed: () {
-              Router.navigator.pop();
-            },
+            onPressed: Router.navigator.pop,
           )
         ],
       );
@@ -33,9 +31,7 @@ void showNoSubjectsWithoutScheduleDialog(BuildContext context) {
         actions: <Widget>[
           FlatButton(
             child: const Text('OK'),
-            onPressed: () {
-              Router.navigator.pop();
-            },
+            onPressed: Router.navigator.pop,
           )
         ],
       );
@@ -87,7 +83,7 @@ void showDeleteAssignmentDialog(
               'NO',
               style: TextStyle(color: _contentStyleColor),
             ),
-            onPressed: () => Router.navigator.pop(),
+            onPressed: Router.navigator.pop,
           )
         ],
       );

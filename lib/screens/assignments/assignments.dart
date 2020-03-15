@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-
 import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/assignments/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
-import 'package:school_life/screens/settings/pages/index.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AssignmentsPage extends StatefulWidget {
@@ -40,11 +37,8 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.settings),
-            onPressed: () => Router.navigator.push(
-              MaterialPageRoute<AssignmentsSettingsPage>(
-                builder: (context) => AssignmentsSettingsPage(),
-              ),
-            ),
+            onPressed: () =>
+                Router.navigator.pushNamed(Router.assignmentSettings),
           ),
         ],
       ),
@@ -70,10 +64,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       showNoSubjectsDialog(context);
       return;
     }
-    Router.navigator.push<AddAssignmentPage>(
-      MaterialPageRoute<AddAssignmentPage>(
-        builder: (context) => AddAssignmentPage(),
-      ),
-    );
+    Router.navigator.pushNamed(Router.addAssignment);
   }
 }

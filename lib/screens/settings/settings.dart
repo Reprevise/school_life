@@ -2,7 +2,7 @@ import 'package:flare_flutter/flare_actor.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/components/theme/theme_switcher.dart';
-import 'package:school_life/screens/settings/pages/index.dart';
+import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/settings/widgets/index.dart';
 import 'package:school_life/screens/settings/widgets/theme_switch_controller.dart';
 
@@ -50,17 +50,17 @@ class _SettingsPageState extends State<SettingsPage> {
           RouterTile(
             icon: Icons.assignment,
             title: 'Assignments',
-            route: AssignmentsSettingsPage(),
+            route: Router.assignmentSettings,
           ),
           RouterTile(
             icon: Icons.schedule,
             title: 'Schedule',
-            route: ScheduleSettingsPage(),
+            route: Router.scheduleSettings,
           ),
           RouterTile(
             icon: Icons.school,
             title: 'Subjects',
-            route: SubjectsSettingsPage(),
+            route: Router.subjectsSettings,
           ),
         ],
       ),
