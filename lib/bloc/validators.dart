@@ -17,6 +17,7 @@ class Validators {
     List<Subject> subjects,
   ) {
     for (final subject in subjects) {
+      // TODO: ensure a class is not within another class
       if (subject.schedule[selectedDay][0] == time) {
         return 'Same start time';
       }

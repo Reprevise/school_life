@@ -42,7 +42,7 @@ class CustomDrawer extends StatelessWidget {
       return;
     }
     _selectedIndex = index;
-    Router.navigator.pushNamed(Router.routes[index]);
+    Router.navigator.pushNamed(Routes.all[index]);
   }
 
   Color _getItemColor(BuildContext context, int currentIndex) {

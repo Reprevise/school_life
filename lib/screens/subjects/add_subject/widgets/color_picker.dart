@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/util/random_color.dart';
 import 'package:school_life/util/color_utils.dart';
@@ -17,7 +16,7 @@ class SubjectColorPicker extends StatefulWidget {
 class _SubjectColorPickerState extends State<SubjectColorPicker> {
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<InputFieldBloc<Color>, InputFieldBlocState<Color>>(
+    return BlocBuilder(
       bloc: widget.formBloc.colorField,
       builder: (context, state) {
         return InputDecorator(

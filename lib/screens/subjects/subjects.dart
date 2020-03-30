@@ -13,13 +13,13 @@ class SubjectsPage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () =>
-                Router.navigator.pushNamed(Router.subjectsSettings),
+                Router.navigator.pushNamed(Routes.subjectsSettings),
           ),
         ],
       ),
       drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _handleAddSubjectButtonPress(context),
+        onPressed: _handleAddSubjectButtonPress,
         label: const Text('ADD SUBJECT'),
         icon: const Icon(Icons.add),
       ),
@@ -33,7 +33,7 @@ class SubjectsPage extends StatelessWidget {
     );
   }
 
-  void _handleAddSubjectButtonPress(BuildContext context) {
-    Router.navigator.pushNamed(Router.addSubject);
+  void _handleAddSubjectButtonPress() {
+    Router.navigator.pushNamed(Routes.addSubject);
   }
 }

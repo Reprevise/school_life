@@ -111,7 +111,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
           RouterTile(
             title: 'Holidays',
             icon: Icons.event,
-            route: Router.holidays,
+            route: Routes.holidays,
           ),
         ],
       ),

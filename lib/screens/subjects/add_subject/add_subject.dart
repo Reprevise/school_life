@@ -39,14 +39,14 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
                 actions: <Widget>[
                   FlatButton(
                     onPressed: () {
-                      Router.navigator.popAndPushNamed(Router.subjects);
+                      Router.navigator.popAndPushNamed(Routes.subjects);
                     },
                     child: const Text('NO'),
                   ),
                   FlatButton(
                     onPressed: () {
                       Router.navigator.popAndPushNamed(
-                        Router.addSchedule,
+                        Routes.addSchedule,
                         arguments: AddSchedulePageArguments(
                           subject: _formBloc.subject,
                         ),

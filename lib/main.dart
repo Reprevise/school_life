@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
@@ -34,9 +35,7 @@ class SchoolLife extends StatelessWidget {
     return ThemeSwitcher(
       themedWidgetBuilder: (context, mode) {
         return MaterialApp(
-          initialRoute: Router.home,
-          navigatorKey: Router.navigator.key,
-          onGenerateRoute: Router.onGenerateRoute,
+          builder: ExtendedNavigator<Router>(router: Router()),
           debugShowCheckedModeBanner: false,
           theme: lightTheme,
           darkTheme: darkTheme,

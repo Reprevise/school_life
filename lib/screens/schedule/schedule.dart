@@ -53,7 +53,7 @@ class _SchedulePageState extends State<SchedulePage> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () =>
-                Router.navigator.pushNamed(Router.scheduleSettings),
+                Router.navigator.pushNamed(Routes.scheduleSettings),
           ),
           IconButton(
             icon: Icon(Icons.today),
@@ -101,6 +101,6 @@ class _SchedulePageState extends State<SchedulePage> {
       showNoSubjectsWithoutScheduleDialog(context);
       return;
     }
-    Router.navigator.pushNamed(Router.addSchedule);
+    Router.navigator.pushNamed(Routes.addSchedule);
   }
 }

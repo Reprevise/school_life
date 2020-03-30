@@ -25,7 +25,7 @@ class AssignmentItem extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Router.navigator
-              .pushNamed(Router.assignmentDetails, arguments: assignment);
+              .pushNamed(Routes.assignmentDetails, arguments: assignment);
         },
         onLongPress: () => showDeleteAssignmentDialog(
           context,

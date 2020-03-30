@@ -24,14 +24,14 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   final nameField = TextFieldBloc(
     name: 'assignment-name',
     validators: [
-      FieldBlocValidators.requiredTextFieldBloc,
+      FieldBlocValidators.required,
       validateAssignmentName,
       (val) => Validators.maxLength(val, 50),
     ],
     initialValue: '',
   );
 
-  final dueDateField = InputFieldBloc<DateTime>(
+  final dueDateField = InputFieldBloc<DateTime, Object>(
     name: 'assignment-due_date',
     validators: [
       (date) {
@@ -49,11 +49,9 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
     initialValue: DateTime.now(),
   );
 
-  final subjectField = SelectFieldBloc<Map<String, dynamic>>(
+  final subjectField = SelectFieldBloc(
     name: 'assignment-subject',
-    validators: [
-      FieldBlocValidators.requiredSelectFieldBloc
-    ],
+    validators: [FieldBlocValidators.required],
   );
 
   final TextFieldBloc detailsField = TextFieldBloc(
@@ -62,10 +60,10 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   );
 
   @override
-  Stream<FormBlocState<String, String>> onLoading() async* {
+  void onLoading() {
     _getAssignmentNames();
     _setSubjectFieldValues();
-    yield state.toLoaded();
+    emitLoaded();
   }
 
   void _getAssignmentNames() {
@@ -78,7 +76,7 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   void _setSubjectFieldValues() {
     final allSubjects = _subjects.subjects;
     for (final subject in allSubjects) {
-      subjectField.addItem(<String, dynamic>{
+      subjectField.addItem({
         'name': subject.name,
         'value': subject.id,
       });
@@ -86,7 +84,7 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   }
 
   @override
-  Stream<FormBlocState<String, String>> onSubmitting() async* {
+  void onSubmitting() async {
     // get the number of subjects, returns # of subjects + 1
     final nextID = _assignments.nextID;
     // trimmed assignment name
@@ -108,7 +106,7 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
       color,
     );
     await _assignments.addAssignment(newAssignment);
-    yield state.toSuccess();
+    emitSuccess();
   }
 
   static String validateAssignmentName(String name) {

@@ -42,7 +42,7 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
     return FormBlocHelper<AddAssignmentFormBloc>(
       create: (_) => AddAssignmentFormBloc(),
       onSuccess: (_, __) {
-        Router.navigator.pushNamed(Router.assignments);
+        Router.navigator.pushNamed(Routes.assignments);
       },
       builder: (context, state) {
         if (state is FormBlocLoading || state is FormBlocSubmitting) {
@@ -73,8 +73,7 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: BlocBuilder<InputFieldBloc<DateTime>,
-                      InputFieldBlocState<DateTime>>(
+                  child: BlocBuilder(
                     bloc: _formBloc.dueDateField,
                     builder: (context, state) {
                       return DateField(

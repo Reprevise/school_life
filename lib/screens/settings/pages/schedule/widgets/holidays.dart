@@ -24,7 +24,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
     return Scaffold(
       appBar: const CustomAppBar('Configure Holidays'),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Router.navigator.pushNamed(Router.addHoliday),
+        onPressed: () => Router.navigator.pushNamed(Routes.addHoliday),
         label: const Text('ADD HOLIDAY'),
         icon: Icon(Icons.add),
       ),
@@ -131,8 +131,7 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      BlocBuilder<InputFieldBloc<DateTime>,
-                          InputFieldBlocState<DateTime>>(
+                      BlocBuilder(
                         bloc: _formBloc.startDate,
                         builder: (context, state) {
                           return DateField(
@@ -148,8 +147,7 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
                         },
                       ),
                       const SizedBox(height: 8),
-                      BlocBuilder<InputFieldBloc<DateTime>,
-                          InputFieldBlocState<DateTime>>(
+                      BlocBuilder(
                         bloc: _formBloc.endDate,
                         builder: (context, state) {
                           return DateField(

@@ -13,9 +13,9 @@ class ScheduleField extends StatefulWidget {
     @required this.onRemove,
   }) : super(key: key);
 
-  final SelectFieldBloc<String> dayFieldBloc;
-  final InputFieldBloc<TimeOfDay> startTimeBloc;
-  final InputFieldBloc<TimeOfDay> endTimeBloc;
+  final SelectFieldBloc dayFieldBloc;
+  final InputFieldBloc<TimeOfDay, Object> startTimeBloc;
+  final InputFieldBloc<TimeOfDay, Object> endTimeBloc;
   final VoidCallback onRemove;
 
   @override
@@ -61,8 +61,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                BlocBuilder<InputFieldBloc<TimeOfDay>,
-                    InputFieldBlocState<TimeOfDay>>(
+                BlocBuilder(
                   bloc: widget.startTimeBloc,
                   builder: (context, state) {
                     return TimeField(
@@ -78,8 +77,7 @@ class _ScheduleFieldState extends State<ScheduleField> {
                   },
                 ),
                 const SizedBox(width: 10),
-                BlocBuilder<InputFieldBloc<TimeOfDay>,
-                    InputFieldBlocState<TimeOfDay>>(
+                BlocBuilder(
                   bloc: widget.endTimeBloc,
                   builder: (context, state) {
                     return TimeField(

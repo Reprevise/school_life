@@ -8,9 +8,7 @@ import 'package:school_life/util/date_utils.dart';
 class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
   AddHolidayFormBloc() : super(isLoading: true) {
     _holidaysRepo = sl<HolidaysRepository>();
-    addFieldBloc(fieldBloc: _holidayName);
-    addFieldBloc(fieldBloc: _startDate);
-    addFieldBloc(fieldBloc: _endDate);
+    addFieldBlocs(fieldBlocs: [_holidayName, _startDate, _endDate]);
   }
 
   HolidaysRepository _holidaysRepo;
@@ -19,35 +17,31 @@ class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
   final TextFieldBloc _holidayName = TextFieldBloc(
     name: 'holiday-name',
     initialValue: '',
-    validators: <String Function(String)>[
-      FieldBlocValidators.requiredTextFieldBloc,
+    validators: [
+      FieldBlocValidators.required,
       validateHolidayName,
     ],
   );
   TextFieldBloc get holidayName => _holidayName;
 
-  final InputFieldBloc<DateTime> _startDate = InputFieldBloc<DateTime>(
+  final _startDate = InputFieldBloc<DateTime, Object>(
     name: 'holiday-start_date',
-    validators: <String Function(DateTime)>[
-      FieldBlocValidators.requiredInputFieldBloc,
-    ],
+    validators: [FieldBlocValidators.required],
     initialValue: DateTime.now().onlyDate,
   );
-  InputFieldBloc<DateTime> get startDate => _startDate;
+  InputFieldBloc<DateTime, Object> get startDate => _startDate;
 
-  final InputFieldBloc<DateTime> _endDate = InputFieldBloc<DateTime>(
+  final _endDate = InputFieldBloc<DateTime, Object>(
     name: 'holiday-end_date',
-    validators: <String Function(DateTime)>[
-      FieldBlocValidators.requiredInputFieldBloc,
-    ],
+    validators: [FieldBlocValidators.required],
     initialValue: DateTime.now().onlyDate,
   );
-  InputFieldBloc<DateTime> get endDate => _endDate;
+  InputFieldBloc<DateTime, Object> get endDate => _endDate;
 
   @override
-  Stream<FormBlocState<String, String>> onLoading() async* {
+  void onLoading() {
     _getHolidayNames();
-    yield state.toLoaded();
+    emitLoaded();
   }
 
   void _getHolidayNames() {
@@ -63,12 +57,12 @@ class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
   }
 
   @override
-  Stream<FormBlocState<String, String>> onSubmitting() async* {
+  void onSubmitting() async {
     final name = _holidayName.value.trim();
     final nextID = _holidaysRepo.nextID;
     final holiday = Holiday(nextID, name, _startDate.value, _endDate.value);
     await _holidaysRepo.addHoliday(holiday);
-    yield state.toSuccess();
+    emitSuccess();
   }
 
   @override

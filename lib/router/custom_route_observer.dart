@@ -9,7 +9,7 @@ class CustomRouteObserver extends RouteObserver<PageRoute<dynamic>> {
   void didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
     super.didPop(route, previousRoute);
     if (previousRoute is PageRoute && route is PageRoute) {
-      drawer.selectedIndex = Router.routes.indexOf(previousRoute.settings.name);
+      drawer.selectedIndex = Routes.all.indexOf(previousRoute.settings.name);
     }
   }
 }

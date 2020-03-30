@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/popper.dart';
@@ -11,58 +9,60 @@ import 'package:school_life/services/databases/subjects_repository.dart';
 class AddSubjectFormBloc extends FormBloc<String, String> with Popper {
   AddSubjectFormBloc() : super(isLoading: true) {
     subjectsRepo = sl<SubjectsRepository>();
-    addFieldBloc(fieldBloc: nameField);
-    addFieldBloc(fieldBloc: roomField);
-    addFieldBloc(fieldBloc: buildingField);
-    addFieldBloc(fieldBloc: teacherField);
-    addFieldBloc(fieldBloc: colorField);
+    addFieldBlocs(fieldBlocs: [
+      nameField,
+      roomField,
+      buildingField,
+      teacherField,
+      colorField,
+    ]);
   }
 
   Subject _subject;
   Subject get subject => _subject;
 
   SubjectsRepository subjectsRepo;
-  static List<String> _subjectNames = <String>[];
 
-  // TODO: make a validator to ensure the same color isn't chosen
+  static List<String> _subjectNames;
+
   static List<Color> _takenColors;
 
-  final TextFieldBloc nameField = TextFieldBloc(
+  final nameField = TextFieldBloc(
     name: 'subject-name',
-    validators: <String Function(String)>[
-      FieldBlocValidators.requiredTextFieldBloc,
+    validators: [
+      FieldBlocValidators.required,
       validateSubjectName,
       (val) => Validators.maxLength(val, 50),
     ],
   );
 
-  final TextFieldBloc roomField = TextFieldBloc(
+  final roomField = TextFieldBloc(
     name: 'subject-room',
-    validators: <String Function(String)>[
-      FieldBlocValidators.requiredTextFieldBloc,
+    validators: [
+      FieldBlocValidators.required,
       (val) => Validators.maxLength(val, 35),
     ],
   );
 
-  final TextFieldBloc buildingField = TextFieldBloc(
+  final buildingField = TextFieldBloc(
     name: 'subject-building',
-    validators: <String Function(String)>[
+    validators: [
       (val) => Validators.maxLength(val, 35),
     ],
   );
 
-  final TextFieldBloc teacherField = TextFieldBloc(
+  final teacherField = TextFieldBloc(
     name: 'subject-teacher',
-    validators: <String Function(String)>[
-      FieldBlocValidators.requiredTextFieldBloc,
+    validators: [
+      FieldBlocValidators.required,
       (val) => Validators.maxLength(val, 40),
     ],
   );
 
-  final InputFieldBloc<Color> colorField = InputFieldBloc<Color>(
+  final colorField = InputFieldBloc<Color, Object>(
     name: 'subject-color',
-    validators: <String Function(Color)>[
-      FieldBlocValidators.requiredInputFieldBloc,
+    validators: [
+      FieldBlocValidators.required,
       validateColor,
     ],
   );
@@ -72,14 +72,14 @@ class AddSubjectFormBloc extends FormBloc<String, String> with Popper {
   }
 
   @override
-  Stream<FormBlocState<String, String>> onLoading() async* {
-    _getSubjectNames();
-    _getTakenColors();
-    yield state.toLoaded();
+  void onLoading() {
+    _updateSubjectNames();
+    _updateTakenColors();
+    emitLoaded();
   }
 
   @override
-  Stream<FormBlocState<String, String>> onSubmitting() async* {
+  void onSubmitting() {
     // get the number of subjects, returns # of subjects + 1
     final nextID = subjectsRepo.nextID;
     // trimmed subject name
@@ -101,16 +101,16 @@ class AddSubjectFormBloc extends FormBloc<String, String> with Popper {
       null, // initial schedule
     );
     subjectsRepo.addSubject(_subject);
-    yield state.toSuccess();
+    emitSuccess();
   }
 
-  void _getSubjectNames() {
+  void _updateSubjectNames() {
     final allSubjects = subjectsRepo.subjects;
     _subjectNames =
         allSubjects.map((subject) => subject.name.toLowerCase()).toList();
   }
 
-  void _getTakenColors() {
+  void _updateTakenColors() {
     final subjectColors =
         subjectsRepo.subjects.map((subject) => subject.color).toList();
     _takenColors = subjectColors;

@@ -2,7 +2,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:form_bloc/form_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:school_life/bloc/popper.dart';
 import 'package:school_life/bloc/validators.dart';
@@ -16,52 +16,38 @@ import 'package:school_life/util/day_utils.dart';
 class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   AddScheduleFormBloc() : super(isLoading: true) {
     _subjectsRepo = sl<SubjectsRepository>();
-    addFieldBloc(fieldBloc: _subjectField);
-    addFieldBloc(
-      fieldBloc: FieldBlocList(
-        name: 'schedules',
-        fieldBlocs: [],
-      ),
-    );
+    addFieldBlocs(fieldBlocs: [subjectField, schedule]);
   }
+
+  final schedule = ListFieldBloc<DayScheduleField>(name: 'schedules');
 
   SubjectsRepository _subjectsRepo;
 
   final List<String> _availableDays = <String>[];
-  List<String> get availableDays => _availableDays;
+  // List<String> get availableDays => _availableDays;
 
-  final SelectFieldBloc _subjectField = SelectFieldBloc<Map<String, dynamic>>(
+  final SelectFieldBloc subjectField = SelectFieldBloc(
     name: 'schedule-subject',
-    validators: [FieldBlocValidators.requiredSelectFieldBloc],
+    validators: [FieldBlocValidators.required],
   );
 
-  // final List<Map<String, FieldBloc>> _scheduleFields =
-  //     <Map<String, FieldBloc>>[];
-  // List<Map<String, FieldBloc>> get scheduleFields => _scheduleFields;
-
   @override
-  Stream<FormBlocState<String, String>> onLoading() async* {
-    getAvailableDays();
+  void onLoading() {
+    _getAvailableDays();
     _availableDays.forEach(addScheduleField);
     _setSubjectFieldValues();
-    yield state.toLoaded();
+    emitLoaded();
   }
 
   @override
-  Stream<FormBlocState<String, String>> onSubmitting() async* {
-    final subjectID = _subjectField.value['value'] as int;
+  void onSubmitting() async {
+    final subjectID = subjectField.value['value'] as int;
     final subject = _subjectsRepo.getSubject(subjectID);
 
-    for (final field in state.fieldBlocFromPath('schedules').asFieldBlocList) {
-      final dayFieldBloc =
-          field.asGroupFieldBloc['schedule-day'].asSelectFieldBloc<String>();
-      final startTimeBloc = field.asGroupFieldBloc['schedule-start_time']
-          .asInputFieldBloc<TimeOfDay>();
-      final endTimeBloc = field.asGroupFieldBloc['schedule-end_time']
-          .asInputFieldBloc<TimeOfDay>();
-      final day = dayFieldBloc.value;
-      final startTime = startTimeBloc.value;
-      final endTime = endTimeBloc.value;
+    for (final field in schedule.value) {
+      final day = field.day.value;
+      final startTime = field.startTime.value;
+      final endTime = field.endTime.value;
       subject.schedule ??= {};
       subject.schedule[day] = <TimeOfDay>[startTime, endTime];
     }
@@ -69,7 +55,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
       LinkedHashMap<String, List<TimeOfDay>>.from(subject.schedule),
     );
     await subject.save();
-    yield state.toSuccess();
+    emitSuccess();
   }
 
   LinkedHashMap<String, List<TimeOfDay>> sortMap(
@@ -92,14 +78,14 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   void _setSubjectFieldValues() {
     final subjectsWithoutASchedule = _subjectsRepo.subjectsWithoutSchedule;
     for (final subject in subjectsWithoutASchedule) {
-      _subjectField.addItem(<String, dynamic>{
+      subjectField.addItem(<String, dynamic>{
         'name': subject.name,
         'value': subject.id,
       });
     }
   }
 
-  void getAvailableDays() {
+  void _getAvailableDays() {
     final box = Hive.box<dynamic>(Databases.settingsBox);
     final mapString = box.get(SettingsKeys.schoolDays) as String;
     Map<String, bool> map;
@@ -110,7 +96,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
         jsonDecode(mapString) as Map<dynamic, dynamic>,
       );
     }
-    map.removeWhere((_, value) => value == false);
+    map.removeWhere((_, isAvailable) => isAvailable == false);
     final days = map.keys
         .map((dayStringInts) => daysFromIntegerString[dayStringInts])
         .toList();
@@ -118,67 +104,59 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   }
 
   void addScheduleField(String day) {
+    assert(day != null);
     final subjects = _subjectsRepo.getSubjectsWithSameDaySchedule(day);
 
-    final dayFieldBloc = SelectFieldBloc<String>(
-      name: 'schedule-day',
-      items: _availableDays,
-      initialValue: day ?? _availableDays.first,
-    );
-    final startTimeBloc = InputFieldBloc<TimeOfDay>(
-      name: 'schedule-start_time',
-      validators: <String Function(TimeOfDay)>[
-        FieldBlocValidators.requiredInputFieldBloc,
-        (time) => Validators.notSameStartTime(time, day, subjects),
-      ],
-    );
-    final endTimeBloc = InputFieldBloc<TimeOfDay>(
-      name: 'schedule-end_time',
-      validators: <String Function(TimeOfDay)>[
-        FieldBlocValidators.requiredInputFieldBloc,
-      ],
-    );
-    addFieldBloc(
-      path: 'schedules',
-      fieldBloc: GroupFieldBloc(
-        name: 'schedule',
-        fieldBlocs: [
-          dayFieldBloc,
-          startTimeBloc,
-          endTimeBloc,
+    schedule.addFieldBloc(DayScheduleField(
+      day: SelectFieldBloc(
+        name: 'schedule-day',
+        items: _availableDays,
+        initialValue: day,
+      ),
+      startTime: InputFieldBloc<TimeOfDay, Object>(
+        name: 'schedule-start_time',
+        validators: [
+          FieldBlocValidators.required,
+          (time) => Validators.notSameStartTime(time, day, subjects),
         ],
       ),
-    );
-    // final value = <String, FieldBloc>{
-    //   'dayFieldBloc': dayFieldBloc,
-    //   'startTimeBloc': startTimeBloc,
-    //   'endTimeBloc': endTimeBloc,
-    // };
-    // _scheduleFields.add(value);
+      endTime: InputFieldBloc<TimeOfDay, Object>(
+        name: 'schedule-end_time',
+        validators: [FieldBlocValidators.required],
+      ),
+    ));
   }
 
-  void removeScheduleField(int index) {
-    removeFieldBloc(path: 'schedules/[$index]');
-  }
+  void removeScheduleField(int index) => schedule.removeFieldBlocAt(index);
 
   @override
   bool fieldsAreEmpty() {
-    if (_subjectField.value == null) {
-      for (final bloc in state.fieldBlocFromPath('schedules').asFieldBlocList) {
-        if (bloc is SelectFieldBloc) {
-          var value = bloc.asSelectFieldBloc().value;
-          if (value != null) {
-            return false;
-          }
-        } else if (bloc is InputFieldBloc) {
-          var value = bloc.asInputFieldBloc().value;
-          if (value != null) {
-            return false;
-          }
+    if (subjectField.value == null) {
+      for (final bloc in schedule.value) {
+        final dayValue = bloc.day.value;
+        final startTime = bloc.startTime.value;
+        final endTime = bloc.endTime.value;
+        if (dayValue != null || startTime != null || endTime != null) {
+          return false;
         }
+        if (dayValue.isEmpty) return false;
       }
       return true;
     }
     return false;
   }
+}
+
+class DayScheduleField extends GroupFieldBloc {
+  final SelectFieldBloc<String, Object> day;
+  final InputFieldBloc<TimeOfDay, Object> startTime;
+  final InputFieldBloc<TimeOfDay, Object> endTime;
+  final String name;
+
+  DayScheduleField({
+    @required this.day,
+    @required this.startTime,
+    @required this.endTime,
+    this.name,
+  }) : super([day, startTime, endTime], name: name);
 }

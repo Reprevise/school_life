@@ -50,17 +50,17 @@ class _SettingsPageState extends State<SettingsPage> {
           RouterTile(
             icon: Icons.assignment,
             title: 'Assignments',
-            route: Router.assignmentSettings,
+            route: Routes.assignmentSettings,
           ),
           RouterTile(
             icon: Icons.schedule,
             title: 'Schedule',
-            route: Router.scheduleSettings,
+            route: Routes.scheduleSettings,
           ),
           RouterTile(
             icon: Icons.school,
             title: 'Subjects',
-            route: Router.subjectsSettings,
+            route: Routes.subjectsSettings,
           ),
         ],
       ),

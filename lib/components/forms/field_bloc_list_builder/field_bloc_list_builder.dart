@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:form_bloc/form_bloc.dart';
+import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 
-class FieldBlocListBuilder extends StatelessWidget {
-  final FieldBlocList fieldBlocList;
+class FieldBlocListBuilder<T extends GroupFieldBloc> extends StatelessWidget {
+  final ListFieldBloc<T> fieldBlocList;
   final Widget Function(
     BuildContext context,
-    FieldBlocList fieldBlocList,
+    ListFieldBloc<T> fieldBlocList,
     int index,
   ) itemBuilder;
 
   const FieldBlocListBuilder({
-    Key key,
     @required this.fieldBlocList,
     @required this.itemBuilder,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     if (fieldBlocList == null) {
-      return Container();
+      return SizedBox();
     } else {
       return ListView.builder(
-        itemCount: fieldBlocList.length,
+        itemCount: fieldBlocList.value.length,
         primary: false,
         shrinkWrap: true,
         itemBuilder: (context, index) =>

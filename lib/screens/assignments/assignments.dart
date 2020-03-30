@@ -38,7 +38,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () =>
-                Router.navigator.pushNamed(Router.assignmentSettings),
+                Router.navigator.pushNamed(Routes.assignmentSettings),
           ),
         ],
       ),
@@ -64,6 +64,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       showNoSubjectsDialog(context);
       return;
     }
-    Router.navigator.pushNamed(Router.addAssignment);
+    Router.navigator.pushNamed(Routes.addAssignment);
   }
 }
