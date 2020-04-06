@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:school_life/models/holiday.dart';
 
 class HolidayItem extends StatelessWidget {
-  const HolidayItem({Key key, this.holiday}) : super(key: key);
+  const HolidayItem(this.holiday);
 
   final Holiday holiday;
 
@@ -35,7 +35,7 @@ class HolidayItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 _HolidayIndicator(
-                  start: true,
+                  isStart: true,
                   date: holiday.startDate,
                 ),
                 Container(
@@ -44,7 +44,7 @@ class HolidayItem extends StatelessWidget {
                   color: Colors.grey,
                 ),
                 _HolidayIndicator(
-                  start: false,
+                  isStart: false,
                   date: holiday.endDate,
                 ),
               ],
@@ -57,9 +57,9 @@ class HolidayItem extends StatelessWidget {
 }
 
 class _HolidayIndicator extends StatelessWidget {
-  const _HolidayIndicator({Key key, this.start, this.date}) : super(key: key);
+  const _HolidayIndicator({this.isStart, this.date});
 
-  final bool start;
+  final bool isStart;
   final DateTime date;
 
   @override
@@ -68,7 +68,7 @@ class _HolidayIndicator extends StatelessWidget {
       height: MediaQuery.of(context).size.height * 0.05,
       width: MediaQuery.of(context).size.width * 0.35,
       child: Card(
-        color: !start
+        color: !isStart
             ? const Color(0xFF5EC999).withOpacity(0.25)
             : const Color(0xFFEF7198).withOpacity(0.25),
         elevation: 0,
@@ -83,8 +83,9 @@ class _HolidayIndicator extends StatelessWidget {
               height: 16,
               width: 16,
               decoration: BoxDecoration(
-                color:
-                    !start ? const Color(0xFF5EC999) : const Color(0xFFEF7198),
+                color: !isStart
+                    ? const Color(0xFF5EC999)
+                    : const Color(0xFFEF7198),
                 shape: BoxShape.circle,
               ),
             ),

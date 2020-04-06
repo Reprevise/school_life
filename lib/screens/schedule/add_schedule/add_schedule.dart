@@ -12,10 +12,7 @@ import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
 
 class AddSchedulePage extends StatefulWidget {
-  const AddSchedulePage({
-    Key key,
-    this.subject,
-  }) : super(key: key);
+  const AddSchedulePage({this.subject});
 
   final Subject subject;
 

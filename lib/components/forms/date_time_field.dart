@@ -4,14 +4,13 @@ import 'package:school_life/util/date_utils.dart';
 
 class DateField extends StatelessWidget {
   const DateField({
-    Key key,
     @required this.labelText,
     @required this.errorText,
     @required this.selectedDate,
     @required this.onDateChanged,
     @required this.format,
     @required this.isRequired,
-  }) : super(key: key);
+  });
 
   final String labelText;
   final String errorText;
@@ -49,13 +48,12 @@ class DateField extends StatelessWidget {
 
 class TimeField extends StatelessWidget {
   const TimeField({
-    Key key,
     @required this.labelText,
     @required this.errorText,
     @required this.selectedTime,
     @required this.onTimeChanged,
     @required this.isRequired,
-  }) : super(key: key);
+  });
 
   final String errorText;
   final String labelText;
@@ -91,7 +89,6 @@ class TimeField extends StatelessWidget {
 
 class _InputField extends StatelessWidget {
   const _InputField({
-    Key key,
     @required this.labelText,
     @required this.valueText,
     @required this.errorText,
@@ -99,7 +96,7 @@ class _InputField extends StatelessWidget {
     @required this.isRequired,
     this.valueStyle,
     this.decoration = const InputDecoration(),
-  }) : super(key: key);
+  });
 
   final String labelText;
   final String valueText;

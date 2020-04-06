@@ -3,12 +3,11 @@ import 'package:school_life/router/router.gr.dart';
 
 class RouterTile extends StatelessWidget {
   const RouterTile({
-    Key key,
     @required this.icon,
     @required this.title,
     this.subtitle,
     @required this.route,
-  }) : super(key: key);
+  });
 
   final IconData icon;
   final String title;

@@ -4,10 +4,9 @@ import 'package:table_calendar/table_calendar.dart';
 
 class ScheduleHeader extends StatelessWidget {
   const ScheduleHeader({
-    Key key,
     @required this.onDaySelected,
     @required this.controller,
-  }) : super(key: key);
+  });
 
   final CalendarController controller;
   final Function(DateTime, List<dynamic>) onDaySelected;

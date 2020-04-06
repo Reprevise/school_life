@@ -21,10 +21,7 @@ const String darkThemeName = 'dark';
 const String systemThemeName = 'system';
 
 class ThemeSwitcher extends StatefulWidget {
-  const ThemeSwitcher({
-    Key key,
-    @required this.themedWidgetBuilder,
-  }) : super(key: key);
+  const ThemeSwitcher({@required this.themedWidgetBuilder});
 
   final ThemedWidgetBuilder themedWidgetBuilder;
 

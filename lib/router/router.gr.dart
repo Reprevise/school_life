@@ -108,13 +108,9 @@ class Router extends RouterBase {
           transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.holidays:
-        if (hasInvalidArgs<Key>(args)) {
-          return misTypedArgsRoute<Key>(args);
-        }
-        final typedArgs = args as Key;
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
-              ScheduleHolidaysPage(key: typedArgs),
+              ScheduleHolidaysPage(),
           settings: settings,
           transitionsBuilder: TransitionsBuilders.slideBottom,
         );
@@ -140,13 +136,14 @@ class Router extends RouterBase {
           transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.assignmentDetails:
-        if (hasInvalidArgs<Assignment>(args)) {
-          return misTypedArgsRoute<Assignment>(args);
+        if (hasInvalidArgs<AssignmentDetailsPageArguments>(args)) {
+          return misTypedArgsRoute<AssignmentDetailsPageArguments>(args);
         }
-        final typedArgs = args as Assignment;
+        final typedArgs = args as AssignmentDetailsPageArguments ??
+            AssignmentDetailsPageArguments();
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AssignmentDetailsPage(typedArgs),
+              AssignmentDetailsPage(typedArgs.assignment),
           settings: settings,
           transitionsBuilder: TransitionsBuilders.slideBottom,
         );
@@ -158,13 +155,8 @@ class Router extends RouterBase {
           transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.addHoliday:
-        if (hasInvalidArgs<Key>(args)) {
-          return misTypedArgsRoute<Key>(args);
-        }
-        final typedArgs = args as Key;
         return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AddHolidayPage(key: typedArgs),
+          pageBuilder: (ctx, animation, secondaryAnimation) => AddHolidayPage(),
           settings: settings,
           transitionsBuilder: TransitionsBuilders.slideBottom,
         );
@@ -176,7 +168,7 @@ class Router extends RouterBase {
             args as AddSchedulePageArguments ?? AddSchedulePageArguments();
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AddSchedulePage(key: typedArgs.key, subject: typedArgs.subject),
+              AddSchedulePage(subject: typedArgs.subject),
           settings: settings,
           transitionsBuilder: TransitionsBuilders.slideBottom,
         );
@@ -196,9 +188,14 @@ class Router extends RouterBase {
 // Arguments holder classes
 //***************************************************************************
 
+//AssignmentDetailsPage arguments holder class
+class AssignmentDetailsPageArguments {
+  final Assignment assignment;
+  AssignmentDetailsPageArguments({this.assignment});
+}
+
 //AddSchedulePage arguments holder class
 class AddSchedulePageArguments {
-  final Key key;
   final Subject subject;
-  AddSchedulePageArguments({this.key, this.subject});
+  AddSchedulePageArguments({this.subject});
 }

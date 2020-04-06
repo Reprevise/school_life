@@ -10,7 +10,7 @@ import 'package:school_life/util/date_utils.dart';
 import 'package:school_life/util/day_utils.dart';
 
 class SchedulesList extends StatelessWidget {
-  const SchedulesList({Key key, @required this.selectedDay}) : super(key: key);
+  const SchedulesList({@required this.selectedDay});
 
   final DateTime selectedDay;
 

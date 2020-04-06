@@ -5,11 +5,10 @@ import 'package:school_life/util/day_utils.dart';
 class ScheduleItem extends StatelessWidget {
   const ScheduleItem(
     this.subject, {
-    Key key,
+    @required this.selectedDay,
     this.isFirst,
     this.isLast,
-    @required this.selectedDay,
-  }) : super(key: key);
+  });
 
   final Subject subject;
   final bool isFirst;

@@ -6,12 +6,11 @@ import 'package:school_life/components/forms/date_time_field.dart';
 
 class ScheduleField extends StatelessWidget {
   const ScheduleField({
-    Key key,
     @required this.dayFieldBloc,
     @required this.startTimeBloc,
     @required this.endTimeBloc,
     @required this.onRemove,
-  }) : super(key: key);
+  });
 
   final SelectFieldBloc dayFieldBloc;
   final InputFieldBloc<TimeOfDay, Object> startTimeBloc;

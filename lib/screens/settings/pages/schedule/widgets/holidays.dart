@@ -16,8 +16,6 @@ import 'package:school_life/services/databases/db_helper.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class ScheduleHolidaysPage extends StatelessWidget {
-  const ScheduleHolidaysPage({Key key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final fontSize = MediaQuery.of(context).size.width / 20;
@@ -41,7 +39,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
                 padding: const EdgeInsets.all(16),
                 itemCount: box.values.length,
                 itemBuilder: (_, index) {
-                  return HolidayItem(holiday: box.values.toList()[index]);
+                  return HolidayItem(box.values.toList()[index]);
                 },
                 separatorBuilder: (_, __) {
                   return const SizedBox(height: 16);
@@ -84,8 +82,6 @@ class ScheduleHolidaysPage extends StatelessWidget {
 }
 
 class AddHolidayPage extends StatefulWidget {
-  const AddHolidayPage({Key key}) : super(key: key);
-
   @override
   _AddHolidayPageState createState() => _AddHolidayPageState();
 }

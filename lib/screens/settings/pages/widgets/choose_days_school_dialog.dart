@@ -3,10 +3,9 @@ import 'package:school_life/router/router.gr.dart';
 
 class ChooseDaysOfSchoolDialog extends StatefulWidget {
   const ChooseDaysOfSchoolDialog({
-    Key key,
     @required this.selectedDays,
     @required this.onSaved,
-  }) : super(key: key);
+  });
 
   final Map<String, bool> selectedDays;
   final ValueChanged<Map<String, bool>> onSaved;

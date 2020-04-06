@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class DetailsPageAppbar extends StatelessWidget {
-  const DetailsPageAppbar(this.title, this.backgroundColor, {Key key})
-      : super(key: key);
+  const DetailsPageAppbar(this.title, this.backgroundColor);
 
   final String title;
   final Color backgroundColor;
