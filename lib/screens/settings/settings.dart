@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/components/theme/theme_switcher.dart';
 import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/settings/widgets/index.dart';
+import 'package:school_life/screens/settings/widgets/router_tile.dart';
+import 'package:school_life/screens/settings/widgets/setting_header.dart';
 import 'package:school_life/screens/settings/widgets/theme_switch_controller.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -12,28 +13,25 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool _isDark;
+  final _controller = ThemeSwitchController();
+  static const _animPath = 'assets/animations/switch_daytime.flr';
 
-  ThemeSwitchController _controller;
+  bool _isDark;
 
   @override
   void initState() {
     super.initState();
-    _controller = ThemeSwitchController();
-    ThemeSwitcher.of(context).mode == ThemeMode.light
-        ? _isDark = false
-        : _isDark = true;
-    _controller.setDarkness(_isDark);
+    _isDark = ThemeSwitcher.of(context).mode == ThemeMode.dark;
+    _controller.setDarkness(isDark: _isDark);
   }
 
   void _toggleTheme() {
     _isDark = !_isDark;
+    _controller.setDarkness(isDark: _isDark);
     ThemeSwitcher.of(context).setThemeMode(
-      _isDark == true ? ThemeMode.dark : ThemeMode.light,
+      _isDark ? ThemeMode.dark : ThemeMode.light,
       context,
     );
-    _controller.setDarkness(_isDark);
-    setState(() {});
   }
 
   @override
@@ -42,9 +40,8 @@ class _SettingsPageState extends State<SettingsPage> {
       appBar: const CustomAppBar('Settings'),
       drawer: CustomDrawer(),
       body: ListView(
-        primary: false,
         children: <Widget>[
-          buildThemeToggle(),
+          buildThemeTile(),
           const Divider(color: Colors.grey),
           const SettingHeader('Page Settings'),
           RouterTile(
@@ -67,37 +64,22 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  Widget buildThemeToggle() {
-    return GestureDetector(
+  Widget buildThemeTile() {
+    final textTheme = Theme.of(context).accentTextTheme;
+
+    return InkWell(
       onTap: _toggleTheme,
       child: Container(
-        height: 100,
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        height: 56,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(
-                    'Theme',
-                    style: Theme.of(context).accentTextTheme.headline4,
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    _isDark == false ? 'Light' : 'Dark',
-                    style: Theme.of(context).accentTextTheme.bodyText2,
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              width: 100,
-              height: 50,
+            Text('Theme', style: textTheme.bodyText2),
+            SizedBox(
+              width: 75,
               child: FlareActor(
-                'assets/animations/switch_daytime.flr',
+                _animPath,
                 controller: _controller,
               ),
             ),

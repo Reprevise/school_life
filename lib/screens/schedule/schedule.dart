@@ -85,7 +85,7 @@ class _SchedulePageState extends State<SchedulePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,
-        label: const Text('ADD SUBJECT SCHEDULE'),
+        label: const Text('ADD SCHEDULE'),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

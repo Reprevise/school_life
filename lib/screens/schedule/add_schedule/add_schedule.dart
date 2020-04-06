@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/add_schedule_bloc.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/forms/field_bloc_list_builder/field_bloc_list_builder.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
-import 'package:school_life/components/index.dart';
 import 'package:school_life/components/forms/required/form_required.dart';
+import 'package:school_life/components/index.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
@@ -64,30 +63,32 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
         onSuccess: (_, __) {
           Router.navigator.pushNamed(Routes.schedule);
         },
+        onSubmitting: (_, __) {
+          return const Center(child: CircularProgressIndicator());
+        },
+        onLoading: (_, __) {
+          return const Center(child: CircularProgressIndicator());
+        },
         builder: (context, state) {
-          if (state is FormBlocLoading || state is FormBlocSubmitting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            _formBloc = context.bloc<AddScheduleFormBloc>();
-            return WillPopScope(
-              onWillPop: () => _formBloc.canPop(context),
-              child: PageView(
-                controller: _controller,
-                physics: const NeverScrollableScrollPhysics(),
-                children: <Widget>[
-                  _FirstPage(_formBloc, _controller),
-                  _SecondPage(
-                    form: _formBloc,
-                    controller: _controller,
-                    onFieldRemove: (indx) {
-                      _formBloc.removeScheduleField(indx);
-                    },
-                    onSubmit: _formBloc.submit,
-                  ),
-                ],
-              ),
-            );
-          }
+          _formBloc = context.bloc<AddScheduleFormBloc>();
+          return WillPopScope(
+            onWillPop: () => _formBloc.canPop(context),
+            child: PageView(
+              controller: _controller,
+              physics: const NeverScrollableScrollPhysics(),
+              children: <Widget>[
+                _FirstPage(_formBloc, _controller),
+                _SecondPage(
+                  form: _formBloc,
+                  controller: _controller,
+                  onFieldRemove: (indx) {
+                    _formBloc.removeScheduleField(indx);
+                  },
+                  onSubmit: _formBloc.submit,
+                ),
+              ],
+            ),
+          );
         },
       ),
     );
@@ -106,7 +107,7 @@ class _FirstPage extends StatelessWidget {
 
     return Column(
       children: <Widget>[
-        Container(
+        SizedBox(
           width: cWidth,
           child: Text(
             'What subject do you want to create a schedule for?',
@@ -115,22 +116,20 @@ class _FirstPage extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: Container(
-            child: Center(
-              child: DropdownFieldBlocBuilder<Map<String, dynamic>>(
-                selectFieldBloc: form.subjectField,
-                millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
-                itemBuilder: (context, value) => value['name'] as String,
-                showEmptyItem: false,
-                decoration: InputDecoration(
-                  labelText: 'Subject*',
-                  prefixIcon: Icon(
-                    Icons.subject,
-                    color: Theme.of(context).primaryIconTheme.color,
-                  ),
-                  focusedErrorBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.red),
-                  ),
+          child: Center(
+            child: DropdownFieldBlocBuilder<Map<String, dynamic>>(
+              selectFieldBloc: form.subjectField,
+              millisecondsForShowDropdownItemsWhenKeyboardIsOpen: 100,
+              itemBuilder: (context, value) => value['name'] as String,
+              showEmptyItem: false,
+              decoration: InputDecoration(
+                labelText: 'Subject*',
+                prefixIcon: Icon(
+                  Icons.subject,
+                  color: Theme.of(context).primaryIconTheme.color,
+                ),
+                focusedErrorBorder: const OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
                 ),
               ),
             ),
@@ -169,7 +168,7 @@ class _SecondPageState extends State<_SecondPage> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        Container(
+        SizedBox(
           width: cWidth,
           child: Text(
             'Let\'s setup the schedule',
@@ -207,7 +206,7 @@ class ScheduleFields extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: <Widget>[
         const FormRequired(),
         Expanded(
@@ -219,9 +218,7 @@ class ScheduleFields extends StatelessWidget {
                 dayFieldBloc: group.day,
                 startTimeBloc: group.startTime,
                 endTimeBloc: group.endTime,
-                onRemove: () {
-                  onRemove(i);
-                },
+                onRemove: () => onRemove(i),
               );
             },
           ),

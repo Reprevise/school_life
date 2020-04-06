@@ -49,7 +49,7 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
     initialValue: DateTime.now(),
   );
 
-  final subjectField = SelectFieldBloc(
+  final subjectField = SelectFieldBloc<Map<String, dynamic>, Object>(
     name: 'assignment-subject',
     validators: [FieldBlocValidators.required],
   );

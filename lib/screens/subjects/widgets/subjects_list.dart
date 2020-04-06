@@ -16,10 +16,12 @@ class SubjectsList extends StatelessWidget {
       builder: (context, box, _) {
         return Visibility(
           visible: box.isNotEmpty,
-          child: Column(
-            children: box.values
-                .map((subject) => SubjectItem(subject))
-                .toList(),
+          child: ListView(
+            primary: false,
+            padding: const EdgeInsets.fromLTRB(8, 20, 8, 70),
+            itemExtent: 100,
+            children:
+                box.values.map((subject) => SubjectItem(subject)).toList(),
           ),
           replacement: Column(
             children: <Widget>[

@@ -2,7 +2,6 @@ import 'package:flare_flutter/flare.dart';
 import 'package:flare_flutter/flare_controls.dart';
 
 class ThemeSwitchController extends FlareControls {
-
   bool _isDark = false;
 
   static const String switchToNight = 'switch_night';
@@ -10,9 +9,9 @@ class ThemeSwitchController extends FlareControls {
   static const String dayIdle = 'day_idle';
   static const String nightIdle = 'night_idle';
 
-  void setDarkness(newDarkness) {
-    _isDark = newDarkness;
-    if (_isDark == true) {
+  void setDarkness({bool isDark}) {
+    _isDark = isDark;
+    if (_isDark) {
       play(switchToNight);
     } else {
       play(switchToDay);

@@ -80,22 +80,18 @@ class SubjectItem extends StatelessWidget {
       child: InkWell(
         onTap: () {},
         onLongPress: () => showDeleteSubjectDialog(context, subject),
-        child: Container(
-          height: 100,
-          width: 375,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(top: 8.0),
-                child: subjectName,
-              ),
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: extraSubjectInfo,
-              ),
-            ],
-          ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: subjectName,
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 16.0),
+              child: extraSubjectInfo,
+            ),
+          ],
         ),
       ),
     );

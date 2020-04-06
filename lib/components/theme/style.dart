@@ -53,12 +53,8 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ButtonTextTheme.accent,
   ),
   accentTextTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(
-      color: Colors.white,
-    ),
-    bodyText2: GoogleFonts.muli(
-      color: Colors.black,
-    ),
+    bodyText1: GoogleFonts.rubik(color: Colors.white),
+    bodyText2: GoogleFonts.muli(color: Colors.black),
     headline4: GoogleFonts.muli(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
@@ -67,12 +63,8 @@ final ThemeData lightTheme = ThemeData(
     ),
   ),
   textTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(
-      color: Colors.black,
-    ),
-    bodyText2: GoogleFonts.muli(
-      color: Colors.black,
-    ),
+    bodyText1: GoogleFonts.rubik(color: Colors.black),
+    bodyText2: GoogleFonts.muli(color: Colors.black),
     button: GoogleFonts.openSans(
       fontWeight: FontWeight.bold,
       color: Colors.black,
@@ -153,12 +145,8 @@ final ThemeData darkTheme = ThemeData(
   ),
   applyElevationOverlayColor: true,
   accentTextTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(
-      color: Colors.grey[800],
-    ),
-    bodyText2: GoogleFonts.muli(
-      color: Colors.white,
-    ),
+    bodyText1: GoogleFonts.rubik(color: Colors.grey[800]),
+    bodyText2: GoogleFonts.muli(color: Colors.white),
     headline4: GoogleFonts.muli(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
@@ -167,12 +155,8 @@ final ThemeData darkTheme = ThemeData(
     ),
   ),
   textTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(
-      color: Colors.black,
-    ),
-    bodyText2: GoogleFonts.muli(
-      color: Colors.grey[400],
-    ),
+    bodyText1: GoogleFonts.rubik(color: Colors.black),
+    bodyText2: GoogleFonts.muli(color: Colors.grey[400]),
     button: GoogleFonts.openSans(
       fontWeight: FontWeight.bold,
       color: Colors.black,

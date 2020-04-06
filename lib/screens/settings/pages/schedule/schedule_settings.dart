@@ -5,7 +5,8 @@ import 'package:school_life/enums/schedule_date_type.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/settings/pages/widgets/choose_days_school_dialog.dart';
-import 'package:school_life/screens/settings/widgets/index.dart';
+import 'package:school_life/screens/settings/widgets/router_tile.dart';
+import 'package:school_life/screens/settings/widgets/setting_header.dart';
 import 'package:school_life/services/settings/schedule.dart';
 import 'package:school_life/util/date_utils.dart';
 

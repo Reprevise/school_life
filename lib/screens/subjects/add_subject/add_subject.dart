@@ -2,25 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:form_bloc/form_bloc.dart';
 import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/index.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
 
-class AddSubjectPage extends StatefulWidget {
-  @override
-  _AddSubjectPageState createState() => _AddSubjectPageState();
-}
-
-class _AddSubjectPageState extends State<AddSubjectPage> {
-  AddSubjectFormBloc _formBloc;
-
-  @override
-  void dispose() {
-    _formBloc?.close();
-    super.dispose();
+class AddSubjectPage extends StatelessWidget {
+  void _goToSchedulePage(AddSubjectFormBloc bloc) {
+    Router.navigator.popAndPushNamed(
+      Routes.addSchedule,
+      arguments: AddSchedulePageArguments(subject: bloc.subject),
+    );
   }
 
   @override
@@ -29,6 +22,12 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
       appBar: const CustomAppBar('Add Subject'),
       body: FormBlocHelper<AddSubjectFormBloc>(
         create: (_) => AddSubjectFormBloc(),
+        onSubmitting: (_, __) {
+          return const Center(child: CircularProgressIndicator());
+        },
+        onLoading: (_, __) {
+          return const Center(child: CircularProgressIndicator());
+        },
         onSuccess: (context, _) {
           showDialog<void>(
             context: context,
@@ -44,32 +43,22 @@ class _AddSubjectPageState extends State<AddSubjectPage> {
                     child: const Text('NO'),
                   ),
                   FlatButton(
-                    onPressed: () {
-                      Router.navigator.popAndPushNamed(
-                        Routes.addSchedule,
-                        arguments: AddSchedulePageArguments(
-                          subject: _formBloc.subject,
-                        ),
-                      );
-                    },
+                    onPressed: () =>
+                        _goToSchedulePage(context.bloc<AddSubjectFormBloc>()),
                     child: const Text('YES'),
                   ),
                 ],
               );
             },
           );
-          // Router.navigator.pushNamed(Router.subjects);
         },
         builder: (context, state) {
-          if (state is FormBlocLoading || state is FormBlocSubmitting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            _formBloc = context.bloc<AddSubjectFormBloc>();
-            return WillPopScope(
-              onWillPop: () => _formBloc.canPop(context),
-              child: AddSubjectFormFields(_formBloc),
-            );
-          }
+          final formBloc = context.bloc<AddSubjectFormBloc>();
+
+          return WillPopScope(
+            onWillPop: () => formBloc.canPop(context),
+            child: AddSubjectFormFields(formBloc),
+          );
         },
       ),
     );
@@ -106,7 +95,8 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
     const InputBorder errorBorder = OutlineInputBorder(
       borderSide: BorderSide(color: Colors.red),
     );
-    final iconColor = Theme.of(context).primaryIconTheme.color;
+    final theme = Theme.of(context);
+    final iconColor = theme.primaryIconTheme.color;
 
     return ListView(
       padding: const EdgeInsets.only(bottom: 8),
@@ -185,13 +175,12 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
             children: <Widget>[
               SubjectColorPicker(widget.formBloc),
               const SizedBox(height: 8),
-              Container(
+              SizedBox(
                 width: 150,
                 child: OutlineButton(
                   padding: EdgeInsets.zero,
-                  borderSide:
-                      Theme.of(context).inputDecorationTheme.border.borderSide,
-                  textColor: Theme.of(context).textTheme.bodyText2.color,
+                  borderSide: theme.inputDecorationTheme.border.borderSide,
+                  textColor: theme.textTheme.bodyText2.color,
                   onPressed: widget.formBloc.submit,
                   child: const Text('Submit'),
                 ),

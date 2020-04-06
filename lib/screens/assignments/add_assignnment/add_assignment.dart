@@ -44,6 +44,12 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
       onSuccess: (_, __) {
         Router.navigator.pushNamed(Routes.assignments);
       },
+      onSubmitting: (_, __) {
+        return const Center(child: CircularProgressIndicator());
+      },
+      onLoading: (_, __) {
+        return const Center(child: CircularProgressIndicator());
+      },
       builder: (context, state) {
         if (state is FormBlocLoading || state is FormBlocSubmitting) {
           return const Center(child: CircularProgressIndicator());
@@ -53,6 +59,7 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
             onWillPop: () => _formBloc.canPop(context),
             child: ListView(
               padding: const EdgeInsets.only(bottom: 8),
+              shrinkWrap: true,
               children: <Widget>[
                 const FormRequired(),
                 TextFieldBlocBuilder(
@@ -102,22 +109,25 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
                     ),
                   ),
                 ),
-                TextFieldBlocBuilder(
-                  padding: const EdgeInsets.symmetric(horizontal: 8),
-                  textFieldBloc: _formBloc.detailsField,
-                  expands: true,
-                  minLines: null,
-                  maxLines: null,
-                  keyboardType: TextInputType.multiline,
-                  textAlignVertical: TextAlignVertical.top,
-                  decoration: InputDecoration(
-                    labelText: 'Details',
-                    prefixIcon: Icon(
-                      Icons.subject,
-                      color: Theme.of(context).primaryIconTheme.color,
-                    ),
-                    focusedErrorBorder: const OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.red),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 7,
+                  child: TextFieldBlocBuilder(
+                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                    textFieldBloc: _formBloc.detailsField,
+                    expands: true,
+                    minLines: null,
+                    maxLines: null,
+                    keyboardType: TextInputType.multiline,
+                    textAlignVertical: TextAlignVertical.top,
+                    decoration: InputDecoration(
+                      labelText: 'Details',
+                      prefixIcon: Icon(
+                        Icons.subject,
+                        color: Theme.of(context).primaryIconTheme.color,
+                      ),
+                      focusedErrorBorder: const OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.red),
+                      ),
                     ),
                   ),
                 ),

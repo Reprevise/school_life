@@ -19,21 +19,12 @@ class SubjectsPage extends StatelessWidget {
       ),
       drawer: CustomDrawer(),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _handleAddSubjectButtonPress,
+        onPressed: () => Router.navigator.pushNamed(Routes.addSubject),
         label: const Text('ADD SUBJECT'),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.only(top: 20, bottom: 70),
-        child: Center(
-          child: SubjectsList(),
-        ),
-      ),
+      body: Center(child: SubjectsList()),
     );
-  }
-
-  void _handleAddSubjectButtonPress() {
-    Router.navigator.pushNamed(Routes.addSubject);
   }
 }

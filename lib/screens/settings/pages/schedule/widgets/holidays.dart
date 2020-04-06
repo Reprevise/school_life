@@ -108,6 +108,12 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
         onSuccess: (_, __) {
           Router.navigator.pop();
         },
+              onSubmitting: (_, __) {
+        return const Center(child: CircularProgressIndicator());
+      },
+      onLoading: (_, __) {
+        return const Center(child: CircularProgressIndicator());
+      },
         builder: (context, state) {
           if (state is FormBlocLoading || state is FormBlocSubmitting) {
             return const Center(child: CircularProgressIndicator());
@@ -116,7 +122,7 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
             return WillPopScope(
               onWillPop: () => _formBloc.canPop(context),
               child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                 children: <Widget>[
                   const FormRequired(all: true),
                   TextFieldBlocBuilder(

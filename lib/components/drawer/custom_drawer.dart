@@ -79,13 +79,13 @@ class CustomDrawer extends StatelessWidget {
               itemCount: _drawerItems.length,
               padding: const EdgeInsets.only(top: 10),
               shrinkWrap: true,
+              primary: false,
               itemBuilder: (context, i) {
                 final d = _drawerItems[i];
-                return Container(
+                return Material(
                   color:
                       _selectedIndex == i ? containerColor : Colors.transparent,
                   child: ListTile(
-                    dense: true,
                     leading: Icon(
                       d.icon,
                       color: _getItemColor(context, i),

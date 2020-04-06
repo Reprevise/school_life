@@ -19,7 +19,13 @@ class ChooseDaysOfSchoolDialog extends StatefulWidget {
 class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
   _ChooseDaysOfSchoolDialogState(this._selectedDays);
 
-  final Map<String, bool> _selectedDays;
+  Map<String, bool> _selectedDays;
+
+  @override
+  void initState() { 
+    super.initState();
+    _selectedDays = Map.from(widget.selectedDays);
+  }
 
   @override
   Widget build(BuildContext context) {

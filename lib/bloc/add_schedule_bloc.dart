@@ -26,7 +26,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   final List<String> _availableDays = <String>[];
   // List<String> get availableDays => _availableDays;
 
-  final SelectFieldBloc subjectField = SelectFieldBloc(
+  final subjectField = SelectFieldBloc<Map<String, dynamic>, Object>(
     name: 'schedule-subject',
     validators: [FieldBlocValidators.required],
   );
