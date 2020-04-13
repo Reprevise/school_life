@@ -17,14 +17,13 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Subject(
-      fields[0] as int,
-      fields[1] as String,
-      fields[2] as String,
-      fields[3] as String,
-      fields[4] as String,
-      fields[5] as Color,
-      (fields[7] as Map)?.map((dynamic k, dynamic v) =>
-          MapEntry(k as String, (v as List)?.cast<TimeOfDay>())),
+      id: fields[0] as int,
+      name: fields[1] as String,
+      room: fields[2] as String,
+      building: fields[3] as String,
+      teacher: fields[4] as String,
+      color: fields[5] as Color,
+      schedule: (fields[7] as List)?.cast<TimeBlock>(),
       isDeleted: fields[6] as bool,
     );
   }

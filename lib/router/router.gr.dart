@@ -8,29 +8,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:school_life/screens/home/home.dart';
-import 'package:school_life/screens/assignments/assignments.dart';
 import 'package:school_life/screens/schedule/schedule.dart';
-import 'package:school_life/screens/subjects/subjects.dart';
+import 'package:school_life/screens/assignments/assignments.dart';
 import 'package:school_life/screens/settings/settings.dart';
-import 'package:school_life/screens/help_feedback/help_feedback.dart';
+import 'package:school_life/screens/subjects/subjects.dart';
 import 'package:school_life/screens/settings/pages/schedule/widgets/holidays.dart';
 import 'package:school_life/screens/settings/pages/assignments/assignments_settings.dart';
 import 'package:school_life/screens/settings/pages/subjects/subjects_settings.dart';
 import 'package:school_life/screens/settings/pages/schedule/schedule_settings.dart';
 import 'package:school_life/screens/assignments/details/assignment_details.dart';
 import 'package:school_life/models/assignment.dart';
+import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/assignments/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
-import 'package:school_life/models/subject.dart';
 import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
 
 abstract class Routes {
   static const home = '/';
-  static const assignments = '/assignments';
   static const schedule = '/schedule';
-  static const subjects = '/subjects';
+  static const assignments = '/assignments';
   static const settings = '/settings';
-  static const helpFeedback = '/help-feedback';
+  static const subjects = '/subjects';
   static const holidays = '/holidays';
   static const assignmentSettings = '/assignment-settings';
   static const subjectsSettings = '/subjects-settings';
@@ -42,11 +40,10 @@ abstract class Routes {
   static const addSubject = '/add-subject';
   static const all = [
     home,
-    assignments,
     schedule,
-    subjects,
+    assignments,
     settings,
-    helpFeedback,
+    subjects,
     holidays,
     assignmentSettings,
     subjectsSettings,
@@ -70,70 +67,76 @@ class Router extends RouterBase {
     final args = settings.arguments;
     switch (settings.name) {
       case Routes.home:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) => HomePage(),
-          settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
-        );
-      case Routes.assignments:
+        if (hasInvalidArgs<HomePageArguments>(args)) {
+          return misTypedArgsRoute<HomePageArguments>(args);
+        }
+        final typedArgs = args as HomePageArguments ?? HomePageArguments();
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AssignmentsPage(),
+              HomePage(typedArgs.tabsChangeNotifier),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.schedule:
+        if (hasInvalidArgs<SchedulePageArguments>(args)) {
+          return misTypedArgsRoute<SchedulePageArguments>(args);
+        }
+        final typedArgs =
+            args as SchedulePageArguments ?? SchedulePageArguments();
         return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) => SchedulePage(),
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              SchedulePage(typedArgs.tabsChangeNotifier),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
+        );
+      case Routes.assignments:
+        if (hasInvalidArgs<AssignmentsPageArguments>(args)) {
+          return misTypedArgsRoute<AssignmentsPageArguments>(args);
+        }
+        final typedArgs =
+            args as AssignmentsPageArguments ?? AssignmentsPageArguments();
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              AssignmentsPage(typedArgs.tabsChangeNotifier),
+          settings: settings,
+        );
+      case Routes.settings:
+        if (hasInvalidArgs<SettingsPageArguments>(args)) {
+          return misTypedArgsRoute<SettingsPageArguments>(args);
+        }
+        final typedArgs =
+            args as SettingsPageArguments ?? SettingsPageArguments();
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              SettingsPage(typedArgs.tabsChangeNotifier),
+          settings: settings,
         );
       case Routes.subjects:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) => SubjectsPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
-        );
-      case Routes.settings:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) => SettingsPage(),
-          settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
-        );
-      case Routes.helpFeedback:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              HelpFeedbackPage(),
-          settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.holidays:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               ScheduleHolidaysPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.assignmentSettings:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               AssignmentsSettingsPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.subjectsSettings:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               SubjectsSettingsPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.scheduleSettings:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               ScheduleSettingsPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.assignmentDetails:
         if (hasInvalidArgs<AssignmentDetailsPageArguments>(args)) {
@@ -143,22 +146,20 @@ class Router extends RouterBase {
             AssignmentDetailsPageArguments();
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AssignmentDetailsPage(typedArgs.assignment),
+              AssignmentDetailsPage(
+                  typedArgs.assignment, typedArgs.assignmentSubject),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.addAssignment:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               AddAssignmentPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.addHoliday:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) => AddHolidayPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.addSchedule:
         if (hasInvalidArgs<AddSchedulePageArguments>(args)) {
@@ -170,13 +171,11 @@ class Router extends RouterBase {
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               AddSchedulePage(subject: typedArgs.subject),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       case Routes.addSubject:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) => AddSubjectPage(),
           settings: settings,
-          transitionsBuilder: TransitionsBuilders.slideBottom,
         );
       default:
         return unknownRoutePage(settings.name);
@@ -188,10 +187,35 @@ class Router extends RouterBase {
 // Arguments holder classes
 //***************************************************************************
 
+//HomePage arguments holder class
+class HomePageArguments {
+  final ValueNotifier<int> tabsChangeNotifier;
+  HomePageArguments({this.tabsChangeNotifier});
+}
+
+//SchedulePage arguments holder class
+class SchedulePageArguments {
+  final ValueNotifier<int> tabsChangeNotifier;
+  SchedulePageArguments({this.tabsChangeNotifier});
+}
+
+//AssignmentsPage arguments holder class
+class AssignmentsPageArguments {
+  final ValueNotifier<int> tabsChangeNotifier;
+  AssignmentsPageArguments({this.tabsChangeNotifier});
+}
+
+//SettingsPage arguments holder class
+class SettingsPageArguments {
+  final ValueNotifier<int> tabsChangeNotifier;
+  SettingsPageArguments({this.tabsChangeNotifier});
+}
+
 //AssignmentDetailsPage arguments holder class
 class AssignmentDetailsPageArguments {
   final Assignment assignment;
-  AssignmentDetailsPageArguments({this.assignment});
+  final Subject assignmentSubject;
+  AssignmentDetailsPageArguments({this.assignment, this.assignmentSubject});
 }
 
 //AddSchedulePage arguments holder class

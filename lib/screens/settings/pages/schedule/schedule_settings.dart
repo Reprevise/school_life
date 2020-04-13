@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:school_life/components/index.dart';
 import 'package:school_life/enums/schedule_date_type.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
@@ -79,10 +78,11 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
   Widget build(BuildContext context) {
     final titleStyle = Theme.of(context).accentTextTheme.bodyText2;
     return Scaffold(
-      appBar: const CustomAppBar('Schedule Settings'),
+      extendBodyBehindAppBar: true,
       body: ListView(
         primary: false,
         children: <Widget>[
+          Text('Schedule Settings'),
           const SettingHeader('Basics'),
           ListTile(
             title: Text('School Days', style: titleStyle),

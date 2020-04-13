@@ -5,7 +5,7 @@ import 'package:school_life/services/databases/db_helper.dart';
 class BrightnessAdapter extends TypeAdapter<Brightness> {
   @override
   Brightness read(BinaryReader reader) {
-    final bool isLight = reader.readBool();
+    final isLight = reader.readBool();
     return isLight ? Brightness.light : Brightness.dark;
   }
 

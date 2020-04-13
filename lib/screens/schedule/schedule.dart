@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
-import 'package:school_life/components/index.dart';
+import 'package:school_life/components/navbar/navbar.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/widgets/header.dart';
@@ -10,6 +10,11 @@ import 'package:school_life/util/date_utils.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class SchedulePage extends StatefulWidget {
+  final ValueNotifier<int> tabsChangeNotifier;
+
+  SchedulePage(this.tabsChangeNotifier);
+
+
   @override
   _SchedulePageState createState() => _SchedulePageState();
 }
@@ -46,42 +51,22 @@ class _SchedulePageState extends State<SchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        'Schedule',
-        elevation: 4,
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () =>
-                Router.navigator.pushNamed(Routes.scheduleSettings),
-          ),
-          IconButton(
-            icon: Icon(Icons.today),
-            onPressed: () {
-              final now = DateTime.now().onlyDate;
-              setState(() {
-                selectedCalendarDay = now;
-                controller.setSelectedDay(now);
-                controller.setFocusedDay(now);
-              });
-            },
-          ),
-        ],
-      ),
-      drawer: CustomDrawer(),
-      body: ListView(
-        primary: false,
-        padding: const EdgeInsets.only(top: 20, bottom: 70),
-        children: <Widget>[
-          // TODO: sync days of school in settings with calendar
-          ScheduleHeader(
-            onDaySelected: onDayChanged,
-            controller: controller,
-          ),
-          SchedulesList(
-            selectedDay: selectedCalendarDay,
-          ),
-        ],
+      bottomNavigationBar: CustomBottomNavBar(widget.tabsChangeNotifier),
+      body: SafeArea(
+        child: ListView(
+          primary: false,
+          children: <Widget>[
+            // TODO: sync days of school in settings with calendar
+            buildScreenHeader(),
+            ScheduleHeader(
+              onDaySelected: onDayChanged,
+              controller: controller,
+            ),
+            SchedulesList(
+              selectedDay: selectedCalendarDay,
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,
@@ -89,6 +74,44 @@ class _SchedulePageState extends State<SchedulePage> {
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+    );
+  }
+
+  Widget buildScreenHeader() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Text(
+              'Schedule',
+              style: Theme.of(context).textTheme.headline2,
+            ),
+            ButtonBar(
+              children: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: () =>
+                      Router.navigator.pushNamed(Routes.scheduleSettings),
+                ),
+                IconButton(
+                  icon: Icon(Icons.today),
+                  onPressed: () {
+                    final now = DateTime.now().onlyDate;
+                    setState(() {
+                      selectedCalendarDay = now;
+                      controller.setSelectedDay(now);
+                      controller.setFocusedDay(now);
+                    });
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 

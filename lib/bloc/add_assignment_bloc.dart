@@ -93,17 +93,15 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
     final dueDate = dueDateField.value.onlyDate;
     // subject field value
     final subjectID = subjectField.value['value'] as int;
-    final color = _subjects.getSubject(subjectID).color;
     // trimmed details text
     final detailsText = detailsField.value.trim();
     // create new assignment based on text from form
     final newAssignment = Assignment(
-      nextID,
-      assignmentName,
-      dueDate,
-      subjectID,
-      detailsText,
-      color,
+      id: nextID,
+      name: assignmentName,
+      dueDate: dueDate,
+      subjectID: subjectID,
+      details: detailsText,
     );
     await _assignments.addAssignment(newAssignment);
     emitSuccess();

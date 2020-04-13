@@ -20,12 +20,17 @@ class AssignmentItem extends StatelessWidget {
     final dueDate = assignment.dueDate;
     final date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
     return Card(
-      color: assignment.color,
+      color: assignmentSubject.color,
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          Router.navigator
-              .pushNamed(Routes.assignmentDetails, arguments: assignment);
+          Router.navigator.pushNamed(
+            Routes.assignmentDetails,
+            arguments: AssignmentDetailsPageArguments(
+              assignment: assignment,
+              assignmentSubject: assignmentSubject,
+            ),
+          );
         },
         onLongPress: () => showDeleteAssignmentDialog(
           context,

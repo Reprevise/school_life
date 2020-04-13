@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
-import 'package:school_life/components/index.dart';
+import 'package:school_life/components/navbar/navbar.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 
 class AssignmentsPage extends StatefulWidget {
+  final ValueNotifier<int> tabsChangeNotifier;
+
+  AssignmentsPage(this.tabsChangeNotifier);
+
   @override
   _AssignmentsPageState createState() => _AssignmentsPageState();
 }
@@ -32,29 +36,29 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        'Assignments',
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () =>
-                Router.navigator.pushNamed(Routes.assignmentSettings),
-          ),
-        ],
-      ),
-      drawer: CustomDrawer(),
+      extendBodyBehindAppBar: true,
+      bottomNavigationBar: CustomBottomNavBar(widget.tabsChangeNotifier),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddAssignmentPress,
         label: const Text('ADD ASSIGNMENT'),
         icon: const Icon(Icons.add),
       ),
-      body: SingleChildScrollView(
+      body: ListView(
         primary: false,
-        padding: const EdgeInsets.only(top: 20, bottom: 70),
-        child: Center(
-          child: AssignmentsList(),
-        ),
+        padding: const EdgeInsets.all(24),
+        children: <Widget>[
+          IconButton(
+            alignment: Alignment.centerRight,
+            icon: Icon(Icons.settings),
+            onPressed: () => Router.navigator.pushNamed(
+              Routes.assignmentSettings,
+            ),
+          ),
+          Center(
+            child: AssignmentsList(),
+          ),
+        ],
       ),
     );
   }

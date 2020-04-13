@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 
 class Validators {
   /// Verify a field's trimmed val. is less than the set max
@@ -17,8 +19,11 @@ class Validators {
     List<Subject> subjects,
   ) {
     for (final subject in subjects) {
-      // TODO: ensure a class is not within another class
-      if (subject.schedule[selectedDay][0] == time) {
+      // TODO: ensure a subject's time is not within another subject's time
+      final block = sl<SubjectsRepository>()
+          .getTimeBlockFromDay(selectedDay, subject.schedule);
+
+      if (block.startTime == time) {
         return 'Same start time';
       }
     }

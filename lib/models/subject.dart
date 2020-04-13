@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:school_life/main.dart';
+import 'package:school_life/models/time_block.dart';
 import 'package:school_life/services/databases/assignments_repository.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
@@ -8,14 +9,14 @@ part 'subject.g.dart';
 
 @HiveType(typeId: DatabaseHelper.subjectTypeID)
 class Subject extends HiveObject {
-  Subject(
-    this.id,
-    this.name,
-    this.room,
-    this.building,
-    this.teacher,
-    this.color,
-    this.schedule, {
+  Subject({
+    @required this.id,
+    @required this.name,
+    @required this.room,
+    @required this.building,
+    @required this.teacher,
+    @required this.color,
+    this.schedule,
     this.isDeleted = false,
   });
 
@@ -34,7 +35,7 @@ class Subject extends HiveObject {
   @HiveField(6)
   bool isDeleted;
   @HiveField(7)
-  Map<String, List<TimeOfDay>> schedule;
+  List<TimeBlock> schedule;
 
   @override
   Future<void> delete() {

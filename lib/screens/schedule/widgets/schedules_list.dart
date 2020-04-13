@@ -15,18 +15,21 @@ class SchedulesList extends StatelessWidget {
   final DateTime selectedDay;
 
   void sortSchedule(List<Subject> values, String selectedDayOfWeek) {
+    final repo = sl<SubjectsRepository>();
     values.sort((subjectOne, subjectTwo) {
-      final oneSchedule = subjectOne.schedule,
-          twoSchedule = subjectTwo.schedule;
-      final one = oneSchedule[selectedDayOfWeek][0],
-          two = twoSchedule[selectedDayOfWeek][0];
+      final timeOne = repo
+              .getTimeBlockFromDay(selectedDayOfWeek, subjectOne.schedule)
+              .startTime,
+          timeTwo = repo
+              .getTimeBlockFromDay(selectedDayOfWeek, subjectTwo.schedule)
+              .startTime;
       final oneDate = selectedDay.onlyDate
-              .add(Duration(hours: one.hour, minutes: one.minute)),
+              .add(Duration(hours: timeOne.hour, minutes: timeOne.minute))
+              .millisecondsSinceEpoch,
           twoDate = selectedDay.onlyDate
-              .add(Duration(hours: two.hour, minutes: two.minute));
-      final oneDateMilli = oneDate.millisecondsSinceEpoch,
-          twoDateMilli = twoDate.millisecondsSinceEpoch;
-      return oneDateMilli.compareTo(twoDateMilli);
+              .add(Duration(hours: timeTwo.hour, minutes: timeTwo.minute))
+              .millisecondsSinceEpoch;
+      return oneDate.compareTo(twoDate);
     });
   }
 

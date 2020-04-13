@@ -1,4 +1,3 @@
-import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:school_life/bloc/validators.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/settings_keys.dart';
+import 'package:school_life/models/time_block.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/day_utils.dart';
@@ -24,7 +24,6 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   SubjectsRepository _subjectsRepo;
 
   final List<String> _availableDays = <String>[];
-  // List<String> get availableDays => _availableDays;
 
   final subjectField = SelectFieldBloc<Map<String, dynamic>, Object>(
     name: 'schedule-subject',
@@ -43,36 +42,31 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   void onSubmitting() async {
     final subjectID = subjectField.value['value'] as int;
     final subject = _subjectsRepo.getSubject(subjectID);
+    final _schedule = <TimeBlock>[];
 
     for (final field in schedule.value) {
       final day = field.day.value;
       final startTime = field.startTime.value;
       final endTime = field.endTime.value;
-      subject.schedule ??= {};
-      subject.schedule[day] = <TimeOfDay>[startTime, endTime];
+      _schedule.add(TimeBlock(
+        day: day,
+        startTime: startTime,
+        endTime: endTime,
+      ));
     }
-    subject.schedule = sortMap(
-      LinkedHashMap<String, List<TimeOfDay>>.from(subject.schedule),
-    );
+    subject.schedule = sortMap(subject.schedule);
     await subject.save();
     emitSuccess();
   }
 
-  LinkedHashMap<String, List<TimeOfDay>> sortMap(
-      LinkedHashMap<String, List<TimeOfDay>> map) {
-    final mapKeys = map.keys.toList()
-      ..sort(
-        (stringOne, stringTwo) {
-          final numberOne = daysToInteger[stringOne];
-          final numberTwo = daysToInteger[stringTwo];
-          return numberOne.compareTo(numberTwo);
-        },
-      );
-    final resMap = <String, List<TimeOfDay>>{};
-    for (final key in mapKeys) {
-      resMap[key] = map[key];
-    }
-    return resMap;
+  List<TimeBlock> sortMap(List<TimeBlock> unsortedSchedule) {
+    final sortedSchedule = unsortedSchedule
+      ..sort((blockOne, blockTwo) {
+        final numberOne = daysToInteger[blockOne.day];
+        final numberTwo = daysToInteger[blockTwo.day];
+        return numberOne.compareTo(numberTwo);
+      });
+    return sortedSchedule;
   }
 
   void _setSubjectFieldValues() {

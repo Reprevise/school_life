@@ -17,19 +17,18 @@ class AssignmentAdapter extends TypeAdapter<Assignment> {
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Assignment(
-      fields[0] as int,
-      fields[1] as String,
-      fields[2] as DateTime,
-      fields[3] as int,
-      fields[4] as String,
-      fields[5] as Color,
+      id: fields[0] as int,
+      name: fields[1] as String,
+      dueDate: fields[2] as DateTime,
+      subjectID: fields[3] as int,
+      details: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Assignment obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -39,8 +38,6 @@ class AssignmentAdapter extends TypeAdapter<Assignment> {
       ..writeByte(3)
       ..write(obj.subjectID)
       ..writeByte(4)
-      ..write(obj.details)
-      ..writeByte(5)
-      ..write(obj.color);
+      ..write(obj.details);
   }
 }

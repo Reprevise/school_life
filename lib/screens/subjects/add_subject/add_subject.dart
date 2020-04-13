@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
-import 'package:school_life/components/index.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
 
@@ -19,7 +18,7 @@ class AddSubjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar('Add Subject'),
+      extendBodyBehindAppBar: true,
       body: FormBlocHelper<AddSubjectFormBloc>(
         create: (_) => AddSubjectFormBloc(),
         onSubmitting: (_, __) {

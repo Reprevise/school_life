@@ -1,8 +1,8 @@
-import 'package:school_life/components/theme/theme_switcher.dart';
+import 'package:flutter/material.dart';
 
 abstract class BasicSettingsDefaults {
   // static const Brightness theme = Brightness.light;
-  static const String theme = lightThemeName;
+  static const ThemeMode theme = ThemeMode.system;
   static const String firstName = 'Guest';
   static const String lastName = '';
 }

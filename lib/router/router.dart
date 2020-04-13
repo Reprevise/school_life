@@ -1,9 +1,7 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:auto_route/auto_route_annotations.dart';
 import 'package:school_life/screens/assignments/add_assignnment/add_assignment.dart';
 import 'package:school_life/screens/assignments/assignments.dart';
 import 'package:school_life/screens/assignments/details/assignment_details.dart';
-import 'package:school_life/screens/help_feedback/help_feedback.dart';
 import 'package:school_life/screens/home/home.dart';
 import 'package:school_life/screens/schedule/add_schedule/add_schedule.dart';
 import 'package:school_life/screens/schedule/schedule.dart';
@@ -15,21 +13,14 @@ import 'package:school_life/screens/settings/settings.dart';
 import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
 import 'package:school_life/screens/subjects/subjects.dart';
 
-@CustomAutoRouter(
-  generateRouteList: true,
-  transitionsBuilder: TransitionsBuilders.slideBottom,
-)
+@CustomAutoRouter(generateRouteList: true)
 class $Router {
-  @CustomRoute(
-    initial: true,
-    transitionsBuilder: TransitionsBuilders.slideBottom,
-  )
+  @CustomRoute()
   HomePage home;
-  AssignmentsPage assignments;
   SchedulePage schedule;
-  SubjectsPage subjects;
+  AssignmentsPage assignments;
   SettingsPage settings;
-  HelpFeedbackPage helpFeedback;
+  SubjectsPage subjects;
   ScheduleHolidaysPage holidays;
 
   AssignmentsSettingsPage assignmentSettings;

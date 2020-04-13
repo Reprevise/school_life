@@ -5,7 +5,6 @@ import 'package:form_bloc/form_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:intl/intl.dart';
 import 'package:school_life/bloc/add_holiday_bloc.dart';
-import 'package:school_life/components/appbar/custom_appbar.dart';
 import 'package:school_life/components/forms/date_time_field.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/forms/required/form_required.dart';
@@ -20,7 +19,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final fontSize = MediaQuery.of(context).size.width / 20;
     return Scaffold(
-      appBar: const CustomAppBar('Configure Holidays'),
+      extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Router.navigator.pushNamed(Routes.addHoliday),
         label: const Text('ADD HOLIDAY'),
@@ -98,7 +97,7 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar('Add Holiday'),
+      extendBodyBehindAppBar: true,
       body: FormBlocHelper<AddHolidayFormBloc>(
         create: (_) => AddHolidayFormBloc(),
         onSuccess: (_, __) {

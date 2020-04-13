@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/main.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/day_utils.dart';
 
 class ScheduleItem extends StatelessWidget {
@@ -62,8 +64,10 @@ class ScheduleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final weekdayString = selectedDay.weekday.toString();
     final dayOfWeek = daysFromIntegerString[weekdayString];
-    final startTime = subject.schedule[dayOfWeek][0].format(context);
-    final endTime = subject.schedule[dayOfWeek][1].format(context);
+    final block = sl<SubjectsRepository>()
+        .getTimeBlockFromDay(dayOfWeek, subject.schedule);
+    final startTime = block.startTime.format(context);
+    final endTime = block.endTime.format(context);
 
     return Container(
       height: 75,

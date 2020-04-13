@@ -6,14 +6,13 @@ part 'assignment.g.dart';
 
 @HiveType(typeId: DatabaseHelper.assignmentTypeID)
 class Assignment extends HiveObject {
-  Assignment(
-    this.id,
-    this.name,
-    this.dueDate,
-    this.subjectID,
-    this.details,
-    this.color,
-  );
+  Assignment({
+    @required this.id,
+    @required this.name,
+    @required this.dueDate,
+    @required this.subjectID,
+    @required this.details,
+  });
 
   @HiveField(0)
   int id;
@@ -25,6 +24,4 @@ class Assignment extends HiveObject {
   int subjectID;
   @HiveField(4)
   String details;
-  @HiveField(5)
-  Color color;
 }

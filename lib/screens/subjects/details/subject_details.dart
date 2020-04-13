@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/components/index.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/util/color_utils.dart';
 
@@ -17,7 +16,7 @@ class SubjectDetailsPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: lightAccent,
-      appBar: const CustomAppBar(''),
+      extendBodyBehindAppBar: true,
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

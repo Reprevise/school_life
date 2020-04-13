@@ -4,8 +4,10 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/models/holiday.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/models/time_block.dart';
 import 'package:school_life/services/adapters/brightness_adapter.dart';
 import 'package:school_life/services/adapters/color_adapter.dart';
+import 'package:school_life/services/adapters/theme_mode_adapter.dart';
 import 'package:school_life/services/adapters/time_adapter.dart';
 
 class DatabaseHelper {
@@ -14,9 +16,11 @@ class DatabaseHelper {
   static const int assignmentTypeID = 1;
   static const int subjectTypeID = 2;
   static const int holidayTypeID = 3;
+  static const int timeBlockTypeID = 4;
   static const int colorTypeID = 200;
   static const int timeTypeID = 201;
   static const int brightnessTypeID = 202;
+  static const int themeModeTypeID = 203;
 
   static Future<void> initializeHiveBoxes() async {
     await Hive.initFlutter();
@@ -33,9 +37,11 @@ class DatabaseHelper {
     Hive.registerAdapter<Color>(ColorAdapter());
     Hive.registerAdapter<TimeOfDay>(TimeAdapter());
     Hive.registerAdapter<Brightness>(BrightnessAdapter());
+    Hive.registerAdapter<ThemeMode>(ThemeModeAdapter());
     Hive.registerAdapter<Assignment>(AssignmentAdapter());
     Hive.registerAdapter<Subject>(SubjectAdapter());
     Hive.registerAdapter<Holiday>(HolidayAdapter());
+    Hive.registerAdapter<TimeBlock>(TimeBlockAdapter());
   }
 }
 

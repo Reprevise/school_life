@@ -1,40 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'holiday.dart';
+part of 'time_block.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class HolidayAdapter extends TypeAdapter<Holiday> {
+class TimeBlockAdapter extends TypeAdapter<TimeBlock> {
   @override
-  final typeId = 3;
+  final typeId = 4;
 
   @override
-  Holiday read(BinaryReader reader) {
+  TimeBlock read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Holiday(
-      id: fields[0] as int,
-      name: fields[1] as String,
-      startDate: fields[2] as DateTime,
-      endDate: fields[3] as DateTime,
+    return TimeBlock(
+      day: fields[0] as String,
+      startTime: fields[1] as TimeOfDay,
+      endTime: fields[2] as TimeOfDay,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Holiday obj) {
+  void write(BinaryWriter writer, TimeBlock obj) {
     writer
-      ..writeByte(4)
-      ..writeByte(0)
-      ..write(obj.id)
-      ..writeByte(1)
-      ..write(obj.name)
-      ..writeByte(2)
-      ..write(obj.startDate)
       ..writeByte(3)
-      ..write(obj.endDate);
+      ..writeByte(0)
+      ..write(obj.day)
+      ..writeByte(1)
+      ..write(obj.startTime)
+      ..writeByte(2)
+      ..write(obj.endTime);
   }
 }

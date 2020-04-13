@@ -16,9 +16,9 @@ final Map<ThemeMode, String> themes = <ThemeMode, String>{
   ThemeMode.system: systemThemeName,
 };
 
-const String lightThemeName = 'light';
-const String darkThemeName = 'dark';
-const String systemThemeName = 'system';
+const String lightThemeName = 'Light';
+const String darkThemeName = 'Dark';
+const String systemThemeName = 'System';
 
 class ThemeSwitcher extends StatefulWidget {
   const ThemeSwitcher({@required this.themedWidgetBuilder});
@@ -44,25 +44,37 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
     super.initState();
     _settingsBox = Hive.box<dynamic>(Databases.settingsBox);
     _loadThemeData();
+    WidgetsBinding.instance.window.onPlatformBrightnessChanged = () {
+      if (_mode == ThemeMode.system) {
+        final brightness = WidgetsBinding.instance.window.platformBrightness;
+        updateColorsFromBrightness(brightness);
+      }
+    };
   }
 
   void _loadThemeData() {
-    final String modeString = _settingsBox.get(
+    final ThemeMode storedMode = _settingsBox.get(
       BasicSettingsKeys.theme,
       defaultValue: BasicSettingsDefaults.theme,
     );
-    _mode = themes.keys.firstWhere((element) => themes[element] == modeString);
-    if (_mode != ThemeMode.system) {
-      final brightness = _getBrightnessFromMode(_mode, null);
-      updateColorsFromBrightness(brightness);
-      if (mounted) setState(() {});
-    }
+    _mode = storedMode;
+    // TODO: find out how to get system brightness
+    final brightness = _getBrightnessFromMode(_mode, null);
+    updateColorsFromBrightness(brightness);
+    if (mounted) setState(() {});
   }
 
   Brightness _getBrightnessFromMode(ThemeMode mode, BuildContext context) {
     Brightness brightness;
     switch (mode) {
       case ThemeMode.system:
+        brightness = WidgetsBinding.instance.window.platformBrightness;
+        print('brightness = $brightness');
+        // if (debugCheckHasMediaQuery(context)) {
+        //   brightness = MediaQuery.platformBrightnessOf(context);
+        // } else {
+        //   debugPrint('NO MEDIA QUERY');
+        // }
         break;
       case ThemeMode.light:
         brightness = Brightness.light;
@@ -88,7 +100,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
           statusBarColor: Colors.white,
           statusBarIconBrightness: Brightness.dark,
-          systemNavigationBarColor: Colors.white,
+          systemNavigationBarColor: Color(0xFFededed),
           systemNavigationBarIconBrightness: Brightness.dark,
         ));
         break;
@@ -96,7 +108,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
           statusBarColor: Colors.grey.shade900,
           statusBarIconBrightness: Brightness.light,
-          systemNavigationBarColor: Colors.grey.shade900,
+          systemNavigationBarColor: Color(0xFF1c1c1c),
           systemNavigationBarIconBrightness: Brightness.light,
         ));
         break;

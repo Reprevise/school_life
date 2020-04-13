@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -15,6 +14,7 @@ final ThemeData lightTheme = ThemeData(
   disabledColor: Colors.grey[600],
   primaryIconTheme: const IconThemeData(color: Colors.black),
   buttonColor: Colors.grey[600],
+  bottomAppBarColor: Color(0xFFededed),
   inputDecorationTheme: InputDecorationTheme(
     focusedErrorBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.red),
@@ -53,42 +53,64 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ButtonTextTheme.accent,
   ),
   accentTextTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(color: Colors.white),
-    bodyText2: GoogleFonts.muli(color: Colors.black),
-    headline4: GoogleFonts.muli(
+    bodyText1: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
+    ),
+    bodyText2: TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
+    ),
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
       color: Colors.black,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
   ),
   textTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(color: Colors.black),
-    bodyText2: GoogleFonts.muli(color: Colors.black),
-    button: GoogleFonts.openSans(
-      fontWeight: FontWeight.bold,
+    bodyText1: TextStyle(
       color: Colors.black,
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
     ),
-    headline4: GoogleFonts.muli(
+    bodyText2: TextStyle(
+      color: Colors.black,
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
+    ),
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
       color: Colors.black,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
-    headline3: GoogleFonts.muli(
+    headline3: TextStyle(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
       color: Colors.black,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
-    headline2: GoogleFonts.muli(
+    headline2: TextStyle(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
       color: Colors.black,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
-    headline1: GoogleFonts.muli(
+    headline1: TextStyle(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       color: Colors.black,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
   ),
 );
@@ -106,6 +128,7 @@ final ThemeData darkTheme = ThemeData(
   dividerColor: Colors.white,
   primaryIconTheme: const IconThemeData(color: Colors.white),
   buttonColor: Colors.white,
+  bottomAppBarColor: Color(0xFF1c1c1c),
   inputDecorationTheme: InputDecorationTheme(
     focusedErrorBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.red),
@@ -145,42 +168,64 @@ final ThemeData darkTheme = ThemeData(
   ),
   applyElevationOverlayColor: true,
   accentTextTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(color: Colors.grey[800]),
-    bodyText2: GoogleFonts.muli(color: Colors.white),
-    headline4: GoogleFonts.muli(
+    bodyText1: TextStyle(
+      color: Colors.grey[800],
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
+    ),
+    bodyText2: TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
+    ),
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
       color: Colors.white,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
   ),
   textTheme: TextTheme(
-    bodyText1: GoogleFonts.rubik(color: Colors.black),
-    bodyText2: GoogleFonts.muli(color: Colors.grey[400]),
-    button: GoogleFonts.openSans(
-      fontWeight: FontWeight.bold,
+    bodyText1: TextStyle(
       color: Colors.black,
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
     ),
-    headline4: GoogleFonts.muli(
+    bodyText2: TextStyle(
+      color: Colors.grey[400],
+      fontWeight: FontWeight.w300,
+      fontFamily: 'CircularStd',
+    ),
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
       color: Colors.black,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
-    headline3: GoogleFonts.muli(
+    headline3: TextStyle(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
-    headline2: GoogleFonts.muli(
+    headline2: TextStyle(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
-    headline1: GoogleFonts.muli(
+    headline1: TextStyle(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       color: Colors.white,
+      fontFamily: 'Laca',
+      fontStyle: FontStyle.italic,
     ),
   ),
 );

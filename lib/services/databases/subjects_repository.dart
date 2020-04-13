@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 import 'package:injectable/injectable.dart';
 import 'package:school_life/models/subject.dart';
+import 'package:school_life/models/time_block.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
 @injectable
@@ -42,9 +43,17 @@ class SubjectsRepository {
   }
 
   List<Subject> getSubjectsWithSameDaySchedule(String dayOfWeek) {
-    return subjectsWithSchedule
-        .where((subject) => subject.schedule.containsKey(dayOfWeek))
-        .toList();
+    final _usableSubjects = <Subject>[];
+    for (final subject in subjectsWithSchedule) {
+      final block = getTimeBlockFromDay(dayOfWeek, subject.schedule);
+      if (block != null) _usableSubjects.add(subject);
+    }
+    return _usableSubjects;
+  }
+
+  //? what if there is a class that appears many times in a day?
+  TimeBlock getTimeBlockFromDay(String day, List<TimeBlock> schedule) {
+    return schedule.firstWhere((element) => element.day == day);
   }
 
   Future<int> addSubject(Subject subject) {

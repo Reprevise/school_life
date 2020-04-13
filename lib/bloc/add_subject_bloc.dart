@@ -92,13 +92,13 @@ class AddSubjectFormBloc extends FormBloc<String, String> with Popper {
     final teacher = teacherField.value.trim();
     // create new subject based on text from form
     _subject = Subject(
-      nextID,
-      subjectName,
-      roomText,
-      building,
-      teacher,
-      colorField.value,
-      null, // initial schedule
+      id: nextID,
+      name: subjectName,
+      room: roomText,
+      building: building,
+      teacher: teacher,
+      color: colorField.value,
+      schedule: null, // initial schedule
     );
     subjectsRepo.addSubject(_subject);
     emitSuccess();

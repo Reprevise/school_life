@@ -6,7 +6,6 @@ import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart'
 import 'package:school_life/components/forms/field_bloc_list_builder/field_bloc_list_builder.dart';
 import 'package:school_life/components/forms/page_navigator.dart';
 import 'package:school_life/components/forms/required/form_required.dart';
-import 'package:school_life/components/index.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/add_schedule/widgets/schedule_field.dart';
@@ -54,7 +53,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar('Add Schedule'),
+      extendBodyBehindAppBar: true,
       body: FormBlocHelper<AddScheduleFormBloc>(
         create: (_) => AddScheduleFormBloc(),
         onSuccess: (_, __) {

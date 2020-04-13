@@ -60,7 +60,12 @@ class AddHolidayFormBloc extends FormBloc<String, String> with Popper {
   void onSubmitting() async {
     final name = _holidayName.value.trim();
     final nextID = _holidaysRepo.nextID;
-    final holiday = Holiday(nextID, name, _startDate.value, _endDate.value);
+    final holiday = Holiday(
+      id: nextID,
+      name: name,
+      startDate: _startDate.value,
+      endDate: _endDate.value,
+    );
     await _holidaysRepo.addHoliday(holiday);
     emitSuccess();
   }
