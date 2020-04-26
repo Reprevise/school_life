@@ -16,45 +16,48 @@ class AssignmentsList extends StatelessWidget {
     return ValueListenableBuilder<Box<Assignment>>(
       valueListenable: box.listenable(),
       builder: (context, box, _) {
-        return Visibility(
-          visible: box.isNotEmpty,
-          child: Column(
-            children: box.values.map(
-              (assignment) {
-                final currentSubject =
-                    sl<SubjectsRepository>().getSubject(assignment.subjectID);
-                return AssignmentItem(
-                  assignment,
-                  currentSubject,
-                );
-              },
-            ).toList(),
-          ),
-          replacement: Column(
-            children: <Widget>[
-              Icon(
-                Icons.assignment,
-                color: Colors.grey[400],
-                size: 128.0,
-              ),
-              Text(
-                'You don\'t have any assignments due!',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3
-                    .copyWith(fontSize: fontSize),
-                textAlign: TextAlign.center,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                'Woo-hoo!',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3
-                    .copyWith(fontSize: fontSize / 1.2),
-                textAlign: TextAlign.center,
-              ),
-            ],
+        return Padding(
+          padding: const EdgeInsets.all(24),
+          child: Visibility(
+            visible: box.isNotEmpty,
+            child: Column(
+              children: box.values.map(
+                (assignment) {
+                  final currentSubject =
+                      sl<SubjectsRepository>().getSubject(assignment.subjectID);
+                  return AssignmentItem(
+                    assignment,
+                    currentSubject,
+                  );
+                },
+              ).toList(),
+            ),
+            replacement: Column(
+              children: <Widget>[
+                Icon(
+                  Icons.assignment,
+                  color: Colors.grey[400],
+                  size: 128.0,
+                ),
+                Text(
+                  'You don\'t have any assignments due!',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3
+                      .copyWith(fontSize: fontSize),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Woo-hoo!',
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline3
+                      .copyWith(fontSize: fontSize / 1.2),
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
           ),
         );
       },

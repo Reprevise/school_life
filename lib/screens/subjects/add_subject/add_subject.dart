@@ -4,61 +4,75 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:school_life/bloc/add_subject_bloc.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
+import 'package:school_life/components/screen_header/screen_header.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.dart';
 
 class AddSubjectPage extends StatelessWidget {
   void _goToSchedulePage(AddSubjectFormBloc bloc) {
-    Router.navigator.popAndPushNamed(
-      Routes.addSchedule,
-      arguments: AddSchedulePageArguments(subject: bloc.subject),
-    );
+    Router.navigator.popAndPushNamed(Routes.addSchedule);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      body: FormBlocHelper<AddSubjectFormBloc>(
-        create: (_) => AddSubjectFormBloc(),
-        onSubmitting: (_, __) {
-          return const Center(child: CircularProgressIndicator());
-        },
-        onLoading: (_, __) {
-          return const Center(child: CircularProgressIndicator());
-        },
-        onSuccess: (context, _) {
-          showDialog<void>(
-            context: context,
-            barrierDismissible: false,
-            builder: (context) {
-              return AlertDialog(
-                title: const Text('Add a schedule?'),
-                actions: <Widget>[
-                  FlatButton(
-                    onPressed: () {
-                      Router.navigator.popAndPushNamed(Routes.subjects);
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                BackButton(),
+                ScreenHeader('Create Subject'),
+              ],
+            ),
+            Expanded(
+              child: FormBlocHelper<AddSubjectFormBloc>(
+                create: (_) => AddSubjectFormBloc(),
+                onSubmitting: (_, __) {
+                  return const Center(child: CircularProgressIndicator());
+                },
+                onLoading: (_, __) {
+                  return const Center(child: CircularProgressIndicator());
+                },
+                onSuccess: (context, _) {
+                  showDialog<void>(
+                    context: context,
+                    barrierDismissible: false,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Add a schedule?'),
+                        actions: <Widget>[
+                          FlatButton(
+                            onPressed: () {
+                              Router.navigator.popAndPushNamed(Routes.subjects);
+                            },
+                            child: const Text('NO'),
+                          ),
+                          FlatButton(
+                            onPressed: () => _goToSchedulePage(
+                                context.bloc<AddSubjectFormBloc>()),
+                            child: const Text('YES'),
+                          ),
+                        ],
+                      );
                     },
-                    child: const Text('NO'),
-                  ),
-                  FlatButton(
-                    onPressed: () =>
-                        _goToSchedulePage(context.bloc<AddSubjectFormBloc>()),
-                    child: const Text('YES'),
-                  ),
-                ],
-              );
-            },
-          );
-        },
-        builder: (context, state) {
-          final formBloc = context.bloc<AddSubjectFormBloc>();
+                  );
+                },
+                builder: (context, _) {
+                  final formBloc = context.bloc<AddSubjectFormBloc>();
 
-          return WillPopScope(
-            onWillPop: () => formBloc.canPop(context),
-            child: AddSubjectFormFields(formBloc),
-          );
-        },
+                  return WillPopScope(
+                    onWillPop: () => formBloc.canPop(context),
+                    child: AddSubjectFormFields(formBloc),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -97,94 +111,80 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
     final theme = Theme.of(context);
     final iconColor = theme.primaryIconTheme.color;
 
-    return ListView(
-      padding: const EdgeInsets.only(bottom: 8),
+    return Column(
       children: <Widget>[
-        const Padding(
-          padding: EdgeInsets.only(right: 8),
-          child: Text(
-            '* Required',
-            textAlign: TextAlign.right,
-            style: TextStyle(color: Colors.red),
-          ),
-        ),
-        TextFieldBlocBuilder(
-          autofocus: true,
-          textFieldBloc: widget.formBloc.nameField,
-          focusNode: _subjectFocus,
-          nextFocusNode: _roomTextFocus,
-          textInputAction: TextInputAction.next,
-          decoration: InputDecoration(
-            labelText: 'Subject*',
-            prefixIcon: Icon(
-              Icons.subject,
-              color: iconColor,
-            ),
-            focusedErrorBorder: errorBorder,
-          ),
-        ),
-        TextFieldBlocBuilder(
-          textFieldBloc: widget.formBloc.roomField,
-          focusNode: _roomTextFocus,
-          nextFocusNode: _buildingFocus,
-          textInputAction: TextInputAction.next,
-          textCapitalization: TextCapitalization.words,
-          decoration: InputDecoration(
-            labelText: 'Room*',
-            prefixIcon: Icon(
-              Icons.location_on,
-              color: iconColor,
-            ),
-            focusedErrorBorder: errorBorder,
-          ),
-        ),
-        TextFieldBlocBuilder(
-          textFieldBloc: widget.formBloc.buildingField,
-          focusNode: _buildingFocus,
-          nextFocusNode: _teacherFocus,
-          textInputAction: TextInputAction.next,
-          textCapitalization: TextCapitalization.words,
-          decoration: InputDecoration(
-            labelText: 'Building',
-            prefixIcon: Icon(
-              Icons.business,
-              color: iconColor,
-            ),
-            focusedErrorBorder: errorBorder,
-          ),
-        ),
-        TextFieldBlocBuilder(
-          textFieldBloc: widget.formBloc.teacherField,
-          focusNode: _teacherFocus,
-          textCapitalization: TextCapitalization.words,
-          decoration: InputDecoration(
-            labelText: 'Teacher*',
-            prefixIcon: Icon(
-              Icons.person,
-              color: iconColor,
-            ),
-            focusedErrorBorder: errorBorder,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
+        Expanded(
+          child: ListView(
             children: <Widget>[
-              SubjectColorPicker(widget.formBloc),
-              const SizedBox(height: 8),
-              SizedBox(
-                width: 150,
-                child: OutlineButton(
-                  padding: EdgeInsets.zero,
-                  borderSide: theme.inputDecorationTheme.border.borderSide,
-                  textColor: theme.textTheme.bodyText2.color,
-                  onPressed: widget.formBloc.submit,
-                  child: const Text('Submit'),
+              const Padding(
+                padding: EdgeInsets.only(right: 8),
+                child: Text(
+                  '* Required',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(color: Colors.red),
                 ),
               ),
+              TextFieldBlocBuilder(
+                autofocus: true,
+                textFieldBloc: widget.formBloc.nameField,
+                focusNode: _subjectFocus,
+                nextFocusNode: _roomTextFocus,
+                textInputAction: TextInputAction.next,
+                decoration: InputDecoration(
+                  labelText: 'Subject*',
+                  prefixIcon: Icon(Icons.subject, color: iconColor),
+                  focusedErrorBorder: errorBorder,
+                ),
+              ),
+              TextFieldBlocBuilder(
+                textFieldBloc: widget.formBloc.roomField,
+                focusNode: _roomTextFocus,
+                nextFocusNode: _buildingFocus,
+                textInputAction: TextInputAction.next,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: 'Room*',
+                  prefixIcon: Icon(Icons.location_on, color: iconColor),
+                  focusedErrorBorder: errorBorder,
+                ),
+              ),
+              TextFieldBlocBuilder(
+                textFieldBloc: widget.formBloc.buildingField,
+                focusNode: _buildingFocus,
+                nextFocusNode: _teacherFocus,
+                textInputAction: TextInputAction.next,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: 'Building',
+                  prefixIcon: Icon(Icons.business, color: iconColor),
+                  focusedErrorBorder: errorBorder,
+                ),
+              ),
+              TextFieldBlocBuilder(
+                textFieldBloc: widget.formBloc.teacherField,
+                focusNode: _teacherFocus,
+                textCapitalization: TextCapitalization.words,
+                decoration: InputDecoration(
+                  labelText: 'Teacher*',
+                  prefixIcon: Icon(Icons.person, color: iconColor),
+                  focusedErrorBorder: errorBorder,
+                ),
+              ),
+              SubjectColorPicker(widget.formBloc),
             ],
+          ),
+        ),
+        Align(
+          alignment: FractionalOffset.bottomCenter,
+          child: OutlineButton(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 50,
+              vertical: 16,
+            ),
+            borderSide: theme.inputDecorationTheme.border.borderSide,
+            textColor: theme.textTheme.subtitle1.color,
+            onPressed: widget.formBloc.submit,
+            child: const Text('Submit'),
           ),
         ),
       ],

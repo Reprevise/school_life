@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:school_life/components/date_header/date_header.dart';
 import 'package:school_life/components/navbar/navbar.dart';
 
 class HomePage extends StatelessWidget {
@@ -11,10 +12,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       bottomNavigationBar: CustomBottomNavBar(tabsChangeNotifier),
       extendBodyBehindAppBar: true,
-      body: Column(
-        children: <Widget>[
-          Container(),
-        ],
+      body: SafeArea(
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: <Widget>[
+            DateHeader(),
+            Container(),
+          ],
+        ),
       ),
     );
   }

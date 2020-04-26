@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:form_bloc/form_bloc.dart';
-import 'package:school_life/components/forms/date_time_field.dart';
 
 class ScheduleField extends StatelessWidget {
   const ScheduleField({
@@ -55,30 +53,22 @@ class ScheduleField extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  BlocBuilder(
-                    bloc: startTimeBloc,
-                    builder: (context, state) {
-                      return TimeField(
-                        labelText: 'Start time',
-                        errorText: state.error,
-                        isRequired: true,
-                        selectedTime: startTimeBloc.value,
-                        onTimeChanged: startTimeBloc.updateValue,
-                      );
-                    },
+                  TimeFieldBlocBuilder(
+                    timeFieldBloc: startTimeBloc,
+                    format: DateFormat.jm(),
+                    initialTime: null,
+                    decoration: InputDecoration(
+                      labelText: 'Start time'
+                    ),
                   ),
                   const SizedBox(width: 10),
-                  BlocBuilder(
-                    bloc: endTimeBloc,
-                    builder: (context, state) {
-                      return TimeField(
-                        labelText: 'End time',
-                        errorText: state.error,
-                        isRequired: true,
-                        selectedTime: endTimeBloc.value,
-                        onTimeChanged: endTimeBloc.updateValue,
-                      );
-                    },
+                  TimeFieldBlocBuilder(
+                    timeFieldBloc: endTimeBloc,
+                    format: DateFormat.jm(),
+                    initialTime: null,
+                    decoration: InputDecoration(
+                      labelText: 'End time'
+                    ),
                   ),
                 ],
               ),

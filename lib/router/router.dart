@@ -15,14 +15,14 @@ import 'package:school_life/screens/subjects/subjects.dart';
 
 @CustomAutoRouter(generateRouteList: true)
 class $Router {
-  @CustomRoute()
+  @initial
   HomePage home;
   SchedulePage schedule;
+  SubjectsPage subjects;
   AssignmentsPage assignments;
   SettingsPage settings;
-  SubjectsPage subjects;
-  ScheduleHolidaysPage holidays;
 
+  ScheduleHolidaysPage holidays;
   AssignmentsSettingsPage assignmentSettings;
   SubjectsSettingsPage subjectsSettings;
   ScheduleSettingsPage scheduleSettings;

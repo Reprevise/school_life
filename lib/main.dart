@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get_it/get_it.dart';
+import 'package:school_life/components/scroll_behavior/no_glow.dart';
 import 'package:school_life/components/theme/style.dart';
 import 'package:school_life/components/theme/theme_switcher.dart';
 import 'package:school_life/config.dart';
@@ -44,18 +45,21 @@ class _SchoolLifeState extends State<SchoolLife> {
     );
     return ThemeSwitcher(
       themedWidgetBuilder: (context, mode) {
-        return MaterialApp(
-          builder: ExtendedNavigator<Router>(
-            router: Router(),
-            initialRouteArgs: HomePageArguments(
-              tabsChangeNotifier: tabsChangeNotifier,
+        return ScrollConfiguration(
+          behavior: NoGlowScrollBehavior(),
+          child: MaterialApp(
+            builder: ExtendedNavigator<Router>(
+              router: Router(),
+              initialRouteArgs: HomePageArguments(
+                tabsChangeNotifier: tabsChangeNotifier,
+              ),
+              observers: [NavBarObserver(tabsChangeNotifier)],
             ),
-            observers: [NavBarObserver(tabsChangeNotifier)],
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: mode,
+            title: 'School Life',
           ),
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          themeMode: mode,
-          title: 'School Life',
         );
       },
     );

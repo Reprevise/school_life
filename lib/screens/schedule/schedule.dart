@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/navbar/navbar.dart';
+import 'package:school_life/components/screen_header/screen_header.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/schedule/widgets/header.dart';
@@ -70,7 +71,10 @@ class _SchedulePageState extends State<SchedulePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,
-        label: const Text('ADD SCHEDULE'),
+        label: Text(
+          'Add Schedule',
+          style: Theme.of(context).accentTextTheme.bodyText1,
+        ),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -78,40 +82,22 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   Widget buildScreenHeader() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              'Schedule',
-              style: Theme.of(context).textTheme.headline2,
-            ),
-            ButtonBar(
-              children: <Widget>[
-                IconButton(
-                  icon: Icon(Icons.settings),
-                  onPressed: () =>
-                      Router.navigator.pushNamed(Routes.scheduleSettings),
-                ),
-                IconButton(
-                  icon: Icon(Icons.today),
-                  onPressed: () {
-                    final now = DateTime.now().onlyDate;
-                    setState(() {
-                      selectedCalendarDay = now;
-                      controller.setSelectedDay(now);
-                      controller.setFocusedDay(now);
-                    });
-                  },
-                ),
-              ],
-            ),
-          ],
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        ScreenHeader('Schedule'),
+        IconButton(
+          icon: Icon(Icons.today),
+          onPressed: () {
+            final now = DateTime.now().onlyDate;
+            setState(() {
+              selectedCalendarDay = now;
+              controller.setSelectedDay(now);
+              controller.setFocusedDay(now);
+            });
+          },
         ),
-      ),
+      ],
     );
   }
 

@@ -19,29 +19,32 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
     return BlocBuilder(
       bloc: widget.formBloc.colorField,
       builder: (context, state) {
-        return InputDecorator(
-          decoration: InputDecoration(
-            fillColor: state.value ?? Colors.transparent,
-            filled: true,
-            prefixIcon: Icon(
-              Icons.color_lens,
-              color: Theme.of(context).primaryIconTheme.color,
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: InputDecorator(
+            decoration: InputDecoration(
+              fillColor: state.value ?? Colors.transparent,
+              filled: true,
+              prefixIcon: Icon(
+                Icons.color_lens,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              suffixIcon: IconButton(
+                icon: Icon(Icons.refresh),
+                onPressed: () {
+                  widget.formBloc.colorField.updateValue(RandomColor().next());
+                  setState(() {});
+                },
+              ),
             ),
-            suffixIcon: IconButton(
-              icon: Icon(Icons.refresh),
-              onPressed: () {
-                widget.formBloc.colorField.updateValue(RandomColor().next());
-                setState(() {});
-              },
-            ),
-          ),
-          child: Text(
-            ColorUtils().toHex(state.value)?.toUpperCase() ?? 'Change color*',
-            style: TextStyle(
-              color: Theme.of(context).inputDecorationTheme.labelStyle.color,
-              fontWeight: FontWeight.bold,
-              fontSize: 16.0,
-              fontFamily: 'Arial',
+            child: Text(
+              ColorUtils().toHex(state.value)?.toUpperCase() ?? 'Change color*',
+              style: TextStyle(
+                color: Theme.of(context).inputDecorationTheme.labelStyle.color,
+                fontWeight: FontWeight.bold,
+                fontSize: 16.0,
+                fontFamily: 'Arial',
+              ),
             ),
           ),
         );

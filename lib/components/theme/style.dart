@@ -83,6 +83,11 @@ final ThemeData lightTheme = ThemeData(
       fontWeight: FontWeight.w300,
       fontFamily: 'CircularStd',
     ),
+    subtitle1: TextStyle(
+      color: Colors.black,
+      fontFamily: 'CircularStd',
+      fontSize: 16.0,
+    ),
     headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
@@ -197,6 +202,11 @@ final ThemeData darkTheme = ThemeData(
       color: Colors.grey[400],
       fontWeight: FontWeight.w300,
       fontFamily: 'CircularStd',
+    ),
+    subtitle1: TextStyle(
+      color: Colors.white,
+      fontFamily: 'CircularStd',
+      fontSize: 16.0,
     ),
     headline4: TextStyle(
       fontSize: 15.0,

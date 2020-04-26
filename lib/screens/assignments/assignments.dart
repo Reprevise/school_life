@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/navbar/navbar.dart';
+import 'package:school_life/components/screen_header/screen_header.dart';
 import 'package:school_life/main.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
@@ -41,24 +42,22 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddAssignmentPress,
-        label: const Text('ADD ASSIGNMENT'),
+        label: Text(
+          'Create',
+          style: Theme.of(context).accentTextTheme.bodyText1,
+        ),
         icon: const Icon(Icons.add),
       ),
-      body: ListView(
-        primary: false,
-        padding: const EdgeInsets.all(24),
-        children: <Widget>[
-          IconButton(
-            alignment: Alignment.centerRight,
-            icon: Icon(Icons.settings),
-            onPressed: () => Router.navigator.pushNamed(
-              Routes.assignmentSettings,
+      body: SafeArea(
+        child: ListView(
+          primary: false,
+          children: <Widget>[
+            ScreenHeader('Assignments'),
+            Center(
+              child: AssignmentsList(),
             ),
-          ),
-          Center(
-            child: AssignmentsList(),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

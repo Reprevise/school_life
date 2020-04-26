@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:form_bloc/form_bloc.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:school_life/bloc/add_holiday_bloc.dart';
-import 'package:school_life/components/forms/date_time_field.dart';
 import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
 import 'package:school_life/components/forms/required/form_required.dart';
 import 'package:school_life/models/holiday.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/screens/settings/pages/schedule/widgets/holiday_item.dart';
 import 'package:school_life/services/databases/db_helper.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:school_life/util/date_utils.dart';
 
 class ScheduleHolidaysPage extends StatelessWidget {
   @override
@@ -22,7 +21,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => Router.navigator.pushNamed(Routes.addHoliday),
-        label: const Text('ADD HOLIDAY'),
+        label: const Text('Add Holiday'),
         icon: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -90,7 +89,6 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
 
   @override
   void dispose() {
-    _formBloc?.close();
     super.dispose();
   }
 
@@ -103,82 +101,63 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
         onSuccess: (_, __) {
           Router.navigator.pop();
         },
-              onSubmitting: (_, __) {
-        return const Center(child: CircularProgressIndicator());
-      },
-      onLoading: (_, __) {
-        return const Center(child: CircularProgressIndicator());
-      },
+        onSubmitting: (_, __) {
+          return const Center(child: CircularProgressIndicator());
+        },
+        onLoading: (_, __) {
+          return const Center(child: CircularProgressIndicator());
+        },
         builder: (context, state) {
-          if (state is FormBlocLoading || state is FormBlocSubmitting) {
-            return const Center(child: CircularProgressIndicator());
-          } else {
-            _formBloc = context.bloc<AddHolidayFormBloc>();
-            return WillPopScope(
-              onWillPop: () => _formBloc.canPop(context),
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                children: <Widget>[
-                  const FormRequired(all: true),
-                  TextFieldBlocBuilder(
-                    padding: EdgeInsets.zero,
-                    textFieldBloc: _formBloc.holidayName,
-                    autofocus: true,
-                    decoration: const InputDecoration(
-                      labelText: 'Holiday name*',
-                    ),
+          _formBloc = context.bloc<AddHolidayFormBloc>();
+          return WillPopScope(
+            onWillPop: () => _formBloc.canPop(context),
+            child: ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              children: <Widget>[
+                const FormRequired(all: true),
+                TextFieldBlocBuilder(
+                  padding: EdgeInsets.zero,
+                  textFieldBloc: _formBloc.holidayName,
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Holiday name*',
                   ),
-                  const SizedBox(height: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      BlocBuilder(
-                        bloc: _formBloc.startDate,
-                        builder: (context, state) {
-                          return DateField(
-                            labelText: 'Start date',
-                            errorText: state.error,
-                            selectedDate: state.value,
-                            onDateChanged: (date) {
-                              _formBloc.startDate.updateValue(date);
-                            },
-                            format: DateFormat.yMMMd(),
-                            isRequired: true,
-                          );
-                        },
-                      ),
-                      const SizedBox(height: 8),
-                      BlocBuilder(
-                        bloc: _formBloc.endDate,
-                        builder: (context, state) {
-                          return DateField(
-                            labelText: 'End date',
-                            errorText: state.error,
-                            selectedDate: state.value,
-                            onDateChanged: (date) {
-                              _formBloc.endDate.updateValue(date);
-                            },
-                            format: DateFormat.yMMMd(),
-                            isRequired: true,
-                          );
-                        },
-                      ),
-                      OutlineButton(
-                        padding: EdgeInsets.zero,
-                        borderSide: Theme.of(context)
-                            .inputDecorationTheme
-                            .border
-                            .borderSide,
-                        textColor: Theme.of(context).textTheme.bodyText2.color,
-                        onPressed: _formBloc.submit,
-                        child: const Text('Submit'),
-                      ),
-                    ],
+                ),
+                const SizedBox(height: 8),
+                DateTimeFieldBlocBuilder(
+                  dateTimeFieldBloc: _formBloc.startDate,
+                  format: DateFormat.yMMMd(),
+                  initialDate: null,
+                  firstDate: DateTime.now().onlyDate,
+                  lastDate: DateTime.now().addYears(1),
+                  decoration: InputDecoration(
+                    labelText: 'Start date',
                   ),
-                ],
-              ),
-            );
-          }
+                ),
+                const SizedBox(height: 8),
+                DateTimeFieldBlocBuilder(
+                  dateTimeFieldBloc: _formBloc.endDate,
+                  format: DateFormat.yMMMd(),
+                  initialDate: null,
+                  firstDate: DateTime.now().onlyDate,
+                  lastDate: DateTime.now().addYears(1),
+                  decoration: InputDecoration(
+                    labelText: 'End date',
+                  ),
+                ),
+                OutlineButton(
+                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
+                  borderSide: Theme.of(context)
+                      .inputDecorationTheme
+                      .border
+                      .borderSide,
+                  textColor: Theme.of(context).textTheme.subtitle1.color,
+                  onPressed: _formBloc.submit,
+                  child: const Text('Submit'),
+                ),
+              ],
+            ),
+          );
         },
       ),
     );

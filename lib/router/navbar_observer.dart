@@ -8,7 +8,7 @@ class NavBarObserver extends NavigatorObserver {
 
   @override
   void didPop(Route route, Route previousRoute) {
-    final navBarRoutes = Routes.all.sublist(0, 4);
+    final navBarRoutes = Routes.all.sublist(0, 5);
     final routeName = route.settings.name;
     final prevRouteName = previousRoute.settings.name;
     if (navBarRoutes.contains(routeName) &&

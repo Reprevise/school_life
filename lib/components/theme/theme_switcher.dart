@@ -88,7 +88,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
 
   void setThemeMode(ThemeMode newMode, BuildContext context) {
     _mode = newMode;
-    _settingsBox.put(BasicSettingsKeys.theme, themes[newMode]);
+    _settingsBox.put(BasicSettingsKeys.theme, newMode);
     final brightness = _getBrightnessFromMode(mode, context);
     updateColorsFromBrightness(brightness);
     setState(() {});
@@ -98,7 +98,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
     switch (brightness) {
       case Brightness.light:
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor: Colors.white,
+          statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.dark,
           systemNavigationBarColor: Color(0xFFededed),
           systemNavigationBarIconBrightness: Brightness.dark,
@@ -106,7 +106,7 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
         break;
       case Brightness.dark:
         SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-          statusBarColor: Colors.grey.shade900,
+          statusBarColor: Colors.transparent,
           statusBarIconBrightness: Brightness.light,
           systemNavigationBarColor: Color(0xFF1c1c1c),
           systemNavigationBarIconBrightness: Brightness.light,

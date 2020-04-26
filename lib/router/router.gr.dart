@@ -9,9 +9,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:school_life/screens/home/home.dart';
 import 'package:school_life/screens/schedule/schedule.dart';
+import 'package:school_life/screens/subjects/subjects.dart';
 import 'package:school_life/screens/assignments/assignments.dart';
 import 'package:school_life/screens/settings/settings.dart';
-import 'package:school_life/screens/subjects/subjects.dart';
 import 'package:school_life/screens/settings/pages/schedule/widgets/holidays.dart';
 import 'package:school_life/screens/settings/pages/assignments/assignments_settings.dart';
 import 'package:school_life/screens/settings/pages/subjects/subjects_settings.dart';
@@ -26,9 +26,9 @@ import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
 abstract class Routes {
   static const home = '/';
   static const schedule = '/schedule';
+  static const subjects = '/subjects';
   static const assignments = '/assignments';
   static const settings = '/settings';
-  static const subjects = '/subjects';
   static const holidays = '/holidays';
   static const assignmentSettings = '/assignment-settings';
   static const subjectsSettings = '/subjects-settings';
@@ -41,9 +41,9 @@ abstract class Routes {
   static const all = [
     home,
     schedule,
+    subjects,
     assignments,
     settings,
-    subjects,
     holidays,
     assignmentSettings,
     subjectsSettings,
@@ -87,6 +87,17 @@ class Router extends RouterBase {
               SchedulePage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
+      case Routes.subjects:
+        if (hasInvalidArgs<SubjectsPageArguments>(args)) {
+          return misTypedArgsRoute<SubjectsPageArguments>(args);
+        }
+        final typedArgs =
+            args as SubjectsPageArguments ?? SubjectsPageArguments();
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (ctx, animation, secondaryAnimation) =>
+              SubjectsPage(typedArgs.tabsChangeNotifier),
+          settings: settings,
+        );
       case Routes.assignments:
         if (hasInvalidArgs<AssignmentsPageArguments>(args)) {
           return misTypedArgsRoute<AssignmentsPageArguments>(args);
@@ -107,11 +118,6 @@ class Router extends RouterBase {
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               SettingsPage(typedArgs.tabsChangeNotifier),
-          settings: settings,
-        );
-      case Routes.subjects:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) => SubjectsPage(),
           settings: settings,
         );
       case Routes.holidays:
@@ -162,14 +168,9 @@ class Router extends RouterBase {
           settings: settings,
         );
       case Routes.addSchedule:
-        if (hasInvalidArgs<AddSchedulePageArguments>(args)) {
-          return misTypedArgsRoute<AddSchedulePageArguments>(args);
-        }
-        final typedArgs =
-            args as AddSchedulePageArguments ?? AddSchedulePageArguments();
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AddSchedulePage(subject: typedArgs.subject),
+              AddSchedulePage(),
           settings: settings,
         );
       case Routes.addSubject:
@@ -199,6 +200,12 @@ class SchedulePageArguments {
   SchedulePageArguments({this.tabsChangeNotifier});
 }
 
+//SubjectsPage arguments holder class
+class SubjectsPageArguments {
+  final ValueNotifier<int> tabsChangeNotifier;
+  SubjectsPageArguments({this.tabsChangeNotifier});
+}
+
 //AssignmentsPage arguments holder class
 class AssignmentsPageArguments {
   final ValueNotifier<int> tabsChangeNotifier;
@@ -216,10 +223,4 @@ class AssignmentDetailsPageArguments {
   final Assignment assignment;
   final Subject assignmentSubject;
   AssignmentDetailsPageArguments({this.assignment, this.assignmentSubject});
-}
-
-//AddSchedulePage arguments holder class
-class AddSchedulePageArguments {
-  final Subject subject;
-  AddSchedulePageArguments({this.subject});
 }

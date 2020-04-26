@@ -34,6 +34,7 @@ class AddAssignmentFormBloc extends FormBloc<String, String> with Popper {
   final dueDateField = InputFieldBloc<DateTime, Object>(
     name: 'assignment-due_date',
     validators: [
+      FieldBlocValidators.required,
       (date) {
         final dateString = date.toString();
         Validators.maxLength(dateString, 15);

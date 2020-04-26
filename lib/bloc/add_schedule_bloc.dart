@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:hive/hive.dart';
+
 import 'package:school_life/bloc/popper.dart';
 import 'package:school_life/bloc/validators.dart';
 import 'package:school_life/main.dart';
@@ -12,6 +13,16 @@ import 'package:school_life/models/time_block.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/services/databases/subjects_repository.dart';
 import 'package:school_life/util/day_utils.dart';
+
+class ScheduleFieldBlocData {
+  final String name;
+  final int id;
+
+  ScheduleFieldBlocData({
+    @required this.name,
+    @required this.id,
+  });
+}
 
 class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   AddScheduleFormBloc() : super(isLoading: true) {
@@ -25,7 +36,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
 
   final List<String> _availableDays = <String>[];
 
-  final subjectField = SelectFieldBloc<Map<String, dynamic>, Object>(
+  final subjectField = SelectFieldBloc<ScheduleFieldBlocData, Object>(
     name: 'schedule-subject',
     validators: [FieldBlocValidators.required],
   );
@@ -40,7 +51,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
 
   @override
   void onSubmitting() async {
-    final subjectID = subjectField.value['value'] as int;
+    final subjectID = subjectField.state.extraData;
     final subject = _subjectsRepo.getSubject(subjectID);
     final _schedule = <TimeBlock>[];
 
@@ -72,10 +83,10 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   void _setSubjectFieldValues() {
     final subjectsWithoutASchedule = _subjectsRepo.subjectsWithoutSchedule;
     for (final subject in subjectsWithoutASchedule) {
-      subjectField.addItem(<String, dynamic>{
-        'name': subject.name,
-        'value': subject.id,
-      });
+      subjectField.addItem(ScheduleFieldBlocData(
+        name: subject.name,
+        id: subject.id,
+      ));
     }
   }
 
@@ -106,6 +117,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
         name: 'schedule-day',
         items: _availableDays,
         initialValue: day,
+        validators: [FieldBlocValidators.required],
       ),
       startTime: InputFieldBloc<TimeOfDay, Object>(
         name: 'schedule-start_time',

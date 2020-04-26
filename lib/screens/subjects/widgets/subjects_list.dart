@@ -14,40 +14,45 @@ class SubjectsList extends StatelessWidget {
     return ValueListenableBuilder<Box<Subject>>(
       valueListenable: box.listenable(),
       builder: (context, box, _) {
-        return Visibility(
-          visible: box.isNotEmpty,
-          child: ListView(
-            primary: false,
-            padding: const EdgeInsets.fromLTRB(8, 20, 8, 70),
-            itemExtent: 100,
-            children:
-                box.values.map((subject) => SubjectItem(subject)).toList(),
-          ),
-          replacement: Column(
-            children: <Widget>[
-              Icon(
-                Icons.school,
-                color: Colors.grey[400],
-                size: 128.0,
+        return Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: Visibility(
+              visible: box.isNotEmpty,
+              child: ListView(
+                primary: false,
+                itemExtent: 100,
+                shrinkWrap: true,
+                children:
+                    box.values.map((subject) => SubjectItem(subject)).toList(),
               ),
-              Text(
-                'You don\'t have any subjects!',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3
-                    .copyWith(fontSize: fontSize),
-                textAlign: TextAlign.center,
+              replacement: Column(
+                children: <Widget>[
+                  Icon(
+                    Icons.school,
+                    color: Colors.grey[400],
+                    size: 128.0,
+                  ),
+                  Text(
+                    'You don\'t have any subjects!',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3
+                        .copyWith(fontSize: fontSize),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Click the button below to add some!',
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline3
+                        .copyWith(fontSize: fontSize / 1.2),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
               ),
-              const SizedBox(height: 10),
-              Text(
-                'Click the button below to add some!',
-                style: Theme.of(context)
-                    .textTheme
-                    .headline3
-                    .copyWith(fontSize: fontSize / 1.2),
-                textAlign: TextAlign.center,
-              ),
-            ],
+            ),
           ),
         );
       },

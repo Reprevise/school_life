@@ -36,10 +36,14 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
           tabsChangeNotifier: widget.tabsChangeNotifier,
         );
       case 2:
-        return AssignmentsPageArguments(
+        return SubjectsPageArguments(
           tabsChangeNotifier: widget.tabsChangeNotifier,
         );
       case 3:
+        return AssignmentsPageArguments(
+          tabsChangeNotifier: widget.tabsChangeNotifier,
+        );
+      case 4:
         return SettingsPageArguments(
           tabsChangeNotifier: widget.tabsChangeNotifier,
         );
@@ -88,6 +92,10 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         BottomNavigationBarItem(
           icon: Icon(NavBarIcons.schedule),
           title: Text('Schedule', style: _titleStyle),
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(NavBarIcons.subjects),
+          title: Text('Subjects', style: _titleStyle),
         ),
         BottomNavigationBarItem(
           icon: Icon(NavBarIcons.assignments),

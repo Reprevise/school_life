@@ -82,15 +82,17 @@ class _DateHeaderState extends State<DateHeader> {
     return formatted;
   }
 
-  static const _defaultStyle = TextStyle(
-    fontSize: 16,
-    color: Colors.black,
-    fontFamily: "CircularStd",
-  );
   static const _bold = TextStyle(fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
+    final _defaultStyle = TextStyle(
+      fontSize: 16,
+      color: Theme.of(context).brightness == Brightness.light
+          ? Colors.black
+          : Colors.white,
+      fontFamily: "CircularStd",
+    );
     return Container(
       alignment: Alignment.centerRight,
       child: RichText(
