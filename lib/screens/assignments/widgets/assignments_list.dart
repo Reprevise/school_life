@@ -43,7 +43,7 @@ class AssignmentsList extends StatelessWidget {
                   'You don\'t have any assignments due!',
                   style: Theme.of(context)
                       .textTheme
-                      .headline3
+                      .display2
                       .copyWith(fontSize: fontSize),
                   textAlign: TextAlign.center,
                 ),
@@ -52,7 +52,7 @@ class AssignmentsList extends StatelessWidget {
                   'Woo-hoo!',
                   style: Theme.of(context)
                       .textTheme
-                      .headline3
+                      .display2
                       .copyWith(fontSize: fontSize / 1.2),
                   textAlign: TextAlign.center,
                 ),

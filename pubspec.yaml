@@ -31,9 +31,6 @@ dev_dependencies:
   injectable_generator: ^0.3.4
   effective_dart: ^1.2.1
 
-dependency_overrides:
-  dartx: ^0.3.0
-
 flutter:
   uses-material-design: true
 
@@ -44,19 +41,19 @@ flutter:
     - family: NavBarIcons
       fonts:
         - asset: assets/fonts/NavBarIcons.ttf
-    - family: Laca
+    - family: Raleway
       fonts:
-        - asset: assets/fonts/Laca/BoldItalic.otf
+        - asset: assets/fonts/Raleway/BoldItalic.ttf
           weight: 700
           style: italic
-    - family: CircularStd
+    - family: Montserrat
       fonts:
-        - asset: assets/fonts/CircularStd/Book.ttf
-          weight: 300
+        - asset: assets/fonts/Montserrat/Regular.ttf
+          weight: 400
           style: normal
-        - asset: assets/fonts/CircularStd/Medium.ttf
+        - asset: assets/fonts/Montserrat/Medium.ttf
           weight: 500
           style: normal
-        - asset: assets/fonts/CircularStd/Bold.ttf
+        - asset: assets/fonts/Montserrat/Bold.ttf
           weight: 700
           style: normal

@@ -54,7 +54,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
   @override
   Widget build(BuildContext context) {
     const _titleStyle = TextStyle(
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontWeight: FontWeight.bold,
       fontStyle: FontStyle.italic,
       fontSize: 12.0,

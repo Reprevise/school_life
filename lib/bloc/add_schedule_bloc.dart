@@ -34,7 +34,7 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
 
   SubjectsRepository _subjectsRepo;
 
-  final List<String> _availableDays = <String>[];
+  final List<String> availableDays = <String>[];
 
   final subjectField = SelectFieldBloc<ScheduleFieldBlocData, Object>(
     name: 'schedule-subject',
@@ -44,7 +44,6 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
   @override
   void onLoading() {
     _getAvailableDays();
-    _availableDays.forEach(addScheduleField);
     _setSubjectFieldValues();
     emitLoaded();
   }
@@ -97,59 +96,56 @@ class AddScheduleFormBloc extends FormBloc<String, String> with Popper {
     if (mapString == null) {
       map = Map<String, bool>.from(ScheduleSettingsDefaults.daysOfSchool);
     } else {
-      map = Map<String, bool>.from(
-        jsonDecode(mapString) as Map<dynamic, dynamic>,
-      );
+      map = Map<String, bool>.from(jsonDecode(mapString) as Map);
     }
     map.removeWhere((_, isAvailable) => isAvailable == false);
     final days = map.keys
         .map((dayStringInts) => daysFromIntegerString[dayStringInts])
         .toList();
-    days.forEach(_availableDays.add);
+    days.forEach(availableDays.add);
   }
 
   void addScheduleField(String day) {
     assert(day != null);
     final subjects = _subjectsRepo.getSubjectsWithSameDaySchedule(day);
 
-    schedule.addFieldBloc(DayScheduleField(
-      day: SelectFieldBloc(
-        name: 'schedule-day',
-        items: _availableDays,
-        initialValue: day,
-        validators: [FieldBlocValidators.required],
+    schedule.addFieldBloc(
+      DayScheduleField(
+        day: SelectFieldBloc(
+          // name: 'schedule-day',
+          items: availableDays,
+          initialValue: day,
+          validators: [FieldBlocValidators.required],
+        ),
+        startTime: InputFieldBloc<TimeOfDay, Object>(
+          // name: 'schedule-start_time',
+          validators: [
+            FieldBlocValidators.required,
+            (time) => Validators.notSameStartTime(time, day, subjects),
+          ],
+        ),
+        endTime: InputFieldBloc<TimeOfDay, Object>(
+          // name: 'schedule-end_time',
+          validators: [FieldBlocValidators.required],
+        ),
       ),
-      startTime: InputFieldBloc<TimeOfDay, Object>(
-        name: 'schedule-start_time',
-        validators: [
-          FieldBlocValidators.required,
-          (time) => Validators.notSameStartTime(time, day, subjects),
-        ],
-      ),
-      endTime: InputFieldBloc<TimeOfDay, Object>(
-        name: 'schedule-end_time',
-        validators: [FieldBlocValidators.required],
-      ),
-    ));
+    );
   }
 
   void removeScheduleField(int index) => schedule.removeFieldBlocAt(index);
 
   @override
   bool fieldsAreEmpty() {
-    if (subjectField.value == null) {
-      for (final bloc in schedule.value) {
-        final dayValue = bloc.day.value;
-        final startTime = bloc.startTime.value;
-        final endTime = bloc.endTime.value;
-        if (dayValue != null || startTime != null || endTime != null) {
-          return false;
-        }
-        if (dayValue.isEmpty) return false;
+    if (subjectField.value != null) return false;
+    for (final bloc in schedule.value) {
+      final dayValue = bloc.day.value?.trim() ?? '';
+      final startTime = bloc.startTime.value;
+      final endTime = bloc.endTime.value;
+      if (dayValue.isEmpty || startTime != null || endTime != null) {
+        return false;
       }
-      return true;
     }
-    return false;
+    return true;
   }
 }
 

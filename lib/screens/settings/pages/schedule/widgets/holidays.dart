@@ -56,7 +56,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
                     'You don\'t have any holidays!',
                     style: Theme.of(context)
                         .textTheme
-                        .headline3
+                        .display2
                         .copyWith(fontSize: fontSize),
                     textAlign: TextAlign.center,
                   ),
@@ -65,7 +65,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
                     'Aww :(',
                     style: Theme.of(context)
                         .textTheme
-                        .headline3
+                        .display2
                         .copyWith(fontSize: fontSize / 1.2),
                     textAlign: TextAlign.center,
                   ),
@@ -151,7 +151,7 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
                       .inputDecorationTheme
                       .border
                       .borderSide,
-                  textColor: Theme.of(context).textTheme.subtitle1.color,
+                  textColor: Theme.of(context).textTheme.subtitle.color,
                   onPressed: _formBloc.submit,
                   child: const Text('Submit'),
                 ),

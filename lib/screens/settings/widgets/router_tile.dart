@@ -20,7 +20,7 @@ class RouterTile extends StatelessWidget {
       leading: Icon(icon),
       title: Text(
         title,
-        style: Theme.of(context).accentTextTheme.bodyText2,
+        style: Theme.of(context).textTheme.body1,
       ),
       subtitle: subtitle != null ? Text(subtitle) : null,
       trailing: Icon(Icons.arrow_right),

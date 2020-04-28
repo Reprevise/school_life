@@ -17,62 +17,65 @@ class ScheduleField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      color: Theme.of(context).scaffoldBackgroundColor,
-      margin: const EdgeInsets.all(12),
-      elevation: 6,
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        color: Colors.white,
+      ),
       child: Column(
-        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Row(
             children: <Widget>[
-              Flexible(
+              Expanded(
                 child: DropdownFieldBlocBuilder<String>(
                   selectFieldBloc: dayFieldBloc,
-                  decoration: const InputDecoration(labelText: 'Day'),
+                  decoration: const InputDecoration(
+                    labelText: 'Day',
+                    filled: true,
+                    fillColor: Colors.grey,
+                    border: InputBorder.none,
+                  ),
                   itemBuilder: (context, value) => value,
-                  showEmptyItem: false,
+                  showEmptyItem: true,
                 ),
               ),
-              Flexible(
-                flex: 2,
-                child: IconButton(
-                  icon: Icon(Icons.remove_circle),
-                  onPressed: onRemove,
-                ),
+              IconButton(
+                icon: Icon(Icons.remove_circle),
+                onPressed: onRemove,
+                color: Colors.black,
               ),
             ],
           ),
-          Flexible(
-            flex: 2,
-            child: Container(
-              height: 100,
-              margin: const EdgeInsets.symmetric(horizontal: 10),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  TimeFieldBlocBuilder(
-                    timeFieldBloc: startTimeBloc,
-                    format: DateFormat.jm(),
-                    initialTime: null,
-                    decoration: InputDecoration(
-                      labelText: 'Start time'
-                    ),
+          Row(
+            children: <Widget>[
+              Flexible(
+                child: TimeFieldBlocBuilder(
+                  timeFieldBloc: startTimeBloc,
+                  format: DateFormat.jm(),
+                  initialTime: TimeOfDay.now(),
+                  decoration: InputDecoration(
+                    labelText: 'Start time',
+                    filled: true,
+                    fillColor: Colors.grey,
+                    border: InputBorder.none,
                   ),
-                  const SizedBox(width: 10),
-                  TimeFieldBlocBuilder(
-                    timeFieldBloc: endTimeBloc,
-                    format: DateFormat.jm(),
-                    initialTime: null,
-                    decoration: InputDecoration(
-                      labelText: 'End time'
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ),
+              Flexible(
+                child: TimeFieldBlocBuilder(
+                  timeFieldBloc: endTimeBloc,
+                  format: DateFormat.jm(),
+                  initialTime: TimeOfDay.now(),
+                  decoration: InputDecoration(
+                    labelText: 'End time',
+                    filled: true,
+                    fillColor: Colors.grey,
+                    border: InputBorder.none,
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       ),

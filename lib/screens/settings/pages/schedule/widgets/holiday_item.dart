@@ -28,7 +28,7 @@ class HolidayItem extends StatelessWidget {
           children: <Widget>[
             Text(
               holiday.name,
-              style: Theme.of(context).textTheme.headline2,
+              style: Theme.of(context).textTheme.display3,
             ),
             const SizedBox(height: 8),
             Row(

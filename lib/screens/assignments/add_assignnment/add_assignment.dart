@@ -22,7 +22,7 @@ class AddAssignmentPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 BackButton(),
-                ScreenHeader('Create Assignment'),
+                const ScreenHeader('Create Assignment'),
               ],
             ),
             FormBlocHelper(
@@ -162,7 +162,7 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
                       .inputDecorationTheme
                       .border
                       .borderSide,
-                  textColor: Theme.of(context).textTheme.bodyText2.color,
+                  textColor: Theme.of(context).textTheme.body1.color,
                   onPressed: widget.formBloc.submit,
                   child: const Text('Submit'),
                 ),

@@ -32,7 +32,6 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
     final _contentStyleColor = _dialogTheme.contentTextStyle.color;
     return AlertDialog(
       title: const Text('What days do you have school?'),
-      scrollable: true,
       actions: <Widget>[
         MaterialButton(
           child: Text(

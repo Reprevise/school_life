@@ -10,7 +10,7 @@ class SubjectItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final bodyStyle = textTheme.bodyText2.copyWith(color: Colors.black);
+    final bodyStyle = textTheme.body1.copyWith(color: Colors.black);
 
     final Widget subjectName = Padding(
       padding: const EdgeInsets.only(left: 8.0),
@@ -18,7 +18,7 @@ class SubjectItem extends StatelessWidget {
         subject.name,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.left,
-        style: textTheme.headline3.copyWith(color: Colors.black),
+        style: textTheme.display2.copyWith(color: Colors.black),
       ),
     );
     final Widget roomText = RichText(
@@ -29,7 +29,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Room: ',
-            style: textTheme.headline4,
+            style: textTheme.display1,
           ),
           TextSpan(text: subject.room, style: bodyStyle)
         ],
@@ -43,7 +43,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Building: ',
-            style: textTheme.headline4,
+            style: textTheme.display1,
           ),
           TextSpan(text: subject.building, style: bodyStyle)
         ],
@@ -57,7 +57,7 @@ class SubjectItem extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: 'Teacher: ',
-            style: textTheme.headline4,
+            style: textTheme.display1,
           ),
           TextSpan(text: subject.teacher, style: bodyStyle)
         ],

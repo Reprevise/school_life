@@ -20,7 +20,7 @@ class SubjectsList extends StatelessWidget {
             child: Visibility(
               visible: box.isNotEmpty,
               child: ListView(
-                primary: false,
+                // primary: false,
                 itemExtent: 100,
                 shrinkWrap: true,
                 children:
@@ -37,7 +37,7 @@ class SubjectsList extends StatelessWidget {
                     'You don\'t have any subjects!',
                     style: Theme.of(context)
                         .textTheme
-                        .headline3
+                        .display2
                         .copyWith(fontSize: fontSize),
                     textAlign: TextAlign.center,
                   ),
@@ -46,7 +46,7 @@ class SubjectsList extends StatelessWidget {
                     'Click the button below to add some!',
                     style: Theme.of(context)
                         .textTheme
-                        .headline3
+                        .display2
                         .copyWith(fontSize: fontSize / 1.2),
                     textAlign: TextAlign.center,
                   ),

@@ -44,7 +44,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         onPressed: _handleAddAssignmentPress,
         label: Text(
           'Create',
-          style: Theme.of(context).accentTextTheme.bodyText1,
+          style: Theme.of(context).accentTextTheme.body2,
         ),
         icon: const Icon(Icons.add),
       ),
@@ -52,7 +52,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         child: ListView(
           primary: false,
           children: <Widget>[
-            ScreenHeader('Assignments'),
+            const ScreenHeader('Assignments'),
             Center(
               child: AssignmentsList(),
             ),

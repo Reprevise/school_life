@@ -16,7 +16,7 @@ class AssignmentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final textStyle = textTheme.headline4.copyWith(color: Colors.black);
+    final textStyle = textTheme.display1.copyWith(color: Colors.black);
     final dueDate = assignment.dueDate;
     final date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
     return Card(
@@ -48,7 +48,7 @@ class AssignmentItem extends StatelessWidget {
                 assignment.name,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
-                style: textTheme.headline3.copyWith(color: Colors.black),
+                style: textTheme.display2.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 8),
               Padding(

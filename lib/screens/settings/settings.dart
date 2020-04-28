@@ -35,10 +35,9 @@ class _SettingsPageState extends State<SettingsPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          scrollable: true,
           title: Text(
             'Change theme',
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.display2,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
@@ -79,7 +78,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: ListView(
           primary: false,
           children: <Widget>[
-            ScreenHeader('Settings'),
+            const ScreenHeader('Settings'),
             ListTile(
               title: Text('Theme'),
               subtitle: Text(themes[currentMode]),

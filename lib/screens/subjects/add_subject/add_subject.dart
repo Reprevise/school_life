@@ -25,7 +25,7 @@ class AddSubjectPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 BackButton(),
-                ScreenHeader('Create Subject'),
+                const ScreenHeader('Create Subject'),
               ],
             ),
             Expanded(
@@ -182,7 +182,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
               vertical: 16,
             ),
             borderSide: theme.inputDecorationTheme.border.borderSide,
-            textColor: theme.textTheme.subtitle1.color,
+            textColor: theme.textTheme.subtitle.color,
             onPressed: widget.formBloc.submit,
             child: const Text('Submit'),
           ),

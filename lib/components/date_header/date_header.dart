@@ -91,7 +91,7 @@ class _DateHeaderState extends State<DateHeader> {
       color: Theme.of(context).brightness == Brightness.light
           ? Colors.black
           : Colors.white,
-      fontFamily: "CircularStd",
+      fontFamily: "Montserrat",
     );
     return Container(
       alignment: Alignment.centerRight,

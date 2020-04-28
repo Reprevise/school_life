@@ -73,7 +73,7 @@ class _SchedulePageState extends State<SchedulePage> {
         onPressed: _handleAddScheduleButtonPress,
         label: Text(
           'Add Schedule',
-          style: Theme.of(context).accentTextTheme.bodyText1,
+          style: Theme.of(context).accentTextTheme.body2,
         ),
         icon: const Icon(Icons.add),
       ),
@@ -85,7 +85,7 @@ class _SchedulePageState extends State<SchedulePage> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        ScreenHeader('Schedule'),
+        const ScreenHeader('Schedule'),
         IconButton(
           icon: Icon(Icons.today),
           onPressed: () {

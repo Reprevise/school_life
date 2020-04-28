@@ -15,6 +15,7 @@ final ThemeData lightTheme = ThemeData(
   primaryIconTheme: const IconThemeData(color: Colors.black),
   buttonColor: Colors.grey[600],
   bottomAppBarColor: Color(0xFFededed),
+  unselectedWidgetColor: Colors.grey,
   inputDecorationTheme: InputDecorationTheme(
     focusedErrorBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.red),
@@ -53,68 +54,56 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ButtonTextTheme.accent,
   ),
   accentTextTheme: TextTheme(
-    bodyText1: TextStyle(
-      color: Colors.white,
+    body2: TextStyle(
       fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+      fontFamily: 'Montserrat',
     ),
-    bodyText2: TextStyle(
-      color: Colors.black,
+    body1: TextStyle(
       fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+      fontFamily: 'Montserrat',
     ),
-    headline4: TextStyle(
+    display1: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
-      color: Colors.black,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
   ),
   textTheme: TextTheme(
-    bodyText1: TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+    body2: TextStyle(
+      fontFamily: 'Montserrat',
     ),
-    bodyText2: TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+    body1: TextStyle(
+      fontFamily: 'Montserrat',
     ),
-    subtitle1: TextStyle(
-      color: Colors.black,
-      fontFamily: 'CircularStd',
+    subtitle: TextStyle(
+      fontFamily: 'Montserrat',
       fontSize: 16.0,
     ),
-    headline4: TextStyle(
+    display1: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
-      color: Colors.black,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    headline3: TextStyle(
+    display2: TextStyle(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    headline2: TextStyle(
+    display3: TextStyle(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    headline1: TextStyle(
+    display4: TextStyle(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
-      color: Colors.black,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
   ),
@@ -134,16 +123,16 @@ final ThemeData darkTheme = ThemeData(
   primaryIconTheme: const IconThemeData(color: Colors.white),
   buttonColor: Colors.white,
   bottomAppBarColor: Color(0xFF1c1c1c),
+  unselectedWidgetColor: Colors.grey,
   inputDecorationTheme: InputDecorationTheme(
     focusedErrorBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.red),
     ),
     focusColor: Colors.white,
     labelStyle: TextStyle(
-      color: Colors.white,
       fontWeight: FontWeight.bold,
       letterSpacing: .5,
-      fontFamily: 'Arial',
+      fontFamily: 'Montserrat',
       fontSize: 16.0,
     ),
     focusedBorder: const OutlineInputBorder(
@@ -167,74 +156,59 @@ final ThemeData darkTheme = ThemeData(
     foregroundColor: Colors.black,
     elevation: 2.0,
   ),
-  buttonTheme: const ButtonThemeData(
-    buttonColor: Colors.white,
-    textTheme: ButtonTextTheme.accent,
-  ),
+  buttonTheme: const ButtonThemeData(buttonColor: Colors.white),
   applyElevationOverlayColor: true,
   accentTextTheme: TextTheme(
-    bodyText1: TextStyle(
-      color: Colors.grey[800],
+    body2: TextStyle(
       fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+      fontFamily: 'Montserrat',
     ),
-    bodyText2: TextStyle(
-      color: Colors.white,
+    body1: TextStyle(
       fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+      fontFamily: 'Montserrat',
     ),
-    headline4: TextStyle(
+    display1: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
-      color: Colors.white,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
   ),
   textTheme: TextTheme(
-    bodyText1: TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+    body2: TextStyle(
+      fontFamily: 'Montserrat',
     ),
-    bodyText2: TextStyle(
-      color: Colors.grey[400],
-      fontWeight: FontWeight.w300,
-      fontFamily: 'CircularStd',
+    body1: TextStyle(
+      fontFamily: 'Montserrat',
     ),
-    subtitle1: TextStyle(
+    subtitle: TextStyle(
+      fontFamily: 'Montserrat',
       color: Colors.white,
-      fontFamily: 'CircularStd',
-      fontSize: 16.0,
     ),
-    headline4: TextStyle(
+    display1: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
-      color: Colors.black,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    headline3: TextStyle(
+    display2: TextStyle(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    headline2: TextStyle(
+    display3: TextStyle(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    headline1: TextStyle(
+    display4: TextStyle(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
-      color: Colors.white,
-      fontFamily: 'Laca',
+      fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
   ),

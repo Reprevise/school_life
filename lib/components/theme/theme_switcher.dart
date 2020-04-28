@@ -69,12 +69,6 @@ class _ThemeSwitcherState extends State<ThemeSwitcher> {
     switch (mode) {
       case ThemeMode.system:
         brightness = WidgetsBinding.instance.window.platformBrightness;
-        print('brightness = $brightness');
-        // if (debugCheckHasMediaQuery(context)) {
-        //   brightness = MediaQuery.platformBrightnessOf(context);
-        // } else {
-        //   debugPrint('NO MEDIA QUERY');
-        // }
         break;
       case ThemeMode.light:
         brightness = Brightness.light;

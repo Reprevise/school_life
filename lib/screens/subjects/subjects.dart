@@ -18,14 +18,14 @@ class SubjectsPage extends StatelessWidget {
         onPressed: () => Router.navigator.pushNamed(Routes.addSubject),
         label: Text(
           'Create',
-          style: Theme.of(context).accentTextTheme.bodyText1,
+          style: Theme.of(context).accentTextTheme.body2,
         ),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       body: ListView(
         children: <Widget>[
-          ScreenHeader('Subjects'),
+          const ScreenHeader('Subjects'),
           SubjectsList(),
         ],
       ),
