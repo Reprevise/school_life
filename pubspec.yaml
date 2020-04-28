@@ -13,8 +13,8 @@ dependencies:
   hive: ^1.4.1+1
   hive_flutter: ^0.3.0+2
   flutter_form_bloc: ^0.14.0
-  get_it: ^4.0.1
-  auto_route: ^0.4.4
+  get_it: ^4.0.2
+  auto_route: ^0.4.5
   table_calendar: ^2.2.3
   injectable: ^0.3.0
   flutter_statusbarcolor: ^0.2.3
@@ -26,7 +26,7 @@ dev_dependencies:
     sdk: flutter
   build_runner: ^1.9.0
   hive_generator: ^0.7.0+2
-  auto_route_generator: ^0.4.5
+  auto_route_generator: ^0.4.7
   mockito: ^4.1.1
   injectable_generator: ^0.3.4
   effective_dart: ^1.2.1

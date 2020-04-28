@@ -67,54 +67,50 @@ class Router extends RouterBase {
     final args = settings.arguments;
     switch (settings.name) {
       case Routes.home:
-        if (hasInvalidArgs<HomePageArguments>(args)) {
+        if (hasInvalidArgs<HomePageArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<HomePageArguments>(args);
         }
-        final typedArgs = args as HomePageArguments ?? HomePageArguments();
+        final typedArgs = args as HomePageArguments;
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               HomePage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.schedule:
-        if (hasInvalidArgs<SchedulePageArguments>(args)) {
+        if (hasInvalidArgs<SchedulePageArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<SchedulePageArguments>(args);
         }
-        final typedArgs =
-            args as SchedulePageArguments ?? SchedulePageArguments();
+        final typedArgs = args as SchedulePageArguments;
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               SchedulePage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.subjects:
-        if (hasInvalidArgs<SubjectsPageArguments>(args)) {
+        if (hasInvalidArgs<SubjectsPageArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<SubjectsPageArguments>(args);
         }
-        final typedArgs =
-            args as SubjectsPageArguments ?? SubjectsPageArguments();
+        final typedArgs = args as SubjectsPageArguments;
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               SubjectsPage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.assignments:
-        if (hasInvalidArgs<AssignmentsPageArguments>(args)) {
+        if (hasInvalidArgs<AssignmentsPageArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<AssignmentsPageArguments>(args);
         }
-        final typedArgs =
-            args as AssignmentsPageArguments ?? AssignmentsPageArguments();
+        final typedArgs = args as AssignmentsPageArguments;
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               AssignmentsPage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.settings:
-        if (hasInvalidArgs<SettingsPageArguments>(args)) {
+        if (hasInvalidArgs<SettingsPageArguments>(args, isRequired: true)) {
           return misTypedArgsRoute<SettingsPageArguments>(args);
         }
-        final typedArgs =
-            args as SettingsPageArguments ?? SettingsPageArguments();
+        final typedArgs = args as SettingsPageArguments;
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               SettingsPage(typedArgs.tabsChangeNotifier),
@@ -145,11 +141,11 @@ class Router extends RouterBase {
           settings: settings,
         );
       case Routes.assignmentDetails:
-        if (hasInvalidArgs<AssignmentDetailsPageArguments>(args)) {
+        if (hasInvalidArgs<AssignmentDetailsPageArguments>(args,
+            isRequired: true)) {
           return misTypedArgsRoute<AssignmentDetailsPageArguments>(args);
         }
-        final typedArgs = args as AssignmentDetailsPageArguments ??
-            AssignmentDetailsPageArguments();
+        final typedArgs = args as AssignmentDetailsPageArguments;
         return PageRouteBuilder<dynamic>(
           pageBuilder: (ctx, animation, secondaryAnimation) =>
               AssignmentDetailsPage(
@@ -191,36 +187,37 @@ class Router extends RouterBase {
 //HomePage arguments holder class
 class HomePageArguments {
   final ValueNotifier<int> tabsChangeNotifier;
-  HomePageArguments({this.tabsChangeNotifier});
+  HomePageArguments({@required this.tabsChangeNotifier});
 }
 
 //SchedulePage arguments holder class
 class SchedulePageArguments {
   final ValueNotifier<int> tabsChangeNotifier;
-  SchedulePageArguments({this.tabsChangeNotifier});
+  SchedulePageArguments({@required this.tabsChangeNotifier});
 }
 
 //SubjectsPage arguments holder class
 class SubjectsPageArguments {
   final ValueNotifier<int> tabsChangeNotifier;
-  SubjectsPageArguments({this.tabsChangeNotifier});
+  SubjectsPageArguments({@required this.tabsChangeNotifier});
 }
 
 //AssignmentsPage arguments holder class
 class AssignmentsPageArguments {
   final ValueNotifier<int> tabsChangeNotifier;
-  AssignmentsPageArguments({this.tabsChangeNotifier});
+  AssignmentsPageArguments({@required this.tabsChangeNotifier});
 }
 
 //SettingsPage arguments holder class
 class SettingsPageArguments {
   final ValueNotifier<int> tabsChangeNotifier;
-  SettingsPageArguments({this.tabsChangeNotifier});
+  SettingsPageArguments({@required this.tabsChangeNotifier});
 }
 
 //AssignmentDetailsPage arguments holder class
 class AssignmentDetailsPageArguments {
   final Assignment assignment;
   final Subject assignmentSubject;
-  AssignmentDetailsPageArguments({this.assignment, this.assignmentSubject});
+  AssignmentDetailsPageArguments(
+      {@required this.assignment, @required this.assignmentSubject});
 }
