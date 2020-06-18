@@ -49,4 +49,14 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       ..writeByte(7)
       ..write(obj.schedule);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is SubjectAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

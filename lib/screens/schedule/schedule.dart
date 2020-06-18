@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/navbar/navbar.dart';
@@ -14,7 +15,6 @@ class SchedulePage extends StatefulWidget {
   final ValueNotifier<int> tabsChangeNotifier;
 
   SchedulePage(this.tabsChangeNotifier);
-
 
   @override
   _SchedulePageState createState() => _SchedulePageState();
@@ -73,7 +73,7 @@ class _SchedulePageState extends State<SchedulePage> {
         onPressed: _handleAddScheduleButtonPress,
         label: Text(
           'Add Schedule',
-          style: Theme.of(context).accentTextTheme.body2,
+          style: Theme.of(context).accentTextTheme.bodyText1,
         ),
         icon: const Icon(Icons.add),
       ),
@@ -110,6 +110,6 @@ class _SchedulePageState extends State<SchedulePage> {
       showNoSubjectsWithoutScheduleDialog(context);
       return;
     }
-    Router.navigator.pushNamed(Routes.addSchedule);
+    ExtendedNavigator.rootNavigator.pushNamed(Routes.addSchedule);
   }
 }

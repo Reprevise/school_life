@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/models/assignment.dart';
@@ -16,7 +17,7 @@ class AssignmentItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final textStyle = textTheme.display1.copyWith(color: Colors.black);
+    final textStyle = textTheme.headline4.copyWith(color: Colors.black);
     final dueDate = assignment.dueDate;
     final date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
     return Card(
@@ -24,7 +25,7 @@ class AssignmentItem extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          Router.navigator.pushNamed(
+          ExtendedNavigator.rootNavigator.pushNamed(
             Routes.assignmentDetails,
             arguments: AssignmentDetailsPageArguments(
               assignment: assignment,
@@ -48,7 +49,7 @@ class AssignmentItem extends StatelessWidget {
                 assignment.name,
                 overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.start,
-                style: textTheme.display2.copyWith(color: Colors.black),
+                style: textTheme.headline3.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 8),
               Padding(

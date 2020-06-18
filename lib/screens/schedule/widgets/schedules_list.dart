@@ -84,7 +84,7 @@ class SchedulesList extends StatelessWidget {
                   'You don\'t have any classes today!',
                   style: Theme.of(context)
                       .textTheme
-                      .display2
+                      .headline3
                       .copyWith(fontSize: fontSize),
                   textAlign: TextAlign.center,
                 ),

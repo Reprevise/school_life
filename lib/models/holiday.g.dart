@@ -37,4 +37,14 @@ class HolidayAdapter extends TypeAdapter<Holiday> {
       ..writeByte(3)
       ..write(obj.endDate);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is HolidayAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

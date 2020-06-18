@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,7 +11,7 @@ import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.da
 
 class AddSubjectPage extends StatelessWidget {
   void _goToSchedulePage(AddSubjectFormBloc bloc) {
-    Router.navigator.popAndPushNamed(Routes.addSchedule);
+    ExtendedNavigator.rootNavigator.popAndPushNamed(Routes.addSchedule);
   }
 
   @override
@@ -47,7 +48,8 @@ class AddSubjectPage extends StatelessWidget {
                         actions: <Widget>[
                           FlatButton(
                             onPressed: () {
-                              Router.navigator.popAndPushNamed(Routes.subjects);
+                              ExtendedNavigator.rootNavigator
+                                  .popAndPushNamed(Routes.subjects);
                             },
                             child: const Text('NO'),
                           ),
@@ -182,7 +184,7 @@ class _AddSubjectFormFieldsState extends State<AddSubjectFormFields> {
               vertical: 16,
             ),
             borderSide: theme.inputDecorationTheme.border.borderSide,
-            textColor: theme.textTheme.subtitle.color,
+            textColor: theme.textTheme.subtitle2.color,
             onPressed: widget.formBloc.submit,
             child: const Text('Submit'),
           ),

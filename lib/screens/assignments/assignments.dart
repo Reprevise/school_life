@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
 import 'package:school_life/components/navbar/navbar.dart';
@@ -44,7 +45,7 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
         onPressed: _handleAddAssignmentPress,
         label: Text(
           'Create',
-          style: Theme.of(context).accentTextTheme.body2,
+          style: Theme.of(context).accentTextTheme.bodyText1,
         ),
         icon: const Icon(Icons.add),
       ),
@@ -67,6 +68,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       showNoSubjectsDialog(context);
       return;
     }
-    Router.navigator.pushNamed(Routes.addAssignment);
+    ExtendedNavigator.rootNavigator.pushNamed(Routes.addAssignment);
   }
 }

@@ -34,4 +34,14 @@ class TimeBlockAdapter extends TypeAdapter<TimeBlock> {
       ..writeByte(2)
       ..write(obj.endTime);
   }
+
+  @override
+  int get hashCode => typeId.hashCode;
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TimeBlockAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }

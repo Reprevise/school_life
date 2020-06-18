@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/navbar/navbar.dart';
 import 'package:school_life/components/screen_header/screen_header.dart';
@@ -15,10 +16,11 @@ class SubjectsPage extends StatelessWidget {
       bottomNavigationBar: CustomBottomNavBar(tabsChangeNotifier),
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Router.navigator.pushNamed(Routes.addSubject),
+        onPressed: () =>
+            ExtendedNavigator.rootNavigator.pushNamed(Routes.addSubject),
         label: Text(
           'Create',
-          style: Theme.of(context).accentTextTheme.body2,
+          style: Theme.of(context).accentTextTheme.bodyText1,
         ),
         icon: const Icon(Icons.add),
       ),

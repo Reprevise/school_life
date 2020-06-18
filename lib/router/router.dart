@@ -13,7 +13,7 @@ import 'package:school_life/screens/settings/settings.dart';
 import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
 import 'package:school_life/screens/subjects/subjects.dart';
 
-@CustomAutoRouter(generateRouteList: true)
+@MaterialAutoRouter()
 class $Router {
   @initial
   HomePage home;

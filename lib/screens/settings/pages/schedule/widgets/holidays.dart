@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
@@ -20,7 +21,8 @@ class ScheduleHolidaysPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => Router.navigator.pushNamed(Routes.addHoliday),
+        onPressed: () =>
+            ExtendedNavigator.rootNavigator.pushNamed(Routes.addHoliday),
         label: const Text('Add Holiday'),
         icon: Icon(Icons.add),
       ),
@@ -56,7 +58,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
                     'You don\'t have any holidays!',
                     style: Theme.of(context)
                         .textTheme
-                        .display2
+                        .headline3
                         .copyWith(fontSize: fontSize),
                     textAlign: TextAlign.center,
                   ),
@@ -65,7 +67,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
                     'Aww :(',
                     style: Theme.of(context)
                         .textTheme
-                        .display2
+                        .headline3
                         .copyWith(fontSize: fontSize / 1.2),
                     textAlign: TextAlign.center,
                   ),
@@ -99,7 +101,7 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
       body: FormBlocHelper<AddHolidayFormBloc>(
         create: (_) => AddHolidayFormBloc(),
         onSuccess: (_, __) {
-          Router.navigator.pop();
+          ExtendedNavigator.rootNavigator.pop();
         },
         onSubmitting: (_, __) {
           return const Center(child: CircularProgressIndicator());
@@ -147,11 +149,9 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
                 ),
                 OutlineButton(
                   padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-                  borderSide: Theme.of(context)
-                      .inputDecorationTheme
-                      .border
-                      .borderSide,
-                  textColor: Theme.of(context).textTheme.subtitle.color,
+                  borderSide:
+                      Theme.of(context).inputDecorationTheme.border.borderSide,
+                  textColor: Theme.of(context).textTheme.subtitle2.color,
                   onPressed: _formBloc.submit,
                   child: const Text('Submit'),
                 ),

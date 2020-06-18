@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/navbar/icons/nav_bar_icons_icons.dart';
 import 'package:school_life/router/router.gr.dart';
@@ -47,7 +48,8 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
         return SettingsPageArguments(
           tabsChangeNotifier: widget.tabsChangeNotifier,
         );
-      default: return null;
+      default:
+        return null;
     }
   }
 
@@ -68,8 +70,8 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     void changeIndex(int newIndex) async {
       widget.tabsChangeNotifier.value = newIndex;
       await Future.delayed(Duration(milliseconds: 100));
-      Router.navigator.pushNamed(
-        Routes.all[newIndex],
+      ExtendedNavigator.rootNavigator.pushNamed(
+        Routes.all.toList()[newIndex],
         arguments: getRouteArguments(newIndex),
       );
     }

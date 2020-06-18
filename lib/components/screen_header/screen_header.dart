@@ -11,9 +11,9 @@ class ScreenHeader extends StatelessWidget {
       padding: const EdgeInsets.all(16.0),
       child: Text(
         screenName,
-        style: Theme.of(context).textTheme.display3.copyWith(
-          color: Theme.of(context).accentColor,
-        ),
+        style: Theme.of(context).textTheme.headline2.copyWith(
+              color: Theme.of(context).accentColor,
+            ),
       ),
     );
   }

@@ -1,5 +1,5 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/router/router.gr.dart';
 
 class ChooseDaysOfSchoolDialog extends StatefulWidget {
   const ChooseDaysOfSchoolDialog({
@@ -21,7 +21,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
   Map<String, bool> _selectedDays;
 
   @override
-  void initState() { 
+  void initState() {
     super.initState();
     _selectedDays = Map.from(widget.selectedDays);
   }
@@ -40,7 +40,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           ),
           onPressed: () {
             widget.onSaved(_selectedDays);
-            Router.navigator.pop();
+            ExtendedNavigator.rootNavigator.pop();
           },
         ),
       ],

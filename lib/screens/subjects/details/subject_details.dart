@@ -27,7 +27,7 @@ class SubjectDetailsPage extends StatelessWidget {
               child: Container(
                 child: Text(
                   subject.name,
-                  style: Theme.of(context).textTheme.display3,
+                  style: Theme.of(context).textTheme.headline2,
                 ),
               ),
             ),
@@ -50,7 +50,7 @@ class SubjectDetailsPage extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 16.0),
                     child: Text(
                       'Schedule',
-                      style: textTheme.display2,
+                      style: textTheme.headline3,
                     ),
                   ),
                   const SizedBox(height: 8),

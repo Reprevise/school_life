@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:school_life/components/navbar/navbar.dart';
 import 'package:school_life/components/screen_header/screen_header.dart';
@@ -27,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _changeMode(ThemeMode newMode) {
     currentMode = newMode;
     ThemeSwitcher.of(context).setThemeMode(newMode, context);
-    Router.navigator.pop();
+    ExtendedNavigator.rootNavigator.pop();
   }
 
   void _showThemeChangeDialog() {
@@ -37,7 +38,7 @@ class _SettingsPageState extends State<SettingsPage> {
         return AlertDialog(
           title: Text(
             'Change theme',
-            style: Theme.of(context).textTheme.display2,
+            style: Theme.of(context).textTheme.headline3,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),

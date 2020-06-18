@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_form_bloc/flutter_form_bloc.dart';
@@ -28,7 +29,7 @@ class AddAssignmentPage extends StatelessWidget {
             FormBlocHelper(
               create: (_) => AddAssignmentFormBloc(),
               onSuccess: (_, __) {
-                Router.navigator.pushNamed(Routes.assignments);
+                ExtendedNavigator.rootNavigator.pushNamed(Routes.assignments);
               },
               onSubmitting: (_, __) {
                 return const Center(child: CircularProgressIndicator());
@@ -62,8 +63,6 @@ class _AddAssignmentForm extends StatefulWidget {
 }
 
 class _AddAssignmentFormState extends State<_AddAssignmentForm> {
-
-
   @override
   void dispose() {
     super.dispose();
@@ -158,11 +157,9 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
                 width: 150,
                 child: OutlineButton(
                   padding: EdgeInsets.zero,
-                  borderSide: Theme.of(context)
-                      .inputDecorationTheme
-                      .border
-                      .borderSide,
-                  textColor: Theme.of(context).textTheme.body1.color,
+                  borderSide:
+                      Theme.of(context).inputDecorationTheme.border.borderSide,
+                  textColor: Theme.of(context).textTheme.bodyText2.color,
                   onPressed: widget.formBloc.submit,
                   child: const Text('Submit'),
                 ),

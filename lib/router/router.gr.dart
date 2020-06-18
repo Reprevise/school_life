@@ -38,7 +38,7 @@ abstract class Routes {
   static const addHoliday = '/add-holiday';
   static const addSchedule = '/add-schedule';
   static const addSubject = '/add-subject';
-  static const all = [
+  static const all = {
     home,
     schedule,
     subjects,
@@ -53,12 +53,14 @@ abstract class Routes {
     addHoliday,
     addSchedule,
     addSubject,
-  ];
+  };
 }
 
 class Router extends RouterBase {
-  //This will probably be removed in future versions
-  //you should call ExtendedNavigator.ofRouter<Router>() directly
+  @override
+  Set<String> get allRoutes => Routes.all;
+
+  @Deprecated('call ExtendedNavigator.ofRouter<Router>() directly')
   static ExtendedNavigatorState get navigator =>
       ExtendedNavigator.ofRouter<Router>();
 
@@ -71,9 +73,8 @@ class Router extends RouterBase {
           return misTypedArgsRoute<HomePageArguments>(args);
         }
         final typedArgs = args as HomePageArguments;
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              HomePage(typedArgs.tabsChangeNotifier),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => HomePage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.schedule:
@@ -81,9 +82,8 @@ class Router extends RouterBase {
           return misTypedArgsRoute<SchedulePageArguments>(args);
         }
         final typedArgs = args as SchedulePageArguments;
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              SchedulePage(typedArgs.tabsChangeNotifier),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => SchedulePage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.subjects:
@@ -91,9 +91,8 @@ class Router extends RouterBase {
           return misTypedArgsRoute<SubjectsPageArguments>(args);
         }
         final typedArgs = args as SubjectsPageArguments;
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              SubjectsPage(typedArgs.tabsChangeNotifier),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => SubjectsPage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.assignments:
@@ -101,9 +100,8 @@ class Router extends RouterBase {
           return misTypedArgsRoute<AssignmentsPageArguments>(args);
         }
         final typedArgs = args as AssignmentsPageArguments;
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AssignmentsPage(typedArgs.tabsChangeNotifier),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AssignmentsPage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.settings:
@@ -111,33 +109,28 @@ class Router extends RouterBase {
           return misTypedArgsRoute<SettingsPageArguments>(args);
         }
         final typedArgs = args as SettingsPageArguments;
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              SettingsPage(typedArgs.tabsChangeNotifier),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => SettingsPage(typedArgs.tabsChangeNotifier),
           settings: settings,
         );
       case Routes.holidays:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              ScheduleHolidaysPage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ScheduleHolidaysPage(),
           settings: settings,
         );
       case Routes.assignmentSettings:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AssignmentsSettingsPage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AssignmentsSettingsPage(),
           settings: settings,
         );
       case Routes.subjectsSettings:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              SubjectsSettingsPage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => SubjectsSettingsPage(),
           settings: settings,
         );
       case Routes.scheduleSettings:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              ScheduleSettingsPage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => ScheduleSettingsPage(),
           settings: settings,
         );
       case Routes.assignmentDetails:
@@ -146,32 +139,29 @@ class Router extends RouterBase {
           return misTypedArgsRoute<AssignmentDetailsPageArguments>(args);
         }
         final typedArgs = args as AssignmentDetailsPageArguments;
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AssignmentDetailsPage(
-                  typedArgs.assignment, typedArgs.assignmentSubject),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AssignmentDetailsPage(
+              typedArgs.assignment, typedArgs.assignmentSubject),
           settings: settings,
         );
       case Routes.addAssignment:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AddAssignmentPage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AddAssignmentPage(),
           settings: settings,
         );
       case Routes.addHoliday:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) => AddHolidayPage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AddHolidayPage(),
           settings: settings,
         );
       case Routes.addSchedule:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) =>
-              AddSchedulePage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AddSchedulePage(),
           settings: settings,
         );
       case Routes.addSubject:
-        return PageRouteBuilder<dynamic>(
-          pageBuilder: (ctx, animation, secondaryAnimation) => AddSubjectPage(),
+        return MaterialPageRoute<dynamic>(
+          builder: (context) => AddSubjectPage(),
           settings: settings,
         );
       default:
@@ -180,9 +170,9 @@ class Router extends RouterBase {
   }
 }
 
-//**************************************************************************
+// *************************************************************************
 // Arguments holder classes
-//***************************************************************************
+// **************************************************************************
 
 //HomePage arguments holder class
 class HomePageArguments {

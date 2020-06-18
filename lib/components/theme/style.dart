@@ -54,15 +54,15 @@ final ThemeData lightTheme = ThemeData(
     textTheme: ButtonTextTheme.accent,
   ),
   accentTextTheme: TextTheme(
-    body2: TextStyle(
+    bodyText1: TextStyle(
       fontWeight: FontWeight.w300,
       fontFamily: 'Montserrat',
     ),
-    body1: TextStyle(
+    bodyText2: TextStyle(
       fontWeight: FontWeight.w300,
       fontFamily: 'Montserrat',
     ),
-    display1: TextStyle(
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
@@ -71,36 +71,36 @@ final ThemeData lightTheme = ThemeData(
     ),
   ),
   textTheme: TextTheme(
-    body2: TextStyle(
+    bodyText1: TextStyle(
       fontFamily: 'Montserrat',
     ),
-    body1: TextStyle(
+    bodyText2: TextStyle(
       fontFamily: 'Montserrat',
     ),
-    subtitle: TextStyle(
+    subtitle2: TextStyle(
       fontFamily: 'Montserrat',
       fontSize: 16.0,
     ),
-    display1: TextStyle(
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
       fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    display2: TextStyle(
+    headline3: TextStyle(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    display3: TextStyle(
+    headline2: TextStyle(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    display4: TextStyle(
+    headline1: TextStyle(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Raleway',
@@ -159,15 +159,15 @@ final ThemeData darkTheme = ThemeData(
   buttonTheme: const ButtonThemeData(buttonColor: Colors.white),
   applyElevationOverlayColor: true,
   accentTextTheme: TextTheme(
-    body2: TextStyle(
+    bodyText1: TextStyle(
       fontWeight: FontWeight.w300,
       fontFamily: 'Montserrat',
     ),
-    body1: TextStyle(
+    bodyText2: TextStyle(
       fontWeight: FontWeight.w300,
       fontFamily: 'Montserrat',
     ),
-    display1: TextStyle(
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
@@ -176,36 +176,36 @@ final ThemeData darkTheme = ThemeData(
     ),
   ),
   textTheme: TextTheme(
-    body2: TextStyle(
+    bodyText1: TextStyle(
       fontFamily: 'Montserrat',
     ),
-    body1: TextStyle(
+    bodyText2: TextStyle(
       fontFamily: 'Montserrat',
     ),
-    subtitle: TextStyle(
+    subtitle2: TextStyle(
       fontFamily: 'Montserrat',
       color: Colors.white,
     ),
-    display1: TextStyle(
+    headline4: TextStyle(
       fontSize: 15.0,
       fontWeight: FontWeight.bold,
       letterSpacing: 0.3,
       fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    display2: TextStyle(
+    headline3: TextStyle(
       fontSize: 21.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    display3: TextStyle(
+    headline2: TextStyle(
       fontSize: 24.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Raleway',
       fontStyle: FontStyle.italic,
     ),
-    display4: TextStyle(
+    headline1: TextStyle(
       fontSize: 32.0,
       fontWeight: FontWeight.bold,
       fontFamily: 'Raleway',

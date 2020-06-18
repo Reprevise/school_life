@@ -77,7 +77,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final titleStyle = Theme.of(context).textTheme.body1;
+    final titleStyle = Theme.of(context).textTheme.bodyText2;
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: ListView(

@@ -78,7 +78,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                     onPressed: () {},
                     child: Text(
                       'Submit',
-                      style: Theme.of(context).textTheme.display2,
+                      style: Theme.of(context).textTheme.headline3,
                     ),
                     color: Color(0xFF76B852),
                   ),
@@ -168,7 +168,7 @@ class _AddScheduleFormFields extends StatelessWidget {
                   color: Colors.black,
                   child: Text(
                     'Add day(s)',
-                    style: Theme.of(context).textTheme.subhead,
+                    style: Theme.of(context).textTheme.subtitle1,
                   ),
                 ),
               ),
@@ -237,7 +237,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
               child: Text('Select day(s)',
                   style: Theme.of(context)
                       .textTheme
-                      .subtitle
+                      .subtitle2
                       .copyWith(fontSize: 24.0, fontWeight: FontWeight.w600)),
             ),
             ListView.builder(
@@ -329,7 +329,7 @@ class _ScheduleBottomSheetState extends State<ScheduleBottomSheet> {
                   'Save',
                   style: Theme.of(context)
                       .textTheme
-                      .display2
+                      .headline3
                       .copyWith(color: Colors.black),
                 ),
                 color: Color(0xFF82BD61),
