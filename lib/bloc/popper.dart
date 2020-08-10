@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:school_life/components/dialogs/dialogs.dart';
 
-mixin Popper {
+abstract class Popper {
   Future<bool> canPop(BuildContext context) async {
     if (fieldsAreEmpty()) {
       return true;
@@ -9,5 +9,6 @@ mixin Popper {
     showOnPopDialog(context);
     return false;
   }
+
   bool fieldsAreEmpty();
 }

@@ -70,7 +70,7 @@ class _CustomBottomNavBarState extends State<CustomBottomNavBar> {
     void changeIndex(int newIndex) async {
       widget.tabsChangeNotifier.value = newIndex;
       await Future.delayed(Duration(milliseconds: 100));
-      ExtendedNavigator.rootNavigator.pushNamed(
+      await ExtendedNavigator.root.push(
         Routes.all.toList()[newIndex],
         arguments: getRouteArguments(newIndex),
       );

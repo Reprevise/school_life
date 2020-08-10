@@ -1,11 +1,8 @@
 import 'package:hive/hive.dart';
-import 'package:injectable/injectable.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/settings_keys.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
-@singleton
-@injectable
 class BasicSettingsHelper {
   BasicSettingsHelper() {
     _settingsBox = Hive.box<dynamic>(Databases.settingsBox);

@@ -40,7 +40,7 @@ class _ChooseDaysOfSchoolDialogState extends State<ChooseDaysOfSchoolDialog> {
           ),
           onPressed: () {
             widget.onSaved(_selectedDays);
-            ExtendedNavigator.rootNavigator.pop();
+            ExtendedNavigator.root.pop();
           },
         ),
       ],

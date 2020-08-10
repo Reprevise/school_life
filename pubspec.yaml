@@ -10,32 +10,25 @@ dependencies:
   flutter:
     sdk: flutter
   intl: ^0.16.1
-  hive:
-  hive_flutter:
-    git:
-      url: git://github.com/hivedb/hive.git
-      path: hive_flutter
-  flutter_form_bloc: ^0.14.0
-  get_it: ^4.0.2
-  auto_route: ^0.5.0
+  hive: ^1.4.3
+  hive_flutter: ^0.3.1
+  flutter_bloc: ^6.0.1
+  flutter_form_bloc: ^0.19.0
+  get_it: ^4.0.4
+  auto_route: ^0.6.7
   table_calendar: ^2.2.3
-  injectable: ^0.4.0
-  flutter_statusbarcolor: ^0.2.3
   animations: ^1.1.1
-  flutter_svg: ^0.17.4
+  flutter_svg: ^0.18.0
+  pedantic: ^1.9.0
+  meta: ^1.1.8
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^1.10.0
-  hive_generator:
-    git:
-      url: git://github.com/hivedb/hive.git
-      path: hive_generator
-  auto_route_generator: ^0.5.0
+  hive_generator: ^0.7.1
+  auto_route_generator: ^0.6.8
   mockito: ^4.1.1
-  injectable_generator: ^0.4.1
-  effective_dart: ^1.2.1
 
 flutter:
   uses-material-design: true
@@ -63,3 +56,4 @@ flutter:
         - asset: assets/fonts/Montserrat/Bold.ttf
           weight: 700
           style: normal
+

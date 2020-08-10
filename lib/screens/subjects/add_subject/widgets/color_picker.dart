@@ -17,7 +17,7 @@ class _SubjectColorPickerState extends State<SubjectColorPicker> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder(
-      bloc: widget.formBloc.colorField,
+      cubit: widget.formBloc.colorField,
       builder: (context, state) {
         return Padding(
           padding: const EdgeInsets.all(8.0),

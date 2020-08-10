@@ -13,7 +13,7 @@ void showNoSubjectsDialog(BuildContext context) {
         actions: <Widget>[
           FlatButton(
             child: const Text('OK'),
-            onPressed: ExtendedNavigator.rootNavigator.pop,
+            onPressed: ExtendedNavigator.root.pop,
           )
         ],
       );
@@ -31,7 +31,7 @@ void showNoSubjectsWithoutScheduleDialog(BuildContext context) {
         actions: <Widget>[
           FlatButton(
             child: const Text('OK'),
-            onPressed: ExtendedNavigator.rootNavigator.pop,
+            onPressed: ExtendedNavigator.root.pop,
           )
         ],
       );
@@ -75,7 +75,7 @@ void showDeleteAssignmentDialog(
             ),
             onPressed: () async {
               await assignment.delete();
-              ExtendedNavigator.rootNavigator.pop();
+              ExtendedNavigator.root.pop();
             },
           ),
           MaterialButton(
@@ -83,7 +83,7 @@ void showDeleteAssignmentDialog(
               'NO',
               style: TextStyle(color: _contentStyleColor),
             ),
-            onPressed: ExtendedNavigator.rootNavigator.pop,
+            onPressed: ExtendedNavigator.root.pop,
           )
         ],
       );
@@ -124,7 +124,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
             ),
             onPressed: () async {
               await subject.delete();
-              ExtendedNavigator.rootNavigator.pop();
+              ExtendedNavigator.root.pop();
             },
           ),
           MaterialButton(
@@ -134,7 +134,7 @@ void showDeleteSubjectDialog(BuildContext context, Subject subject) {
                 color: Theme.of(context).dialogTheme.contentTextStyle.color,
               ),
             ),
-            onPressed: ExtendedNavigator.rootNavigator.pop,
+            onPressed: ExtendedNavigator.root.pop,
           )
         ],
       );
@@ -163,7 +163,7 @@ void showOnPopDialog(BuildContext context) {
               'NO',
               style: TextStyle(color: _contentStyleColor),
             ),
-            onPressed: ExtendedNavigator.rootNavigator.pop,
+            onPressed: ExtendedNavigator.root.pop,
           ),
           MaterialButton(
             child: Text(
@@ -172,8 +172,8 @@ void showOnPopDialog(BuildContext context) {
             ),
             onPressed: () {
               // pop twice since dialog and back to assignments page
-              ExtendedNavigator.rootNavigator.pop();
-              ExtendedNavigator.rootNavigator.pop();
+              ExtendedNavigator.root.pop();
+              ExtendedNavigator.root.pop();
             },
           )
         ],

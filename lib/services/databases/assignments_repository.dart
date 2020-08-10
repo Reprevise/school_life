@@ -1,9 +1,7 @@
 import 'package:hive/hive.dart';
-import 'package:injectable/injectable.dart';
 import 'package:school_life/models/assignment.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
-@injectable
 class AssignmentsRepository {
   AssignmentsRepository() {
     _assignmentsDB = Hive.box(Databases.assignmentsBox);

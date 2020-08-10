@@ -1,10 +1,8 @@
 import 'package:hive/hive.dart';
-import 'package:injectable/injectable.dart';
 import 'package:school_life/models/subject.dart';
 import 'package:school_life/models/time_block.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
-@injectable
 class SubjectsRepository {
   SubjectsRepository() {
     _subjectsDB = Hive.box(Databases.subjectsBox);

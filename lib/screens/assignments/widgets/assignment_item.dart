@@ -25,7 +25,7 @@ class AssignmentItem extends StatelessWidget {
       elevation: 3.0,
       child: InkWell(
         onTap: () {
-          ExtendedNavigator.rootNavigator.pushNamed(
+          ExtendedNavigator.root.push(
             Routes.assignmentDetails,
             arguments: AssignmentDetailsPageArguments(
               assignment: assignment,

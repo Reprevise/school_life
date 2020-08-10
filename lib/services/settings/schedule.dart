@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:injectable/injectable.dart';
 import 'package:school_life/enums/schedule_date_type.dart';
 import 'package:school_life/models/settings_defaults.dart';
 import 'package:school_life/models/settings_keys.dart';
@@ -10,8 +9,6 @@ import 'package:school_life/services/databases/db_helper.dart';
 import 'package:school_life/util/day_utils.dart';
 import 'package:school_life/util/date_utils.dart';
 
-@singleton
-@injectable
 class ScheduleSettingsHelper {
   ScheduleSettingsHelper() {
     _settingsBox = Hive.box<dynamic>(Databases.settingsBox);
@@ -38,14 +35,12 @@ class ScheduleSettingsHelper {
   }
 
   void _getDayValues() {
-    final mapString =
-        _settingsBox.get(SettingsKeys.schoolDays) as String;
+    final mapString = _settingsBox.get(SettingsKeys.schoolDays) as String;
     if (mapString == null) {
       _dayValues = ScheduleSettingsDefaults.daysOfSchool;
       return;
     }
-    final map =
-        jsonDecode(mapString) as Map<String, dynamic>;
+    final map = jsonDecode(mapString) as Map<String, dynamic>;
     _dayValues = map.cast<String, bool>();
   }
 

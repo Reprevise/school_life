@@ -28,7 +28,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _changeMode(ThemeMode newMode) {
     currentMode = newMode;
     ThemeSwitcher.of(context).setThemeMode(newMode, context);
-    ExtendedNavigator.rootNavigator.pop();
+    ExtendedNavigator.root.pop();
   }
 
   void _showThemeChangeDialog() {

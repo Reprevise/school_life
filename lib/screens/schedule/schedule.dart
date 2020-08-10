@@ -110,6 +110,6 @@ class _SchedulePageState extends State<SchedulePage> {
       showNoSubjectsWithoutScheduleDialog(context);
       return;
     }
-    ExtendedNavigator.rootNavigator.pushNamed(Routes.addSchedule);
+    ExtendedNavigator.root.push(Routes.addSchedule);
   }
 }

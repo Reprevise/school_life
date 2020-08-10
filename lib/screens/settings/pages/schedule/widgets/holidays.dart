@@ -21,8 +21,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
     return Scaffold(
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            ExtendedNavigator.rootNavigator.pushNamed(Routes.addHoliday),
+        onPressed: () => ExtendedNavigator.root.push(Routes.addHoliday),
         label: const Text('Add Holiday'),
         icon: Icon(Icons.add),
       ),
@@ -101,7 +100,7 @@ class _AddHolidayPageState extends State<AddHolidayPage> {
       body: FormBlocHelper<AddHolidayFormBloc>(
         create: (_) => AddHolidayFormBloc(),
         onSuccess: (_, __) {
-          ExtendedNavigator.rootNavigator.pop();
+          ExtendedNavigator.root.pop();
         },
         onSubmitting: (_, __) {
           return const Center(child: CircularProgressIndicator());

@@ -11,7 +11,7 @@ import 'package:school_life/screens/subjects/add_subject/widgets/color_picker.da
 
 class AddSubjectPage extends StatelessWidget {
   void _goToSchedulePage(AddSubjectFormBloc bloc) {
-    ExtendedNavigator.rootNavigator.popAndPushNamed(Routes.addSchedule);
+    ExtendedNavigator.root.popAndPush(Routes.addSchedule);
   }
 
   @override
@@ -48,8 +48,8 @@ class AddSubjectPage extends StatelessWidget {
                         actions: <Widget>[
                           FlatButton(
                             onPressed: () {
-                              ExtendedNavigator.rootNavigator
-                                  .popAndPushNamed(Routes.subjects);
+                              ExtendedNavigator.root
+                                  .popAndPush(Routes.subjects);
                             },
                             child: const Text('NO'),
                           ),

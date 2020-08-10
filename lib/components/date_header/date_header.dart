@@ -61,25 +61,18 @@ class _DateHeaderState extends State<DateHeader> {
   }
 
   String _getFormattedDayNumber(int day) {
-    String formatted;
     switch (day) {
       case 1:
-        formatted = "1st";
-        break;
+        return '1st';
       case 2:
-        formatted = "2nd";
-        break;
+        return '2nd';
       case 3:
-        formatted = "3rd";
-        break;
+        return '3rd';
       case 31:
-        formatted = "31st";
-        break;
+        return '31st';
       default:
-        formatted = "${day}th";
-        break;
+        return '${day}th';
     }
-    return formatted;
   }
 
   static const _bold = TextStyle(fontWeight: FontWeight.bold);
@@ -91,7 +84,7 @@ class _DateHeaderState extends State<DateHeader> {
       color: Theme.of(context).brightness == Brightness.light
           ? Colors.black
           : Colors.white,
-      fontFamily: "Montserrat",
+      fontFamily: 'Montserrat',
     );
     return Container(
       alignment: Alignment.centerRight,

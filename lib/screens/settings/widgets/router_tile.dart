@@ -24,7 +24,7 @@ class RouterTile extends StatelessWidget {
       ),
       subtitle: subtitle2 != null ? Text(subtitle2) : null,
       trailing: Icon(Icons.arrow_right),
-      onTap: () => ExtendedNavigator.rootNavigator.pushNamed(route),
+      onTap: () => ExtendedNavigator.root.push(route),
     );
   }
 }

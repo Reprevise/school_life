@@ -16,8 +16,7 @@ class SubjectsPage extends StatelessWidget {
       bottomNavigationBar: CustomBottomNavBar(tabsChangeNotifier),
       extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () =>
-            ExtendedNavigator.rootNavigator.pushNamed(Routes.addSubject),
+        onPressed: () => ExtendedNavigator.root.push(Routes.addSubject),
         label: Text(
           'Create',
           style: Theme.of(context).accentTextTheme.bodyText1,

@@ -68,6 +68,6 @@ class _AssignmentsPageState extends State<AssignmentsPage> {
       showNoSubjectsDialog(context);
       return;
     }
-    ExtendedNavigator.rootNavigator.pushNamed(Routes.addAssignment);
+    ExtendedNavigator.root.push(Routes.addAssignment);
   }
 }

@@ -7,7 +7,6 @@ import 'package:get_it/get_it.dart';
 import 'package:school_life/components/scroll_behavior/no_glow.dart';
 import 'package:school_life/components/theme/style.dart';
 import 'package:school_life/components/theme/theme_switcher.dart';
-import 'package:school_life/config.dart';
 import 'package:school_life/router/navbar_observer.dart';
 import 'package:school_life/router/router.gr.dart';
 import 'package:school_life/services/databases/db_helper.dart';
@@ -19,7 +18,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // initialize all HiveDB databases
   await DatabaseHelper.initializeHiveBoxes();
-  configure();
   // finally run the app
   runApp(SchoolLife());
 }

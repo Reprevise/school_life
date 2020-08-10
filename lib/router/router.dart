@@ -13,24 +13,20 @@ import 'package:school_life/screens/settings/settings.dart';
 import 'package:school_life/screens/subjects/add_subject/add_subject.dart';
 import 'package:school_life/screens/subjects/subjects.dart';
 
-@MaterialAutoRouter()
-class $Router {
-  @initial
-  HomePage home;
-  SchedulePage schedule;
-  SubjectsPage subjects;
-  AssignmentsPage assignments;
-  SettingsPage settings;
-
-  ScheduleHolidaysPage holidays;
-  AssignmentsSettingsPage assignmentSettings;
-  SubjectsSettingsPage subjectsSettings;
-  ScheduleSettingsPage scheduleSettings;
-
-  AssignmentDetailsPage assignmentDetails;
-
-  AddAssignmentPage addAssignment;
-  AddHolidayPage addHoliday;
-  AddSchedulePage addSchedule;
-  AddSubjectPage addSubject;
-}
+@MaterialAutoRouter(routes: [
+  MaterialRoute(page: HomePage),
+  MaterialRoute(page: SchedulePage),
+  MaterialRoute(page: SubjectsPage),
+  MaterialRoute(page: AssignmentsPage),
+  MaterialRoute(page: SettingsPage),
+  MaterialRoute(page: ScheduleHolidaysPage),
+  MaterialRoute(page: AssignmentsSettingsPage),
+  MaterialRoute(page: SubjectsSettingsPage),
+  MaterialRoute(page: ScheduleSettingsPage),
+  MaterialRoute(page: AssignmentDetailsPage),
+  MaterialRoute(page: AddAssignmentPage),
+  MaterialRoute(page: AddHolidayPage),
+  MaterialRoute(page: AddSchedulePage),
+  MaterialRoute(page: AddSubjectPage),
+])
+class $Router {}

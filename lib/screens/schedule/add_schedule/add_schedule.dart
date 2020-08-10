@@ -112,7 +112,7 @@ class _AddScheduleFormFields extends StatelessWidget {
         return ScheduleBottomSheet(
           formBloc: formBloc,
           onSaved: (data) {
-            ExtendedNavigator.rootNavigator.pop();
+            ExtendedNavigator.root.pop();
             submitData(data);
           },
         );
@@ -121,7 +121,7 @@ class _AddScheduleFormFields extends StatelessWidget {
 
     return BlocBuilder<ListFieldBloc<DayScheduleField>,
         ListFieldBlocState<DayScheduleField>>(
-      bloc: formBloc.schedule,
+      cubit: formBloc.schedule,
       builder: (context, state) {
         if (state.fieldBlocs.isNotEmpty) {
           return ScrollConfiguration(

@@ -1,9 +1,7 @@
 import 'package:hive/hive.dart';
-import 'package:injectable/injectable.dart';
 import 'package:school_life/models/holiday.dart';
 import 'package:school_life/services/databases/db_helper.dart';
 
-@injectable
 class HolidaysRepository {
   HolidaysRepository() {
     _holidaysDB = Hive.box(Databases.holidaysBox);
@@ -15,8 +13,7 @@ class HolidaysRepository {
     if (holidays.isEmpty) {
       return 0;
     }
-    final takenIDs =
-        holidays.map((holiday) => holiday.id).toList();
+    final takenIDs = holidays.map((holiday) => holiday.id).toList();
 
     var id = 0;
     do {

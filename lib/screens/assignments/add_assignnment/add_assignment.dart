@@ -29,7 +29,7 @@ class AddAssignmentPage extends StatelessWidget {
             FormBlocHelper(
               create: (_) => AddAssignmentFormBloc(),
               onSuccess: (_, __) {
-                ExtendedNavigator.rootNavigator.pushNamed(Routes.assignments);
+                ExtendedNavigator.root.push(Routes.assignments);
               },
               onSubmitting: (_, __) {
                 return const Center(child: CircularProgressIndicator());

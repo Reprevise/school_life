@@ -1,4 +1,4 @@
-include: package:effective_dart/analysis_options.yaml
+include: package:pedantic/analysis_options.yaml
 
 analyzer:
   errors:
@@ -7,10 +7,9 @@ analyzer:
     todo: ignore
     sdk_version_async_exported_from_core: ignore
   exclude:
-    - 'lib/**.g.dart'
-    - 'lib/**.gr.dart'
-    - 'lib/services/adapters/**'
-    - 'lib/config.iconfig.dart'
+    - "lib/**.g.dart"
+    - "lib/**.gr.dart"
+    - "lib/services/adapters/**"
 
 linter:
   rules:
