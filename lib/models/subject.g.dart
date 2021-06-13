@@ -8,13 +8,13 @@ part of 'subject.dart';
 
 class SubjectAdapter extends TypeAdapter<Subject> {
   @override
-  final typeId = 2;
+  final int typeId = 2;
 
   @override
   Subject read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Subject(
       id: fields[0] as int,
@@ -23,7 +23,7 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       building: fields[3] as String,
       teacher: fields[4] as String,
       color: fields[5] as Color,
-      schedule: (fields[7] as List)?.cast<TimeBlock>(),
+      schedule: (fields[7] as List?)?.cast<TimeBlock>(),
       isDeleted: fields[6] as bool,
     );
   }

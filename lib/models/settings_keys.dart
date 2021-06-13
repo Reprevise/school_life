@@ -1,5 +1,5 @@
 abstract class SettingsKeys {
-  static const String schoolDays = 'school_days';
+  static const String weekends = 'weekends';
   static const String startDate = 'start_date';
   static const String endDate = 'end_date';
   static const String startTime = 'start_time';

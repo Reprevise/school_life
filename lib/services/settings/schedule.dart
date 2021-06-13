@@ -1,102 +1,83 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:school_life/enums/schedule_date_type.dart';
-import 'package:school_life/models/settings_defaults.dart';
-import 'package:school_life/models/settings_keys.dart';
-import 'package:school_life/services/databases/db_helper.dart';
-import 'package:school_life/util/day_utils.dart';
-import 'package:school_life/util/date_utils.dart';
+
+import '../../enums/schedule_date_type.dart';
+import '../../models/settings_defaults.dart';
+import '../../models/settings_keys.dart';
+import '../../util/day_utils.dart';
+import '../databases/hive_helper.dart';
 
 class ScheduleSettingsHelper {
+  late final Box<dynamic> _settingsBox;
+
   ScheduleSettingsHelper() {
-    _settingsBox = Hive.box<dynamic>(Databases.settingsBox);
-    _getVariables();
+    _settingsBox = Hive.box<dynamic>(HiveBoxes.settingsBox);
   }
 
-  Box<dynamic> _settingsBox;
-
-  Map<String, bool> _dayValues = <String, bool>{};
-  Map<String, bool> get dayValues => _dayValues;
-
-  DateTime _startDate, _endDate;
-  DateTime get startDate => _startDate;
-  DateTime get endDate => _endDate;
-
-  TimeOfDay _startTime, _endTime;
-  TimeOfDay get startTime => _startTime;
-  TimeOfDay get endTime => _endTime;
-
-  void _getVariables() {
-    _getDayValues();
-    _getDates();
-    _getTimes();
+  bool get areWeekendsEnabled {
+    return _settingsBox.get(
+      SettingsKeys.weekends,
+      defaultValue: ScheduleSettingsDefaults.weekends,
+    );
   }
 
-  void _getDayValues() {
-    final mapString = _settingsBox.get(SettingsKeys.schoolDays) as String;
-    if (mapString == null) {
-      _dayValues = ScheduleSettingsDefaults.daysOfSchool;
-      return;
-    }
-    final map = jsonDecode(mapString) as Map<String, dynamic>;
-    _dayValues = map.cast<String, bool>();
+  DateTime get startDate {
+    return _settingsBox.get(
+      SettingsKeys.startDate,
+      defaultValue: DateTime(DateTime.now().year),
+    );
   }
 
-  void _getDates() {
-    _startDate = _settingsBox.get(SettingsKeys.startDate) as DateTime;
-    _endDate = _settingsBox.get(SettingsKeys.endDate) as DateTime;
-    _startDate ??= DateTime(DateTime.now().year);
-    _endDate ??= DateTime(DateTime.now().year);
+  DateTime get endDate {
+    return _settingsBox.get(
+      SettingsKeys.endDate,
+      defaultValue: DateTime(DateTime.now().year),
+    );
   }
 
-  void _getTimes() {
-    _startTime = _settingsBox.get(SettingsKeys.startTime) as TimeOfDay;
-    _endTime = _settingsBox.get(SettingsKeys.endTime) as TimeOfDay;
-    _startTime ??= const TimeOfDay(hour: 8, minute: 0);
-    _endTime ??= const TimeOfDay(hour: 14, minute: 30);
+  TimeOfDay get startTime {
+    return _settingsBox.get(
+      SettingsKeys.startTime,
+      defaultValue: TimeOfDay(hour: 8, minute: 0),
+    );
   }
 
-  void saveDayValues(Map<String, bool> input) {
-    final mapString = jsonEncode(input);
-    _settingsBox.put(SettingsKeys.schoolDays, mapString);
-    _dayValues = input;
+  TimeOfDay get endTime {
+    return _settingsBox.get(
+      SettingsKeys.endTime,
+      defaultValue: TimeOfDay(hour: 14, minute: 30),
+    );
+  }
+
+  Future<void> saveWeekendStatus(bool newValue) async {
+    await _settingsBox.put(SettingsKeys.weekends, newValue);
   }
 
   String getDisplayableDays() {
-    final days = <String>[];
-    final dayValuesCopy = Map<String, bool>.from(_dayValues);
-    dayValuesCopy.removeWhere((key, value) => value == false);
-    final daysInIntegerString = dayValuesCopy.keys.toList();
-    for (final item in daysInIntegerString) {
-      days.add(daysFromIntegerString[item]);
+    if (areWeekendsEnabled) {
+      return weekdaysWithWeekends.join(', ');
     }
-    return days.join(', ');
+    return weekdays.join(', ');
   }
 
-  void saveDate(ScheduleDateType type, DateTime date) {
+  Future<void> saveDate(ScheduleDateType type, DateTime date) async {
     switch (type) {
       case ScheduleDateType.start:
-        _startDate = date.onlyDate;
-        _settingsBox.put(SettingsKeys.startDate, date);
+        await _settingsBox.put(SettingsKeys.startDate, date);
         break;
       case ScheduleDateType.end:
-        _endDate = date.onlyDate;
-        _settingsBox.put(SettingsKeys.endDate, date);
+        await _settingsBox.put(SettingsKeys.endDate, date);
         break;
     }
   }
 
-  void saveTime(ScheduleDateType type, TimeOfDay time) {
+  Future<void> saveTime(ScheduleDateType type, TimeOfDay time) async {
     switch (type) {
       case ScheduleDateType.start:
-        _startTime = time;
-        _settingsBox.put(SettingsKeys.startTime, time);
+        await _settingsBox.put(SettingsKeys.startTime, time);
         break;
       case ScheduleDateType.end:
-        _endTime = time;
-        _settingsBox.put(SettingsKeys.endTime, time);
+        await _settingsBox.put(SettingsKeys.endTime, time);
         break;
     }
   }

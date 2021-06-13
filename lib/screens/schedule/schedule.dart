@@ -1,21 +1,16 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/components/dialogs/dialogs.dart';
-import 'package:school_life/components/navbar/navbar.dart';
-import 'package:school_life/components/screen_header/screen_header.dart';
-import 'package:school_life/main.dart';
-import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/schedule/widgets/header.dart';
-import 'package:school_life/screens/schedule/widgets/schedules_list.dart';
-import 'package:school_life/services/databases/subjects_repository.dart';
-import 'package:school_life/util/date_utils.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../app/app.locator.dart';
+import '../../app/app.router.dart';
+import '../../components/screen_header/screen_header.dart';
+import '../../services/databases/subjects_repository.dart';
+import '../../services/stacked/dialogs.dart';
+import '../../util/date_utils.dart';
+import 'widgets/header.dart';
+import 'widgets/schedules_list.dart';
 
 class SchedulePage extends StatefulWidget {
-  final ValueNotifier<int> tabsChangeNotifier;
-
-  SchedulePage(this.tabsChangeNotifier);
-
   @override
   _SchedulePageState createState() => _SchedulePageState();
 }
@@ -23,8 +18,9 @@ class SchedulePage extends StatefulWidget {
 class _SchedulePageState extends State<SchedulePage> {
   bool _userHasSubjects = false;
   bool _userHasSubjectsWithoutSchedule = false;
-  DateTime selectedCalendarDay;
-  final CalendarController controller = CalendarController();
+  late DateTime selectedCalendarDay;
+  final ns = locator<NavigationService>();
+  final ds = locator<DialogService>();
 
   @override
   void initState() {
@@ -34,7 +30,7 @@ class _SchedulePageState extends State<SchedulePage> {
   }
 
   void _getSubjectInfo() {
-    final subjects = sl<SubjectsRepository>();
+    final subjects = locator<SubjectsRepository>();
     if (subjects.subjects.isNotEmpty) {
       _userHasSubjects = true;
     }
@@ -43,25 +39,23 @@ class _SchedulePageState extends State<SchedulePage> {
     }
   }
 
-  void onDayChanged(DateTime day, List<dynamic> events) {
+  void onDayChanged(DateTime selectedDay) {
     setState(() {
-      selectedCalendarDay = day;
+      selectedCalendarDay = selectedDay;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomBottomNavBar(widget.tabsChangeNotifier),
       body: SafeArea(
         child: ListView(
           primary: false,
           children: <Widget>[
-            // TODO: sync days of school in settings with calendar
             buildScreenHeader(),
             ScheduleHeader(
               onDaySelected: onDayChanged,
-              controller: controller,
+              focusedDay: selectedCalendarDay,
             ),
             SchedulesList(
               selectedDay: selectedCalendarDay,
@@ -71,10 +65,7 @@ class _SchedulePageState extends State<SchedulePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,
-        label: Text(
-          'Add Schedule',
-          style: Theme.of(context).accentTextTheme.bodyText1,
-        ),
+        label: Text('Add Schedule'),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -92,8 +83,6 @@ class _SchedulePageState extends State<SchedulePage> {
             final now = DateTime.now().onlyDate;
             setState(() {
               selectedCalendarDay = now;
-              controller.setSelectedDay(now);
-              controller.setFocusedDay(now);
             });
           },
         ),
@@ -103,13 +92,13 @@ class _SchedulePageState extends State<SchedulePage> {
 
   void _handleAddScheduleButtonPress() {
     if (!_userHasSubjects) {
-      showNoSubjectsDialog(context);
+      ds.showCustomDialog(variant: DialogType.noSubjects);
       return;
     }
     if (!_userHasSubjectsWithoutSchedule) {
-      showNoSubjectsWithoutScheduleDialog(context);
+      ds.showCustomDialog(variant: DialogType.noSubjectsWithoutSchedule);
       return;
     }
-    ExtendedNavigator.root.push(Routes.addSchedule);
+    ns.navigateTo(Routes.addSchedulePage);
   }
 }

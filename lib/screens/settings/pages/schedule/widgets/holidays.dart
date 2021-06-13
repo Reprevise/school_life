@@ -1,80 +1,76 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
-import 'package:school_life/bloc/add_holiday_bloc.dart';
-import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
-import 'package:school_life/components/forms/required/form_required.dart';
-import 'package:school_life/models/holiday.dart';
-import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/settings/pages/schedule/widgets/holiday_item.dart';
-import 'package:school_life/services/databases/db_helper.dart';
-import 'package:school_life/util/date_utils.dart';
+import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:school_life/components/screen_header/screen_header.dart';
+import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../../../../app/app.locator.dart';
+import '../../../../../app/app.router.dart';
+import '../../../../../components/forms/form_required.dart';
+import '../../../../../components/forms/form_spacer.dart';
+import '../../../../../models/holiday.dart';
+import '../../../../../services/databases/hive_helper.dart';
+import '../../../../../util/date_utils.dart';
+import 'holiday_item.dart';
+import 'holidays_viewmodel.dart';
 
 class ScheduleHolidaysPage extends StatelessWidget {
+  final _navService = locator<NavigationService>();
+
   @override
   Widget build(BuildContext context) {
-    final fontSize = MediaQuery.of(context).size.width / 20;
     return Scaffold(
-      extendBodyBehindAppBar: true,
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => ExtendedNavigator.root.push(Routes.addHoliday),
+        onPressed: () => _navService.navigateTo(Routes.addHolidayPage),
         label: const Text('Add Holiday'),
         icon: Icon(Icons.add),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      body: Center(
-        child: ValueListenableBuilder<Box<Holiday>>(
-          valueListenable:
-              Hive.box<Holiday>(Databases.holidaysBox).listenable(),
-          builder: (context, box, _) {
-            return Visibility(
-              visible: box.isNotEmpty,
-              child: ListView.separated(
-                primary: false,
-                padding: const EdgeInsets.all(16),
-                itemCount: box.values.length,
-                itemBuilder: (_, index) {
-                  return HolidayItem(box.values.toList()[index]);
-                },
-                separatorBuilder: (_, __) {
-                  return const SizedBox(height: 16);
-                },
-              ),
-              replacement: ListView(
-                primary: false,
-                padding: const EdgeInsets.symmetric(vertical: 25),
-                children: <Widget>[
-                  Icon(
-                    Icons.event,
-                    color: Colors.grey[400],
-                    size: 128.0,
-                  ),
-                  Text(
-                    'You don\'t have any holidays!',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline3
-                        .copyWith(fontSize: fontSize),
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Aww :(',
-                    style: Theme.of(context)
-                        .textTheme
-                        .headline3
-                        .copyWith(fontSize: fontSize / 1.2),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            );
-          },
+      appBar: AppBar(
+        title: Text(
+          'Holidays',
+          style: Theme.of(context).textTheme.headline6,
         ),
+        elevation: 0,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      body: ValueListenableBuilder<Box<Holiday>>(
+        valueListenable: Hive.box<Holiday>(HiveBoxes.holidaysBox).listenable(),
+        builder: (context, box, _) {
+          return Visibility(
+            visible: box.isNotEmpty,
+            replacement: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Icon(
+                  Icons.event,
+                  color: Colors.grey[400],
+                  size: 128.0,
+                ),
+                Text(
+                  "You don't have any holidays!",
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            child: ListView.separated(
+              primary: false,
+              padding: const EdgeInsets.all(16),
+              itemCount: box.values.length,
+              itemBuilder: (_, index) {
+                return HolidayItem(box.values.toList()[index]);
+              },
+              separatorBuilder: (_, __) {
+                return const FormSpacer(large: true);
+              },
+            ),
+          );
+        },
       ),
     );
   }
@@ -86,79 +82,70 @@ class AddHolidayPage extends StatefulWidget {
 }
 
 class _AddHolidayPageState extends State<AddHolidayPage> {
-  AddHolidayFormBloc _formBloc;
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      extendBodyBehindAppBar: true,
-      body: FormBlocHelper<AddHolidayFormBloc>(
-        create: (_) => AddHolidayFormBloc(),
-        onSuccess: (_, __) {
-          ExtendedNavigator.root.pop();
-        },
-        onSubmitting: (_, __) {
-          return const Center(child: CircularProgressIndicator());
-        },
-        onLoading: (_, __) {
-          return const Center(child: CircularProgressIndicator());
-        },
-        builder: (context, state) {
-          _formBloc = context.bloc<AddHolidayFormBloc>();
-          return WillPopScope(
-            onWillPop: () => _formBloc.canPop(context),
+    final now = DateTime.now();
+
+    return ViewModelBuilder<AddHolidayViewModel>.nonReactive(
+      viewModelBuilder: () => AddHolidayViewModel(),
+      builder: (context, model, _) {
+        return Scaffold(
+          extendBodyBehindAppBar: true,
+          body: ReactiveForm(
+            onWillPop: model.canPop,
+            formGroup: model.form,
             child: ListView(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
               children: <Widget>[
                 const FormRequired(all: true),
-                TextFieldBlocBuilder(
-                  padding: EdgeInsets.zero,
-                  textFieldBloc: _formBloc.holidayName,
+                ReactiveTextField(
+                  formControl: model.holidayName,
                   autofocus: true,
+                  onEditingComplete: model.startDate.focus,
                   decoration: const InputDecoration(
                     labelText: 'Holiday name*',
                   ),
                 ),
-                const SizedBox(height: 8),
-                DateTimeFieldBlocBuilder(
-                  dateTimeFieldBloc: _formBloc.startDate,
-                  format: DateFormat.yMMMd(),
-                  initialDate: null,
-                  firstDate: DateTime.now().onlyDate,
-                  lastDate: DateTime.now().addYears(1),
-                  decoration: InputDecoration(
-                    labelText: 'Start date',
+                const FormSpacer(),
+                ReactiveDateTimePicker(
+                  formControl: model.startDate,
+                  valueAccessor: DateTimeValueAccessor(
+                    dateTimeFormat: DateFormat.yMMMd(),
                   ),
+                  firstDate: now.onlyDate,
+                  lastDate: now.addYears(1),
+                  fieldLabelText: 'Start date',
                 ),
-                const SizedBox(height: 8),
-                DateTimeFieldBlocBuilder(
-                  dateTimeFieldBloc: _formBloc.endDate,
-                  format: DateFormat.yMMMd(),
-                  initialDate: null,
-                  firstDate: DateTime.now().onlyDate,
-                  lastDate: DateTime.now().addYears(1),
-                  decoration: InputDecoration(
-                    labelText: 'End date',
+                const FormSpacer(),
+                ReactiveDateTimePicker(
+                  formControl: model.endDate,
+                  valueAccessor: DateTimeValueAccessor(
+                    dateTimeFormat: DateFormat.yMMMd(),
                   ),
+                  firstDate: now.onlyDate,
+                  lastDate: now.addYears(1),
+                  fieldLabelText: 'End date',
                 ),
-                OutlineButton(
-                  padding: EdgeInsets.symmetric(horizontal: 50, vertical: 16),
-                  borderSide:
-                      Theme.of(context).inputDecorationTheme.border.borderSide,
-                  textColor: Theme.of(context).textTheme.subtitle2.color,
-                  onPressed: _formBloc.submit,
+                const FormSpacer(large: true),
+                OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
+                    side: Theme.of(context)
+                        .inputDecorationTheme
+                        .border!
+                        .borderSide,
+                    textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.subtitle2!.color,
+                    ),
+                  ),
+                  onPressed: model.addHoliday,
                   child: const Text('Submit'),
                 ),
               ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

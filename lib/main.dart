@@ -1,65 +1,70 @@
 import 'dart:async';
 
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:get_it/get_it.dart';
-import 'package:school_life/components/scroll_behavior/no_glow.dart';
-import 'package:school_life/components/theme/style.dart';
-import 'package:school_life/components/theme/theme_switcher.dart';
-import 'package:school_life/router/navbar_observer.dart';
-import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/services/databases/db_helper.dart';
+import 'package:school_life/services/stacked/dialogs.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
 
-final GetIt sl = GetIt.instance;
+import 'app/app.locator.dart';
+import 'app/app.router.dart';
+import 'components/theme/style.dart';
+import 'services/databases/hive_helper.dart';
+import 'services/stacked/bottomsheet.dart';
 
 Future<void> main() async {
   // ensure everything's good to go
   WidgetsFlutterBinding.ensureInitialized();
+  // initialize dependency injection
+  setupLocator();
+  // initialize stacked services
+  setupBottomSheetUi();
+  setupDialogService();
   // initialize all HiveDB databases
-  await DatabaseHelper.initializeHiveBoxes();
+  await HiveHelper.initializeHive();
+  // initialize [ThemeManager]
+  await ThemeManager.initialise();
   // finally run the app
   runApp(SchoolLife());
 }
 
-class SchoolLife extends StatefulWidget {
-  @override
-  _SchoolLifeState createState() => _SchoolLifeState();
-}
-
-class _SchoolLifeState extends State<SchoolLife> {
-  ValueNotifier<int> tabsChangeNotifier;
-
-  @override
-  void initState() {
-    super.initState();
-    tabsChangeNotifier = ValueNotifier<int>(0);
-  }
-
+class SchoolLife extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
     );
-    return ThemeSwitcher(
-      themedWidgetBuilder: (context, mode) {
-        return ScrollConfiguration(
-          behavior: NoGlowScrollBehavior(),
-          child: MaterialApp(
-            builder: ExtendedNavigator<Router>(
-              router: Router(),
-              initialRouteArgs: HomePageArguments(
-                tabsChangeNotifier: tabsChangeNotifier,
-              ),
-              observers: [NavBarObserver(tabsChangeNotifier)],
-            ),
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            themeMode: mode,
-            title: 'School Life',
-          ),
+    return ThemeBuilder(
+      darkTheme: darkTheme,
+      lightTheme: lightTheme,
+      builder: (context, theme, darkTheme, mode) {
+        return MaterialApp(
+          navigatorKey: StackedService.navigatorKey,
+          theme: theme,
+          darkTheme: darkTheme,
+          debugShowCheckedModeBanner: false,
+          themeMode: mode,
+          title: 'School Life',
+          onGenerateRoute: StackedRouter().onGenerateRoute,
+          builder: (_, child) {
+            return ScrollConfiguration(
+              behavior: _NoGlowScrollBehavior(),
+              child: child!,
+            );
+          },
         );
       },
     );
+  }
+}
+
+class _NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+    BuildContext context,
+    Widget child,
+    AxisDirection axisDirection,
+  ) {
+    return child;
   }
 }

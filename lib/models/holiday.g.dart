@@ -8,13 +8,13 @@ part of 'holiday.dart';
 
 class HolidayAdapter extends TypeAdapter<Holiday> {
   @override
-  final typeId = 3;
+  final int typeId = 3;
 
   @override
   Holiday read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Holiday(
       id: fields[0] as int,

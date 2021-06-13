@@ -8,13 +8,13 @@ part of 'time_block.dart';
 
 class TimeBlockAdapter extends TypeAdapter<TimeBlock> {
   @override
-  final typeId = 4;
+  final int typeId = 4;
 
   @override
   TimeBlock read(BinaryReader reader) {
-    var numOfFields = reader.readByte();
-    var fields = <int, dynamic>{
-      for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    final numOfFields = reader.readByte();
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return TimeBlock(
       day: fields[0] as String,

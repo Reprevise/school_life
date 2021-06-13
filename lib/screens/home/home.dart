@@ -1,26 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/components/date_header/date_header.dart';
-import 'package:school_life/components/navbar/navbar.dart';
+
+import '../../components/date_header/date_header.dart';
 
 class HomePage extends StatelessWidget {
-  final ValueNotifier<int> tabsChangeNotifier;
-
-  HomePage(this.tabsChangeNotifier);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: CustomBottomNavBar(tabsChangeNotifier),
-      extendBodyBehindAppBar: true,
-      body: SafeArea(
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: <Widget>[
+      appBar: AppBar(
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              'Home',
+              style: Theme.of(context).textTheme.headline6,
+            ),
             DateHeader(),
-            Container(),
           ],
         ),
+        elevation: 0,
       ),
+      body: Placeholder(),
     );
   }
 }

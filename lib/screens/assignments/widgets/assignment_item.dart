@@ -1,9 +1,13 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/components/dialogs/dialogs.dart';
-import 'package:school_life/models/assignment.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/router/router.gr.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../../app/app.locator.dart';
+import '../../../app/app.router.dart';
+import '../../../services/stacked/dialogs.dart';
+import '../../../models/assignment.dart';
+import '../../../models/subject.dart';
 
 class AssignmentItem extends StatelessWidget {
   const AssignmentItem(
@@ -16,54 +20,57 @@ class AssignmentItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final textStyle = textTheme.headline4.copyWith(color: Colors.black);
-    final dueDate = assignment.dueDate;
-    final date = '${dueDate.year}-${dueDate.month}-${dueDate.day}';
-    return Card(
-      color: assignmentSubject.color,
-      elevation: 3.0,
-      child: InkWell(
-        onTap: () {
-          ExtendedNavigator.root.push(
-            Routes.assignmentDetails,
-            arguments: AssignmentDetailsPageArguments(
-              assignment: assignment,
-              assignmentSubject: assignmentSubject,
-            ),
-          );
-        },
-        onLongPress: () => showDeleteAssignmentDialog(
-          context,
-          assignment,
-        ),
-        child: Container(
-          height: 100,
-          width: 375,
-          padding: const EdgeInsets.only(left: 8),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              const SizedBox(height: 8),
-              Text(
-                assignment.name,
-                overflow: TextOverflow.ellipsis,
-                textAlign: TextAlign.start,
-                style: textTheme.headline3.copyWith(color: Colors.black),
-              ),
-              const SizedBox(height: 8),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text('${assignmentSubject.name}', style: textStyle),
-                    Text(date, style: textStyle),
-                  ],
-                ),
-              ),
-            ],
+    final ns = locator<NavigationService>();
+    final ds = locator<DialogService>();
+
+    return Container(
+      height: 100,
+      padding: const EdgeInsets.only(left: 8),
+      child: ElevatedButton(
+        onPressed: () => ns.navigateTo(
+          Routes.assignmentDetailsPage,
+          arguments: AssignmentDetailsPageArguments(
+            assignment: assignment,
+            assignmentSubject: assignmentSubject,
           ),
+        ),
+        onLongPress: () => ds.showCustomDialog(
+          variant: DialogType.deleteAssignment,
+          customData: assignment,
+        ),
+        style: ElevatedButton.styleFrom(
+          elevation: 3.0,
+          primary: assignmentSubject.color,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const SizedBox(height: 8),
+            Text(
+              assignment.name.toUpperCase(),
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.start,
+              style: GoogleFonts.raleway(
+                fontStyle: FontStyle.italic,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+              ),
+            ),
+            const SizedBox(height: 8),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('${assignmentSubject.name}'),
+                  Text(DateFormat.yMd().format(assignment.dueDate)),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

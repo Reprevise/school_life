@@ -1,34 +1,39 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/components/navbar/navbar.dart';
-import 'package:school_life/components/screen_header/screen_header.dart';
-import 'package:school_life/components/theme/theme_switcher.dart';
-import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/settings/widgets/router_tile.dart';
+import 'package:stacked_services/stacked_services.dart';
+import 'package:stacked_themes/stacked_themes.dart';
+
+import '../../app/app.locator.dart';
+import '../../app/app.router.dart';
+import '../../components/screen_header/screen_header.dart';
+import 'widgets/router_tile.dart';
 
 class SettingsPage extends StatefulWidget {
-  final ValueNotifier<int> tabsChangeNotifier;
-
-  SettingsPage(this.tabsChangeNotifier);
-
   @override
   _SettingsPageState createState() => _SettingsPageState();
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  ThemeMode currentMode;
+  late ThemeMode currentMode;
+
+  final _themeNames = {
+    ThemeMode.system: 'System',
+    ThemeMode.dark: 'Dark',
+    ThemeMode.light: 'Light',
+    null: 'Unknown',
+  };
+  final _navService = locator<NavigationService>();
 
   @override
   void initState() {
     super.initState();
-    currentMode = ThemeSwitcher.of(context).mode;
+    currentMode = getThemeManager(context).selectedThemeMode!;
     if (mounted) setState(() {});
   }
 
-  void _changeMode(ThemeMode newMode) {
-    currentMode = newMode;
-    ThemeSwitcher.of(context).setThemeMode(newMode, context);
-    ExtendedNavigator.root.pop();
+  void _changeMode(ThemeMode? newMode) {
+    currentMode = newMode!;
+    getThemeManager(context).setThemeMode(newMode);
+    _navService.back();
   }
 
   void _showThemeChangeDialog() {
@@ -38,12 +43,13 @@ class _SettingsPageState extends State<SettingsPage> {
         return AlertDialog(
           title: Text(
             'Change theme',
-            style: Theme.of(context).textTheme.headline3,
+            style: Theme.of(context).textTheme.headline6,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5),
           ),
           content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               RadioListTile<ThemeMode>(
                 value: ThemeMode.system,
@@ -74,7 +80,6 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBodyBehindAppBar: true,
-      bottomNavigationBar: CustomBottomNavBar(widget.tabsChangeNotifier),
       body: SafeArea(
         child: ListView(
           primary: false,
@@ -82,23 +87,26 @@ class _SettingsPageState extends State<SettingsPage> {
             const ScreenHeader('Settings'),
             ListTile(
               title: Text('Theme'),
-              subtitle: Text(themes[currentMode]),
+              subtitle: Text(_themeNames[currentMode]!),
+              trailing: Icon(Icons.more_horiz_outlined),
               onTap: _showThemeChangeDialog,
-            ),
-            RouterTile(
-              icon: Icons.assignment,
-              title: 'Assignments',
-              route: Routes.assignmentSettings,
             ),
             RouterTile(
               icon: Icons.schedule,
               title: 'Schedule',
-              route: Routes.scheduleSettings,
+              route: Routes.scheduleSettingsPage,
+            ),
+            RouterTile(
+              icon: Icons.assignment,
+              title: 'Assignments',
+              route: Routes.assignmentsSettingsPage,
+              disable: true,
             ),
             RouterTile(
               icon: Icons.school,
               title: 'Subjects',
-              route: Routes.subjectsSettings,
+              route: Routes.subjectsSettingsPage,
+              disable: true,
             ),
           ],
         ),

@@ -1,14 +1,16 @@
-import 'package:auto_route/auto_route.dart';
+import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:school_life/bloc/add_assignment_bloc.dart';
-import 'package:school_life/components/forms/easy_form_bloc/easy_form_bloc.dart';
-import 'package:school_life/components/forms/required/form_required.dart';
-import 'package:school_life/components/screen_header/screen_header.dart';
-import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/util/date_utils.dart';
+import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
+import 'package:reactive_forms/reactive_forms.dart';
+import 'package:school_life/components/forms/form_spacer.dart';
+import 'package:stacked/stacked.dart';
+
+import '../../../components/forms/form_required.dart';
+import '../../../components/screen_header/screen_header.dart';
+import '../../../models/subject.dart';
+import '../../../util/date_utils.dart';
+import 'add_assignment_viewmodel.dart';
 
 class AddAssignmentPage extends StatelessWidget {
   @override
@@ -26,23 +28,15 @@ class AddAssignmentPage extends StatelessWidget {
                 const ScreenHeader('Create Assignment'),
               ],
             ),
-            FormBlocHelper(
-              create: (_) => AddAssignmentFormBloc(),
-              onSuccess: (_, __) {
-                ExtendedNavigator.root.push(Routes.assignments);
-              },
-              onSubmitting: (_, __) {
-                return const Center(child: CircularProgressIndicator());
-              },
-              onLoading: (_, __) {
-                return const Center(child: CircularProgressIndicator());
-              },
-              builder: (context, snapshot) {
-                final formBloc = context.bloc<AddAssignmentFormBloc>();
-
-                return WillPopScope(
-                  onWillPop: () => formBloc.canPop(context),
-                  child: _AddAssignmentForm(formBloc),
+            ViewModelBuilder<AddAssignmentViewModel>.reactive(
+              viewModelBuilder: () => AddAssignmentViewModel(),
+              fireOnModelReadyOnce: true,
+              onModelReady: (model) => model.initialize(),
+              builder: (context, model, _) {
+                return ReactiveForm(
+                  onWillPop: () => model.canPop(),
+                  formGroup: model.form,
+                  child: _AddAssignmentForm(model),
                 );
               },
             ),
@@ -53,83 +47,85 @@ class AddAssignmentPage extends StatelessWidget {
   }
 }
 
-class _AddAssignmentForm extends StatefulWidget {
-  _AddAssignmentForm(this.formBloc);
+class _AddAssignmentForm extends StatelessWidget {
+  _AddAssignmentForm(this.model);
 
-  final AddAssignmentFormBloc formBloc;
-
-  @override
-  _AddAssignmentFormState createState() => _AddAssignmentFormState();
-}
-
-class _AddAssignmentFormState extends State<_AddAssignmentForm> {
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  final AddAssignmentViewModel model;
 
   @override
   Widget build(BuildContext context) {
-    final format = DateFormat('yyyy-MM-dd');
+    final format = DateFormat.yMMMd();
 
     return ListView(
       padding: const EdgeInsets.only(bottom: 8),
       shrinkWrap: true,
       children: <Widget>[
         const FormRequired(),
-        TextFieldBlocBuilder(
-          textFieldBloc: widget.formBloc.nameField,
-          autofocus: true,
-          textInputAction: TextInputAction.next,
-          textCapitalization: TextCapitalization.words,
-          decoration: InputDecoration(
-            labelText: 'Assignment Name*',
-            prefixIcon: Icon(
-              Icons.assignment,
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
-            focusedErrorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-            ),
-          ),
-        ),
-        DateTimeFieldBlocBuilder(
-          dateTimeFieldBloc: widget.formBloc.dueDateField,
-          format: format,
-          initialDate: DateTime.now().onlyDate,
-          firstDate: DateTime.now().onlyDate,
-          lastDate: DateTime.now().addYears(1),
-          decoration: InputDecoration(
-            labelText: 'Due date',
-            prefixIcon: Icon(
-              Icons.calendar_today,
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
-            focusedErrorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ReactiveTextField(
+            formControl: model.name,
+            autofocus: true,
+            textInputAction: TextInputAction.next,
+            textCapitalization: TextCapitalization.words,
+            decoration: InputDecoration(
+              labelText: 'Assignment Name*',
+              prefixIcon: Icon(
+                Icons.assignment,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              focusedErrorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              ),
             ),
           ),
         ),
-        DropdownFieldBlocBuilder<Map<String, dynamic>>(
-          selectFieldBloc: widget.formBloc.subjectField,
-          itemBuilder: (_, value) => value['name'] as String,
-          showEmptyItem: false,
-          decoration: InputDecoration(
-            labelText: 'Subject*',
-            prefixIcon: Icon(
-              Icons.school,
-              color: Theme.of(context).primaryIconTheme.color,
-            ),
-            focusedErrorBorder: const OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
+        const FormSpacer(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ReactiveDateTimePicker(
+            formControl: model.dueDate,
+            valueAccessor: DateTimeValueAccessor(dateTimeFormat: format),
+            firstDate: DateTime.now().onlyDate,
+            lastDate: DateTime.now().addYears(1),
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.calendar_today,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              labelText: 'Due date',
+              focusedErrorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              ),
             ),
           ),
         ),
-        SizedBox(
+        const FormSpacer(),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: ReactiveDropdownField<Subject>(
+            formControl: model.subject,
+            items: model.subjects
+                .map((e) => DropdownMenuItem(value: e, child: Text(e.name)))
+                .toList(),
+            hint: Text('Subject*'),
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.school,
+                color: Theme.of(context).primaryIconTheme.color,
+              ),
+              focusedErrorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.red),
+              ),
+            ),
+          ),
+        ),
+        const FormSpacer(),
+        Container(
           height: MediaQuery.of(context).size.height / 7,
-          child: TextFieldBlocBuilder(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
-            textFieldBloc: widget.formBloc.detailsField,
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: ReactiveTextField(
+            formControl: model.details,
             expands: true,
             minLines: null,
             maxLines: null,
@@ -155,12 +151,18 @@ class _AddAssignmentFormState extends State<_AddAssignmentForm> {
             children: <Widget>[
               SizedBox(
                 width: 150,
-                child: OutlineButton(
-                  padding: EdgeInsets.zero,
-                  borderSide:
-                      Theme.of(context).inputDecorationTheme.border.borderSide,
-                  textColor: Theme.of(context).textTheme.bodyText2.color,
-                  onPressed: widget.formBloc.submit,
+                child: OutlinedButton(
+                  style: OutlinedButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    side: Theme.of(context)
+                        .inputDecorationTheme
+                        .border!
+                        .borderSide,
+                    textStyle: TextStyle(
+                      color: Theme.of(context).textTheme.bodyText2!.color,
+                    ),
+                  ),
+                  onPressed: model.addAssignment,
                   child: const Text('Submit'),
                 ),
               ),

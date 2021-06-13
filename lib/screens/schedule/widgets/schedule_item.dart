@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/main.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/services/databases/subjects_repository.dart';
-import 'package:school_life/util/day_utils.dart';
+
+import '../../../app/app.locator.dart';
+import '../../../models/subject.dart';
+import '../../../services/databases/subjects_repository.dart';
+import '../../../util/day_utils.dart';
 
 class ScheduleItem extends StatelessWidget {
   const ScheduleItem(
     this.subject, {
-    @required this.selectedDay,
-    this.isFirst,
-    this.isLast,
+    required this.selectedDay,
+    required this.isFirst,
+    required this.isLast,
   });
 
   final Subject subject;
@@ -19,8 +20,8 @@ class ScheduleItem extends StatelessWidget {
 
   static const Radius radius = Radius.circular(10);
 
-  BorderRadius get leftBorderRadius {
-    if (isFirst & isLast) {
+  BorderRadius? get leftBorderRadius {
+    if (isFirst && isLast) {
       return const BorderRadius.horizontal(left: radius);
     } else if (isFirst) {
       return const BorderRadius.only(topLeft: radius);
@@ -30,7 +31,7 @@ class ScheduleItem extends StatelessWidget {
     return null;
   }
 
-  BorderRadius get rightBorderRadius {
+  BorderRadius? get rightBorderRadius {
     if (isFirst & isLast) {
       return const BorderRadius.horizontal(right: radius);
     } else if (isFirst) {
@@ -41,7 +42,7 @@ class ScheduleItem extends StatelessWidget {
     return null;
   }
 
-  BorderRadius get borderRadius {
+  BorderRadius? get borderRadius {
     if (isFirst & isLast) {
       return const BorderRadius.all(radius);
     } else if (isFirst) {
@@ -64,8 +65,8 @@ class ScheduleItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final weekdayString = selectedDay.weekday.toString();
     final dayOfWeek = daysFromIntegerString[weekdayString];
-    final block = sl<SubjectsRepository>()
-        .getTimeBlockFromDay(dayOfWeek, subject.schedule);
+    final block = locator<SubjectsRepository>()
+        .getTimeBlockFromDay(dayOfWeek!, subject.schedule!);
     final startTime = block.startTime.format(context);
     final endTime = block.endTime.format(context);
 

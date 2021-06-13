@@ -1,5 +1,72 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+final textTheme = TextTheme(
+  headline1: GoogleFonts.raleway(
+    fontSize: 98,
+    fontWeight: FontWeight.w300,
+    letterSpacing: -1.5,
+  ),
+  headline2: GoogleFonts.raleway(
+    fontSize: 61,
+    fontWeight: FontWeight.w300,
+    letterSpacing: -0.5,
+  ),
+  headline3: GoogleFonts.raleway(
+    fontSize: 49,
+    fontWeight: FontWeight.w400,
+  ),
+  headline4: GoogleFonts.raleway(
+    fontSize: 35,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.25,
+  ),
+  headline5: GoogleFonts.raleway(
+    fontSize: 24,
+    fontWeight: FontWeight.w400,
+  ),
+  headline6: GoogleFonts.raleway(
+    fontSize: 20,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.15,
+  ),
+  subtitle1: GoogleFonts.raleway(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.15,
+  ),
+  subtitle2: GoogleFonts.raleway(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 0.1,
+  ),
+  bodyText1: GoogleFonts.montserrat(
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
+  ),
+  bodyText2: GoogleFonts.montserrat(
+    fontSize: 14,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.25,
+  ),
+  button: GoogleFonts.montserrat(
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    letterSpacing: 1.25,
+  ),
+  caption: GoogleFonts.montserrat(
+    fontSize: 12,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.4,
+  ),
+  overline: GoogleFonts.montserrat(
+    fontSize: 10,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 1.5,
+  ),
+);
 
 final ThemeData lightTheme = ThemeData(
   brightness: Brightness.light,
@@ -7,9 +74,6 @@ final ThemeData lightTheme = ThemeData(
   accentColor: const Color(0xFF494949),
   backgroundColor: Colors.white,
   scaffoldBackgroundColor: Colors.white,
-  textSelectionHandleColor: Colors.black,
-  textSelectionColor: Colors.black12,
-  cursorColor: Colors.black,
   dividerColor: Colors.black,
   disabledColor: Colors.grey[600],
   primaryIconTheme: const IconThemeData(color: Colors.black),
@@ -21,15 +85,8 @@ final ThemeData lightTheme = ThemeData(
       borderSide: BorderSide(color: Colors.red),
     ),
     focusColor: Colors.black,
-    labelStyle: TextStyle(
-      color: Colors.black,
-      fontWeight: FontWeight.bold,
-      letterSpacing: .5,
-      fontFamily: 'Arial',
-      fontSize: 16.0,
-    ),
     border: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey[600]),
+      borderSide: BorderSide(color: Colors.grey.shade600),
     ),
     focusedBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.black),
@@ -49,64 +106,8 @@ final ThemeData lightTheme = ThemeData(
     foregroundColor: Colors.white,
     elevation: 2.0,
   ),
-  buttonTheme: const ButtonThemeData(
-    buttonColor: Colors.black,
-    textTheme: ButtonTextTheme.accent,
-  ),
-  accentTextTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontWeight: FontWeight.w300,
-      fontFamily: 'Montserrat',
-    ),
-    bodyText2: TextStyle(
-      fontWeight: FontWeight.w300,
-      fontFamily: 'Montserrat',
-    ),
-    headline4: TextStyle(
-      fontSize: 15.0,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 0.3,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-  ),
-  textTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontFamily: 'Montserrat',
-    ),
-    bodyText2: TextStyle(
-      fontFamily: 'Montserrat',
-    ),
-    subtitle2: TextStyle(
-      fontFamily: 'Montserrat',
-      fontSize: 16.0,
-    ),
-    headline4: TextStyle(
-      fontSize: 15.0,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 0.3,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-    headline3: TextStyle(
-      fontSize: 21.0,
-      fontWeight: FontWeight.bold,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-    headline2: TextStyle(
-      fontSize: 24.0,
-      fontWeight: FontWeight.bold,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-    headline1: TextStyle(
-      fontSize: 32.0,
-      fontWeight: FontWeight.bold,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-  ),
+  buttonTheme: const ButtonThemeData(buttonColor: Colors.black),
+  textTheme: textTheme,
 );
 
 final ThemeData darkTheme = ThemeData(
@@ -116,9 +117,6 @@ final ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: Colors.grey[900],
   disabledColor: Colors.black,
   backgroundColor: Colors.grey[900],
-  textSelectionHandleColor: Colors.white,
-  textSelectionColor: Colors.white12,
-  cursorColor: Colors.white,
   dividerColor: Colors.white,
   primaryIconTheme: const IconThemeData(color: Colors.white),
   buttonColor: Colors.white,
@@ -129,17 +127,11 @@ final ThemeData darkTheme = ThemeData(
       borderSide: BorderSide(color: Colors.red),
     ),
     focusColor: Colors.white,
-    labelStyle: TextStyle(
-      fontWeight: FontWeight.bold,
-      letterSpacing: .5,
-      fontFamily: 'Montserrat',
-      fontSize: 16.0,
-    ),
     focusedBorder: const OutlineInputBorder(
       borderSide: BorderSide(color: Colors.white),
     ),
     border: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.grey[300]),
+      borderSide: BorderSide(color: Colors.grey.shade300),
     ),
   ),
   dialogTheme: const DialogTheme(
@@ -158,58 +150,5 @@ final ThemeData darkTheme = ThemeData(
   ),
   buttonTheme: const ButtonThemeData(buttonColor: Colors.white),
   applyElevationOverlayColor: true,
-  accentTextTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontWeight: FontWeight.w300,
-      fontFamily: 'Montserrat',
-    ),
-    bodyText2: TextStyle(
-      fontWeight: FontWeight.w300,
-      fontFamily: 'Montserrat',
-    ),
-    headline4: TextStyle(
-      fontSize: 15.0,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 0.3,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-  ),
-  textTheme: TextTheme(
-    bodyText1: TextStyle(
-      fontFamily: 'Montserrat',
-    ),
-    bodyText2: TextStyle(
-      fontFamily: 'Montserrat',
-    ),
-    subtitle2: TextStyle(
-      fontFamily: 'Montserrat',
-      color: Colors.white,
-    ),
-    headline4: TextStyle(
-      fontSize: 15.0,
-      fontWeight: FontWeight.bold,
-      letterSpacing: 0.3,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-    headline3: TextStyle(
-      fontSize: 21.0,
-      fontWeight: FontWeight.bold,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-    headline2: TextStyle(
-      fontSize: 24.0,
-      fontWeight: FontWeight.bold,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-    headline1: TextStyle(
-      fontSize: 32.0,
-      fontWeight: FontWeight.bold,
-      fontFamily: 'Raleway',
-      fontStyle: FontStyle.italic,
-    ),
-  ),
+  textTheme: textTheme,
 );

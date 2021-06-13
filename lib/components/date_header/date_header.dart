@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 const _days = <int, String>{
   DateTime.monday: 'MON',
@@ -33,11 +34,11 @@ class DateHeader extends StatefulWidget {
 }
 
 class _DateHeaderState extends State<DateHeader> {
-  TimeOfDay _time;
-  String _dayOfWeek;
-  String _month;
-  int _day;
-  String _formattedDayNumber;
+  late TimeOfDay _time;
+  late String _dayOfWeek;
+  late String _month;
+  late int _day;
+  late String _formattedDayNumber;
 
   @override
   void initState() {
@@ -53,8 +54,8 @@ class _DateHeaderState extends State<DateHeader> {
 
   void _setDates(DateTime date) {
     _time = TimeOfDay.fromDateTime(date);
-    _dayOfWeek = _days[date.weekday];
-    _month = _months[date.month];
+    _dayOfWeek = _days[date.weekday]!;
+    _month = _months[date.month]!;
     _day = date.day;
     _formattedDayNumber = _getFormattedDayNumber(_day);
     if (mounted) setState(() {});
@@ -79,35 +80,31 @@ class _DateHeaderState extends State<DateHeader> {
 
   @override
   Widget build(BuildContext context) {
-    final _defaultStyle = TextStyle(
+    final _defaultStyle = GoogleFonts.raleway(
       fontSize: 16,
       color: Theme.of(context).brightness == Brightness.light
           ? Colors.black
           : Colors.white,
-      fontFamily: 'Montserrat',
     );
-    return Container(
-      alignment: Alignment.centerRight,
-      child: RichText(
-        text: TextSpan(
-          style: _defaultStyle,
-          children: [
-            TextSpan(
-              style: _bold,
-              text: _dayOfWeek,
-            ),
-            TextSpan(
-              text: ', $_month. ',
-            ),
-            TextSpan(
-              style: _bold,
-              text: '$_formattedDayNumber ',
-            ),
-            TextSpan(
-              text: '| ${_time.format(context)}',
-            ),
-          ],
-        ),
+    return RichText(
+      text: TextSpan(
+        style: _defaultStyle,
+        children: [
+          TextSpan(
+            style: _bold,
+            text: _dayOfWeek,
+          ),
+          TextSpan(
+            text: ', $_month. ',
+          ),
+          TextSpan(
+            style: _bold,
+            text: '$_formattedDayNumber ',
+          ),
+          TextSpan(
+            text: '| ${_time.format(context)}',
+          ),
+        ],
       ),
     );
   }

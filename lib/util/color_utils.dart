@@ -5,7 +5,7 @@ const double _maxLightness = 0.9;
 const double _minLightness = 0.15;
 
 class ColorUtils {
-  Color getLighterAccent(Color color) {
+  static Color getLighterAccent(Color color) {
     var hsl = HSLColor.fromColor(color);
     if (hsl.saturation + _offset > 1) {
       hsl = hsl.withSaturation(1);
@@ -20,7 +20,7 @@ class ColorUtils {
     return hsl.toColor();
   }
 
-  Color getDarkerAccent(Color color) {
+  static Color getDarkerAccent(Color color) {
     var hsl = HSLColor.fromColor(color);
     if (hsl.lightness - _offset < _minLightness) {
       hsl = hsl.withLightness(_minLightness);
@@ -30,16 +30,12 @@ class ColorUtils {
     return hsl.toColor();
   }
 
-  String toHex(Color color, {bool leadingHashSign = true}) {
+  static String? toHex(Color? color, {bool leadingHashSign = true}) {
     if (color == null) return null;
-    var alpha = color.alpha;
-    var red = color.red;
-    var green = color.green;
-    var blue = color.blue;
-    return '${leadingHashSign ? '#' : ''}'
-        '${alpha.toRadixString(16).padLeft(2, '0')}'
-        '${red.toRadixString(16).padLeft(2, '0')}'
-        '${green.toRadixString(16).padLeft(2, '0')}'
-        '${blue.toRadixString(16).padLeft(2, '0')}';
+    final a = color.alpha.toRadixString(16).padLeft(2, '0');
+    final r = color.red.toRadixString(16).padLeft(2, '0');
+    final g = color.green.toRadixString(16).padLeft(2, '0');
+    final b = color.blue.toRadixString(16).padLeft(2, '0');
+    return '${leadingHashSign ? '#' : ''}$a$r$g$b';
   }
 }

@@ -1,73 +1,84 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:school_life/components/dialogs/dialogs.dart';
-import 'package:school_life/components/navbar/navbar.dart';
-import 'package:school_life/components/screen_header/screen_header.dart';
-import 'package:school_life/main.dart';
-import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/assignments/widgets/assignments_list.dart';
-import 'package:school_life/services/databases/subjects_repository.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:school_life/models/assignment.dart';
+import 'package:school_life/services/databases/hive_helper.dart';
+import 'package:stacked_services/stacked_services.dart';
 
-class AssignmentsPage extends StatefulWidget {
-  final ValueNotifier<int> tabsChangeNotifier;
+import '../../../app/app.locator.dart';
+import '../../../app/app.router.dart';
+import '../../../services/databases/subjects_repository.dart';
+import '../../../services/stacked/dialogs.dart';
+import 'widgets/assignment_item.dart';
 
-  AssignmentsPage(this.tabsChangeNotifier);
-
-  @override
-  _AssignmentsPageState createState() => _AssignmentsPageState();
-}
-
-class _AssignmentsPageState extends State<AssignmentsPage> {
-  SubjectsRepository subjects;
-  bool _userHasSubjects = false;
-
-  @override
-  void initState() {
-    super.initState();
-    subjects = sl<SubjectsRepository>();
-    _doesUserHaveSubjects();
-  }
-
-  void _doesUserHaveSubjects() {
-    final allSubjects = subjects.subjects;
-    if (allSubjects.isNotEmpty) {
-      _userHasSubjects = true;
-    }
-  }
+class AssignmentsPage extends StatelessWidget {
+  final subjectsRepo = locator<SubjectsRepository>();
+  final ns = locator<NavigationService>();
+  final ds = locator<DialogService>();
+  final box = Hive.box<Assignment>(HiveBoxes.assignmentsBox);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      bottomNavigationBar: CustomBottomNavBar(widget.tabsChangeNotifier),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddAssignmentPress,
-        label: Text(
-          'Create',
-          style: Theme.of(context).accentTextTheme.bodyText1,
-        ),
+        label: Text('Create'),
         icon: const Icon(Icons.add),
       ),
-      body: SafeArea(
-        child: ListView(
-          primary: false,
-          children: <Widget>[
-            const ScreenHeader('Assignments'),
-            Center(
-              child: AssignmentsList(),
-            ),
-          ],
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Assignments',
+          style: Theme.of(context).textTheme.headline6,
         ),
+        elevation: 0,
+      ),
+      body: ValueListenableBuilder<Box<Assignment>>(
+        valueListenable: box.listenable(),
+        builder: (context, box, _) {
+          return Visibility(
+            visible: box.isNotEmpty,
+            replacement: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.assignment,
+                  size: 128.0,
+                ),
+                Text(
+                  "You don't have any assignments due!",
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Woo-hoo!',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+            child: ListView.builder(
+              itemCount: box.length,
+              shrinkWrap: true,
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              itemBuilder: (c, i) {
+                final assignment = box.values.toList()[i];
+                final subject = subjectsRepo.getSubject(assignment.subjectID);
+                return AssignmentItem(assignment, subject);
+              },
+            ),
+          );
+        },
       ),
     );
   }
 
   void _handleAddAssignmentPress() {
-    if (!_userHasSubjects) {
-      showNoSubjectsDialog(context);
+    if (!subjectsRepo.subjects.isNotEmpty) {
+      ds.showCustomDialog(variant: DialogType.noSubjects);
       return;
     }
-    ExtendedNavigator.root.push(Routes.addAssignment);
+    ns.navigateTo(Routes.addAssignmentPage);
   }
 }

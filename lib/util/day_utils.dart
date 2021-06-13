@@ -17,3 +17,6 @@ final Map<String, int> daysToInteger = <String, int>{
   'Saturday': DateTime.saturday,
   'Sunday': DateTime.sunday,
 };
+
+const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+const weekdaysWithWeekends = [...weekdays, 'Saturday', 'Sunday'];

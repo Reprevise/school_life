@@ -1,81 +1,108 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_form_bloc/flutter_form_bloc.dart';
-import 'package:form_bloc/form_bloc.dart';
+
+import '../../../../models/time_block.dart';
 
 class ScheduleField extends StatelessWidget {
   const ScheduleField({
-    @required this.dayFieldBloc,
-    @required this.startTimeBloc,
-    @required this.endTimeBloc,
-    @required this.onRemove,
+    required this.tBlock,
+    required this.onRemove,
+    required this.onEdit,
   });
 
-  final SelectFieldBloc dayFieldBloc;
-  final InputFieldBloc<TimeOfDay, Object> startTimeBloc;
-  final InputFieldBloc<TimeOfDay, Object> endTimeBloc;
+  final TimeBlock tBlock;
   final VoidCallback onRemove;
+  final VoidCallback onEdit;
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(5),
         color: Colors.white,
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              Expanded(
-                child: DropdownFieldBlocBuilder<String>(
-                  selectFieldBloc: dayFieldBloc,
-                  decoration: const InputDecoration(
-                    labelText: 'Day',
-                    filled: true,
-                    fillColor: Colors.grey,
-                    border: InputBorder.none,
-                  ),
-                  itemBuilder: (context, value) => value,
-                  showEmptyItem: true,
-                ),
+              _InfoField(title: 'Day', data: tBlock.day),
+              IconButton(
+                icon: Icon(Icons.edit_outlined),
+                onPressed: onEdit,
+                color: Colors.black,
               ),
               IconButton(
-                icon: Icon(Icons.remove_circle),
+                icon: Icon(Icons.delete_outline),
                 onPressed: onRemove,
-                color: Colors.black,
+                color: Colors.red,
               ),
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Flexible(
-                child: TimeFieldBlocBuilder(
-                  timeFieldBloc: startTimeBloc,
-                  format: DateFormat.jm(),
-                  initialTime: TimeOfDay.now(),
-                  decoration: InputDecoration(
-                    labelText: 'Start time',
-                    filled: true,
-                    fillColor: Colors.grey,
-                    border: InputBorder.none,
-                  ),
-                ),
+              _InfoField(
+                flex: 6,
+                title: 'Start time',
+                data: '${tBlock.startTime.format(context)}',
               ),
-              Flexible(
-                child: TimeFieldBlocBuilder(
-                  timeFieldBloc: endTimeBloc,
-                  format: DateFormat.jm(),
-                  initialTime: TimeOfDay.now(),
-                  decoration: InputDecoration(
-                    labelText: 'End time',
-                    filled: true,
-                    fillColor: Colors.grey,
-                    border: InputBorder.none,
-                  ),
-                ),
+              Spacer(flex: 1),
+              _InfoField(
+                title: 'End time',
+                flex: 6,
+                data: '${tBlock.endTime.format(context)}',
               ),
             ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _InfoField extends StatelessWidget {
+  final String title;
+  final String data;
+  final int flex;
+
+  const _InfoField({
+    Key? key,
+    required this.title,
+    required this.data,
+    this.flex = 1,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      flex: flex,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(4),
+            child: Text(
+              title,
+              style: TextStyle(color: const Color(0xFF313131)),
+            ),
+          ),
+          Container(
+            // constraints: BoxConstraints.expand(),
+            decoration: BoxDecoration(
+              color: Colors.grey.shade300,
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                data,
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
           ),
         ],
       ),

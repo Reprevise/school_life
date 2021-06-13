@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/components/dialogs/dialogs.dart';
-import 'package:school_life/models/subject.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:school_life/services/databases/assignments_repository.dart';
+import 'package:stacked_services/stacked_services.dart';
+
+import '../../../app/app.locator.dart';
+import '../../../models/subject.dart';
+import '../../../services/stacked/dialogs.dart';
 
 class SubjectItem extends StatelessWidget {
   const SubjectItem(this.subject);
@@ -9,87 +14,78 @@ class SubjectItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final bodyStyle = textTheme.bodyText2.copyWith(color: Colors.black);
+    final ds = locator<DialogService>();
+    final assignmentsRepo = locator<AssignmentsRepository>();
+    final showBuilding = subject.building.isNotEmpty;
+    final aCount =
+        assignmentsRepo.getAssignmentsFromSubjectID(subject.id).length;
 
-    final Widget subjectName = Padding(
-      padding: const EdgeInsets.only(left: 8.0),
-      child: Text(
-        subject.name,
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.left,
-        style: textTheme.headline3.copyWith(color: Colors.black),
+    Color getColorFromAssignmentCount() {
+      if (aCount <= 3) {
+        return Color(0xFF67D279);
+      } else if (aCount <= 6) {
+        return Color(0xFFD2A867);
+      } else {
+        return Color(0xFFD26767);
+      }
+    }
+
+    return InkWell(
+      onTap: () {},
+      onLongPress: () => ds.showCustomDialog(
+        variant: DialogType.deleteSubject,
+        customData: subject,
       ),
-    );
-    final Widget roomText = RichText(
-      text: TextSpan(
-        style: const TextStyle(
-          color: Colors.black,
-        ),
-        children: <TextSpan>[
-          TextSpan(
-            text: 'Room: ',
-            style: textTheme.headline4,
-          ),
-          TextSpan(text: subject.room, style: bodyStyle)
-        ],
-      ),
-    );
-    final Widget buildingText = RichText(
-      text: TextSpan(
-        style: const TextStyle(
-          color: Colors.black,
-        ),
-        children: <TextSpan>[
-          TextSpan(
-            text: 'Building: ',
-            style: textTheme.headline4,
-          ),
-          TextSpan(text: subject.building, style: bodyStyle)
-        ],
-      ),
-    );
-    final Widget teacherText = RichText(
-      text: TextSpan(
-        style: const TextStyle(
-          color: Colors.black,
-        ),
-        children: <TextSpan>[
-          TextSpan(
-            text: 'Teacher: ',
-            style: textTheme.headline4,
-          ),
-          TextSpan(text: subject.teacher, style: bodyStyle)
-        ],
-      ),
-    );
-    final Widget extraSubjectInfo = Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        roomText,
-        Visibility(
-          visible: subject.building.trim().isNotEmpty,
-          child: buildingText,
-        ),
-        teacherText,
-      ],
-    );
-    return Card(
-      color: subject.color,
-      elevation: 3.0,
-      child: InkWell(
-        onTap: () {},
-        onLongPress: () => showDeleteSubjectDialog(context, subject),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0),
-              child: subjectName,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: 3,
+              decoration: BoxDecoration(
+                color: subject.color,
+                borderRadius: BorderRadiusDirectional.circular(3),
+              ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 16.0),
-              child: extraSubjectInfo,
+            const SizedBox(width: 8),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    subject.name.toUpperCase(),
+                    overflow: TextOverflow.fade,
+                    style: GoogleFonts.raleway(
+                      fontSize: 24,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Text(
+                    '${showBuilding ? "B: ${subject.building}" : ''}'
+                    'R: ${subject.room}'
+                    ' | ${subject.teacher}',
+                    style: GoogleFonts.montserrat(
+                      letterSpacing: 1.2,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            CircleAvatar(
+              backgroundColor: getColorFromAssignmentCount(),
+              child: Text(
+                '${aCount > 9 ? '9+' : aCount}',
+                style: GoogleFonts.raleway(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontStyle: FontStyle.italic,
+                  fontSize: 18,
+                ),
+              ),
             ),
           ],
         ),

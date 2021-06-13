@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:school_life/models/holiday.dart';
+
+import '../../../../../models/holiday.dart';
 
 class HolidayItem extends StatelessWidget {
   const HolidayItem(this.holiday);
@@ -57,7 +58,7 @@ class HolidayItem extends StatelessWidget {
 }
 
 class _HolidayIndicator extends StatelessWidget {
-  const _HolidayIndicator({this.isStart, this.date});
+  const _HolidayIndicator({required this.isStart, required this.date});
 
   final bool isStart;
   final DateTime date;

@@ -1,16 +1,16 @@
-import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:school_life/services/databases/db_helper.dart';
+
+import '../services/databases/hive_helper.dart';
 
 part 'holiday.g.dart';
 
-@HiveType(typeId: DatabaseHelper.holidayTypeID)
+@HiveType(typeId: HiveHelper.holidayTypeID)
 class Holiday extends HiveObject {
   Holiday({
-    @required this.id,
-    @required this.name,
-    @required this.startDate,
-    @required this.endDate,
+    required this.id,
+    required this.name,
+    required this.startDate,
+    required this.endDate,
   });
 
   @HiveField(0)

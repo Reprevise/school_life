@@ -1,13 +1,14 @@
 import 'package:hive/hive.dart';
-import 'package:school_life/models/holiday.dart';
-import 'package:school_life/services/databases/db_helper.dart';
+
+import '../../models/holiday.dart';
+import 'hive_helper.dart';
 
 class HolidaysRepository {
-  HolidaysRepository() {
-    _holidaysDB = Hive.box(Databases.holidaysBox);
-  }
+  late final Box<Holiday> _holidaysDB;
 
-  Box<Holiday> _holidaysDB;
+  HolidaysRepository() {
+    _holidaysDB = Hive.box(HiveBoxes.holidaysBox);
+  }
 
   int get nextID {
     if (holidays.isEmpty) {
@@ -22,13 +23,9 @@ class HolidaysRepository {
     return id;
   }
 
-  List<Holiday> get holidays {
-    return _holidaysDB.values.toList() ?? <Holiday>[];
-  }
+  List<Holiday> get holidays => _holidaysDB.values.toList();
 
-  Holiday getHoliday(int id) {
-    return _holidaysDB.getAt(id);
-  }
+  Holiday getHoliday(int id) => _holidaysDB.getAt(id)!;
 
   Future<int> addHoliday(Holiday holiday) {
     return _holidaysDB.add(holiday);

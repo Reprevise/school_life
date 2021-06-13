@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:school_life/components/screen_header/screen_header.dart';
-import 'package:school_life/enums/schedule_date_type.dart';
-import 'package:school_life/main.dart';
-import 'package:school_life/router/router.gr.dart';
-import 'package:school_life/screens/settings/pages/widgets/choose_days_school_dialog.dart';
-import 'package:school_life/screens/settings/widgets/router_tile.dart';
-import 'package:school_life/screens/settings/widgets/setting_header.dart';
-import 'package:school_life/services/settings/schedule.dart';
-import 'package:school_life/util/date_utils.dart';
+import 'package:dart_date/dart_date.dart';
+
+import '../../../../app/app.locator.dart';
+import '../../../../app/app.router.dart';
+import '../../../../components/screen_header/screen_header.dart';
+import '../../../../enums/schedule_date_type.dart';
+import '../../../../services/settings/schedule.dart';
+import '../../../../util/date_utils.dart';
+import '../../widgets/router_tile.dart';
+import '../../widgets/setting_header.dart';
 
 class ScheduleSettingsPage extends StatefulWidget {
   @override
@@ -16,28 +17,14 @@ class ScheduleSettingsPage extends StatefulWidget {
 }
 
 class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
-  ScheduleSettingsHelper helper;
+  late final ScheduleSettingsHelper helper;
+  var weekends = false;
 
   @override
   void initState() {
     super.initState();
-    helper = sl<ScheduleSettingsHelper>();
-  }
-
-  void _selectSchoolDaysDialog() {
-    showDialog<void>(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) {
-        return ChooseDaysOfSchoolDialog(
-          selectedDays: helper.dayValues,
-          onSaved: (value) {
-            helper.saveDayValues(value);
-            setState(() {});
-          },
-        );
-      },
-    );
+    helper = locator<ScheduleSettingsHelper>();
+    weekends = helper.areWeekendsEnabled;
   }
 
   Future<void> _selectDate(ScheduleDateType type) async {
@@ -45,17 +32,17 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
       context: context,
       initialDate:
           type == ScheduleDateType.start ? helper.startDate : helper.endDate,
-      firstDate: DateTime.now().onlyDate.subtractYears(5),
+      firstDate: DateTime.now().onlyDate.subYears(5),
       lastDate: DateTime.now().onlyDate.addYears(5),
     );
     if (result == null) {
       return;
     }
-    helper.saveDate(type, result);
+    await helper.saveDate(type, result);
     setState(() {});
   }
 
-  String formatDate(DateTime date) {
+  String? formatDate(DateTime? date) {
     if (date == null) {
       return null;
     }
@@ -71,7 +58,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
     if (result == null) {
       return;
     }
-    helper.saveTime(type, result);
+    await helper.saveTime(type, result);
     setState(() {});
   }
 
@@ -90,10 +77,17 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
             ],
           ),
           const SettingHeader('Basics'),
-          ListTile(
-            title: Text('School Days', style: titleStyle),
-            subtitle: Text(helper.getDisplayableDays()),
-            onTap: _selectSchoolDaysDialog,
+          CheckboxListTile(
+            value: weekends,
+            title: Text('Weekends'),
+            activeColor: Colors.blue,
+            onChanged: (newValue) async {
+              if (newValue == null) return;
+              await helper.saveWeekendStatus(newValue);
+              setState(() {
+                weekends = newValue;
+              });
+            },
           ),
           ListTile(
             title: Text('Start date', style: titleStyle),
@@ -107,18 +101,18 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
           ),
           ListTile(
             title: Text('Start time', style: titleStyle),
-            subtitle: Text(helper.startTime?.format(context) ?? 'Not set'),
+            subtitle: Text(helper.startTime.format(context)),
             onTap: () => _selectTime(ScheduleDateType.start),
           ),
           ListTile(
             title: Text('End time', style: titleStyle),
-            subtitle: Text(helper.endTime?.format(context) ?? 'Not set'),
+            subtitle: Text(helper.endTime.format(context)),
             onTap: () => _selectTime(ScheduleDateType.end),
           ),
           RouterTile(
             title: 'Holidays',
             icon: Icons.event,
-            route: Routes.holidays,
+            route: Routes.scheduleHolidaysPage,
           ),
         ],
       ),

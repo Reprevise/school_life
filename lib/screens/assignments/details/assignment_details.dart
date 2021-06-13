@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:school_life/models/assignment.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/util/color_utils.dart';
+
+import '../../../models/assignment.dart';
+import '../../../models/subject.dart';
+import '../../../util/color_utils.dart';
 
 class AssignmentDetailsPage extends StatelessWidget {
   const AssignmentDetailsPage(this.assignment, this.assignmentSubject);
@@ -19,8 +20,8 @@ class AssignmentDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final lightAccent = ColorUtils().getLighterAccent(assignmentSubject.color);
-    final darkAccent = ColorUtils().getDarkerAccent(assignmentSubject.color);
+    final lightAccent = ColorUtils.getLighterAccent(assignmentSubject.color);
+    final darkAccent = ColorUtils.getDarkerAccent(assignmentSubject.color);
 
     return Scaffold(
       backgroundColor: lightAccent,
@@ -59,7 +60,7 @@ class AssignmentDetailsPage extends StatelessWidget {
                     ),
                     child: Text(
                       assignment.details,
-                      style: textTheme.bodyText2.copyWith(
+                      style: textTheme.bodyText2!.copyWith(
                         color: getTextColorFromBackground(darkAccent),
                       ),
                     ),

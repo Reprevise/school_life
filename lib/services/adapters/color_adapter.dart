@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:school_life/services/databases/db_helper.dart';
+
+import '../databases/hive_helper.dart';
 
 class ColorAdapter extends TypeAdapter<Color> {
   @override
@@ -15,5 +16,5 @@ class ColorAdapter extends TypeAdapter<Color> {
   }
 
   @override
-  int get typeId => DatabaseHelper.colorTypeID;
+  int get typeId => HiveHelper.colorTypeID;
 }

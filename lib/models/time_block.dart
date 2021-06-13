@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:school_life/services/databases/db_helper.dart';
+
+import '../services/databases/hive_helper.dart';
 
 part 'time_block.g.dart';
 
-@HiveType(typeId: DatabaseHelper.timeBlockTypeID)
+@HiveType(typeId: HiveHelper.timeBlockTypeID)
 class TimeBlock extends HiveObject {
   TimeBlock({
-    @required this.day,
-    @required this.startTime,
-    @required this.endTime,
+    required this.day,
+    required this.startTime,
+    required this.endTime,
   });
 
   @HiveField(0)

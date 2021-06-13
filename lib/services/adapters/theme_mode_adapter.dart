@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
-import 'package:school_life/services/databases/db_helper.dart';
+
+import '../databases/hive_helper.dart';
 
 class ThemeModeAdapter extends TypeAdapter<ThemeMode> {
   @override
@@ -14,5 +15,5 @@ class ThemeModeAdapter extends TypeAdapter<ThemeMode> {
   }
 
   @override
-  int get typeId => DatabaseHelper.themeModeTypeID;
+  int get typeId => HiveHelper.themeModeTypeID;
 }

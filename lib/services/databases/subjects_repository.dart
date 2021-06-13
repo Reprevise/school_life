@@ -1,14 +1,15 @@
 import 'package:hive/hive.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/models/time_block.dart';
-import 'package:school_life/services/databases/db_helper.dart';
+
+import '../../models/subject.dart';
+import '../../models/time_block.dart';
+import 'hive_helper.dart';
 
 class SubjectsRepository {
-  SubjectsRepository() {
-    _subjectsDB = Hive.box(Databases.subjectsBox);
-  }
+  late final Box<Subject> _subjectsDB;
 
-  Box<Subject> _subjectsDB;
+  SubjectsRepository() {
+    _subjectsDB = Hive.box(HiveBoxes.subjectsBox);
+  }
 
   int get nextID {
     if (subjects.isEmpty) {
@@ -23,14 +24,9 @@ class SubjectsRepository {
     return id;
   }
 
-  List<Subject> get subjects {
-    final data = _subjectsDB.values.toList();
-    return data ?? <Subject>[];
-  }
+  List<Subject> get subjects => _subjectsDB.values.toList();
 
-  Subject getSubject(int id) {
-    return _subjectsDB.getAt(id);
-  }
+  Subject getSubject(int id) => _subjectsDB.getAt(id)!;
 
   List<Subject> get subjectsWithoutSchedule {
     return subjects.where((subject) => subject.schedule == null).toList();
@@ -43,8 +39,8 @@ class SubjectsRepository {
   List<Subject> getSubjectsWithSameDaySchedule(String dayOfWeek) {
     final _usableSubjects = <Subject>[];
     for (final subject in subjectsWithSchedule) {
-      final block = getTimeBlockFromDay(dayOfWeek, subject.schedule);
-      if (block != null) _usableSubjects.add(subject);
+      // final block = getTimeBlockFromDay(dayOfWeek, subject.schedule!);
+      _usableSubjects.add(subject);
     }
     return _usableSubjects;
   }

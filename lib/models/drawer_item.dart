@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 
 class DrawerItem {
   DrawerItem({
-    this.title,
-    this.icon,
+    required this.title,
+    required this.icon,
     // this.color,
-    this.func,
+    required this.func,
   }); // constructor
 
   String title; // Text along side icon
