@@ -10,6 +10,8 @@ import 'add_schedule_viewmodel.dart';
 import 'widgets/schedule_field.dart';
 
 class AddSchedulePage extends StatefulWidget {
+  const AddSchedulePage({Key? key}) : super(key: key);
+
   @override
   _AddSchedulePageState createState() => _AddSchedulePageState();
 }
@@ -41,9 +43,9 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                     Positioned(
                       top: screenSize.height / 40,
                       child: Row(
-                        children: <Widget>[
+                        children: const <Widget>[
                           BackButton(),
-                          const ScreenHeader('Add Schedule for...'),
+                          ScreenHeader('Add Schedule for...'),
                         ],
                       ),
                     ),
@@ -58,18 +60,19 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                                     value: e,
                                     child: Text(
                                       e.name,
-                                      style: TextStyle(color: Colors.black),
+                                      style:
+                                          const TextStyle(color: Colors.black),
                                     ),
                                   ))
                               .toList(),
                           formControl: model.subject,
-                          hint: Text('Select subject'),
+                          hint: const Text('Select subject'),
                           dropdownColor: Colors.white,
-                          icon: Icon(
+                          icon: const Icon(
                             Icons.arrow_drop_down,
                             color: Colors.black,
                           ),
-                          decoration: InputDecoration(
+                          decoration: const InputDecoration(
                             filled: true,
                             fillColor: Colors.white,
                           ),
@@ -85,7 +88,7 @@ class _AddSchedulePageState extends State<AddSchedulePage> {
                   padding: const EdgeInsets.all(12),
                   margin: const EdgeInsets.only(bottom: 8),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: model.addSchedule,
                     style: TextButton.styleFrom(
                       backgroundColor: const Color(0xFF76B852),
                     ),
@@ -143,7 +146,7 @@ class _AddScheduleFormFields extends StatelessWidget {
               onPressed: () => model.openScheduleSheet(),
               style: OutlinedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(vertical: 16),
-                side: BorderSide(color: Colors.grey, width: 3),
+                side: const BorderSide(color: Colors.grey, width: 3),
               ),
               child: Text(
                 'Add day',
@@ -157,7 +160,7 @@ class _AddScheduleFormFields extends StatelessWidget {
       return Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
-          Text('No schedule!'),
+          const Text('No schedule!'),
           OutlinedButton(
             onPressed: () => model.openScheduleSheet(),
             style: OutlinedButton.styleFrom(
@@ -165,7 +168,7 @@ class _AddScheduleFormFields extends StatelessWidget {
                 horizontal: 32,
                 vertical: 16,
               ),
-              side: BorderSide(color: Colors.grey, width: 3),
+              side: const BorderSide(color: Colors.grey, width: 3),
             ),
             child: Text(
               'Add day',

@@ -78,7 +78,7 @@ final ThemeData lightTheme = ThemeData(
   disabledColor: Colors.grey[600],
   primaryIconTheme: const IconThemeData(color: Colors.black),
   buttonColor: Colors.grey[600],
-  bottomAppBarColor: Color(0xFFededed),
+  bottomAppBarColor: const Color(0xFFededed),
   unselectedWidgetColor: Colors.grey,
   inputDecorationTheme: InputDecorationTheme(
     focusedErrorBorder: const OutlineInputBorder(
@@ -120,7 +120,7 @@ final ThemeData darkTheme = ThemeData(
   dividerColor: Colors.white,
   primaryIconTheme: const IconThemeData(color: Colors.white),
   buttonColor: Colors.white,
-  bottomAppBarColor: Color(0xFF1c1c1c),
+  bottomAppBarColor: const Color(0xFF1c1c1c),
   unselectedWidgetColor: Colors.grey,
   inputDecorationTheme: InputDecorationTheme(
     focusedErrorBorder: const OutlineInputBorder(

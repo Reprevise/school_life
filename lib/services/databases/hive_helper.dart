@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:school_life/models/time_block.dart';
 
 import '../../models/assignment.dart';
 import '../../models/holiday.dart';
 import '../../models/subject.dart';
-import '../adapters/brightness_adapter.dart';
-import '../adapters/color_adapter.dart';
-import '../adapters/theme_mode_adapter.dart';
-import '../adapters/time_adapter.dart';
+import '../../models/time_block.dart';
 
 class HiveHelper {
   // ! valid adapter type ids are 0-223
@@ -18,8 +15,6 @@ class HiveHelper {
   static const int subjectTypeID = 2;
   static const int holidayTypeID = 3;
   static const int timeBlockTypeID = 4;
-  static const int colorTypeID = 200;
-  static const int timeTypeID = 201;
   static const int brightnessTypeID = 202;
   static const int themeModeTypeID = 203;
 
@@ -37,9 +32,7 @@ class HiveHelper {
   static void _registerHiveAdapters() {
     Hive
       ..registerAdapter<Color>(ColorAdapter())
-      ..registerAdapter<TimeOfDay>(TimeAdapter())
-      ..registerAdapter<Brightness>(BrightnessAdapter())
-      ..registerAdapter<ThemeMode>(ThemeModeAdapter())
+      ..registerAdapter<TimeOfDay>(TimeOfDayAdapter())
       ..registerAdapter<Assignment>(AssignmentAdapter())
       ..registerAdapter<Subject>(SubjectAdapter())
       ..registerAdapter<Holiday>(HolidayAdapter())

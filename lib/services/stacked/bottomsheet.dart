@@ -49,7 +49,7 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final timeNow = TimeOfDay.now();
-    final hourFromNow = DateTime.now().add(Duration(hours: 1));
+    final hourFromNow = DateTime.now().add(const Duration(hours: 1));
     final data = widget.request.customData as TimeBlock?;
     final availableDays = _getAvailableDays();
     var eSelectedDay = data?.day ?? availableDays.first;
@@ -65,7 +65,7 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
         return Container(
           decoration: BoxDecoration(
             color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
           ),
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
@@ -77,13 +77,13 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                   margin: const EdgeInsets.symmetric(vertical: 16),
                   width: 50,
                   decoration: BoxDecoration(
-                    color: Color(0xFFC0C0C0).withOpacity(0.50),
+                    color: const Color(0xFFC0C0C0).withOpacity(0.50),
                     borderRadius: BorderRadius.circular(5),
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.symmetric(
+              const Padding(
+                padding: EdgeInsets.symmetric(
                   horizontal: 16.0,
                   vertical: 8.0,
                 ),
@@ -91,7 +91,7 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
               ),
               Container(
                 decoration: BoxDecoration(
-                  color: Color(0xFFC4C4C4),
+                  color: const Color(0xFFC4C4C4),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -102,8 +102,8 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                         .toList(),
                     value: nSelectedDay ?? eSelectedDay,
                     iconEnabledColor: Colors.black,
-                    dropdownColor: Color(0xFFC4C4C4),
-                    style: TextStyle(color: Colors.black),
+                    dropdownColor: const Color(0xFFC4C4C4),
+                    style: const TextStyle(color: Colors.black),
                     onChanged: (newValue) {
                       if (newValue == null) return;
                       setState(() {
@@ -117,11 +117,11 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                 padding: const EdgeInsets.only(top: 8.0),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
-                  children: [
+                  children: const <Widget>[
                     Expanded(
                       flex: 6,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 16.0,
                           vertical: 8.0,
                         ),
@@ -132,7 +132,7 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                     Expanded(
                       flex: 6,
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(
+                        padding: EdgeInsets.symmetric(
                           horizontal: 16.0,
                           vertical: 8.0,
                         ),
@@ -151,7 +151,7 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                     child: TextButton(
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(16),
-                        backgroundColor: Color(0xFFC4C4C4),
+                        backgroundColor: const Color(0xFFC4C4C4),
                         alignment: Alignment.centerLeft,
                       ),
                       onPressed: () async {
@@ -165,18 +165,18 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                         });
                       },
                       child: Text(
-                        '${(nStartTime ?? eStartTime).format(context)}',
-                        style: TextStyle(color: Colors.black),
+                        (nStartTime ?? eStartTime).format(context),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
-                  Spacer(flex: 1),
+                  const Spacer(flex: 1),
                   Expanded(
                     flex: 6,
                     child: TextButton(
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.all(16),
-                        backgroundColor: Color(0xFFC4C4C4),
+                        backgroundColor: const Color(0xFFC4C4C4),
                         alignment: Alignment.centerLeft,
                       ),
                       onPressed: () async {
@@ -190,8 +190,8 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                         });
                       },
                       child: Text(
-                        '${(nEndTime ?? eEndTime).format(context)}',
-                        style: TextStyle(color: Colors.black),
+                        (nEndTime ?? eEndTime).format(context),
+                        style: const TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
@@ -204,9 +204,9 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                     SheetResponse(
                       confirmed: true,
                       responseData: TimeBlock(
-                        day: eSelectedDay,
-                        startTime: eStartTime,
-                        endTime: eEndTime,
+                        day: nSelectedDay ?? eSelectedDay,
+                        startTime: nStartTime ?? eStartTime,
+                        endTime: nEndTime ?? eEndTime,
                       ),
                     ),
                   );
@@ -218,7 +218,7 @@ class _ScheduleBottomSheetState extends State<_ScheduleBottomSheet> {
                   ),
                 ),
                 child: Text('Save', style: Theme.of(context).textTheme.button),
-              )
+              ),
             ],
           ),
         );

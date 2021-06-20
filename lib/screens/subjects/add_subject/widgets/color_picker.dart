@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 
 class ReactiveSubjectColorPicker extends ReactiveFormField<Color, Color> {
-  ReactiveSubjectColorPicker(FormControl<Color> formControl)
+  ReactiveSubjectColorPicker(FormControl<Color> formControl, {Key? key})
       : super(
+          key: key,
           formControl: formControl,
           builder: (field) => FastColorPicker(
             selectedColor: field.value ?? Colors.white,

@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:school_life/components/date_header/date_header.dart';
-import 'package:school_life/models/subject.dart';
-import 'package:school_life/services/databases/hive_helper.dart';
 import 'package:stacked_services/stacked_services.dart';
 
 import '../../app/app.locator.dart';
 import '../../app/app.router.dart';
+import '../../models/subject.dart';
+import '../../services/databases/hive_helper.dart';
 import 'widgets/subject_item.dart';
 
 class SubjectsPage extends StatelessWidget {
+  SubjectsPage({Key? key}) : super(key: key);
+
   final _navService = locator<NavigationService>();
   final box = Hive.box<Subject>(HiveBoxes.subjectsBox);
 
@@ -19,7 +20,7 @@ class SubjectsPage extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _navService.navigateTo(Routes.addSubjectPage),
-        label: Text('Create'),
+        label: const Text('Add Subject'),
         icon: const Icon(Icons.add),
       ),
       appBar: AppBar(
@@ -44,12 +45,12 @@ class SubjectsPage extends StatelessWidget {
                   color: Colors.grey[400],
                   size: 128.0,
                 ),
-                Text(
+                const Text(
                   "You don't have any subjects!",
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
-                Text(
+                const Text(
                   'Click the button below to add some!',
                   textAlign: TextAlign.center,
                 ),

@@ -5,7 +5,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:reactive_date_time_picker/reactive_date_time_picker.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:school_life/components/screen_header/screen_header.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 
@@ -20,6 +19,8 @@ import 'holiday_item.dart';
 import 'holidays_viewmodel.dart';
 
 class ScheduleHolidaysPage extends StatelessWidget {
+  ScheduleHolidaysPage({Key? key}) : super(key: key);
+
   final _navService = locator<NavigationService>();
 
   @override
@@ -28,7 +29,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () => _navService.navigateTo(Routes.addHolidayPage),
         label: const Text('Add Holiday'),
-        icon: Icon(Icons.add),
+        icon: const Icon(Icons.add),
       ),
       appBar: AppBar(
         title: Text(
@@ -52,7 +53,7 @@ class ScheduleHolidaysPage extends StatelessWidget {
                   color: Colors.grey[400],
                   size: 128.0,
                 ),
-                Text(
+                const Text(
                   "You don't have any holidays!",
                   textAlign: TextAlign.center,
                 ),
@@ -77,6 +78,8 @@ class ScheduleHolidaysPage extends StatelessWidget {
 }
 
 class AddHolidayPage extends StatefulWidget {
+  const AddHolidayPage({Key? key}) : super(key: key);
+
   @override
   _AddHolidayPageState createState() => _AddHolidayPageState();
 }

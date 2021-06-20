@@ -84,24 +84,26 @@ class AddScheduleViewModel extends BaseViewModel with Popper {
       return;
     }
 
-    subject.value!.schedule = sortMap(subject.value!.schedule!);
-    await subject.value!.save();
-  }
-
-  List<TimeBlock> sortMap(List<TimeBlock> unsortedSchedule) {
-    final sortedSchedule = unsortedSchedule
-      ..sort((blockOne, blockTwo) {
-        final numberOne = daysToInteger[blockOne.day];
-        final numberTwo = daysToInteger[blockTwo.day];
-        return numberOne!.compareTo(numberTwo!);
-      });
-    return sortedSchedule;
+    final subjectObj = subject.value!;
+    final list = scheduleItems.value!.cast<TimeBlock>();
+    final clone = List<TimeBlock>.from(list);
+    clone.sort((blockOne, blockTwo) {
+      final numberOne = dayToInteger[blockOne.day]!;
+      final numberTwo = dayToInteger[blockTwo.day]!;
+      return numberOne.compareTo(numberTwo);
+    });
+    subjectObj.schedule = clone;
+    try {
+      await subjectsRepo.addSubject(subjectObj);
+    } on Exception catch (e) {
+      print(e);
+    }
   }
 
   //! fix this
   // Map<String, dynamic>? notSameStartTime(AbstractControl<dynamic> control) {
   //   for (final subject in subjects) {
-  //     // TODO: ensure a subject's time is not within another subject's time
+  //     TODO: ensure a subject's time is not within another subject's time
   //     final block =
   //         subjectsRepo.getTimeBlockFromDay(selectedDay, subject.schedule!);
 

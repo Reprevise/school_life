@@ -5,12 +5,13 @@ import '../../../app/app.locator.dart';
 
 class RouterTile extends StatelessWidget {
   const RouterTile({
+    Key? key,
     required this.icon,
     required this.title,
     this.subtitle2,
     this.disable = false,
     required this.route,
-  });
+  }) : super(key: key);
 
   final IconData icon;
   final String title;
@@ -29,7 +30,7 @@ class RouterTile extends StatelessWidget {
         style: Theme.of(context).textTheme.bodyText2,
       ),
       subtitle: subtitle2 != null ? Text(subtitle2!) : null,
-      trailing: Icon(Icons.arrow_right),
+      trailing: const Icon(Icons.arrow_right),
       onTap: disable ? null : () => navService.navigateTo(route),
     );
   }

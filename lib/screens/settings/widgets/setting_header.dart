@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class SettingHeader extends StatelessWidget {
-  const SettingHeader(this.title);
   final String title;
+
+  const SettingHeader(this.title, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -12,6 +12,8 @@ import '../../widgets/router_tile.dart';
 import '../../widgets/setting_header.dart';
 
 class ScheduleSettingsPage extends StatefulWidget {
+  const ScheduleSettingsPage({Key? key}) : super(key: key);
+
   @override
   _ScheduleSettingsPageState createState() => _ScheduleSettingsPageState();
 }
@@ -71,15 +73,15 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
         primary: false,
         children: <Widget>[
           Row(
-            children: <Widget>[
+            children: const <Widget>[
               BackButton(),
-              const ScreenHeader('Schedule Settings'),
+              ScreenHeader('Schedule Settings'),
             ],
           ),
           const SettingHeader('Basics'),
           CheckboxListTile(
             value: weekends,
-            title: Text('Weekends'),
+            title: const Text('Weekends'),
             activeColor: Colors.blue,
             onChanged: (newValue) async {
               if (newValue == null) return;
@@ -109,7 +111,7 @@ class _ScheduleSettingsPageState extends State<ScheduleSettingsPage> {
             subtitle: Text(helper.endTime.format(context)),
             onTap: () => _selectTime(ScheduleDateType.end),
           ),
-          RouterTile(
+          const RouterTile(
             title: 'Holidays',
             icon: Icons.event,
             route: Routes.scheduleHolidaysPage,

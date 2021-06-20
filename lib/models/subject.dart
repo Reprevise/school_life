@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:school_life/app/app.locator.dart';
+import 'package:school_life/services/databases/assignments_repository.dart';
 
-import '../app/app.locator.dart';
-import '../services/databases/assignments_repository.dart';
 import '../services/databases/hive_helper.dart';
 import 'time_block.dart';
 
@@ -17,12 +17,11 @@ class Subject extends HiveObject {
     required this.building,
     required this.teacher,
     required this.color,
-    this.schedule,
-    this.isDeleted = false,
+    this.schedule = const [],
   });
 
   @HiveField(0)
-  int id;
+  String id;
   @HiveField(1)
   String name;
   @HiveField(2)
@@ -33,17 +32,27 @@ class Subject extends HiveObject {
   String teacher;
   @HiveField(5)
   Color color;
-  @HiveField(6)
-  bool isDeleted;
-  @HiveField(7)
-  List<TimeBlock>? schedule;
+  @HiveField(6, defaultValue: [])
+  List<TimeBlock> schedule;
+
+  Subject copyWithSchedule({
+    List<TimeBlock> newSchedule = const [],
+  }) {
+    return Subject(
+      building: building,
+      name: name,
+      color: color,
+      id: id,
+      room: room,
+      teacher: teacher,
+      schedule: newSchedule,
+    );
+  }
 
   @override
   Future<void> delete() async {
-    final assignmentsRepo = locator<AssignmentsRepository>();
-    final delOps =
-        assignmentsRepo.getAssignmentsFromSubjectID(id).map((e) => e.delete());
-    await Future.wait(delOps);
+    final a = locator<AssignmentsRepository>().getAssignmentsFromSubjectID(id);
+    await Future.wait(a.map((e) => e.delete()));
     return super.delete();
   }
 }

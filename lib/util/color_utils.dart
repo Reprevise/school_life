@@ -30,6 +30,15 @@ class ColorUtils {
     return hsl.toColor();
   }
 
+  static bool isLightColor(Color color) {
+    final b = ThemeData.estimateBrightnessForColor(color);
+    return b == Brightness.light;
+  }
+
+  static bool isDarkColor(Color color) {
+    return !isLightColor(color);
+  }
+
   static String? toHex(Color? color, {bool leadingHashSign = true}) {
     if (color == null) return null;
     final a = color.alpha.toRadixString(16).padLeft(2, '0');

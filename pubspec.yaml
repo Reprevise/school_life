@@ -1,5 +1,6 @@
 name: school_life
 description: An app to manage your school life.
+publish_to: none
 
 version: 1.0.0+1
 
@@ -13,25 +14,25 @@ dependencies:
   collection: ^1.15.0
   dart_date: ^1.1.0
   fast_color_picker: ^0.1.0
+  flutter_slidable: ^1.0.0-dev.2
   flutter_svg: ^0.22.0
   google_fonts: ^2.1.0
   hive: ^2.0.4
-  hive_flutter: ^1.0.0
+  hive_flutter: ^1.1.0
   intl: ^0.17.0
-  meta: ^1.1.8
-  pedantic: ^1.9.0
   reactive_date_time_picker: ^0.1.1
   reactive_forms: ^10.4.1
   stacked: ^2.1.8
   stacked_services: ^0.8.6
   stacked_themes: ^0.3.3
+  uuid: ^3.0.4
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   build_runner: ^2.0.4
+  flutter_lints: ^1.0.3
   hive_generator: ^1.1.0
-  mockito: ^5.0.10
   stacked_generator: ^0.4.6
 
 flutter:

@@ -1,18 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:dart_date/dart_date.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:school_life/util/day_utils.dart';
 
 import '../../../util/date_utils.dart';
+import '../../../util/day_utils.dart';
 
 class ScheduleHeader extends StatelessWidget {
   final void Function(DateTime) onDaySelected;
   final DateTime focusedDay;
 
   const ScheduleHeader({
+    Key? key,
     required this.onDaySelected,
     required this.focusedDay,
-  });
+  }) : super(key: key);
 
   String _getFormattedDayNumber(int day) {
     switch (day) {
@@ -44,24 +45,25 @@ class ScheduleHeader extends StatelessWidget {
         itemCount: twoWeeks.length,
         itemBuilder: (c, i) {
           final d = twoWeeks[i];
+          final isFocused = focusedDay.onlyDate == d;
           final w = '${d.weekday}';
           return Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () => onDaySelected(d),
               style: TextButton.styleFrom(
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(8),
                 ),
-                fixedSize: Size(75, 100),
-                backgroundColor: Colors.grey.shade800,
+                fixedSize: const Size(75, 100),
+                backgroundColor: isFocused ? Colors.grey.shade800 : Colors.grey,
               ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Text(
                     _getFormattedDayNumber(d.day),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                   ),
                   Text(
                     '${daysFromIntegerString[w]!.substring(0, 3)}.',

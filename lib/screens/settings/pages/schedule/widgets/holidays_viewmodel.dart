@@ -1,5 +1,6 @@
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stacked/stacked.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../../app/app.locator.dart';
 import '../../../../../util/popper.dart';
@@ -23,7 +24,7 @@ class AddHolidayViewModel extends BaseViewModel with Popper {
 
   Future<void> addHoliday() async {
     final holiday = Holiday(
-      id: holidaysRepository.nextID,
+      id: const Uuid().v4(),
       name: holidayName.value!,
       startDate: startDate.value!,
       endDate: endDate.value!,
@@ -36,8 +37,6 @@ class AddHolidayViewModel extends BaseViewModel with Popper {
 
   @override
   bool fieldsAreEmpty() {
-    return startDate.value == null &&
-        endDate.value == null &&
-        holidayName.value!.trim().isEmpty;
+    return startDate.isNull && endDate.isNull && holidayName.isNullOrEmpty;
   }
 }

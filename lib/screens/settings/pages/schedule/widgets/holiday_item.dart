@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import '../../../../../models/holiday.dart';
 
 class HolidayItem extends StatelessWidget {
-  const HolidayItem(this.holiday);
+  const HolidayItem(this.holiday, {Key? key}) : super(key: key);
 
   final Holiday holiday;
 
@@ -65,7 +65,7 @@ class _HolidayIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: MediaQuery.of(context).size.height * 0.05,
       width: MediaQuery.of(context).size.width * 0.35,
       child: Card(
@@ -73,7 +73,7 @@ class _HolidayIndicator extends StatelessWidget {
             ? const Color(0xFF5EC999).withOpacity(0.25)
             : const Color(0xFFEF7198).withOpacity(0.25),
         elevation: 0,
-        margin: EdgeInsets.symmetric(vertical: 4),
+        margin: const EdgeInsets.symmetric(vertical: 4),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
@@ -90,9 +90,7 @@ class _HolidayIndicator extends StatelessWidget {
                 shape: BoxShape.circle,
               ),
             ),
-            Container(
-              child: Text(DateFormat.yMMMd().format(date)),
-            ),
+            Text(DateFormat.yMMMd().format(date)),
           ],
         ),
       ),

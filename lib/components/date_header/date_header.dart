@@ -29,6 +29,8 @@ const _months = <int, String>{
 };
 
 class DateHeader extends StatefulWidget {
+  const DateHeader({Key? key}) : super(key: key);
+
   @override
   _DateHeaderState createState() => _DateHeaderState();
 }
@@ -44,7 +46,7 @@ class _DateHeaderState extends State<DateHeader> {
   void initState() {
     super.initState();
     _setDates(DateTime.now());
-    Timer.periodic(Duration(seconds: 1), (_) {
+    Timer.periodic(const Duration(seconds: 1), (_) {
       final now = DateTime.now();
       if (now.minute != _time.minute) {
         _setDates(now);

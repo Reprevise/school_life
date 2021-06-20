@@ -17,10 +17,10 @@ class AssignmentAdapter extends TypeAdapter<Assignment> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Assignment(
-      id: fields[0] as int,
+      id: fields[0] as String,
       name: fields[1] as String,
       dueDate: fields[2] as DateTime,
-      subjectID: fields[3] as int,
+      subjectID: fields[3] as String,
       details: fields[4] as String,
       completed: fields[5] == null ? false : fields[5] as bool,
     );

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:school_life/services/stacked/dialogs.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:stacked_themes/stacked_themes.dart';
 
@@ -11,6 +10,7 @@ import 'app/app.router.dart';
 import 'components/theme/style.dart';
 import 'services/databases/hive_helper.dart';
 import 'services/stacked/bottomsheet.dart';
+import 'services/stacked/dialogs.dart';
 
 Future<void> main() async {
   // ensure everything's good to go
@@ -25,10 +25,12 @@ Future<void> main() async {
   // initialize [ThemeManager]
   await ThemeManager.initialise();
   // finally run the app
-  runApp(SchoolLife());
+  runApp(const SchoolLife());
 }
 
 class SchoolLife extends StatelessWidget {
+  const SchoolLife({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(

@@ -12,7 +12,6 @@ import 'package:stacked/stacked.dart';
 import '../models/assignment.dart';
 import '../models/subject.dart';
 import '../screens/assignments/add_assignnment/add_assignment.dart';
-import '../screens/assignments/details/assignment_details.dart';
 import '../screens/nav/nav_view.dart';
 import '../screens/schedule/add_schedule/add_schedule.dart';
 import '../screens/settings/pages/assignments/assignments_settings.dart';
@@ -24,7 +23,6 @@ import '../screens/subjects/details/subject_details.dart';
 
 class Routes {
   static const String navView = '/';
-  static const String assignmentDetailsPage = '/assignmentDetails';
   static const String assignmentsSettingsPage = '/assignmentsSettings';
   static const String addAssignmentPage = '/addAssignment';
   static const String scheduleHolidaysPage = '/holidays';
@@ -36,7 +34,6 @@ class Routes {
   static const String subjectsSettingsPage = '/subjectSettings';
   static const all = <String>{
     navView,
-    assignmentDetailsPage,
     assignmentsSettingsPage,
     addAssignmentPage,
     scheduleHolidaysPage,
@@ -54,7 +51,6 @@ class StackedRouter extends RouterBase {
   List<RouteDef> get routes => _routes;
   final _routes = <RouteDef>[
     RouteDef(Routes.navView, page: NavView),
-    RouteDef(Routes.assignmentDetailsPage, page: AssignmentDetailsPage),
     RouteDef(Routes.assignmentsSettingsPage, page: AssignmentsSettingsPage),
     RouteDef(Routes.addAssignmentPage, page: AddAssignmentPage),
     RouteDef(Routes.scheduleHolidaysPage, page: ScheduleHolidaysPage),
@@ -74,68 +70,76 @@ class StackedRouter extends RouterBase {
         settings: data,
       );
     },
-    AssignmentDetailsPage: (data) {
-      var args = data.getArgs<AssignmentDetailsPageArguments>(nullOk: false);
-      return MaterialPageRoute<dynamic>(
-        builder: (context) => AssignmentDetailsPage(
-          args.assignment,
-          args.assignmentSubject,
-        ),
-        settings: data,
-      );
-    },
     AssignmentsSettingsPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AssignmentsSettingsPage(),
+        builder: (context) => const AssignmentsSettingsPage(),
         settings: data,
       );
     },
     AddAssignmentPage: (data) {
+      var args = data.getArgs<AddAssignmentPageArguments>(
+        orElse: () => AddAssignmentPageArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AddAssignmentPage(),
+        builder: (context) => AddAssignmentPage(
+          key: args.key,
+          assignmentToEdit: args.assignmentToEdit,
+        ),
         settings: data,
       );
     },
     ScheduleHolidaysPage: (data) {
+      var args = data.getArgs<ScheduleHolidaysPageArguments>(
+        orElse: () => ScheduleHolidaysPageArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => ScheduleHolidaysPage(),
+        builder: (context) => ScheduleHolidaysPage(key: args.key),
         settings: data,
       );
     },
     ScheduleSettingsPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => ScheduleSettingsPage(),
+        builder: (context) => const ScheduleSettingsPage(),
         settings: data,
       );
     },
     AddSchedulePage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AddSchedulePage(),
+        builder: (context) => const AddSchedulePage(),
         settings: data,
       );
     },
     AddHolidayPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AddHolidayPage(),
+        builder: (context) => const AddHolidayPage(),
         settings: data,
       );
     },
     AddSubjectPage: (data) {
+      var args = data.getArgs<AddSubjectPageArguments>(
+        orElse: () => AddSubjectPageArguments(),
+      );
       return MaterialPageRoute<dynamic>(
-        builder: (context) => AddSubjectPage(),
+        builder: (context) => AddSubjectPage(
+          key: args.key,
+          subjectToEdit: args.subjectToEdit,
+        ),
         settings: data,
       );
     },
     SubjectDetailsPage: (data) {
       var args = data.getArgs<SubjectDetailsPageArguments>(nullOk: false);
       return MaterialPageRoute<dynamic>(
-        builder: (context) => SubjectDetailsPage(args.subject),
+        builder: (context) => SubjectDetailsPage(
+          args.subject,
+          key: args.key,
+        ),
         settings: data,
       );
     },
     SubjectsSettingsPage: (data) {
       return MaterialPageRoute<dynamic>(
-        builder: (context) => SubjectsSettingsPage(),
+        builder: (context) => const SubjectsSettingsPage(),
         settings: data,
       );
     },
@@ -146,16 +150,29 @@ class StackedRouter extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
-/// AssignmentDetailsPage arguments holder class
-class AssignmentDetailsPageArguments {
-  final Assignment assignment;
-  final Subject assignmentSubject;
-  AssignmentDetailsPageArguments(
-      {required this.assignment, required this.assignmentSubject});
+/// AddAssignmentPage arguments holder class
+class AddAssignmentPageArguments {
+  final Key? key;
+  final Assignment? assignmentToEdit;
+  AddAssignmentPageArguments({this.key, this.assignmentToEdit});
+}
+
+/// ScheduleHolidaysPage arguments holder class
+class ScheduleHolidaysPageArguments {
+  final Key? key;
+  ScheduleHolidaysPageArguments({this.key});
+}
+
+/// AddSubjectPage arguments holder class
+class AddSubjectPageArguments {
+  final Key? key;
+  final Subject? subjectToEdit;
+  AddSubjectPageArguments({this.key, this.subjectToEdit});
 }
 
 /// SubjectDetailsPage arguments holder class
 class SubjectDetailsPageArguments {
   final Subject subject;
-  SubjectDetailsPageArguments({required this.subject});
+  final Key? key;
+  SubjectDetailsPageArguments({required this.subject, this.key});
 }

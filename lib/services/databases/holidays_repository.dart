@@ -10,24 +10,11 @@ class HolidaysRepository {
     _holidaysDB = Hive.box(HiveBoxes.holidaysBox);
   }
 
-  int get nextID {
-    if (holidays.isEmpty) {
-      return 0;
-    }
-    final takenIDs = holidays.map((holiday) => holiday.id).toList();
-
-    var id = 0;
-    do {
-      id++;
-    } while (takenIDs.contains(id));
-    return id;
-  }
-
   List<Holiday> get holidays => _holidaysDB.values.toList();
 
-  Holiday getHoliday(int id) => _holidaysDB.getAt(id)!;
+  Holiday getHoliday(String id) => _holidaysDB.get(id)!;
 
-  Future<int> addHoliday(Holiday holiday) {
-    return _holidaysDB.add(holiday);
+  Future<void> addHoliday(Holiday holiday) {
+    return _holidaysDB.put(holiday.id, holiday);
   }
 }

@@ -14,7 +14,7 @@ class Holiday extends HiveObject {
   });
 
   @HiveField(0)
-  int id;
+  String id;
   @HiveField(1)
   String name;
   @HiveField(2)

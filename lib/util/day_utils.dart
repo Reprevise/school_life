@@ -8,7 +8,7 @@ final Map<String, String> daysFromIntegerString = <String, String>{
   '7': 'Sunday',
 };
 
-final Map<String, int> daysToInteger = <String, int>{
+final Map<String, int> dayToInteger = <String, int>{
   'Monday': DateTime.monday,
   'Tuesday': DateTime.tuesday,
   'Wednesday': DateTime.wednesday,

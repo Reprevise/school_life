@@ -11,7 +11,7 @@ import '../../../util/day_utils.dart';
 import 'schedule_item.dart';
 
 class SchedulesList extends StatelessWidget {
-  const SchedulesList({required this.selectedDay});
+  const SchedulesList({Key? key, required this.selectedDay}) : super(key: key);
 
   final DateTime selectedDay;
 
@@ -19,10 +19,10 @@ class SchedulesList extends StatelessWidget {
     final repo = locator<SubjectsRepository>();
     values.sort((subjectOne, subjectTwo) {
       final timeOne = repo
-              .getTimeBlockFromDay(selectedDayOfWeek, subjectOne.schedule!)
+              .getTimeBlockFromDay(selectedDayOfWeek, subjectOne.schedule)!
               .startTime,
           timeTwo = repo
-              .getTimeBlockFromDay(selectedDayOfWeek, subjectTwo.schedule!)
+              .getTimeBlockFromDay(selectedDayOfWeek, subjectTwo.schedule)!
               .startTime;
       final oneDate = selectedDay.onlyDate
               .add(Duration(hours: timeOne.hour, minutes: timeOne.minute))
@@ -37,7 +37,6 @@ class SchedulesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final box = Hive.box<Subject>(HiveBoxes.subjectsBox);
-    final fontSize = MediaQuery.of(context).size.width / 20;
     final weekdayString = selectedDay.weekday.toString();
     final selectedDayOfWeek = daysFromIntegerString[weekdayString]!;
 
@@ -51,7 +50,7 @@ class SchedulesList extends StatelessWidget {
         return Visibility(
           visible: values.isNotEmpty,
           replacement: Column(
-            children: <Widget>[
+            children: const <Widget>[
               Icon(
                 Icons.schedule,
                 size: 128.0,

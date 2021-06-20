@@ -7,7 +7,6 @@ abstract class SettingsKeys {
 }
 
 abstract class BasicSettingsKeys {
-  static const String theme = 'theme';
   static const String firstName = 'first_name';
   static const String lastName = 'last_name';
 }

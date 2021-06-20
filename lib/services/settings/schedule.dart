@@ -38,14 +38,14 @@ class ScheduleSettingsHelper {
   TimeOfDay get startTime {
     return _settingsBox.get(
       SettingsKeys.startTime,
-      defaultValue: TimeOfDay(hour: 8, minute: 0),
+      defaultValue: const TimeOfDay(hour: 8, minute: 0),
     );
   }
 
   TimeOfDay get endTime {
     return _settingsBox.get(
       SettingsKeys.endTime,
-      defaultValue: TimeOfDay(hour: 14, minute: 30),
+      defaultValue: const TimeOfDay(hour: 14, minute: 30),
     );
   }
 

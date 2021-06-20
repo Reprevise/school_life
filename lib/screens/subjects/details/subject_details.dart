@@ -4,9 +4,9 @@ import '../../../models/subject.dart';
 import '../../../util/color_utils.dart';
 
 class SubjectDetailsPage extends StatelessWidget {
-  const SubjectDetailsPage(this.subject);
-
   final Subject subject;
+
+  const SubjectDetailsPage(this.subject, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +25,9 @@ class SubjectDetailsPage extends StatelessWidget {
             top: true,
             child: Padding(
               padding: const EdgeInsets.all(16),
-              child: Container(
-                child: Text(
-                  subject.name,
-                  style: Theme.of(context).textTheme.headline2,
-                ),
+              child: Text(
+                subject.name,
+                style: Theme.of(context).textTheme.headline2,
               ),
             ),
           ),

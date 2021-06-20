@@ -6,7 +6,7 @@ import '../services/databases/hive_helper.dart';
 part 'time_block.g.dart';
 
 @HiveType(typeId: HiveHelper.timeBlockTypeID)
-class TimeBlock extends HiveObject {
+class TimeBlock {
   TimeBlock({
     required this.day,
     required this.startTime,

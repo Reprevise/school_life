@@ -8,10 +8,11 @@ import '../../../util/day_utils.dart';
 class ScheduleItem extends StatelessWidget {
   const ScheduleItem(
     this.subject, {
+    Key? key,
     required this.selectedDay,
     required this.isFirst,
     required this.isLast,
-  });
+  }) : super(key: key);
 
   final Subject subject;
   final bool isFirst;
@@ -20,7 +21,7 @@ class ScheduleItem extends StatelessWidget {
 
   static const Radius radius = Radius.circular(10);
 
-  BorderRadius? get leftBorderRadius {
+  BorderRadius get leftBorderRadius {
     if (isFirst && isLast) {
       return const BorderRadius.horizontal(left: radius);
     } else if (isFirst) {
@@ -28,10 +29,10 @@ class ScheduleItem extends StatelessWidget {
     } else if (isLast) {
       return const BorderRadius.only(bottomLeft: radius);
     }
-    return null;
+    return BorderRadius.zero;
   }
 
-  BorderRadius? get rightBorderRadius {
+  BorderRadius get rightBorderRadius {
     if (isFirst & isLast) {
       return const BorderRadius.horizontal(right: radius);
     } else if (isFirst) {
@@ -39,10 +40,10 @@ class ScheduleItem extends StatelessWidget {
     } else if (isLast) {
       return const BorderRadius.only(bottomRight: radius);
     }
-    return null;
+    return BorderRadius.zero;
   }
 
-  BorderRadius? get borderRadius {
+  BorderRadius get borderRadius {
     if (isFirst & isLast) {
       return const BorderRadius.all(radius);
     } else if (isFirst) {
@@ -50,7 +51,7 @@ class ScheduleItem extends StatelessWidget {
     } else if (isLast) {
       return const BorderRadius.vertical(bottom: radius);
     }
-    return null;
+    return BorderRadius.zero;
   }
 
   bool useWhiteForeground(Color background) {
@@ -64,10 +65,10 @@ class ScheduleItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final weekdayString = selectedDay.weekday.toString();
-    final dayOfWeek = daysFromIntegerString[weekdayString];
+    final dayOfWeek = daysFromIntegerString[weekdayString]!;
     final block = locator<SubjectsRepository>()
-        .getTimeBlockFromDay(dayOfWeek!, subject.schedule!);
-    final startTime = block.startTime.format(context);
+        .getTimeBlockFromDay(dayOfWeek, subject.schedule);
+    final startTime = block!.startTime.format(context);
     final endTime = block.endTime.format(context);
 
     return Container(
@@ -119,7 +120,7 @@ class ScheduleItem extends StatelessWidget {
                   borderRadius: rightBorderRadius,
                 ),
                 child: Text(
-                  subject.name,
+                  subject.name.toUpperCase(),
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     color: useWhiteForeground(Theme.of(context).accentColor)

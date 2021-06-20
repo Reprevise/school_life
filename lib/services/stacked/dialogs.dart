@@ -17,14 +17,14 @@ void setupDialogService() {
   final ds = locator<DialogService>();
 
   final builders = <DialogType, DialogBuilder>{
-    DialogType.noSubjects: (_, __, ___) => NoSubjectsDialog(),
+    DialogType.noSubjects: (_, __, ___) => const NoSubjectsDialog(),
     DialogType.noSubjectsWithoutSchedule: (_, __, ___) =>
-        NoSubjectsWithoutScheduleDialog(),
+        const NoSubjectsWithoutScheduleDialog(),
     DialogType.deleteAssignment: (_, request, response) =>
         DeleteAssignmentDialog(request: request, response: response),
     DialogType.deleteSubject: (_, request, response) =>
         DeleteSubjectDialog(request: request, response: response),
-    DialogType.pop: (_, request, response) => PopDialog(),
+    DialogType.pop: (_, request, response) => const PopDialog(),
   };
 
   ds.registerCustomDialogBuilders(builders);
@@ -96,7 +96,7 @@ class DeleteAssignmentDialog extends StatelessWidget {
             const TextSpan(text: 'Do you want to delete '),
             TextSpan(
               text: '${assignment.name}?',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -154,7 +154,7 @@ class DeleteSubjectDialog extends StatelessWidget {
             const TextSpan(text: 'Do you want to delete '),
             TextSpan(
               text: '${subject.name}?',
-              style: TextStyle(
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
               ),
             ),

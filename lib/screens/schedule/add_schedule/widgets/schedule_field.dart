@@ -4,10 +4,11 @@ import '../../../../models/time_block.dart';
 
 class ScheduleField extends StatelessWidget {
   const ScheduleField({
+    Key? key,
     required this.tBlock,
     required this.onRemove,
     required this.onEdit,
-  });
+  }) : super(key: key);
 
   final TimeBlock tBlock;
   final VoidCallback onRemove;
@@ -31,12 +32,12 @@ class ScheduleField extends StatelessWidget {
             children: <Widget>[
               _InfoField(title: 'Day', data: tBlock.day),
               IconButton(
-                icon: Icon(Icons.edit_outlined),
+                icon: const Icon(Icons.edit_outlined),
                 onPressed: onEdit,
                 color: Colors.black,
               ),
               IconButton(
-                icon: Icon(Icons.delete_outline),
+                icon: const Icon(Icons.delete_outline),
                 onPressed: onRemove,
                 color: Colors.red,
               ),
@@ -48,13 +49,13 @@ class ScheduleField extends StatelessWidget {
               _InfoField(
                 flex: 6,
                 title: 'Start time',
-                data: '${tBlock.startTime.format(context)}',
+                data: tBlock.startTime.format(context),
               ),
-              Spacer(flex: 1),
+              const Spacer(flex: 1),
               _InfoField(
                 title: 'End time',
                 flex: 6,
-                data: '${tBlock.endTime.format(context)}',
+                data: tBlock.endTime.format(context),
               ),
             ],
           ),
@@ -87,7 +88,7 @@ class _InfoField extends StatelessWidget {
             padding: const EdgeInsets.all(4),
             child: Text(
               title,
-              style: TextStyle(color: const Color(0xFF313131)),
+              style: const TextStyle(color: Color(0xFF313131)),
             ),
           ),
           Container(
@@ -100,7 +101,7 @@ class _InfoField extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Text(
                 data,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
           ),

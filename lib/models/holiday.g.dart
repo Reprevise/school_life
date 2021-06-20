@@ -17,7 +17,7 @@ class HolidayAdapter extends TypeAdapter<Holiday> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Holiday(
-      id: fields[0] as int,
+      id: fields[0] as String,
       name: fields[1] as String,
       startDate: fields[2] as DateTime,
       endDate: fields[3] as DateTime,

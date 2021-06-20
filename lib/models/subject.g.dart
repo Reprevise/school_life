@@ -17,21 +17,20 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Subject(
-      id: fields[0] as int,
+      id: fields[0] as String,
       name: fields[1] as String,
       room: fields[2] as String,
       building: fields[3] as String,
       teacher: fields[4] as String,
       color: fields[5] as Color,
-      schedule: (fields[7] as List?)?.cast<TimeBlock>(),
-      isDeleted: fields[6] as bool,
+      schedule: fields[6] == null ? [] : (fields[6] as List).cast<TimeBlock>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, Subject obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(7)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -45,8 +44,6 @@ class SubjectAdapter extends TypeAdapter<Subject> {
       ..writeByte(5)
       ..write(obj.color)
       ..writeByte(6)
-      ..write(obj.isDeleted)
-      ..writeByte(7)
       ..write(obj.schedule);
   }
 

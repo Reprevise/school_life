@@ -11,6 +11,8 @@ import 'widgets/header.dart';
 import 'widgets/schedules_list.dart';
 
 class SchedulePage extends StatefulWidget {
+  const SchedulePage({Key? key}) : super(key: key);
+
   @override
   _SchedulePageState createState() => _SchedulePageState();
 }
@@ -65,7 +67,7 @@ class _SchedulePageState extends State<SchedulePage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _handleAddScheduleButtonPress,
-        label: Text('Add Schedule'),
+        label: const Text('Add Schedule'),
         icon: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -78,7 +80,7 @@ class _SchedulePageState extends State<SchedulePage> {
       children: <Widget>[
         const ScreenHeader('Schedule'),
         IconButton(
-          icon: Icon(Icons.today),
+          icon: const Icon(Icons.today),
           onPressed: () {
             final now = DateTime.now().onlyDate;
             setState(() {

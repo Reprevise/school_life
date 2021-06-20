@@ -16,13 +16,13 @@ class Assignment extends HiveObject {
   });
 
   @HiveField(0)
-  int id;
+  String id;
   @HiveField(1)
   String name;
   @HiveField(2)
   DateTime dueDate;
   @HiveField(3)
-  int subjectID;
+  String subjectID;
   @HiveField(4)
   String details;
   @HiveField(5, defaultValue: false)

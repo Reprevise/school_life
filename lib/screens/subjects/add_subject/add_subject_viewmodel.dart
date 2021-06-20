@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../app/app.locator.dart';
 import '../../../app/app.router.dart';
@@ -11,24 +12,36 @@ import '../../../models/subject.dart';
 import '../../../services/databases/subjects_repository.dart';
 
 class AddSubjectViewModel extends BaseViewModel with Popper {
-  final form = FormGroup({
-    'subject': FormControl<String>(
-      value: '',
-      validators: [Validators.required],
-    ),
-    'room': FormControl<String>(
-      value: '',
-      validators: [Validators.required],
-    ),
-    'building': FormControl<String>(value: ''),
-    'teacher': FormControl<String>(
-      value: '',
-      validators: [Validators.required],
-    ),
-    'color': FormControl<Color>(),
-  });
-  final subjectsRepo = locator<SubjectsRepository>();
-  final ns = locator<NavigationService>();
+  final Subject? subjectToEdit;
+
+  late final FormGroup form;
+  late final SubjectsRepository subjectsRepo;
+  late final NavigationService ns;
+
+  AddSubjectViewModel({this.subjectToEdit}) {
+    subjectsRepo = locator<SubjectsRepository>();
+    ns = locator<NavigationService>();
+    form = FormGroup({
+      'subject': FormControl<String>(
+        value: subjectToEdit?.name ?? '',
+        validators: [Validators.required],
+      ),
+      'room': FormControl<String>(
+        value: subjectToEdit?.room ?? '',
+        validators: [Validators.required],
+      ),
+      'building': FormControl<String>(
+        value: subjectToEdit?.building ?? '',
+      ),
+      'teacher': FormControl<String>(
+        value: subjectToEdit?.teacher ?? '',
+        validators: [Validators.required],
+      ),
+      'color': FormControl<Color>(
+        value: subjectToEdit?.color,
+      ),
+    });
+  }
 
   FormControl<String> get subject =>
       form.control('subject') as FormControl<String>;
@@ -48,7 +61,7 @@ class AddSubjectViewModel extends BaseViewModel with Popper {
     return subject.isNullOrEmpty &&
         room.isNullOrEmpty &&
         building.isNullOrEmpty &&
-        teacher.isNotNullOrEmpty;
+        teacher.isNullOrEmpty;
   }
 
   Future<void> promptToAddSchedule() async {
@@ -69,7 +82,7 @@ class AddSubjectViewModel extends BaseViewModel with Popper {
   Future<void> addSubject() async {
     if (form.valid) {
       final subjectObject = Subject(
-        id: subjectsRepo.nextID,
+        id: subjectToEdit?.id ?? const Uuid().v4(),
         name: subject.value!.trim(),
         room: room.value!.trim(),
         building: building.value!.trim(),
@@ -84,7 +97,7 @@ class AddSubjectViewModel extends BaseViewModel with Popper {
         );
         await promptToAddSchedule();
       } on Exception catch (e) {
-        // TODO
+        print(e);
       }
     }
   }

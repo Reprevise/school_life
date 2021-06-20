@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class FormRequired extends StatelessWidget {
-  const FormRequired({this.all = false});
+  const FormRequired({Key? key, this.all = false}) : super(key: key);
 
   final bool all;
 
@@ -12,7 +12,7 @@ class FormRequired extends StatelessWidget {
       child: Text(
         all ? 'All fields are required' : '* Required',
         textAlign: TextAlign.right,
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.red,
         ),
       ),
